@@ -270,6 +270,7 @@
                   <div class="card">
                     <div class="card-datatable table-responsive">
                       <div style="margin:15px">
+                       <h5>Registered Today</h5>
                       </div>
                       <table class="datatables-category-list table border-top" id="product_list">
                         <thead>

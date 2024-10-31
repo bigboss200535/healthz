@@ -376,7 +376,7 @@
              <select name="clinics" id="clinics" class="form-control">
                 <option>-Select-</option>
                 @foreach($clinic_attendance as $clinics)                                        
-                  <option value="{{ $clinics->attendance_type_id }}">{{ $clinics->attendance_type }}</option>
+                  <option value="{{ $clinics->service_point_id }}">{{ $clinics->service_points }}</option>
                  @endforeach
              </select>
           </div>
@@ -395,7 +395,7 @@
             <input type="text" id="cash_amount" name="cash_amount" class="form-control" placeholder="0.00"/>
           </div>
           <div class="col-12 col-md-6">
-            <label class="form-label" for="gdrg_code"> Service G-DRG</label>
+            <label class="form-label" for="gdrg_code">Service G-DRG</label>
             <input type="text" id="gdrg_code" name="gdrg_code" class="form-control" placeholder="0.00" />
           </div>
           <div class="col-12 col-md-6">

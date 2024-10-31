@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Clinic;
-use App\Models\ClinicAttendanceType;
+use App\Models\ServicePoints;
 use DateTime;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -216,10 +216,11 @@ class PatientController extends Controller
             ->where('max_age', '>=', $patients->age)
             ->first();
 
-        $clinic_attendance = ClinicAttendanceType::select('attendance_type_id','attendance_type','gender_id', 'age_id')
+        $clinic_attendance = ServicePoints::select('service_point_id','service_points','gender_id', 'age_id')
         // ->where('gender_id', $patients->gender_id)
         // ->where('age_id', $ages->age_id)
          ->where('archived', 'No')
+         ->where('is_active', 'Yes')
         ->get();
 
         return view('patient.show', compact('patients', 'sponsor', 'clinic_attendance'));
