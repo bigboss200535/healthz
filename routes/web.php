@@ -51,12 +51,15 @@ Route::middleware('auth')->group(function () {
     Route::resource('service', ServiceRequestController::class);
     Route::resource('users', ProfileController::class);
     Route::resource('sponsors', SponsorController::class); 
+    Route::resource('services', ServiceRequestController::class);
+   
     Route::get('patient/create/', [PatientController::class, 'create'])->name('patient.create');
     Route::get('patient/search/', [ PatientController::class, 'index'])->name('patient.index');
     Route::get('patient/visits/{patient_id}', [PatientVisitsController::class, 'index'])->name('attendance.index');
     Route::get('patient/modify/{patient_id}', [PatientController::class, 'edit'])->name('patient.create');
     Route::get('patient/attendance/{patient_id}', [PatientVisitsController::class, 'show'])->name('attendance.show');
     Route::get('patients/details/{patient_id}', [PatientController::class, 'show'])->name('patient.show');
+    Route::get('/services/{clinic}/specialties', [ServiceRequestController::class, 'getspecialties']);
     Route::get('pdf', [PDFReportController::class, 'index']);
     // Route::get('code_generate', [CodeGenerationController::class, 'index']);
     Route::post('code_generate', [CodeGenerationController::class, 'index']);

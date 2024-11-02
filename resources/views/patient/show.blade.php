@@ -372,7 +372,7 @@
         </div>
         <form id="addNewAddressForm" class="row g-6" onsubmit="return false">
           <div class="col-12 col-md-6">
-            <label class="form-label" for="clinics">Service Category</label>
+            <label class="form-label" for="clinics">Service Clinic</label>
              <select name="clinics" id="clinics" class="form-control">
                 <option>-Select-</option>
                 @foreach($clinic_attendance as $clinics)                                        
@@ -381,9 +381,9 @@
              </select>
           </div>
           <div class="col-12 col-md-6">
-            <label class="form-label" for="specialty">Service Type</label>
-            <select name="specialty" id="specialty" class="form-control">
-                <option>-Select-</option>
+            <label class="form-label" for="service_type">Service Type</label>
+            <select name="service_type" id="service_type" class="form-control">
+                <option disabled selected>-Select-</option>
             </select>
           </div>
           <div class="col-12 col-md-6">
@@ -416,7 +416,6 @@
   </div>
 </div>
 <!--/ service_request Modal -->
-/
 <!-- check claims code Modal -->
 <div class="modal fade" id="claims_check_code" tabindex="-1" aria-hidden="true" data-backdrop="static" data-bs-keyboard="false">
   <div class="modal-dialog modal-lg modal-simple modal-add-new-address">

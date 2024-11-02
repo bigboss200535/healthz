@@ -116,12 +116,9 @@
         $('#data_table').DataTable();
         $('#product_list').DataTable();
         $('#patient_list').DataTable();
-        patient_list
+        
         $('.sponsor_name').select2();
         $('.sponsorship_type').select2();
-
-        
-
 });
 
 $(document).ready( function () {
@@ -136,7 +133,6 @@ $(document).ready( function () {
 </script>
 
 <script>
-    // Handle delete functionality
     $(document).on('click', '.product_delete_btn', function() {
       var product_id = $(this).data('id');
 
@@ -293,36 +289,36 @@ $(document).ready( function () {
       }
     });
  </script>
-<!-- 
-<script>
-    $(document).on('change', '#product_search', function() {
-      var product_id = $(this).val(); // Get the selected product ID from the dropdown
-  
-      $.ajax({
-        url: '/price/' + product_id,
-      
-        type: 'GET',
-        success: function(response) {
-          $('#price_id').val(response.product.pp_id); // Update product ID input field
-          $('#product_id').val(response.product.product_id); // Update product ID input field
-          $('#product_name').val(response.product.product_name); // Update product name input field
-          $('#cost_price').val(response.product.cost_price); // Update cost price input field
-          $('#selling_price').val(response.product.retail_price); // Update selling price input field
-          $('#distribution_price').val(response.product.distribution_price); // Update distribution price input field
-          $('#wholesale_price').val(response.product.wholesale_price); // Update wholesale price input field
-          $('#effective_date').val(response.product.effective_date); // Update effective date input field
-          $('#end_date').val(response.product.end_date); // Update end date input field
-          $('#status').val(response.product.status).trigger('change'); // Update status select field
-  
-          // Optionally, trigger any other necessary updates or actions based on response
-        },
-        error: function(xhr, status, error) {
-          toastr.error('Error fetching data! Try again.'); // Display error message if AJAX request fails
-        }
-      });
-    });
 
-</script> -->
+<script>
+    $(document).on('change', '#clinics', function() {
+        var clinic_id = $(this).val();
+
+        $('#service_type').empty().append('<option>-Select-</option>');
+
+        $.ajax({
+            url: '/services/' + clinic_id + '/specialties',
+            type: 'GET',
+            success: function(response) {
+               
+              if (response.success) {
+                   
+                    $.each(response.result, function(index, specialty) {
+                        $('#service_type').append(
+                            $('<option></option>').val(specialty.attendance_type_id).text(specialty.attendance_type)
+                        );
+                    });
+                } else {
+                    // If no specialties found, show a message or leave empty
+                    $('#service_type').append('<option disabled>No specialties available</option>');
+                }
+            },
+            error: function(xhr, status, error) {
+                toastr.error('Error fetching data! Try again.'); // Display error message if AJAX request fails
+            }
+        });
+    });
+</script>
 
 <script>
 function generateCC() {
