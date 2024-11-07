@@ -60,6 +60,9 @@ Route::middleware('auth')->group(function () {
     Route::get('patient/attendance/{patient_id}', [PatientVisitsController::class, 'show'])->name('attendance.show');
     Route::get('patients/details/{patient_id}', [PatientController::class, 'show'])->name('patient.show');
     Route::get('/services/{clinic}/specialties', [ServiceRequestController::class, 'getspecialties']);
+    Route::get('/services/{service_id}/service_tarif', [ServiceRequestController::class, 'gettarrifs']);
+    Route::post('/services/patient_service', [ServiceRequestController::class, 'store']);
+    Route::get('/services/patient_service_data/{patient_id}', [ServiceRequestController::class, 'retrieve']);
     Route::get('pdf', [PDFReportController::class, 'index']);
     // Route::get('code_generate', [CodeGenerationController::class, 'index']);
     Route::post('code_generate', [CodeGenerationController::class, 'index']);

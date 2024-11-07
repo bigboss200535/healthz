@@ -13,28 +13,32 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('attendance_request', function (Blueprint $table) {
+        Schema::create('patient_attendance_request', function (Blueprint $table) {
             $table->string('patient_id', 50);
-            $table->string('opd_number', 50);
-            $table->date('attendance_date');
-            $table->timestamp('attendance_time'); 
-            $table->string('pat_age'); 
-            $table->string('status_code'); 
-            $table->string('reg_type'); 
-            $table->string('reg_status'); 
-            $table->string('membership_number'); 
-            $table->string('insured'); 
+            $table->string('opd_number', 50)->nullable();
+            $table->date('attendance_date')->nullable();
+            $table->timestamp('attendance_time')->nullable(); 
+            $table->string('pat_age')->nullable(); 
+            $table->string('status_code')->nullable(); 
+            $table->string('reg_type')->nullable(); 
+            // $table->string('pat_type'); 
+            $table->string('service_type')->nullable(); 
+            $table->string('reg_status')->nullable(); 
+            $table->string('membership_number')->nullable(); 
+            $table->string('insured')->nullable(); 
             $table->string('service_issued')->default('0'); 
-            $table->string('claims_check_code'); 
-            $table->string('episode_id'); 
-            $table->string('sponsor_id'); 
-            $table->string('clinic_code'); 
-            $table->string('records_no'); 
-            $table->string('attendance_no'); 
-            $table->string('gender_id',50); 
-            $table->string('age_id',50); 
-            $table->string('child_code',50)->nullable(); 
-            $table->string('adult_code',50)->nullable(); 
+            $table->string('claims_check_code')->nullable(); 
+            $table->string('episode_id')->nullable(); 
+            $table->string('sponsor_id')->nullable(); 
+            $table->string('clinic_code')->nullable(); 
+            $table->string('records_no')->nullable(); 
+            $table->string('attendance_no')->nullable(); 
+            $table->string('gender_id',50)->nullable(); 
+            $table->string('age_id',50)->nullable(); 
+            $table->string('cash_amount',50)->nullable();
+            $table->string('top_up',50)->nullable();
+            $table->string('credit_amount',50)->nullable();  
+            $table->string('gdrg_code',50)->nullable(); 
             $table->string('user_id',50)->nullable();    
             $table->string('facility_id', 50)->nullable();    
             $table->string('added_id', 50)->nullable();

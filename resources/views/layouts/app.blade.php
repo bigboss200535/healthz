@@ -103,6 +103,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>  
     <script src="{{ asset('js/custom_js.js') }}"></script>
+    <script src="{{ asset('js/patient_services_js.js') }}"></script>
+
     </body>
 </html>
 
@@ -116,20 +118,11 @@
         $('#data_table').DataTable();
         $('#product_list').DataTable();
         $('#patient_list').DataTable();
+        $('#patient_services').DataTable();
         
         $('.sponsor_name').select2();
         $('.sponsorship_type').select2();
 });
-
-$(document).ready( function () {
-        // $('#product_list').DataTable();
-});
-</script>
-<script>
-  $(document).ready(function() {
-    // Show the modal
-    
-  });
 </script>
 
 <script>
@@ -291,36 +284,6 @@ $(document).ready( function () {
  </script>
 
 <script>
-    $(document).on('change', '#clinics', function() {
-        var clinic_id = $(this).val();
-
-        $('#service_type').empty().append('<option>-Select-</option>');
-
-        $.ajax({
-            url: '/services/' + clinic_id + '/specialties',
-            type: 'GET',
-            success: function(response) {
-               
-              if (response.success) {
-                   
-                    $.each(response.result, function(index, specialty) {
-                        $('#service_type').append(
-                            $('<option></option>').val(specialty.attendance_type_id).text(specialty.attendance_type)
-                        );
-                    });
-                } else {
-                    // If no specialties found, show a message or leave empty
-                    $('#service_type').append('<option disabled>No specialties available</option>');
-                }
-            },
-            error: function(xhr, status, error) {
-                toastr.error('Error fetching data! Try again.'); // Display error message if AJAX request fails
-            }
-        });
-    });
-</script>
-
-<script>
 function generateCC() {
     // Get the member number and card type from the input fields
     var member_no = $('#member_no').val();
@@ -369,4 +332,3 @@ $('#claims_check_code').on('hidden.bs.modal', function () {
         clearForm();
     });
 </script>
-

@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('consulting_room', 100);
             $table->string('clinic_code', 100)->nullable();
             $table->string('color_code', 100)->nullable();
-            $table->string('doctors_no', 100)->nullable();
+            $table->string('doctors_number', 100)->nullable();
             $table->string('user_id', 100)->nullable();
             $table->timestamp('added_date')->nullable();
             $table->string('updated_by', 100)->nullable();

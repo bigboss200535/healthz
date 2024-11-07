@@ -322,7 +322,7 @@
                       <div style="margin:15px">
                         <h5>Patient Attendance History</h5>
                       </div>
-                      <table class="datatables-category-list table border-top" id="product_list">
+                      <table class="datatables-category-list table border-top" id="patient_services">
                         <thead>
                           <tr class="" align="center">
                             <th>S/N</th>  
@@ -338,7 +338,51 @@
                           </tr>
                         </thead>
                         <tbody>
-                       
+                        @php
+                            $counter = 1;
+                            @endphp
+                            @foreach($service_request as $services)
+
+                            <tr>
+                            <td>{{ $counter++ }}</td>
+                  <td>{{ $pat_sponsor->sponsor_name}}</td>
+                  <td>{{ $pat_sponsor->member_no}}</td>
+                  <td>{{ \Carbon\Carbon::parse($pat_sponsor->start_date)->format('d-m-Y') }}</td>
+                  <td>{{ \Carbon\Carbon::parse($pat_sponsor->end_date)->format('d-m-Y') }}</td>
+                  <td> @if($pat_sponsor->status === 'Active')
+                          <span class="badge bg-label-success me-1">Active</span>
+                           @elseif ($pat_sponsor->status === 'Inactive')
+                          <span class="badge bg-label-danger me-1">Inactive</span>
+                       @endif
+                  </td>
+                  <td>
+                   @if($pat_sponsor->is_active === 'Yes')
+                          <span class="badge bg-label-primary me-1">Yes</span>
+                           @elseif ($pat_sponsor->is_active === 'No')
+                          <span class="badge bg-label-primary me-1">No</span>
+                       @endif
+                  </td>
+                  <td>
+                                 <div class="dropdown" align="center">
+                                          <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                                              <i class="bx bx-dots-vertical-rounded"></i>
+                                          </button>
+                                              <div class="dropdown-menu">
+                                                  <a class="dropdown-item"  href="#">
+                                                    <i class="bx bx-edit-alt me-1"></i> Edit
+                                                  </a>
+                                                  <a class="dropdown-item" href="#">
+                                                    <i class="bx bx-lock-alt me-1"></i> Details 
+                                                  </a>
+                                                  <!-- <a class="dropdown-item" href="javascript:void(0);">
+                                                      <i class="bx bx-trash me-1"></i> Delete
+                                                  </a> -->
+                                            </div>
+                                  </div>
+                  </td>
+                </tr>
+                
+                            @endforeach
                         </tbody>
                         <tfoot>
                           <tr class="" align="center">
@@ -370,8 +414,13 @@
           <h4 class="address-title mb-2">Patient Attendance Registration</h4>
           <p class="address-subtitle">Add new patient attendance registration</p>
         </div>
-        <form id="addNewAddressForm" class="row g-6" onsubmit="return false">
+        <form id="save_service_fee" class="row g-6" onsubmit="return false">
+          @csrf
+          <div id="success_diplay" class="container mt-4"></div>
           <div class="col-12 col-md-6">
+            <input type="text" name="p_id" id="p_id" value="{{ $patients->patient_id }}" hidden>
+            <!-- <input type="text" name="p_id" id="p_id" value="{{ $patients->patient_id }}" hidden> -->
+
             <label class="form-label" for="clinics">Service Clinic</label>
              <select name="clinics" id="clinics" class="form-control">
                 <option>-Select-</option>
@@ -383,24 +432,37 @@
           <div class="col-12 col-md-6">
             <label class="form-label" for="service_type">Service Type</label>
             <select name="service_type" id="service_type" class="form-control">
-                <option disabled selected>-Select-</option>
+                <option disabled selected></option>
             </select>
           </div>
           <div class="col-12 col-md-6">
             <label class="form-label" for="credit_amount">Credit Fee</label>
-            <input type="text" id="credit_amount" name="credit_amount" class="form-control" placeholder="0.00" />
+            <input type="number" id="credit_amount" name="credit_amount" class="form-control" placeholder="0.00" />
           </div>
           <div class="col-12 col-md-6">
             <label class="form-label" for="cash_amount">Cash Fee</label>
-            <input type="text" id="cash_amount" name="cash_amount" class="form-control" placeholder="0.00"/>
+            <input type="number" id="cash_amount" name="cash_amount" class="form-control" placeholder="0.00"/>
           </div>
           <div class="col-12 col-md-6">
             <label class="form-label" for="gdrg_code">Service G-DRG</label>
-            <input type="text" id="gdrg_code" name="gdrg_code" class="form-control" placeholder="0.00" />
+            <input type="text" id="gdrg_code" name="gdrg_code" class="form-control"/>
           </div>
           <div class="col-12 col-md-6">
-            <label class="form-label" for="modalAddressZipCode">Zip Code</label>
-            <input type="text" id="modalAddressZipCode" name="modalAddressZipCode" class="form-control" placeholder="0.00" />
+            <label class="form-label" for="pat_type">Attendance Type</label>
+                <select name="pat_type" id="pat_type" class="form-control">
+                  <option selected disabled>-Select-</option>
+                  <option value="1">New</option>
+                  <option value="0">Old</option>
+                </select>
+                <!-- <label class="form-label" for="pat_type">Patient Type <a href="#" style="color: red;">*</a></label>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="pat_type" id="pat_type_yes" value="1">
+                  <label class="form-check-label" for="pat_type_yes">Yes</label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="pat_type" id="pat_type_no" value="0">
+                  <label class="form-check-label" for="pat_type_no">No</label>
+                </div> -->
           </div>
           <div class="col-12">
             <div class="form-check form-switch my-2 ms-2">

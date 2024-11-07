@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Patient;
 use App\Models\ServiceAttendancetype;
 use App\Models\ServicePoints;
+use App\Models\ServiceRequest;
 use App\Models\SponsorType;
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 
 class ServiceRequestController extends Controller
@@ -34,14 +38,33 @@ class ServiceRequestController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'user_id' => 'required',
-            'username' => 'required|string|min:1',
+            'p_id' => 'string',
+            'clinics' => 'string',
+            'service_type' => 'string',
+            // 'credit_amount' => 'min:1',
+            // 'cash_amount' => 'min:1',
+            // 'gdrg_code' => 'string',
+            'pat_type' => 'string',
+            'user_id' => 'string',
+            // 'username' => 'required|string|min:1',
         ]);
 
-         $product = User::create([
-            'user_id' => $request->product_name,
-            'username' => $request->category_id,
+         $product = ServiceRequest::create([
+            'patient_id' => $request->p_id,
+            'clinic_code' => $request->clinics,
+            'service_type' => $request->service_type,
+            'credit_amount' => $request->credit_amount,
+            'cash_amount' => $request->cash_amount,
+            'gdrg_code' => $request->gdrg_code,
+            'reg_type' => $request->pat_type,
+            'user_id' => Auth::user()->user_id,
+            // $patient->user_id =  Auth::user()->user_id;
         ]); 
+
+        return response()->json([
+            'success' => true,
+            'result' => 'Saved'
+        ]);
     }
 
     public function show(Request $request, $clinic_id)
@@ -71,23 +94,69 @@ class ServiceRequestController extends Controller
          ->where('service_point_id', $clinic_id)
         ->first();
 
-        if (!$clinic_attendance) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Clinic not found',
-            ], 404);
-        }
+        // if (!$clinic_attendance) {
+        //     return response()->json([
+        //         'success' => false,
+        //         'message' => 'Clinic not found',
+        //     ], 404);
+        // }
 
-        $attendance_services = ServiceAttendancetype::where('attendance_type_id', $clinic_attendance->attendance_type_id)
+        $at_clinic = ServiceAttendancetype::where('attendance_type_id', $clinic_attendance->attendance_type_id)
         ->where('archived', 'No')
         ->get();
 
         return response()->json([
             'success' => true,
-            'result' => $attendance_services
+            'result' => $at_clinic
         ]);
         
     }
 
+    public function gettarrifs(Request $request, $service)
+    {
+        $age_group = 'Adult';
+        $age_code ='';
+
+         $service_code = DB::table('service_attendance_type')
+        ->where('archived', 'No')
+        ->where('attendance_type_id', $service)
+        ->first();
+
+        if($age_group=='Adult'){
+            $age_code = $service_code->adult_code;
+
+            return $age_code;
+        }
+        else if ($age_group=='Child'){
+            $age_code = $service_code->child_code;
+            return $age_code;
+        }
+
+        $fee_charges = DB::table('services_fee')
+        ->where('archived', 'No')
+        ->where('service_fee_id', $age_code)
+        ->select('services.')
+        ->get();
+
+        return response()->json([
+            'success' => true,
+            'result' => $fee_charges
+        ]);
+    }
+
+    private function fetch()
+    {
+
+    }
+
+    public function retrieve(Request $request, $patient_id)
+    {
+        $data = ServiceRequest::where('patient_id', $patient_id)->first();
+
+        return response()->json([
+            'success' => true,
+            'result' => $data
+        ]);
+    }
 
 }

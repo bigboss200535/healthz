@@ -19,6 +19,7 @@ use App\Models\Relation;
 use App\Models\Patient;
 use App\Models\PatientSponsor;
 use App\Models\PatNumber;
+use App\Models\ServiceRequest;
 use App\Models\Sponsors;
 use App\Models\YearlyCount;
 use Carbon\Carbon;
@@ -214,7 +215,8 @@ class PatientController extends Controller
 
         $ages = Age::where('min_age', '<=', $patients->age)
             ->where('max_age', '>=', $patients->age)
-            ->first();
+            ->where('max_age', '>=', $patients->age)
+            ->get();
 
         $clinic_attendance = ServicePoints::select('service_point_id','service_points','gender_id', 'age_id')
         // ->where('gender_id', $patients->gender_id)
@@ -223,7 +225,9 @@ class PatientController extends Controller
          ->where('is_active', 'Yes')
         ->get();
 
-        return view('patient.show', compact('patients', 'sponsor', 'clinic_attendance'));
+        $service_request = ServiceRequest::where('archived','Yes')->get();
+
+        return view('patient.show', compact('patients', 'sponsor', 'clinic_attendance', 'service_request'));
         
     }
 
@@ -388,7 +392,7 @@ class PatientController extends Controller
     public function request_ccc(Request $request)
     {
         // API URL and authentication details
-        $apiUrl = "https://elig.nhia.gov.gh:5000/api/hmis/genCCC";
+        $apiUrl = Http::get("https://elig.nhia.gov.gh:5000/api/hmis/genCCC");
         $apiKey = //"hp6658"; // API Key
         $secret = //"ncgxs3"; // Secret
 

@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\ConsultingRoom;
 use App\Models\SponsorType;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -39,6 +40,7 @@ class DatabaseSeeder extends Seeder
             // ServiceFeeSeeder::class,
             ServicePointSeeder::class,
             ServiceMDCSSeeder::class,
+            ConsultingRoomSeeder::class,
            
         ]);
         

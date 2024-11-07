@@ -13,12 +13,12 @@ class CodeGenerationController extends Controller
     public function index(Request $request)
     {
         $stored_data = DB::table('facility')->where('archived', 'No')->select('ccc_type','nhia_url', 'nhia_key', 'nhia_secret')->first();
-
+        // $apiUrl = Http::get("https://elig.nhia.gov.gh:5000/api/hmis/genCCC");
         // $full_url = "https://elig.nhia.gov.gh:5000/api/hmis/genCCC";
         $end_point = 'api/hmis/genCC';
        //"hp6658"; // API Key
        //"ncgxs3"; // Secret
-        $full_url = $stored_data->nhia_url . $end_point;
+        $full_url = Http::get($stored_data->nhia_url . $end_point);
         $cardType = $request->input('card_type');
         $cardNo = $request->input('member_no');
 
