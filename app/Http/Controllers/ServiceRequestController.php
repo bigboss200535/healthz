@@ -37,34 +37,48 @@ class ServiceRequestController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'p_id' => 'string',
-            'clinics' => 'string',
-            'service_type' => 'string',
-            // 'credit_amount' => 'min:1',
-            // 'cash_amount' => 'min:1',
-            // 'gdrg_code' => 'string',
-            'pat_type' => 'string',
-            'user_id' => 'string',
-            // 'username' => 'required|string|min:1',
+         $request->validate([
+            'p_id' => 'required|string|max:255',
+            'clinics' => 'required|string|max:255',
+            'service_type' => 'required|string|max:255',
+            'credit_amount' => 'nullable|numeric|min:0',
+            'cash_amount' => 'nullable|numeric|min:0',
+            'gdrg_code' => 'nullable|string|max:255',
+            'pat_type' => 'required|string|max:255',
+            'user_id' => 'nullable|string|max:255',
+            'episode_id' => 'nullable|string|max:255',
+            'p_age' => 'nullable|string|max:255',
+            'attendance_date' => 'nullable',
         ]);
 
-         $product = ServiceRequest::create([
+        $service_equest = ServiceRequest::create([
             'patient_id' => $request->p_id,
             'clinic_code' => $request->clinics,
             'service_type' => $request->service_type,
-            'credit_amount' => $request->credit_amount,
-            'cash_amount' => $request->cash_amount,
+            'credit_amount' => $request->credit_amount ?? 0, 
+            'cash_amount' => $request->cash_amount ?? 0,     
             'gdrg_code' => $request->gdrg_code,
             'reg_type' => $request->pat_type,
-            'user_id' => Auth::user()->user_id,
-            // $patient->user_id =  Auth::user()->user_id;
-        ]); 
+            'episode_id' => $request->episode_id,
+            'pat_age' => $request->p_age,
+            'attendance_time' => $request->attendance_date,
+            'user_id' => Auth::check() ? Auth::id() : null,   
+            
+        ]);
 
         return response()->json([
             'success' => true,
-            'result' => 'Saved'
+            'result' => 'Saved Successfully',
+            'data' => $service_equest,
         ]);
+    
+    }
+
+    private function episode_id()
+    {
+        $row_count = ServiceRequest::count();
+        $new_number = $row_count + 1;
+        return str_pad($new_number, 6, '0', STR_PAD_LEFT);
     }
 
     public function show(Request $request, $clinic_id)

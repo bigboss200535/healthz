@@ -188,11 +188,11 @@ class PatientController extends Controller
         }
     }
 
-    public function show(Request $request, $patient_id)
+    public function show(Patient $patient)
     {
 
         $patients = DB::table('patient_info')
-            ->where('patient_info.patient_id', $patient_id)
+            ->where('patient_info.patient_id', $patient->patient_id)
             ->join('gender', 'patient_info.gender_id', '=', 'gender.gender_id')
             ->join('title', 'patient_info.title_id', '=', 'title.title_id')
             ->join('users', 'patient_info.user_id', '=', 'users.user_id')
@@ -206,7 +206,7 @@ class PatientController extends Controller
 
         $sponsor = DB::table('patient_sponsorship')
             ->where('patient_sponsorship.archived', 'No')
-            ->where('patient_id', $patient_id)
+            ->where('patient_id', $patient->patient_id)
             ->join('sponsors', 'patient_sponsorship.sponsor_id', '=', 'sponsors.sponsor_id')
             ->select('patient_sponsorship.member_no', 'patient_sponsorship.sponsor_id', 
             'sponsors.sponsor_name', 'patient_sponsorship.start_date', 'patient_sponsorship.end_date', 
@@ -216,7 +216,7 @@ class PatientController extends Controller
         $ages = Age::where('min_age', '<=', $patients->age)
             ->where('max_age', '>=', $patients->age)
             ->where('max_age', '>=', $patients->age)
-            ->get();
+            ->first();
 
         $clinic_attendance = ServicePoints::select('service_point_id','service_points','gender_id', 'age_id')
         // ->where('gender_id', $patients->gender_id)
@@ -225,15 +225,36 @@ class PatientController extends Controller
          ->where('is_active', 'Yes')
         ->get();
 
-        $service_request = ServiceRequest::where('archived','Yes')->get();
+        // $clinic_attendance = ServicePoints::select('service_point_id', 'service_points', 'gender_id', 'age_id')
+        // ->where('archived', 'No')
+        // ->where('is_active', 'Yes')
+        // ->when($patients->gender_id, function ($query) use ($patients) {
+        //     $query->where('gender_id', $patients->gender_id);
+        // })
+        // ->when($ages, function ($query) use ($ages) {
+        //     $query->where('age_id', $ages->age_id);
+        // })
+        // ->get();
 
-        return view('patient.show', compact('patients', 'sponsor', 'clinic_attendance', 'service_request'));
+        $request_episode = ServiceRequest::count();
+        $new_number = $request_episode + 1;
+        $episode = str_pad($new_number, 6, '0', STR_PAD_LEFT);
+
+        $service_request = ServiceRequest::where('archived','No')
+        // ->where('patient_id', $patient)
+        ->get();
+
+        return view('patient.show', compact('patients', 'sponsor', 'clinic_attendance', 'service_request', 'episode'));
         
     }
 
-    public function search()
+    public function search(Request $request)
     {
-         
+         $search_item = $request->inpute('query');
+         $patients = Patient::where('name', 'LIKE', "%{$search_item}%")
+         ->orWhere('age', $search_item)->get();
+
+         return view('patient.index', compact('patients'));
     }
 
     public function show_today(Request $request, $patient_id)
@@ -436,5 +457,6 @@ class PatientController extends Controller
             ]);
         }
     }
-    
+
+        
 }

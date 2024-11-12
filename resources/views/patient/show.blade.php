@@ -344,44 +344,33 @@
                             @foreach($service_request as $services)
 
                             <tr>
-                            <td>{{ $counter++ }}</td>
-                  <td>{{ $pat_sponsor->sponsor_name}}</td>
-                  <td>{{ $pat_sponsor->member_no}}</td>
-                  <td>{{ \Carbon\Carbon::parse($pat_sponsor->start_date)->format('d-m-Y') }}</td>
-                  <td>{{ \Carbon\Carbon::parse($pat_sponsor->end_date)->format('d-m-Y') }}</td>
-                  <td> @if($pat_sponsor->status === 'Active')
-                          <span class="badge bg-label-success me-1">Active</span>
-                           @elseif ($pat_sponsor->status === 'Inactive')
-                          <span class="badge bg-label-danger me-1">Inactive</span>
-                       @endif
-                  </td>
-                  <td>
-                   @if($pat_sponsor->is_active === 'Yes')
-                          <span class="badge bg-label-primary me-1">Yes</span>
-                           @elseif ($pat_sponsor->is_active === 'No')
-                          <span class="badge bg-label-primary me-1">No</span>
-                       @endif
-                  </td>
-                  <td>
-                                 <div class="dropdown" align="center">
-                                          <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-                                              <i class="bx bx-dots-vertical-rounded"></i>
-                                          </button>
-                                              <div class="dropdown-menu">
-                                                  <a class="dropdown-item"  href="#">
-                                                    <i class="bx bx-edit-alt me-1"></i> Edit
-                                                  </a>
-                                                  <a class="dropdown-item" href="#">
-                                                    <i class="bx bx-lock-alt me-1"></i> Details 
-                                                  </a>
-                                                  <!-- <a class="dropdown-item" href="javascript:void(0);">
-                                                      <i class="bx bx-trash me-1"></i> Delete
-                                                  </a> -->
-                                            </div>
-                                  </div>
-                  </td>
-                </tr>
-                
+                                <td>{{ $counter++ }}</td>
+                                <td><a href="#">{{ $services->episode_id}}</a></td>
+                                <td>{{ $services->episode_id}}</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                          
+                              <td>
+                                            <div class="dropdown" align="center">
+                                                      <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                                                          <i class="bx bx-dots-vertical-rounded"></i>
+                                                      </button>
+                                                          <div class="dropdown-menu">
+                                                              <!-- <a class="dropdown-item"  href="#">
+                                                                <i class="bx bx-edit-alt me-1"></i> Edit
+                                                              </a> -->
+                                                              <a class="dropdown-item" href="#">
+                                                                <i class="bx bx-lock-alt me-1"></i> More 
+                                                              </a>
+                                                        </div>
+                                              </div>
+                              </td>
+                            </tr>
+
                             @endforeach
                         </tbody>
                         <tfoot>
@@ -416,11 +405,27 @@
         </div>
         <form id="save_service_fee" class="row g-6" onsubmit="return false">
           @csrf
-          <div id="success_diplay" class="container mt-4"></div>
+          <div id="success_diplay" class="container mt-6"></div>
+          <div class="col-12 col-md-12">
+            <label class="form-label" for="credit_amount">Fullname</label>
+            <input type="text" id="fullname" name="fullname" class="form-control" value="{{ $patients->fullname }}" disabled/>
+          </div>
+          <input type="text" name="p_id" id="p_id" value="{{ $patients->patient_id }}" hidden>
+            <input type="text" name="p_age" id="p_age" value="{{ $patients->age }}" hidden>
+            <input type="text" name="episode_id" id="episode_id" value="{{ $episode }}" hidden>
           <div class="col-12 col-md-6">
-            <input type="text" name="p_id" id="p_id" value="{{ $patients->patient_id }}" hidden>
-            <!-- <input type="text" name="p_id" id="p_id" value="{{ $patients->patient_id }}" hidden> -->
-
+            <label class="form-label" for="credit_amount">Attendance Date</label>
+            <input type="date" id="attendance_date" name="attendance_date" class="form-control" />
+          </div>
+          <div class="col-12 col-md-6">
+            <label class="form-label" for="pat_type">Attendance Type</label>
+                <select name="pat_type" id="pat_type" class="form-control">
+                  <option selected disabled>-Select-</option>
+                  <option value="1">New</option>
+                  <option value="0">Old</option>
+                </select>
+          </div>
+          <div class="col-12 col-md-6">
             <label class="form-label" for="clinics">Service Clinic</label>
              <select name="clinics" id="clinics" class="form-control">
                 <option>-Select-</option>
@@ -443,32 +448,17 @@
             <label class="form-label" for="cash_amount">Cash Fee</label>
             <input type="number" id="cash_amount" name="cash_amount" class="form-control" placeholder="0.00"/>
           </div>
-          <div class="col-12 col-md-6">
+          <div class="col-12 col-md-6" hidden>
             <label class="form-label" for="gdrg_code">Service G-DRG</label>
             <input type="text" id="gdrg_code" name="gdrg_code" class="form-control"/>
           </div>
-          <div class="col-12 col-md-6">
-            <label class="form-label" for="pat_type">Attendance Type</label>
-                <select name="pat_type" id="pat_type" class="form-control">
-                  <option selected disabled>-Select-</option>
-                  <option value="1">New</option>
-                  <option value="0">Old</option>
-                </select>
-                <!-- <label class="form-label" for="pat_type">Patient Type <a href="#" style="color: red;">*</a></label>
-                <div class="form-check">
-                  <input class="form-check-input" type="radio" name="pat_type" id="pat_type_yes" value="1">
-                  <label class="form-check-label" for="pat_type_yes">Yes</label>
-                </div>
-                <div class="form-check">
-                  <input class="form-check-input" type="radio" name="pat_type" id="pat_type_no" value="0">
-                  <label class="form-check-label" for="pat_type_no">No</label>
-                </div> -->
-          </div>
+          
           <div class="col-12">
             <div class="form-check form-switch my-2 ms-2">
             </div>
           </div>
           <div class="col-12 text-center">
+            <button type="submit" class="btn btn-info me-3">Get CC</button>
             <button type="submit" class="btn btn-primary me-3">Submit</button>
             <button type="reset" class="btn btn-label-secondary" data-bs-dismiss="modal" aria-label="Close">Cancel</button>
           </div>
@@ -486,7 +476,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         <div class="text-center mb-6">
           <h4 class="address-title mb-2">Patient NHIS Verification</h4>
-          <p class="address-subtitle">Click on the generate to get CCC or enter it in the CCC input box</p>
+          <!-- <p class="address-subtitle">Click on the generate to get CCC or enter it in the CCC input box</p> -->
           <p class="address-subtitle" id="error" style="color:red"></p>
         </div>
         <form id="generate_ccc" class="row g-6" onsubmit="return false">
@@ -518,9 +508,9 @@
           </div>
           <div class="col-12 col-md-12">
             <!-- <label class="form-label">Fullname</label> -->
-              <input type="text" name="fullname" id="fullname" class="form-control" readonly disabled>
+              <!-- <input type="text" name="fullname" id="fullname" class="form-control" readonly disabled> -->
           </div>
-          <!-- <br><br> -->
+          <br>
           <div class="col-12 text-center">
           <button type="button" class="btn btn-label-info" onclick="generateCC()">Generate CC</button>
             <button type="submit" class="btn btn-primary me-3">Submit</button>
