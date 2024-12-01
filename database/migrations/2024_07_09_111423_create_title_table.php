@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('title_id',50);
             $table->string('title',150); 
             $table->string('facility_id', 50)->nullable();
-            $table->string('gender_id',50); 
+            $table->string('gender_id',50)->nullable(); 
             $table->string('user_id',50)->nullable();        
             $table->string('added_id', 50)->nullable();
             $table->string('added_by', 100)->nullable();

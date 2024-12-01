@@ -1,6 +1,6 @@
 
 INSERT INTO services_fee (service_fee_id, service_id, service, service_type_code, cash_amount, 
-private_insurance_amount, cooperate_amount, foreigners_amount, allow_nhis, nhis_amount, gdrg_adult, gdrg_child, gender_id, 
+private_amount, nhis_child, foreigners_amount, allow_nhis, nhis_amount, gdrg_adult, gdrg_child, gender_id, 
 patient_type, age_id, editable, allow_topup, topup_amount, delivery_mode) 
 VALUES
 	('03240', '0001', 'SEMEN R/E', '11', '10', '13', '0', '13', 'Yes', '0', '', '', '1', '1', '3', 'No', 'No', '0', 'INTERNAL'),
@@ -174,7 +174,7 @@ VALUES
 	('03980', '0001', 'SERUM BILIRUBIN', '11', '20', '24', '15.28', '24', 'No', '15.28', 'INVE14D', 'INVE14D', '1', '1', '3', 'No', 'No', '0', 'INTERNAL');
 
 	INSERT INTO services_fee (service_fee_id, service_id, service, service_type_code, cash_amount, 
-private_insurance_amount, cooperate_amount, foreigners_amount, allow_nhis, nhis_amount, gdrg_adult, gdrg_child, gender_id, 
+private_amount, nhis_child, foreigners_amount, allow_nhis, nhis_amount, gdrg_adult, gdrg_child, gender_id, 
 patient_type, age_id, editable, allow_topup, topup_amount, delivery_mode) 
 VALUES	
 
@@ -323,7 +323,7 @@ VALUES
 	('05218', '0001', 'FULL BLOOD COUN', '11', '20', '20', '0', '20', 'No', '', '', '', '1', '1', '3', 'No', 'No', '0', 'INTERNAL');
 
 	INSERT INTO services_fee (service_fee_id, service_id, service, service_type_code, cash_amount, 
-private_insurance_amount, cooperate_amount, foreigners_amount, allow_nhis, nhis_amount, gdrg_adult, gdrg_child, gender_id, 
+private_amount, nhis_child, foreigners_amount, allow_nhis, nhis_amount, gdrg_adult, gdrg_child, gender_id, 
 patient_type, age_id, editable, allow_topup, topup_amount, delivery_mode) 
 VALUES	
 	('05219', '0001', 'FULL BLOOD COUNT  (AUTOMATION)', '11', '60', '60', '0', '60', 'No', '', '', '', '1', '1', '3', 'Yes', 'Yes', '40', 'INTERNAL'),
@@ -486,7 +486,7 @@ VALUES
 	
 	
 	INSERT INTO services_fee (service_fee_id, service_id, service, service_type_code, cash_amount, 
-private_insurance_amount, cooperate_amount, foreigners_amount, allow_nhis, nhis_amount, gdrg_adult, gdrg_child, gender_id, 
+private_amount, nhis_child, foreigners_amount, allow_nhis, nhis_amount, gdrg_adult, gdrg_child, gender_id, 
 patient_type, age_id, editable, allow_topup, topup_amount, delivery_mode) 
 VALUES
 ('03497', '0002', 'Intravaneous Pyelography (IVP/IVU) (KIDS)', '12', '120', '144', '0', '144', 'No', '0', '', '', '1', '1', '3', 'No', 'No', '0', 'INTERNAL'),
@@ -708,7 +708,7 @@ VALUES
 	('04254', '0008', 'BLOOD GROUPING', '11', '10', '12', '12.88', '12', 'No', '12.88', 'INVE17D', 'INVE17D', '1', '1', '3', 'No', 'No', '0', 'INTERNAL');
 
 	INSERT INTO services_fee (service_fee_id, service_id, service, service_type_code, cash_amount, 
-private_insurance_amount, cooperate_amount, foreigners_amount, allow_nhis, nhis_amount, gdrg_adult, gdrg_child, gender_id, 
+private_amount, nhis_child, foreigners_amount, allow_nhis, nhis_amount, gdrg_adult, gdrg_child, gender_id, 
 patient_type, age_id, editable, allow_topup, topup_amount, delivery_mode) 
 VALUES	
 	('04624', '0008', 'FRESH FROZEN PLASMA (CHILDREN)', '10', '48', '58', '0', '58', 'No', '', '', '', '1', '1', '3', 'No', 'No', '0', 'INTERNAL'),
@@ -875,7 +875,7 @@ VALUES
 	('03832', '0010', 'STRABISMUS SURGERY', '3', '229', '229', '441.22', '229', 'Yes', '357.92', 'OPHT11A', 'OPHT11C', '1', '1', '3', 'Yes', 'No', '0', 'INTERNAL');
 	
 	INSERT INTO services_fee (service_fee_id, service_id, service, service_type_code, cash_amount, 
-private_insurance_amount, cooperate_amount, foreigners_amount, allow_nhis, nhis_amount, gdrg_adult, gdrg_child, gender_id, 
+private_amount, nhis_child, foreigners_amount, allow_nhis, nhis_amount, gdrg_adult, gdrg_child, gender_id, 
 patient_type, age_id, editable, allow_topup, topup_amount, delivery_mode) 
 VALUES
 	('03833', '0010', 'INCISION AND CURATTAGE OF EYELID', '3', '82', '82', '190.81', '82', 'Yes', '185.49', 'OPHT12A', 'OPHT12C', '1', '1', '3', 'Yes', 'No', '0', 'INTERNAL'),
@@ -1068,7 +1068,7 @@ VALUES
 	('04326', '0015', 'OBSTERIC SCAN', '14', '60', '60', '46.09', '60', 'No', '46.09', 'INVE30E', 'INVE30E', '1', '1', '3', 'No', 'No', '0', 'INTERNAL');
 	
 	INSERT INTO services_fee (service_fee_id, service_id, service, service_type_code, cash_amount, 
-private_insurance_amount, cooperate_amount, foreigners_amount, allow_nhis, nhis_amount, gdrg_adult, gdrg_child, gender_id, 
+private_amount, nhis_child, foreigners_amount, allow_nhis, nhis_amount, gdrg_adult, gdrg_child, gender_id, 
 patient_type, age_id, editable, allow_topup, topup_amount, delivery_mode) 
 VALUES	
 	('04327', '0015', 'GYNAECOLOGICAL ULTRASOUND (GYN USG)', '14', '50', '50', '46.09', '50', 'No', '46.09', 'INVE30E', 'INVE30E', '1', '1', '3', 'No', 'No', '0', 'INTERNAL'),
@@ -1154,7 +1154,7 @@ VALUES
 	('04531', '0024', 'OPD CARD', '10', '1', '1', '0', '1', 'No', '', '', '', '3', '1', '3', 'No', 'No', '0', 'INTERNAL'),
 	('03558', '0025', 'Consultation', '5', '1', '1', '0', '1', 'No', '0', '', '', '1', '1', '3', 'No', 'No', '0', 'INTERNAL'),
 	('03561', '0025', 'Consultation - Review', '5', '1', '1', '0', '1', 'No', '0', '', '', '1', '1', '3', 'No', 'No', '0', 'INTERNAL'),
-	('03260', '0026', 'GENERAL CONSULTATION', '5', '70', '70', '55.06', '70', 'Yes', '54.7', 'OPDC06A', 'OPDC06C', '1', '1', '3', 'Yes', 'No', '0', 'INTERNAL'),
+	('03260', '0020', 'GENERAL CONSULTATION', '5', '70', '70', '55.06', '70', 'Yes', '54.7', 'OPDC06A', 'OPDC06C', '1', '1', '3', 'Yes', 'No', '0', 'INTERNAL'),
 	('04282', '0026', 'GENERAL OPD (ADULT REVIEW)', '5', '0', '30', '0', '30', 'Yes', '0', '', '', '1', '2', '2', 'No', 'No', '0', 'INTERNAL'),
 	('04283', '0026', 'GENRAL OPD (CHILD REVIEW)', '5', '8', '30', '0', '30', 'Yes', '0', '', '', '1', '2', '3', 'No', 'No', '0', 'INTERNAL'),
 	('04284', '0026', 'REGISTRATION', '10', '5', '10', '0', '10', 'No', '', '', '', '1', '1', '3', 'No', 'No', '0', 'INTERNAL'),
@@ -1286,7 +1286,7 @@ VALUES
 	('03653', '0044', 'OBSTRUCTIVE AIRWAY DISEASE', '10', '50.4', '50.4', '202.33', '50.4', 'Yes', '337.65', 'MEDI22A', 'PAED30C', '1', '1', '3', 'No', 'No', '0', 'INTERNAL');
 	
 	INSERT INTO services_fee (service_fee_id, service_id, service, service_type_code, cash_amount, 
-private_insurance_amount, cooperate_amount, foreigners_amount, allow_nhis, nhis_amount, gdrg_adult, gdrg_child, gender_id, 
+private_amount, nhis_child, foreigners_amount, allow_nhis, nhis_adult, gdrg_adult, gdrg_child, gender_id, 
 patient_type, age_id, editable, allow_topup, topup_amount, delivery_mode) 
 VALUES
 ('03654', '0044', 'DIARRHOEA AND VOMITING', '10', '68.4', '68.4', '206.09', '68.4', 'Yes', '222.69', 'MEDI23A', 'PAED31C', '1', '1', '3', 'No', 'No', '0', 'INTERNAL'),
@@ -1455,7 +1455,7 @@ VALUES
 	('04134', '0046', 'APPLICATION OF POP BACK SLAP (UPPER LIMB)', '3', '55', '66', '96.31', '66', 'Yes', '148.02', 'ORTH01A', 'ORTH01C', '1', '1', '3', 'No', 'No', '0', 'INTERNAL');
 	
 	INSERT INTO services_fee (service_fee_id, service_id, service, service_type_code, cash_amount, 
-private_insurance_amount, cooperate_amount, foreigners_amount, allow_nhis, nhis_amount, gdrg_adult, gdrg_child, gender_id, 
+private_amount, nhis_child, foreigners_amount, allow_nhis, nhis_amount, gdrg_adult, gdrg_child, gender_id, 
 patient_type, age_id, editable, allow_topup, topup_amount, delivery_mode) 
 VALUES
 ('04163', '0046', 'SUTURING OF LACERATION', '3', '90', '108', '31.31', '108', 'Yes', '28.2', 'ORTH06A', 'ORTH06C', '1', '1', '3', 'No', 'No', '0', 'INTERNAL'),
@@ -1831,7 +1831,7 @@ VALUES
 	('03921', '0055', 'LAPAROTOMY WITH ANASTOMOSIS', '3', '346.2', '415.4', '0', '415.4', 'Yes', '1061.89', '', 'PSUR31C', '1', '1', '1', 'No', 'No', '0', 'INTERNAL');
 	
 	INSERT INTO services_fee (service_fee_id, service_id, service, service_type_code, cash_amount, 
-private_insurance_amount, cooperate_amount, foreigners_amount, allow_nhis, nhis_amount, gdrg_adult, gdrg_child, gender_id, 
+private_amount, nhis_child, foreigners_amount, allow_nhis, nhis_amount, gdrg_adult, gdrg_child, gender_id, 
 patient_type, age_id, editable, allow_topup, topup_amount, delivery_mode) 
 VALUES
 ('03922', '0055', 'CRANIOTOMY', '3', '0', '0', '0', '0', 'Yes', '687.43', 'ASUR29A', 'PSUR32C', '1', '1', '1', 'No', 'No', '0', 'INTERNAL'),
@@ -2272,7 +2272,7 @@ VALUES
 	('05075', '0139', 'PLUERAL BIOPSIES', '3', '230', '0', '0', '0', 'No', '', '', '', '1', '1', '3', 'No', 'No', '0', 'INTERNAL');
 
 	INSERT INTO services_fee (service_fee_id, service_id, service, service_type_code, cash_amount, 
-private_insurance_amount, cooperate_amount, foreigners_amount, allow_nhis, nhis_amount, gdrg_adult, gdrg_child, gender_id, 
+private_amount, nhis_child, foreigners_amount, allow_nhis, nhis_amount, gdrg_adult, gdrg_child, gender_id, 
 patient_type, age_id, editable, allow_topup, topup_amount, delivery_mode) 
 VALUES
 

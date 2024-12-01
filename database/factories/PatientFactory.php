@@ -39,7 +39,7 @@ class PatientFactory extends Factory
             'occupation' => $this->faker->randomElement(['Banker', 'Police', 'Other', 'Student']),
             'education' => $this->faker->randomElement(['None', 'JHS/Middle', 'Primary', 'SHS', 'Tertiary', 'Vocational', 'Technical']),
             'religion_id' => $religion->religion_id,
-            'nationality' => $this->faker->randomElement(['Ghanaian', 'Non-Ghanaian']),
+            'nationality' => $this->faker->randomElement(['10001', '20001']),
             'telephone' => $this->faker->phoneNumber(),
             'telephone_verified' => $this->faker->randomElement(['Yes', 'No']),
             'email' => $this->faker->email(),

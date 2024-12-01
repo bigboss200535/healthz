@@ -271,7 +271,7 @@
            <table class="table">
             <tr>
               <td><b>Folder #</b>:</td>
-              <td>{{ $patients->title}}</td>
+              <td>{{ $patients->opd_number}}</td>
             </tr>
             <tr>
               <td><b>Date Registered</b>:</td>
@@ -296,15 +296,15 @@
             <tr>
               <td colspan="2">
                     @if($pat_sponsor->sponsor_id === '000')
-                            <a href="#" class="btn btn-secondary" data-bs-toggle='modal' data-bs-target="#claims_check_code">Get CC</a>
+                            <a href="#" class="btn btn-secondary" data-bs-toggle='modal' data-bs-target="#claims_check_code">Get C.C</a>
                     @else
                       <a></a>
                     @endif
                   <a href="#" class="btn btn-warning">
-                    Edit Patient Details
+                   <i class="fas fas-edit"></i> Edit
                   </a>
                   <a href="#" class="btn btn-primary" data-bs-toggle='modal' data-bs-target="#addattendance">
-                    Add New Visit
+                    Create Visit
                   </a>
                 </td>
             </tr>
@@ -431,11 +431,11 @@
           </div>
           <div class="col-12 col-md-6">
             <label class="form-label" for="credit_amount">Credit Fee</label>
-            <input type="number" id="credit_amount" name="credit_amount" class="form-control" value="20.01" placeholder="0.00" disabled/>
+            <input type="number" id="credit_amount" name="credit_amount" class="form-control" placeholder="0.00" disabled/>
           </div>
           <div class="col-12 col-md-6">
             <label class="form-label" for="cash_amount">Cash Fee</label>
-            <input type="number" id="cash_amount" name="cash_amount" class="form-control" value="19.00" placeholder="0.00" disabled/>
+            <input type="number" id="cash_amount" name="cash_amount" class="form-control" placeholder="0.00" disabled/>
           </div>
           <div class="col-12 col-md-6" hidden>
             <label class="form-label" for="gdrg_code">Service G-DRG</label>

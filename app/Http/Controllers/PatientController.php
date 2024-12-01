@@ -32,11 +32,12 @@ class PatientController extends Controller
 
         $patient_list = DB::table('patient_info')
         ->join('gender', 'patient_info.gender_id', '=', 'gender.gender_id')
+        ->join('patient_nos', 'patient_info.patient_id', '=', 'patient_nos.patient_id')
         ->join('title', 'patient_info.title_id', '=', 'title.title_id')
         ->join('patient_sponsorship', 'patient_info.patient_id', '=', 'patient_sponsorship.patient_id')
         ->leftJoin('sponsors', 'patient_sponsorship.sponsor_id', '=', 'sponsors.sponsor_id') 
         ->leftJoin('sponsor_type', 'sponsors.sponsor_type_id', '=', 'sponsor_type.sponsor_type_id')
-        ->select('patient_info.patient_id', 'title.title', 'patient_info.fullname', 'patient_info.default_sponsor', 'patient_info.email',  'gender.gender', 
+        ->select('patient_info.patient_id', 'patient_nos.opd_number', 'title.title', 'patient_info.fullname', 'patient_info.default_sponsor', 'patient_info.email',  'gender.gender', 
         'patient_info.birth_date', 'patient_info.added_date', 'sponsors.sponsor_name', 'sponsors.sponsor_type_id', 'sponsor_type.sponsor_type',
         'patient_info.telephone', DB::raw('TIMESTAMPDIFF(YEAR, patient_info.birth_date, CURDATE()) as age'))
         ->get();
@@ -64,9 +65,9 @@ class PatientController extends Controller
             DB::raw('TIMESTAMPDIFF(YEAR, patient_info.birth_date, CURDATE()) as age'))
             ->get();
 
-        // $pat_spon = SponsorType::where('archived', 'No')->where('status', '=', 'Active')->get();
+        $payment_type = SponsorType::where('archived', 'No')->orderBy('sponsor_type', 'DESC')->get();
 
-        return view('patient.create', compact('title', 'religion', 'gender', 'region', 'relation', 'patients'));
+        return view('patient.create', compact('title', 'religion', 'gender', 'region', 'relation', 'patients', 'payment_type'));
     }
 
    
@@ -101,6 +102,7 @@ class PatientController extends Controller
         $available = Patient::where('lastname', $request->input('lastname'))
             ->where('firstname', $request->input('firstname'))
             ->where('birth_date', $request->input('birth_date'))
+            ->where('telephone', $request->input('telephone'))
             ->first();
 
         if($available)
@@ -185,6 +187,7 @@ class PatientController extends Controller
          DB::commit();
 
             return response()->json(['message' => 'Patient saved successfully', 'code' => 201, 'opd_number' => $pat_number], 201);
+       
         } catch (\Exception $e) {
             DB::rollBack();
             return response()->json(['message' => 'Error saving patient details', 'error' => $e->getMessage()], 500);
@@ -193,23 +196,23 @@ class PatientController extends Controller
 
     public function show(Patient $patient)
     {
-
         $patients = DB::table('patient_info')
             ->where('patient_info.patient_id', $patient->patient_id)
             ->join('gender', 'patient_info.gender_id', '=', 'gender.gender_id')
+            ->join('patient_nos', 'patient_nos.patient_id', '=', 'patient_info.patient_id')
             ->join('title', 'patient_info.title_id', '=', 'title.title_id')
             ->join('users', 'patient_info.user_id', '=', 'users.user_id')
-            ->select('patient_info.patient_id', 'title.title', 'patient_info.fullname', 'gender.gender', 
-            'patient_info.birth_date', 'patient_info.email', 'patient_info.address', 'patient_info.contact_person', 
-            'patient_info.contact_relationship', 'patient_info.contact_telephone', 'patient_info.added_date', 
-            'patient_info.telephone', 'users.user_fullname', 'patient_info.gender_id',
-            DB::raw('TIMESTAMPDIFF(YEAR, patient_info.birth_date, CURDATE()) as age'))
+            ->select('patient_info.patient_id', 'patient_nos.opd_number', 'title.title', 'patient_info.fullname', 'gender.gender', 
+                    'patient_info.birth_date', 'patient_info.email', 'patient_info.address', 'patient_info.contact_person', 
+                    'patient_info.contact_relationship', 'patient_info.contact_telephone', 'patient_info.added_date', 
+                    'patient_info.telephone', 'users.user_fullname', 'patient_info.gender_id',
+                    DB::raw('TIMESTAMPDIFF(YEAR, patient_info.birth_date, CURDATE()) as age'))
             ->orderBy('patient_info.added_date', 'asc') 
             ->first();
 
         $sponsor = DB::table('patient_sponsorship')
             ->where('patient_sponsorship.archived', 'No')
-            ->where('patient_id', $patient->patient_id)
+            ->where('patient_id', $patients->patient_id)
             ->join('sponsors', 'patient_sponsorship.sponsor_id', '=', 'sponsors.sponsor_id')
             ->select('patient_sponsorship.member_no', 'patient_sponsorship.sponsor_id', 
             'sponsors.sponsor_name', 'patient_sponsorship.start_date', 'patient_sponsorship.end_date', 
@@ -222,11 +225,13 @@ class PatientController extends Controller
             ->first();
 
         $clinic_attendance = ServicePoints::select('service_point_id','service_points','gender_id', 'age_id')
-        // ->where('gender_id', $patients->gender_id)
-        // ->where('age_id', $ages->age_id)
-         ->where('archived', 'No')
-         ->where('is_active', 'Yes')
-        ->get();
+            ->where('gender_id', $patients->gender_id)
+            ->orWhere('gender_id', 1)
+            ->where('age_id', $patient->age_id)
+            ->orWhere('age_id', 3)
+            ->where('archived', 'No')
+            ->where('is_active', 'Yes')
+            ->get();
 
         // $clinic_attendance = ServicePoints::select('service_point_id', 'service_points', 'gender_id', 'age_id')
         // ->where('archived', 'No')
@@ -251,36 +256,6 @@ class PatientController extends Controller
         
     }
 
-    public function search(Request $request)
-    {
-         $search_item = $request->inpute('query');
-         $patients = Patient::where('name', 'LIKE', "%{$search_item}%")
-         ->orWhere('age', $search_item)->get();
-
-         return view('patient.index', compact('patients'));
-    }
-
-    public function show_today(Request $request, $patient_id)
-    {
-
-        $patients = DB::table('patient_info')
-            // ->where('patient_info.added_date', now())
-            ->where('patient_info.patient_id', $patient_id)
-            ->join('gender', 'patient_info.gender_id', '=', 'gender.gender_id')
-            ->join('title', 'patient_info.title_id', '=', 'title.title_id')
-            ->join('users', 'patient_info.user_id', '=', 'users.user_id')
-            ->select('patient_info.patient_id', 'patient_info.fullname',  'gender.gender', 
-            'patient_info.birth_date', 'patient_info.email','patient_info.address', 'patient_info.contact_person', 'patient_info.contact_relationship', 'patient_info.contact_telephone', 'patient_info.added_date', 
-            'patient_info.telephone',  'users.user_fullname',
-            DB::raw('TIMESTAMPDIFF(YEAR, patient_info.birth_date, CURDATE()) as age'))
-            ->orderBy('patient_info.added_date', 'asc') 
-            ->first();
-
-             $sponsors = PatientSponsor::with('users')->where('patient_id', '=', $patient_id);
-
-            return view('patient.show', compact('patients', 'sponsors'));
-    }
-
     public function edit($patient_id)
     {  
         
@@ -300,7 +275,7 @@ class PatientController extends Controller
             DB::raw('TIMESTAMPDIFF(YEAR, patient_info.birth_date, CURDATE()) as age'))
             ->get();
 
-            return view('patient.create', compact('title', 'religion', 'gender', 'region', 'relation', 'patient_list'));
+        return view('patient.create', compact('title', 'religion', 'gender', 'region', 'relation', 'patient_list'));
     }
 
     public function update(Request $request, $pat_id)
@@ -363,6 +338,35 @@ class PatientController extends Controller
 
     }
 
+    public function search_patient(Request $request)
+    {
+         $search_item = $request->inpute('query');
+         $patients = Patient::where('name', 'LIKE', "%{$search_item}%")
+         ->orWhere('age', $search_item)->get();
+
+         return view('patient.index', compact('patients'));
+    }
+
+    public function show_today(Request $request, $patient_id)
+    {
+
+        $patients = DB::table('patient_info')
+            // ->where('patient_info.added_date', now())
+            ->where('patient_info.patient_id', $patient_id)
+            ->join('gender', 'patient_info.gender_id', '=', 'gender.gender_id')
+            ->join('title', 'patient_info.title_id', '=', 'title.title_id')
+            ->join('users', 'patient_info.user_id', '=', 'users.user_id')
+            ->select('patient_info.patient_id', 'patient_info.fullname',  'gender.gender', 
+            'patient_info.birth_date', 'patient_info.email','patient_info.address', 'patient_info.contact_person', 'patient_info.contact_relationship', 'patient_info.contact_telephone', 'patient_info.added_date', 
+            'patient_info.telephone',  'users.user_fullname',
+            DB::raw('TIMESTAMPDIFF(YEAR, patient_info.birth_date, CURDATE()) as age'))
+            ->orderBy('patient_info.added_date', 'asc') 
+            ->first();
+
+             $sponsors = PatientSponsor::with('users')->where('patient_id', '=', $patient_id);
+
+            return view('patient.show', compact('patients', 'sponsors'));
+    }
 
     private function pat_id_gen()
     {

@@ -77,7 +77,7 @@
     $('#service_type').empty().append('<option disabled selected>-Select-</option>');
 
     $.ajax({
-        url: '/services/' + clinic_id + '/specialties',
+        url: '/services/' + clinic_id + '/get_specialty',
         type: 'GET',
         success: function(response) {
           if (response.success) {
@@ -96,28 +96,35 @@
         }
     });
 });
-
+// -------------------------------------------------------------------------
 $(document).on('change', '#service_type', function() {
     var service = $(this).val();
 
-    // $('#service_type').val('');
+    var pat_id = $('#p_id').val();
+    var pat_age = $('#p_age').val();
+
     $('#credit_amount').val('');
     $('#cash_amount').val('');
     $('#gdrg_code').val('');
 
     $.ajax({
+      
         url: '/services/' + service + '/service_tarif',
         type: 'GET',
+        data: {pat_age:pat_age, service:service, pat_id:pat_id},
         success: function(response) {
-          if (response.success) {
-                // $.each(response.result, function(index, service_point) {
-                    $('#credit_amount').val(service_point.attendance_type_id);
-                    $('#cash_amount').val(service_point.attendance_type_id);
-                    $('#gdrg_code').val(service_point.attendance_type_id);
-                // });
+          if (response && response.success && response.result.length > 0) {
+            var serviceData = response.result[0]; // Get the first element of the array
+            
+            $('#credit_amount').val(serviceData.nhis_amount);
+            $('#cash_amount').val(serviceData.cash_amount);
+            $('#gdrg_code').val(serviceData.gdrg);
+
+          } else if (response && !response.success && response.message) {
+             toastr.error(response.message);
             } else {
-                  // $('#service_type').append('<option selected disabled>No specialties available</option>');
-            }
+              toastr.error('Unexpected response format');
+          }
         },
         error: function(xhr, status, error) {
             toastr.error('Error fetching data! Try again.');

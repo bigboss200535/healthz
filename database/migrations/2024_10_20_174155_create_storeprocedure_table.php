@@ -15,6 +15,20 @@ return new class extends Migration
      */
     public function up()
     {
+
+        DB::unprepared(
+            'CREATE PROCEDURE IF NOT EXISTS `GetAgeGroup`(
+                IN `input_age` INT) 
+                -- OUT `age_group` VARCHAR(50)) 
+                BEGIN 
+                    SELECT `age_description` FROM `ages`
+                    WHERE `input_age` 
+                    BETWEEN `min_age` 
+                    AND `max_age` 
+                    AND `age_description` != "ALL" LIMIT 1; 
+                END;'
+        );
+
         DB::unprepared(
             'CREATE PROCEDURE IF NOT EXISTS GetUsers()
               BEGIN 
@@ -106,6 +120,10 @@ return new class extends Migration
      */
     public function down()
     {
+        DB::unprepared(
+            'DROP PROCEDURE IF EXISTS GetAgeGroup;'
+        ); 
+
         DB::unprepared(
             'DROP PROCEDURE IF EXISTS GetEpisodeId;'
         ); 

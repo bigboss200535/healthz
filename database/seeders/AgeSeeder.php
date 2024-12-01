@@ -51,27 +51,27 @@ class AgeSeeder extends Seeder
             'archived' => 'No',
         ]);
 
-        $age = Age::create([
-            'age_id' => '4',
-            'age_description' => 'INFANT',
-            'min_age' => '0',
-            'max_age' => '3',
-            'user_id' => $user->user_id,
-            'added_date' => now(),
-            'status' => 'Active',
-            'archived' => 'Yes',
-        ]);
+        // $age = Age::create([
+        //     'age_id' => '4',
+        //     'age_description' => 'INFANT',
+        //     'min_age' => '0',
+        //     'max_age' => '3',
+        //     'user_id' => $user->user_id,
+        //     'added_date' => now(),
+        //     'status' => 'Active',
+        //     'archived' => 'Yes',
+        // ]);
 
-        $age = Age::create([
-            'age_id' => '5',
-            'age_description' => 'INFANT CHILD',
-            'min_age' => '0',
-            'max_age' => '12',
-            'user_id' => $user->user_id,
-            'added_date' => now(),
-            'status' => 'Active',
-            'archived' => 'Yes',
-        ]);
+        // $age = Age::create([
+        //     'age_id' => '5',
+        //     'age_description' => 'INFANT CHILD',
+        //     'min_age' => '0',
+        //     'max_age' => '12',
+        //     'user_id' => $user->user_id,
+        //     'added_date' => now(),
+        //     'status' => 'Active',
+        //     'archived' => 'Yes',
+        // ]);
 
     }
 }

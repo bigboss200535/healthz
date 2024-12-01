@@ -1,8 +1,30 @@
     <x-app-layout>
                <div class="container-xxl flex-grow-1 container-p-y">    
                   <h4 class="py-3 mb-4">
-                    <span class="text-muted fw-light">Patient /</span> Registered
-                  </h4>  
+                    <span class="text-muted fw-light">Patients /</span> Search
+                  </h4>
+                  <div class="card">
+                    <div class="card-body">
+                        <h3>Actions</h3>
+                          <div class="card">
+                            <!-- <div class="card-body"> -->
+                              <div align="center" class="col-lg-12">
+                                  <table class="table table-responsive" border="2">
+                                    <tr>
+                                      <td>
+                                          <input type="text" id="search_patient" name="search_patient" class="form-control" placeholder="Member #/OPD #/ Telephone #/ Name ">
+                                      </td>
+                                      <td>
+                                        <a href="#" class="btn btn-primary">Search Patient</a>
+                                      </td>
+                                    </tr>
+                                  </table>
+                              </div>
+                          <!-- </div> -->
+                        </div>
+                    </div>
+                </div>  
+                <br> 
                   <div class="card">
                     <div class="card-datatable table-responsive">
                       <div class="col" style="padding-left:20px;"> 
@@ -13,8 +35,8 @@
                           <tr>
                             <th>S/N</th>
                             <th>Name</th>
+                            <th>OPD #</th>
                             <th>Gender</th>
-                            <th>Email</th>
                             <th>Age</th>
                             <th>Telephone</th>
                             <th>Added Date</th>
@@ -30,8 +52,8 @@
                           <tr> 
                               <td align="center">{{ $counter++ }}</td>
                               <td><a href="{{ $patient->patient_id }}">{{ $patient->fullname }}</a></td>
+                              <td>{{ $patient->opd_number }}</span></td>
                               <td>{{ $patient->gender }}</span></td>
-                              <td>{{ $patient->email }}</td>
                               <td>{{$patient->age }}</td>
                               <td>{{$patient->telephone }}</td>
                               <td>{{ \Carbon\Carbon::parse($patient->added_date)->format('d-m-Y') }}</td>
@@ -50,7 +72,7 @@
                                               <i class="bx bx-dots-vertical-rounded"></i>
                                           </button>
                                               <div class="dropdown-menu">
-                                                  <a class="dropdown-item"  href="#">
+                                                  <a class="dropdown-item"  href="{{ route('patients.edit', ['patient' => $patient->patient_id]) }}">
                                                     <i class="bx bx-edit-alt me-1"></i> Edit
                                                   </a>
                                                   <a class="dropdown-item" href="javascript:void(0);">
@@ -69,8 +91,8 @@
                           <tr>
                               <th>S/N</th>
                               <th>Name</th>
+                              <th>OPD #</th>
                               <th>Gender</th>
-                              <th>Email</th>
                               <th>Age</th>
                               <th>Telephone</th>
                               <th>Added Date</th>

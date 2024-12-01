@@ -9,8 +9,8 @@
         <div class="d-flex align-content-center flex-wrap gap-3">
           <!-- <button type="submit" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#mdoal_form" >Search Patient</button> -->
           <!-- <button class="btn btn-primary">Go to Registered Patients</button> -->
-          <a href="{{ url('patient/search') }}" class="btn btn-primary">Search Patient</a>
-          <a href="#" class="btn btn-primary">Add Attendance</a>
+          <a href="{{ route('patients.index') }}" class="btn btn-primary">Search Patient</a>
+          <a href="#" class="btn btn-primary">Patient Sponsors</a>
           <!-- <button type="submit" class="btn btn-primary">Patient Sponsorship</button> -->
         </div>
       </div>
@@ -107,8 +107,8 @@
               <label class="form-label" for="nationality">Nationality <a style="color: red;">*</a></label>
               <select name="nationality" id="nationality" class="form-control">
                 <option disabled selected>-Select-</option>
-                <option value="GHANAIAN">Ghanaian</option>
-                <option value="NON GHANAIAN">Non-Ghanaian</option>
+                <option value="10001">Ghanaian</option>
+                <option value="20001">Non-Ghanaian</option>
               </select>
               @error('nationality') <span class="text-danger">{{ $message }}</span> @enderror
             </div>
@@ -230,11 +230,15 @@
         <div class="mb-3 col ecommerce-select2-dropdown">
             <label class="form-label mb-1" for="sponsor_type">Sponsor Type</label>
              <select name="sponsor_type" id="sponsor_type" class="form-control sponsor_type">
-              <option disable selected>-Select sponsor-</option>
+              <option disabled selected>-Select-</option>
+                @foreach($payment_type as $payments)                                        
+                  <option value="{{ $payments->sponsor_type_id }}">{{ $payments->sponsor_type }}</option>
+                 @endforeach
+              <!-- <option disable selected>-Select sponsor-</option>
               <option value="1001">Cash</option> 
               <option value="20001">Public NHIS</option>
               <option value="3000">Co-operate Company</option>
-              <option value="4004">Private Insurance</option>
+              <option value="4004">Private Insurance</option> -->
             </select>
           </div>
           <div class="row mb 3 sponsorship_details_settings" >

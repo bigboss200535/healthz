@@ -20,7 +20,7 @@ class SponsorTypeSeeder extends Seeder
 
         $sponsor = SponsorType::create([
             'sponsor_type_id' => 'P001',
-            'sponsor_type' => 'CASH',
+            'sponsor_type' => 'CASH PAYMENT',
             'user_id' => $user->user_id,
             'added_date' => now(),
             'status' => 'Active',
@@ -29,7 +29,7 @@ class SponsorTypeSeeder extends Seeder
 
         $sponsor = SponsorType::create([
             'sponsor_type_id' => 'N002',
-            'sponsor_type' => 'NHIS',
+            'sponsor_type' => 'NHIS (PUBLIC)',
             'user_id' => $user->user_id,
             'added_date' => now(),
             'status' => 'Active',

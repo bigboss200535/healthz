@@ -15,7 +15,7 @@ class ServiceFeeSeeder extends Seeder
      */
     public function run()
     {
-        $data_one = database_path('seeders/seeds/04_service_fee.sql');
+        $data_one = database_path('seeders/seeds/test_sample.sql');
         $sql_one = file_get_contents($data_one);
         DB::unprepared($sql_one); 
     }

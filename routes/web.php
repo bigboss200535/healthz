@@ -65,7 +65,7 @@ Route::middleware('auth')->group(function () {
     //     Route::get('visits/{patient_id}', [PatientVisitsController::class, 'index'])->name('attendance.index');
     //     Route::get('details/{patient_id}', [PatientController::class, 'show'])->name('patient.show');
     // });
-    
+
     Route::resource('patients', PatientController::class);
 
     Route::get('reports/all', [ReportsController::class, 'index']);
@@ -82,7 +82,7 @@ Route::middleware('auth')->group(function () {
     // Route::get('patients/details/{patient_id}', [PatientController::class, 'show'])->name('patient.show');
 
     Route::get('patient/attendance/{patient_id}', [PatientVisitsController::class, 'show'])->name('attendance.show');
-    Route::get('/services/{clinic}/specialties', [ServiceRequestController::class, 'getspecialties']);
+    Route::get('/services/{clinic}/get_specialty', [ServiceRequestController::class, 'getspecialties']);
     Route::get('/services/{service_id}/service_tarif', [ServiceRequestController::class, 'gettarrifs']);
     Route::post('/services/patient_service', [ServiceRequestController::class, 'store']);
     Route::get('/services/patient_service_data/{patient_id}', [ServiceRequestController::class, 'retrieve']);

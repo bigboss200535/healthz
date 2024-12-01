@@ -63,6 +63,8 @@ return new class extends Migration
             $table->date('archived_date', 100)->nullable();
             $table->primary('patient_id');
             $table->foreign('facility_id')->references('facility_id')->on('facility');
+            $table->foreign('religion_id')->references('religion_id')->on('religion');
+            $table->foreign('gender_id')->references('gender_id')->on('gender');
             $table->foreign('user_id')->references('user_id')->on('users');
 
         });

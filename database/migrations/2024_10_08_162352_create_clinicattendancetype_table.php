@@ -20,8 +20,8 @@ return new class extends Migration
             $table->string('gender_id',50)->nullable(); 
             $table->string('age_id',50)->nullable();   
             $table->string('child_code',50)->nullable();
-            $table->string('adult_code',50)->nullable(); 
-            $table->string('clinic_code',50)->nullable();  
+            $table->string('adult_code',50)->nullable()->index(); 
+            $table->string('clinic_id',50)->nullable()->index();  
             $table->string('type_code',50)->nullable();  
             $table->string('patient_type',50)->nullable();   
             $table->string('user_id',50)->nullable();               
@@ -37,7 +37,7 @@ return new class extends Migration
             $table->primary('attendance_type_id');
             $table->foreign('user_id')->references('user_id')->on('users');
             $table->foreign('age_id')->references('age_id')->on('ages');
-            // $table->foreign('child_code_id')->references('service_fee_id')->on('services_fee');
+            // $table->foreign('clinic_id')->references('clinic_id')->on('clinics');
             // $table->foreign('adult_code_id')->references('service_fee_id')->on('services_fee');
             $table->foreign('gender_id')->references('gender_id')->on('gender');
         });

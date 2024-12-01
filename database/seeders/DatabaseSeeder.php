@@ -42,7 +42,7 @@ class DatabaseSeeder extends Seeder
             ServiceMDCSSeeder::class,
             ConsultingRoomSeeder::class,
             // NhiaPrescriptionLevels::class,
-             // UserRoles::class,
+            //  UserRoles::class,
         ]);
         
         \App\Models\Patient::factory(200)->create();
