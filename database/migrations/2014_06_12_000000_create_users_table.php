@@ -29,7 +29,7 @@ return new class extends Migration
             $table->timestamp('expiry_date')->nullable();
             $table->timestamp('telephone_verified_at')->nullable();
             $table->string('gender', 100);
-            $table->string('role', 100);
+            $table->string('role_id', 50)->nullable();
             $table->string('mode', 100)->default('New')->nullable();
             $table->string('email')->unique();
             $table->string('email_verified', 20)->nullable();
@@ -45,6 +45,7 @@ return new class extends Migration
             $table->date('archived_date', 100)->nullable();
             $table->primary('user_id');
             $table->foreign('facility_id')->references('facility_id')->on('facility');
+            $table->foreign('role_id')->references('role_id')->on('user_roles');
         });
     }
 

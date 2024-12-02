@@ -23,7 +23,8 @@ return new class extends Migration
             $table->string('adult_code',50)->nullable()->index(); 
             $table->string('clinic_id',50)->nullable()->index();  
             $table->string('type_code',50)->nullable();  
-            $table->string('patient_type',50)->nullable();   
+            $table->string('patient_type',50)->nullable();  
+            $table->string('facility_id', 50)->nullable(); 
             $table->string('user_id',50)->nullable();               
             $table->string('added_id', 50)->nullable();
             $table->string('added_by', 100)->nullable();

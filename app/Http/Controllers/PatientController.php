@@ -75,7 +75,6 @@ class PatientController extends Controller
     {
 
         $validated_data = $request->validate([
-            // 'pat_id' => 'nullable',
             'title' => 'required',
             'firstname' => 'required|min:3',
             'middlename' => 'nullable',
@@ -147,7 +146,7 @@ class PatientController extends Controller
             $patient->contact_person = $request->input('contact_person');
             $patient->contact_telephone = $request->input('contact_telephone');
             $patient->contact_relationship = $request->input('contact_relationship');
-            // $patient->sponsor_type = $request->input('sponsor_type');
+            $patient->sponsor_type = $request->input('sponsor_type');
             // $patient->sponsor_name = $request->input('sponsor_name');
             // $patient->member_no = $request->input('member_no');
             $patient->added_date = now();
@@ -203,10 +202,9 @@ class PatientController extends Controller
             ->join('title', 'patient_info.title_id', '=', 'title.title_id')
             ->join('users', 'patient_info.user_id', '=', 'users.user_id')
             ->select('patient_info.patient_id', 'patient_nos.opd_number', 'title.title', 'patient_info.fullname', 'gender.gender', 
-                    'patient_info.birth_date', 'patient_info.email', 'patient_info.address', 'patient_info.contact_person', 
-                    'patient_info.contact_relationship', 'patient_info.contact_telephone', 'patient_info.added_date', 
-                    'patient_info.telephone', 'users.user_fullname', 'patient_info.gender_id',
-                    DB::raw('TIMESTAMPDIFF(YEAR, patient_info.birth_date, CURDATE()) as age'))
+                     'patient_info.birth_date', 'patient_info.email', 'patient_info.address', 'patient_info.contact_person', 
+                     'patient_info.contact_relationship', 'patient_info.contact_telephone', 'patient_info.added_date', 
+                     'patient_info.telephone', 'users.user_fullname', 'patient_info.gender_id', DB::raw('TIMESTAMPDIFF(YEAR, patient_info.birth_date, CURDATE()) as age'))
             ->orderBy('patient_info.added_date', 'asc') 
             ->first();
 
@@ -214,9 +212,9 @@ class PatientController extends Controller
             ->where('patient_sponsorship.archived', 'No')
             ->where('patient_id', $patients->patient_id)
             ->join('sponsors', 'patient_sponsorship.sponsor_id', '=', 'sponsors.sponsor_id')
-            ->select('patient_sponsorship.member_no', 'patient_sponsorship.sponsor_id', 
-            'sponsors.sponsor_name', 'patient_sponsorship.start_date', 'patient_sponsorship.end_date', 
-            'patient_sponsorship.status', 'patient_sponsorship.priority', 'patient_sponsorship.is_active' )
+            ->select('patient_sponsorship.member_no', 'patient_sponsorship.sponsor_id', 'sponsors.sponsor_name', 
+                    'patient_sponsorship.start_date', 'patient_sponsorship.end_date', 
+                    'patient_sponsorship.status', 'patient_sponsorship.priority', 'patient_sponsorship.is_active' )
             ->get();
 
         $ages = Age::where('min_age', '<=', $patients->age)
@@ -338,13 +336,22 @@ class PatientController extends Controller
 
     }
 
-    public function search_patient(Request $request)
+    public function search(Request $request)
     {
-         $search_item = $request->inpute('query');
-         $patients = Patient::where('name', 'LIKE', "%{$search_item}%")
-         ->orWhere('age', $search_item)->get();
+        // Ensure the search term is provided
+        $search_term = $request->input('search_patient');
 
-         return view('patient.index', compact('patients'));
+        // Query the patients based on the search term (for Member #, OPD #, Telephone #, Name)
+        $search_patient = Patient::where(function ($query) use ($search_term) {
+                $query->where('member_number', 'like', '%' . $search_term . '%')
+                      ->orWhere('opd_number', 'like', '%' . $search_term . '%')
+                      ->orWhere('telephone', 'like', '%' . $search_term . '%')
+                      ->orWhere('name', 'like', '%' . $search_term . '%');
+            })
+            ->get();
+
+        // Return a response in JSON format
+        return response()->json($search_patient);
     }
 
     public function show_today(Request $request, $patient_id)
@@ -464,6 +471,8 @@ class PatientController extends Controller
             ]);
         }
     }
+
+    
 
         
 }

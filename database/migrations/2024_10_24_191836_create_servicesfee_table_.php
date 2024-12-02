@@ -35,6 +35,7 @@ return new class extends Migration
             $table->string('age_id', 50)->nullable();
             $table->string('patient_type', 50)->nullable(); //in, out, all
             $table->string('is_active', 50)->nullable(); //yes, no,
+            $table->string('facility_id', 50)->nullable();
             $table->string('user_id', 100)->nullable();
             $table->timestamp('added_date')->nullable();
             $table->string('updated_by', 100)->nullable();

@@ -41,37 +41,34 @@
       <i class="bx bx-chevron-left bx-sm align-middle"></i>
     </a>
   </div>
-<!-- -------------------------------------------HOme--------------------------------------- -->
+  <!--------------------------Hme------------------------------------>
   <div class="menu-inner-shadow"></div>
   <ul class="menu-inner py-1">
-    <!-- Dashboards -->
     <li class="menu-item">
       <a href="{{ url('/dashboard') }}" class="menu-link">
         <i class="menu-icon tf-icons bx bx-home-circle"></i>
         <div class="text-truncate" data-i18n="Dashboards">Home</div>
-        <!-- <span class="badge badge-center rounded-pill bg-danger ms-auto">5</span> -->
       </a>
     </li>
-<!-- ----------------------------Menu------------------------------------------------------ -->
+    <!----------------------------Menu--------------------------------->
     <li class="menu-header small text-uppercase">
       <span class="menu-header-text" data-i18n="Apps & Pages">Apps</span>
     </li>
-    <!-- -----------------------------------interview------------------------------------------------- -->
+    @if(Auth::user()->role_id == 'R1')
+    <!-- -----------------------------------patient------------------->
     <li class="menu-item">
       <a href="javascript:void(0);" class="menu-link menu-toggle">
         <i class="menu-icon tf-icons bx bx-user"></i>
         <div class="text-truncate" data-i18n="Users">Patient</div>
-         <!-- <span class="badge badge-center rounded-pill bg-success ms-auto">4</span> -->
+         <span class="badge badge-center rounded-pill bg-success ms-auto">4</span>
       </a>
       <ul class="menu-sub">
       <li class="menu-item">
-          <!-- <a href="{{ url('patient/create/') }}" class="menu-link"> -->
           <a href="{{ route('patients.create') }}" class="menu-link">
             <div class="text-truncate" data-i18n="List">Add </div>
           </a>
         </li>
          <li class="menu-item">
-          <!-- <a href="{{ url('patient/search') }}" class="menu-link"> -->
           <a href="{{ route('patients.index') }}" class="menu-link">
             <div class="text-truncate" data-i18n="List">List</div>
           </a>
@@ -84,12 +81,13 @@
         </li>
       </ul>
     </li>
-  <!-- -----------------------------------products------------------------------------------------- -->
+    @endif
+  <!-----------nurses------------------------>
+  @if(Auth::user()->role_id == 'R1')
   <li class="menu-item">
       <a href="javascript:void(0);" class="menu-link menu-toggle">
         <i class="menu-icon tf-icons bx bx-store"></i>
         <div class="text-truncate" data-i18n="Users">Nurses</div>
-         <!-- <span class="badge badge-center rounded-pill bg-success ms-auto">4</span> -->
       </a>
       <ul class="menu-sub">
         <li class="menu-item">
@@ -114,6 +112,7 @@
         </li>
       </ul>
     </li>
+    @endif
     <li class="menu-item">
       <a href="javascript:void(0);" class="menu-link menu-toggle">
         <i class="menu-icon tf-icons bx bx-store"></i>

@@ -9,14 +9,19 @@
                           <div class="card">
                             <!-- <div class="card-body"> -->
                               <div align="center" class="col-lg-12">
-                                  <table class="table table-responsive" border="2">
+                                  <table class="table table-responsive" style="color:aqua">
+                                    <tr>
+                                      <td colspan="2">
+                                         <input type="text" id="search_patient" name="search_patient" class="form-control col-lg-12" maxlength="30" placeholder="Member #/OPD #/ Telephone #/ Name ">
+                                      </td>
+                                    </tr>
                                     <tr>
                                       <td>
-                                          <input type="text" id="search_patient" name="search_patient" class="form-control" placeholder="Member #/OPD #/ Telephone #/ Name ">
+                                          <button class="btn btn-primary" name="search_item" id="search_item">Search</button>
+                                          <a href="#" class="btn btn-info" id="clear_search">Clear</a>
                                       </td>
-                                      <td>
-                                        <a href="#" class="btn btn-primary">Search Patient</a>
-                                      </td>
+                                      <td></td>
+                                      
                                     </tr>
                                   </table>
                               </div>
@@ -24,6 +29,45 @@
                         </div>
                     </div>
                 </div>  
+                <br>
+                <div class="card">
+                    <div class="card-datatable table-responsive">
+                      <div class="col" style="padding-left:20px;"> 
+                      <h4 class="mb-1 mt-3">Patient Search data</h4>
+                      </div>
+                      <table class="datatables-customers table border-top" id="patient_searches">
+                        <thead>
+                          <tr>
+                            <th>S/N</th>
+                            <th>Name</th>
+                            <th>OPD #</th>
+                            <th>Gender</th>
+                            <th>Age</th>
+                            <th>Telephone</th>
+                            <th>Added Date</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                          </tr>
+                        </thead>
+                        <tbody class="table-border-bottom-0">
+                              
+                        </tbody>
+                        <tfoot>
+                          <tr>
+                              <th>S/N</th>
+                              <th>Name</th>
+                              <th>OPD #</th>
+                              <th>Gender</th>
+                              <th>Age</th>
+                              <th>Telephone</th>
+                              <th>Added Date</th>
+                              <th>Status</th>
+                              <th>Action</th>
+                          </tr>
+                        </tfoot>
+                      </table>
+                    </div>
+            </div>
                 <br> 
                   <div class="card">
                     <div class="card-datatable table-responsive">
@@ -45,17 +89,21 @@
                           </tr>
                         </thead>
                         <tbody class="table-border-bottom-0">
-                            @php
-                              $counter = 1;
-                            @endphp
+                                @php
+                                      $counter = 1;
+                                @endphp
                           @foreach($patient_list as $patient)
                           <tr> 
                               <td align="center">{{ $counter++ }}</td>
-                              <td><a href="{{ $patient->patient_id }}">{{ $patient->fullname }}</a></td>
+                              <td>
+                                  <a href="{{ route('patients.show', ['patient' => $patient->patient_id]) }}">
+                                      {{ $patient->fullname }}
+                                  </a>
+                              </td>
                               <td>{{ $patient->opd_number }}</span></td>
                               <td>{{ $patient->gender }}</span></td>
-                              <td>{{$patient->age }}</td>
-                              <td>{{$patient->telephone }}</td>
+                              <td>{{ $patient->age }}</td>
+                              <td>{{ $patient->telephone }}</td>
                               <td>{{ \Carbon\Carbon::parse($patient->added_date)->format('d-m-Y') }}</td>
                               <td>
                                     @if($patient->sponsor_type_id === 'PI03')
@@ -72,16 +120,16 @@
                                               <i class="bx bx-dots-vertical-rounded"></i>
                                           </button>
                                               <div class="dropdown-menu">
-                                                  <a class="dropdown-item"  href="{{ route('patients.edit', ['patient' => $patient->patient_id]) }}">
+                                                  <!-- <a class="dropdown-item"  href="{{ route('patients.edit', ['patient' => $patient->patient_id]) }}">
                                                     <i class="bx bx-edit-alt me-1"></i> Edit
-                                                  </a>
-                                                  <a class="dropdown-item" href="javascript:void(0);">
+                                                  </a> -->
+                                                  <!-- <a class="dropdown-item" href="javascript:void(0);">
                                                       <i class="bx bx-trash me-1"></i> Delete
-                                                  </a>
+                                                  </a> -->
                                                   <a class="dropdown-item" href="{{ route('patients.show', ['patient' => $patient->patient_id]) }}">
                                                     <i class="bx bx-lock-alt me-1"></i> More 
                                                   </a>
-                                            </div>
+                                               </div>
                                   </div>
                               </td>
                           </tr>

@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('levels', 100)->nullable();
             $table->string('level_order', 50)->nullable();
             $table->string('code', 100)->nullable(); 
+            $table->string('facility_id', 50)->nullable();
             $table->string('user_id', 100)->nullable();
             $table->timestamp('added_date')->nullable();
             $table->string('updated_by', 100)->nullable();

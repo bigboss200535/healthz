@@ -6,6 +6,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Faker\Factory as Faker;
 use App\Models\User;
+use App\Models\UserRole;
 
 class UserSeeder extends Seeder
 {
@@ -17,7 +18,9 @@ class UserSeeder extends Seeder
     public function run()
     {
        $faker = Faker::create();
-        
+
+        $role = UserRole::inRandomOrder()->first(); 
+
         $userdata = User::create([
             'user_id' => 'b2c362bf-56df-4337-be34-7062ffae8bd5',
             'username' => 'admin',
@@ -30,9 +33,7 @@ class UserSeeder extends Seeder
             'gender' => 'Male',
             'mode' => 'New',
             'salt' => 'systemsalt',
-            'role' => 'Developer',
-            // 'permission' => 'ontheway',
-            // 'image' => $faker->imageUrl(),
+            'role_id' => 'R1',
             'added_id' => 'b2c362bf-56df-4337-be34-7062ffae8bd5',
             'added_date' => now(),
             'status' => 'Active',

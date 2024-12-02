@@ -29,6 +29,7 @@ return new class extends Migration
             $table->string('gdrg', 10)->nullable();
             $table->string('service_fee', 10)->nullable();
             $table->string('episode_id', 10)->nullable();
+            $table->string('facility_id', 50)->nullable();
             // $table->string('episode_id', 10)->nullable();
             $table->string('added_id', 100)->nullable();
             $table->timestamp('added_date')->nullable();
@@ -40,6 +41,7 @@ return new class extends Migration
             $table->date('archived_date', 100)->nullable();
             $table->primary('claim_id');
             $table->foreign('user_id')->references('user_id')->on('users');
+            $table->foreign('facility_id')->references('facility_id')->on('facility');
 
         });
     }

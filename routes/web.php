@@ -41,8 +41,8 @@ Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['au
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::resource('patients', PatientController::class)
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy')
+    // Route::resource('patients', PatientController::class)
         ->missing(function (Request $request){
           return Redirect::route('patient.create');
     });
@@ -51,29 +51,17 @@ Route::middleware('auth')->group(function () {
     Route::resource('users', ProfileController::class);
     Route::resource('sponsors', SponsorController::class); 
     Route::resource('services', ServiceRequestController::class);
+    Route::resource('patients', PatientController::class);
     // Route::resource('reports', ReportsController::class);
     
-    Route::controller(PatientController::class)->group(function (){
-
-    });
-   
-
-    // Route::prefix('patient')->group(function () {
-    //     Route::get('create', [PatientController::class, 'create'])->name('patient.create');
-    //     Route::get('search', [PatientController::class, 'index'])->name('patient.index');
-    //     Route::get('modify/{patient_id}', [PatientController::class, 'edit'])->name('patient.edit');
-    //     Route::get('visits/{patient_id}', [PatientVisitsController::class, 'index'])->name('attendance.index');
-    //     Route::get('details/{patient_id}', [PatientController::class, 'show'])->name('patient.show');
-    // });
-
-    Route::resource('patients', PatientController::class);
-
-    Route::get('reports/all', [ReportsController::class, 'index']);
+    Route::get('/patient/search', [PatientController::class, 'search'])->name('patient.search');
+    Route::post('code_generate', [CodeGenerationController::class, 'index']);
 
     Route::prefix('reports')->group(function () {
-        Route::get('users', [ReportsController::class, 'index']);
-        // Route::get('users', [PDFReportController::class, 'index']);
-        Route::get('patient', [PDFReportController::class, 'index']);
+        // Route::get('users', [ReportsController::class, 'index']);
+        Route::get('users', [PDFReportController::class, 'users']);
+        Route::get('all', [ReportsController::class, 'index']);
+        Route::get('patient', [PDFReportController::class, 'patient']);
     });
     // Route::get('patient/create/', [PatientController::class, 'create'])->name('patient.create');
     // Route::get('patient/search/', [ PatientController::class, 'index'])->name('patient.index');
@@ -85,10 +73,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/services/{clinic}/get_specialty', [ServiceRequestController::class, 'getspecialties']);
     Route::get('/services/{service_id}/service_tarif', [ServiceRequestController::class, 'gettarrifs']);
     Route::post('/services/patient_service', [ServiceRequestController::class, 'store']);
-    Route::get('/services/patient_service_data/{patient_id}', [ServiceRequestController::class, 'retrieve']);
-   
-    // Route::get('code_generate', [CodeGenerationController::class, 'index']);
-    Route::post('code_generate', [CodeGenerationController::class, 'index']);
+    Route::get('/services/patient_service_data/{patient_id}', [ServiceRequestController::class, 'retrieve']);    
 });
 
 require __DIR__.'/auth.php';

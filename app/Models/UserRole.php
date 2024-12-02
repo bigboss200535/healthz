@@ -13,4 +13,18 @@ class UserRole extends Model
     public $timestamps = false;
     protected $keyType = 'string';
     public $incrementing= false;
+
+    protected $fillable = [
+        'role_id',
+        'role_name',
+        'facility_id',
+        'added_id',
+        'added_date',
+        'udpated_by',
+        'status',
+        'archived',
+        'archived_id',
+        'archived_by',
+        'archived_date'
+    ];
 }

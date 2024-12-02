@@ -1,5 +1,5 @@
 <x-app-layout>
-<div class="container-xxl flex-grow-1 container-p-y">    
+<duiiv class="container-xxl flex-grow-1 container-p-y">    
           <div class="app-ecommerce">
         <div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
         <div class="d-flex flex-column justify-content-center">
@@ -26,45 +26,29 @@
           <div class="row mb-3">
             <div class="col">
               <label class="form-label" for="start_date">Start Date <a style="color: red;">*</a></label>
-              <input type="date" class="form-control" id="start_date" name="start_date">
+              <input type="date" class="form-control" id="begin_date" name="begin_date" placeholder="Start End">
             </div>
             <div class="col">
               <label class="form-label" for="end_date">End Date <a style="color: red;">*</a></label>
-              <input type="date" class="form-control" id="end_date" name="end_date" value="" placeholder="End Date">
+              <input type="date" class="form-control" id="ending_date" name="ending_date" value="" placeholder="End Date">
             </div>
             <div class="col">
               <label class="form-label" for="report_type">Report Type <a style="color: red;">*</a></label>
               <select  class="form-control" id="report_type" name="report_type">
                 <option selected disabled>-Select-</option>
+                <option value="users">Users</option>
+                <option value="user_logs">User Logs</option>
               </select>
             </div>
+            <br> <br>
           </div>
-          <div class="row mb-3">
-            <div class="col">
-              <label class="form-label" for="religion">Religion <a style="color: red;">*</a></label>
-               <select name="religion" id="religion" class="form-control">
-                <option disabled selected>-Select-</option>
-               </select>
-            </div>
-            <div class="col">
-              <label class="form-label" for="nationality">Nationality <a style="color: red;">*</a></label>
-              <select name="nationality" id="nationality" class="form-control">
-                <option disabled selected>-Select-</option>
-              </select>
-            </div>
-            <div class="col">
-              <label class="form-label" for="old_folder">Old Folder Number</label>
-              <input type="text" class="form-control" id="old_folder" name="old_folder" placeholder="Old Folder Number" autocomplete="off">
-            </div>
-          </div>
-
         </div>
       </div>
     </div>
     <div class="col-12 col-lg-4">
       <div class="card mb-4">
         <div class="card-body">
-            <img src="{{ asset('img/undraw/login.svg') }}" alt="" height="202px">
+            <img src="{{ asset('img/undraw/login.svg') }}" alt="" height="157px">
             <br>
         </div>
       </div>

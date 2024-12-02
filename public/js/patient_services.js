@@ -1,3 +1,4 @@
+//  ----------------------------------------------------------
  $(document).ready(function () {
     var patient_id = $('#p_id').val();
    
@@ -140,3 +141,117 @@ document.addEventListener("DOMContentLoaded", function() {
   dateInput.value = formattedDate;
 });
 // -------------------------------------------------------------------------------------------------------------------------------
+
+// search patient at patient search
+$(document).ready(function() {
+  // Trigger search when the search button is clicked
+  $('#search_item').on('click', function() {
+      var search_term = $('#search_patient').val();  // Get the search input value
+      
+      if (search_term.trim() != '') {
+          // Perform the AJAX request if the search term is not empty
+          $.ajax({
+              url: "{{ route('patient.search') }}",  // Correct route name for search
+              type: "GET",
+              headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+              data: {search_patient: search_term},  // Send the search term
+              success: function(response) {
+                  // Clear existing table data
+                  $('#patient_search tbody').empty();
+
+                  // If there are results, populate the table
+                  if (response.length > 0) {
+                      response.forEach(function(patient, index) {
+                          // Create a new table row for each patient
+                          var row = '<tr>' +
+                              '<td>' + (index + 1) + '</td>' +
+                              '<td>' + patient.name + '</td>' +
+                              '<td>' + patient.opd_number + '</td>' +
+                              '<td>' + patient.gender + '</td>' +
+                              '<td>' + patient.age + '</td>' +
+                              '<td>' + patient.telephone + '</td>' +
+                              '<td>' + patient.added_date + '</td>' +
+                              '<td>' + patient.status + '</td>' +
+                              '<td><button class="btn btn-info">View</button></td>' +
+                              '</tr>';
+
+                          // Append the row to the table body
+                          $('#patient_search tbody').append(row);
+                      });
+                  } else {
+                      // If no results, display a message
+                      $('#patient_search tbody').append('<tr><td colspan="9" class="text-center">No patients found</td></tr>');
+                  }
+              },
+              error: function(xhr, status, error) {
+                  // Handle any errors that occur during the AJAX request
+                  console.log(error);
+              }
+          });
+      } else {
+          // If the search term is empty, show a message
+          alert('Please enter a search term');
+      }
+  });
+
+  // Clear the search field when the "Clear" button is clicked
+  $('#clear_search').on('click', function(e) {
+      e.preventDefault(); // Prevent default link behavior
+      $('#search_patient').val('');  // Clear the input field
+      $('#patient_search tbody').empty();  // Clear the table body
+  });
+
+});
+
+
+
+// --------------------------------------------------------------------------------------------------------
+function generateCC() {
+        var member_no = $('#member_no').val();
+        var card_type = $('#card_type').val();
+
+        // Perform AJAX request
+        $.ajax({
+            url: '/code_generate',
+            type: 'POST', 
+            data: { member_no: member_no, card_type: card_type }, 
+            dataType: 'json',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') 
+                // Ensure CSRF token is fetched correctly
+            },
+            success: function(response) {
+                if (response.success) {
+                  var result = JSON.parse(response.result);
+                    $('#claim_code').val(result.MobCCC || ''); // Set to empty if null
+                    $('#start_date').val(result.EligibilityStartDate.split('T')[0])
+                    $('#end_date').val(result.EligibilityEndDate.split('T')[0]);
+                    $('#hin_no').val(result.HIN); 
+                    $('#card_status').val(result.Status);
+                    $('#fullname').val(result.MemberName);
+                  
+                } else {
+                    // alert('Error: ' + response.message); 
+                    $('#error').val(result.message);
+                }
+            },
+            error: function(xhr, status, error) {
+                // Handle AJAX error
+                console.error('AJAX Error: ', error);
+                alert('An error occurred while generating CC. Please try again.');
+            }
+        });
+      }
+
+function clear_Form() {
+    $('#generate_ccc')[0].reset(); // Reset the form
+    $('#claim_code').val(''); // Clear specific fields if necessary
+    $('#status').val('');
+// Add any other fields you want to reset explicitly
+}
+
+$('#claims_check_code').on('hidden.bs.modal', function () {
+  clear_Form();
+});

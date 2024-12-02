@@ -17,7 +17,7 @@ class SponsorTypeSeeder extends Seeder
     public function run()
     {
         $user = User::inRandomOrder()->first(); 
-
+        
         $sponsor = SponsorType::create([
             'sponsor_type_id' => 'P001',
             'sponsor_type' => 'CASH PAYMENT',

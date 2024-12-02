@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('h_f_id', 50);
             $table->string('levels', 100);
             $table->string('user_id', 100)->nullable();
+            $table->string('facility_id', 50)->nullable();
             $table->timestamp('added_date')->nullable();
             $table->string('updated_by', 100)->nullable();
             $table->string('status', 100)->default('Active')->index();
@@ -26,6 +27,7 @@ return new class extends Migration
             $table->date('archived_date', 100)->nullable();
             $table->primary('h_f_id');
             $table->foreign('user_id')->references('user_id')->on('users');
+            $table->foreign('facility_id')->references('facility_id')->on('facility');
         });
     }
 

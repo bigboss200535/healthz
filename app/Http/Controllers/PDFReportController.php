@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\File;
 
 class PDFReportController extends Controller
 {
-    public function index()
+    public function users(Request $request)
     {
         $auth_user = strtoupper(Auth::user()->user_fullname);
         $date = date('d M., Y');
@@ -55,7 +55,7 @@ class PDFReportController extends Controller
                 </tr>
             <tbody>
          ';
-                $count = 0;
+            $count = 0;
            // Loop through each user
             foreach ($users as $user) {
                 $count = $count + 1;

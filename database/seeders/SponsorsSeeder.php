@@ -42,7 +42,7 @@ class SponsorsSeeder extends Seeder
         $sponsor = Sponsors::create([
             'sponsor_id' => '001',
             'sponsor_type_id' => 'PI03',
-            'sponsor_name' => 'PRIMIER HEALTH INSURANCE',
+            'sponsor_name' => 'PREMIER HEALTH INSURANCE',
             'user_id' => $user->user_id,
             'added_date' => now(),
             'status' => 'Active',

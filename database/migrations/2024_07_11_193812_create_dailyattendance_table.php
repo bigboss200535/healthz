@@ -21,7 +21,6 @@ return new class extends Migration
             $table->string('pat_age')->nullable(); 
             $table->string('status_code')->nullable(); 
             $table->string('reg_type')->nullable(); 
-            // $table->string('pat_type'); 
             $table->string('service_type')->nullable(); 
             $table->string('reg_status')->nullable(); 
             $table->string('membership_number')->nullable(); 

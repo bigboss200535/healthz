@@ -2,8 +2,10 @@
 
 namespace Database\Factories;
 
+use App\Models\UserRole;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
+
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
@@ -17,6 +19,8 @@ class UserFactory extends Factory
      */
     public function definition()
     {
+        $role = UserRole::inRandomOrder()->first(); 
+
         return [
             'user_id' => Str::uuid(),
             'username' => $this->faker->userName,
@@ -24,12 +28,11 @@ class UserFactory extends Factory
             'othername' => $this->faker->lastName,
             'telephone' => $this->faker->phoneNumber,
             'gender' => $this->faker->randomElement(['Male', 'Female']),
-            'role' => $this->faker->randomElement(['IT', 'Developer', 'Data Entry']),
+            'role_id' => $role->role_id,
             'mode' => $this->faker->randomElement(['New', 'Old']),
             'email' => $this->faker->unique()->safeEmail(),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
             'oldpassword' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
-            // 'remember_token' => Str::random(10),
         ];
     }
 

@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('sponsor_id', 50);
             $table->string('sponsor_name', 150); 
             $table->string('sponsor_type_id', 50);
+            $table->string('facility_id', 50)->nullable(); 
             $table->string('user_id', 50)->nullable();        
             $table->string('added_id', 50)->nullable();
             $table->string('added_by', 100)->nullable();
@@ -30,6 +31,7 @@ return new class extends Migration
             $table->primary('sponsor_id');
             $table->foreign('user_id')->references('user_id')->on('users');
             $table->foreign('sponsor_type_id')->references('sponsor_type_id')->on('sponsor_type');
+            $table->foreign('facility_id')->references('facility_id')->on('facility');
         });
     }
 

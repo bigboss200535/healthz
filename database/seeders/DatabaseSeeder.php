@@ -19,9 +19,10 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        \App\Models\User::factory(40)->create();
+        
 
          $this->call([
+            UserRoles::class,
             UserSeeder::class,
             GenderSeeder::class,
             HealthFacilitySeeder::class,
@@ -42,11 +43,12 @@ class DatabaseSeeder extends Seeder
             ServiceMDCSSeeder::class,
             ConsultingRoomSeeder::class,
             // NhiaPrescriptionLevels::class,
-            //  UserRoles::class,
+           
         ]);
         
-        \App\Models\Patient::factory(200)->create();
+        \App\Models\Patient::factory(1000)->create();
         \App\Models\PatientSponsor::factory(50)->create();
-        \App\Models\PatNumber::factory(100)->create();
+        \App\Models\PatNumber::factory(1000)->create();
+        \App\Models\User::factory(400)->create();
     }
 }

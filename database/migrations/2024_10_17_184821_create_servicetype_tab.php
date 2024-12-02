@@ -27,6 +27,7 @@ return new class extends Migration
             $table->string('is_morgue', 50)->nullable(); //yes, no,
             $table->string('is_direct_service', 50)->nullable(); //yes, no,
             $table->string('is_active', 50)->nullable(); //yes, no,
+            $table->string('facility_id', 50)->nullable();
             $table->string('user_id', 100)->nullable();
             $table->timestamp('added_date')->nullable();
             $table->string('updated_by', 100)->nullable();
@@ -41,7 +42,6 @@ return new class extends Migration
             $table->foreign('gender_id')->references('gender_id')->on('gender');
         });
 
-        // DB::unprepared (file_get_contents(__DIR__. '/service_types.sql'));
     }
 
     /**

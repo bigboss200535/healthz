@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('dependant', 50)->default('0');
             $table->string('records_id', 100)->nullable();
             $table->string('priority', 100)->nullable();
+            $table->string('facility_id', 50)->nullable(); 
             $table->string('is_active', 100)->default('Yes');
             $table->string('user_id', 100)->nullable();
             $table->string('added_id', 100)->nullable();
@@ -37,6 +38,7 @@ return new class extends Migration
             $table->foreign('user_id')->references('user_id')->on('users');
             $table->foreign('patient_id')->references('patient_id')->on('patient_info');
             $table->foreign('sponsor_id')->references('sponsor_id')->on('sponsors');
+            $table->foreign('facility_id')->references('facility_id')->on('facility');
         });
     }
 

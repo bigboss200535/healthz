@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('clinic_code', 100)->nullable();
             $table->string('color_code', 100)->nullable();
             $table->string('doctors_number', 100)->nullable();
+            $table->string('facility_id', 50)->nullable();
             $table->string('user_id', 100)->nullable();
             $table->timestamp('added_date')->nullable();
             $table->string('updated_by', 100)->nullable();
@@ -29,6 +30,7 @@ return new class extends Migration
             $table->date('archived_date', 100)->nullable();
             $table->primary('consulting_room_id');
             $table->foreign('user_id')->references('user_id')->on('users');
+            $table->foreign('facility_id')->references('facility_id')->on('facility');
         });
     }
 

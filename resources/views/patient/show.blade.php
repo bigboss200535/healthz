@@ -10,7 +10,7 @@
         <li class="nav-item">
           <button type="button" class="nav-link active" role="tab" data-bs-toggle="tab" data-bs-target="#nav_home" aria-controls="navs-justified-home" aria-selected="true">
             <span class="d-none d-sm-block">
-              <i class="tf-icons bx bx-home bx-sm me-1_5 align-text-bottom"></i> 
+              <i class="tf-icons bx bx-user bx-sm me-1_5 align-text-bottom"></i> 
               Bio Info 
             </span>
             <i class="bx bx-home bx-sm d-sm-none"></i>
@@ -19,7 +19,7 @@
         <li class="nav-item">
             <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#nav_sponsor" aria-controls="navs-justified-profile" aria-selected="false">
               <span class="d-none d-sm-block">
-                <i class="tf-icons bx bx-user bx-sm me-1_5 align-text-bottom"></i> 
+                <i class="tf-icons bx bx-message-square bx-sm me-1_5 align-text-bottom"></i> 
                 Patient Sponsor
               </span>
               <i class="bx bx-user bx-sm d-sm-none"></i>
@@ -279,7 +279,7 @@
             </tr>
             <tr>
               <td><b>Blood Group</b>:</td>
-              <td></td>
+              <td>O-</td>
             </tr>
             <tr>
               <td><b>Sickling</b>:</td>
