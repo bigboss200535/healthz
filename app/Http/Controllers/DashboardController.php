@@ -11,15 +11,15 @@ class DashboardController extends Controller
     {   
         $current_hour = Carbon::now()->format('H');
 
-        if($current_hour>=0 && $current_hour<12)
+        if($current_hour>=0 && $current_hour<=12)
         {
             $greeting = '<img src="' . asset('img/icons/sunny.png') . '" alt="greetings" class="rounded" style="width: 35px;" />' . ' Good Morning';
         }
-        elseif ($current_hour>12 && $current_hour<18)
+        elseif ($current_hour>=12 && $current_hour<=18)
         {
             $greeting = '<img src="' . asset('img/icons/afternoon.png') . '" alt="greetings" class="rounded" style="width: 35px;" />' . ' Good Afternoon';
         }
-        elseif ($current_hour>18 && $current_hour<=24) 
+        elseif ($current_hour>=18 && $current_hour<=24) 
         {
             $greeting = '<img src="' . asset('img/icons/night.png') . '" alt="greetings" class="rounded" style="width: 35px;" />' . ' Good Evening';
         }

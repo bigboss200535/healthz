@@ -44,7 +44,7 @@ class PatientController extends Controller
 
     $sponsors = Sponsors::with('SponsorType')->get();
 
-    return view('patient.index', compact('patient_list')); 
+        return view('patient.index', compact('patient_list')); 
     }
 
     public function create()
@@ -356,7 +356,6 @@ class PatientController extends Controller
 
     public function show_today(Request $request, $patient_id)
     {
-
         $patients = DB::table('patient_info')
             // ->where('patient_info.added_date', now())
             ->where('patient_info.patient_id', $patient_id)
