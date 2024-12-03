@@ -343,10 +343,11 @@ class PatientController extends Controller
 
         // Query the patients based on the search term (for Member #, OPD #, Telephone #, Name)
         $search_patient = Patient::where(function ($query) use ($search_term) {
-                $query->where('member_number', 'like', '%' . $search_term . '%')
-                      ->orWhere('opd_number', 'like', '%' . $search_term . '%')
+                $query->where('firstname', 'like', '%' . $search_term . '%')
+                      ->orWhere('lastname', 'like', '%' . $search_term . '%')
+                    //   ->orWhere('opd_number', 'like', '%' . $search_term . '%')
                       ->orWhere('telephone', 'like', '%' . $search_term . '%')
-                      ->orWhere('name', 'like', '%' . $search_term . '%');
+                      ->orWhere('middlename', 'like', '%' . $search_term . '%');
             })
             ->get();
 
