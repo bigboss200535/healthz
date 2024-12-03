@@ -143,15 +143,16 @@ document.addEventListener("DOMContentLoaded", function() {
 // -------------------------------------------------------------------------------------------------------------------------------
 
 // search patient at patient search
-$(document).ready(function() {
+$(document).ready(function(){
   // Trigger search when the search button is clicked
   $('#search_item').on('click', function() {
-      var search_term = $('#search_patient').val();  // Get the search input value
+      var search_term = $('#search_patient').val();  
+      // Get the search input value
       
       if (search_term.trim() != '') {
-          // Perform the AJAX request if the search term is not empty
+          
           $.ajax({
-              url: "{{ route('patient.search') }}",  // Correct route name for search
+              url: '/patient/search', 
               type: "GET",
               headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -197,8 +198,8 @@ $(document).ready(function() {
   });
 
   // Clear the search field when the "Clear" button is clicked
-  $('#clear_search').on('click', function(e) {
-      e.preventDefault(); // Prevent default link behavior
+  $('#clear_search').on('click', function(e){
+       e.preventDefault(); // Prevent default link behavior
       $('#search_patient').val('');  // Clear the input field
       $('#patient_search tbody').empty();  // Clear the table body
   });
