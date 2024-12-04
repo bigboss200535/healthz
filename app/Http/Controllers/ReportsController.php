@@ -23,7 +23,6 @@ class ReportsController extends Controller
 
     public function users(Request $request)
     {
-        
         $auth_user = strtoupper(Auth::user()->user_fullname);
         $date = date('d M., Y');
         $users = User::where('archived', '=', 'No')->get();
