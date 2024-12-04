@@ -34,15 +34,10 @@ use Illuminate\Support\Facades\Redirect;
 Route::get('/', [AuthenticatedSessionController::class, 'create']);
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 
-// Route::get('/dashboard', function () {
-//     return view('dashboard');
-// })->middleware(['auth', 'verified'])->name('dashboard');
-
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy')
-    // Route::resource('patients', PatientController::class)
         ->missing(function (Request $request){
           return Redirect::route('patient.create');
     });
@@ -52,16 +47,14 @@ Route::middleware('auth')->group(function () {
     Route::resource('sponsors', SponsorController::class); 
     Route::resource('services', ServiceRequestController::class);
     Route::resource('patients', PatientController::class);
-    // Route::resource('reports', ReportsController::class);
     
     Route::get('/patient/search', [PatientController::class, 'search'])->name('patient.search');
     Route::post('code_generate', [CodeGenerationController::class, 'index']);
 
     Route::prefix('reports')->group(function () {
-        // Route::get('users', [ReportsController::class, 'index']);
-        Route::get('users', [PDFReportController::class, 'users']);
+        Route::get('users/{user_id}', [ReportsController::class, 'users']);
         Route::get('all', [ReportsController::class, 'index']);
-        Route::get('patient', [PDFReportController::class, 'patient']);
+        Route::get('patient', [ReportsController::class, 'patient']);
     });
     // Route::get('patient/create/', [PatientController::class, 'create'])->name('patient.create');
     // Route::get('patient/search/', [ PatientController::class, 'index'])->name('patient.index');
