@@ -16,7 +16,8 @@ class ConsultationController extends Controller
           $con_room = ConsultingRoom::where('Archived', 'No')->get();
           $store = Stores::where('archived', 'No')->where('is_pharmacy', '=', 'Yes')->get();
           // $outcome = 
-
+          // $patient = 
+          
           if (Auth::user()->role_id==='R10'|| Auth::user()->role_id==='R11')
           {
             $user = User::where(Auth::user()->user_id)->get(); //log in doctor
