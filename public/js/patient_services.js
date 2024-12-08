@@ -169,6 +169,7 @@ $(document).ready(function() {
                         
                           // Create a new table row for each patient
                           var row = '<tr>' +
+<<<<<<< Updated upstream
                                 '<td>' + (index + 1) + '</td>' +
                                 '<td>' + patient.fullname + '</td>' +  // Use fullname
                                 '<td>' + patient.opd_number + '</td>' +  // Use patient_id for OPD #
@@ -178,6 +179,17 @@ $(document).ready(function() {
                                 '<td>' + patient.register_date + '</td>' +  // Using register_date as Added Date
                                 '<td>' + patient.status + '</td>' +
                                 '<td><a class="dropdown-item" href="{{ route("patients.show",' + patient.patient_id+') }}"> ...</a></td>' + // Action button
+=======
+                              '<td>' + (index + 1) + '</td>' +
+                              '<td>' + patient.fullname + '</td>' +
+                              '<td>' + patient.opd_number + '</td>' +
+                              '<td>' + patient.gender + '</td>' +
+                              '<td>' + patient.age + '</td>' +
+                              '<td>' + patient.telephone + '</td>' +
+                              '<td>' + patient.register_date + '</td>' +
+                              '<td>' + patient.status + '</td>' +
+                              '<td><button class="btn btn-info">View</button></td>' +
+>>>>>>> Stashed changes
                               '</tr>';
 
                           // Append the row to the table body

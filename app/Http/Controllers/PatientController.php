@@ -336,18 +336,40 @@ class PatientController extends Controller
 
     }
 
+    // public function search(Request $request)
+    // {
+    //     // Ensure the search term is provided
+    //     $search_term = $request->input('search_patient');
+
+    //     // Query the patients based on the search term (for Member #, OPD #, Telephone #, Name)
+    //     $search_patient = Patient::where(function ($query) use ($search_term) {
+    //             $query->where('firstname', 'like', '%' . $search_term . '%')
+    //                   ->orWhere('lastname', 'like', '%' . $search_term . '%')
+    //                 //   ->orWhere('opd_number', 'like', '%' . $search_term . '%')
+    //                   ->orWhere('telephone', 'like', '%' . $search_term . '%')
+    //                   ->orWhere('middlename', 'like', '%' . $search_term . '%');
+    //         })
+    //         ->get();
+
+    //     // Return a response in JSON format
+    //     return response()->json($search_patient);
+    // }
+
     public function search(Request $request)
     {
         // Ensure the search term is provided
         $search_term = $request->input('search_patient');
 
-        // Query the patients based on the search term (for Member #, OPD #, Telephone #, Name)
-        $search_patient = Patient::where(function ($query) use ($search_term) {
+        // Query the patients based on the search term and join with patient_nos
+        $search_patient = Patient::query()
+            ->join('patient_nos', 'patient_info.patient_id', '=', 'patient_nos.patient_id')
+            ->where(function ($query) use ($search_term) {
                 $query->where('firstname', 'like', '%' . $search_term . '%')
-                      ->orWhere('lastname', 'like', '%' . $search_term . '%')
-                    //   ->orWhere('opd_number', 'like', '%' . $search_term . '%')
-                      ->orWhere('telephone', 'like', '%' . $search_term . '%')
-                      ->orWhere('middlename', 'like', '%' . $search_term . '%');
+                    ->orWhere('lastname', 'like', '%' . $search_term . '%')
+                    ->orWhere('opd_number', 'like', '%' . $search_term . '%')
+                    ->orWhere('telephone', 'like', '%' . $search_term . '%')
+                    ->orWhere('middlename', 'like', '%' . $search_term . '%')
+                    ->orWhere('patient_nos.opd_number', 'like', '%' . $search_term . '%'); // Assuming opd_number is in patient_nos
             })
             ->get();
 
