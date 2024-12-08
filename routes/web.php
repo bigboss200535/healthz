@@ -50,6 +50,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('services', ServiceRequestController::class);
     Route::resource('patients', PatientController::class);
     Route::resource('products', ProductController::class);
+    
     Route::get('/patient/search', [PatientController::class, 'search'])->name('patient.search');
 
     Route::prefix('reports')->group(function () {

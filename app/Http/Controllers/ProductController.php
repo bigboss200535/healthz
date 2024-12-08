@@ -11,17 +11,22 @@ class ProductController extends Controller
 {
     public function index()
     {
-        $expired = Product::where('archived', 'No')->where('status', '=','Active')->get();
-        $count_new = Product::where('archived', 'No')->where('status', '=','Active')->get();
-        $count_new = Product::where('archived', 'No')->where('status', '=','Active')->get();
+        $product = Product::where('archived', 'No')->where('status', '=','Active')->get();
 
-        $products = Product::rightJoin('product_category', 'product_category.category_id', '=', 'product.category_id')
-        ->where('product.archived', 'No')
-        ->select('product.product_id','product.product_name','product.added_date','product.status' ,'product.stocked','product.expirable','product_category.category_id as pro_id', 'product_category.category_name as category')
-        ->orderBy('product.added_date', 'asc') 
+        $total_all = Product::where('archived', '=', 'No')->count();
+        $total_drugs = Product::where('product_type_id', '=', '1')->count();
+        $total_consumable = Product::where('product_type_id', '=', '2')->count();
+        $total_others = Product::where('product_type_id', '=', '3')->count();
+
+        $item = Product::rightJoin('product_type', 'product_type.product_type_id', '=', 'products.product_type_id')
+        ->rightjoin('stores', 'stores.store_id', '=', 'products.store_id')
+        ->where('products.archived', 'No')
+        ->select('products.*','product_type.*', 'stores.*')
+        ->orderBy('products.added_date', 'asc')
+        // ->lockForUpdate() 
         ->get();
 
-        return view('product.index', compact('products', 'products'));
+        return view('product.index', compact('item', 'total_drugs', 'total_consumable', 'total_others', 'total_all'));
     }
 
     public function create()

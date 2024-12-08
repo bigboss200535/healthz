@@ -46,6 +46,7 @@ class DatabaseSeeder extends Seeder
             // NhiaPrescriptionLevels::class,
             NhisDrugs::class,
             Store::class,
+            ProductType::class,
             Products::class,
            
         ]);

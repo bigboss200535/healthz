@@ -325,13 +325,13 @@
     <li class="menu-item">
       <a href="javascript:void(0);" class="menu-link menu-toggle">
         <i class="menu-icon tf-icons bx bx-collection"></i>
-        <div class="text-truncate" data-i18n="Cards">Items</div>
+        <div class="text-truncate" data-i18n="Cards">Item</div>
         <span class="badge badge-center rounded-pill bg-danger ms-auto">6</span>
       </a>
       <ul class="menu-sub">
         <li class="menu-item">
-          <a href="#" class="menu-link">
-            <div class="text-truncate" data-i18n="Basic">Setup</div>
+          <a href="{{ url('/products') }}" class="menu-link">
+            <div class="text-truncate" data-i18n="Basic">Products</div>
           </a>
         </li>
       </ul>

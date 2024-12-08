@@ -35,7 +35,7 @@ return new class extends Migration
             $table->string('gender_id', 50)->nullable();
             $table->string('age_id', 50)->nullable();
             $table->string('prescription_level', 50)->nullable();
-            $table->string('product_type_code', 50)->nullable();
+            $table->string('product_type_id', 50)->nullable();
             $table->float('average_unit_price')->nullable();
             $table->string('pres_unit_code')->nullable();
             $table->string('pres_qty_per_unit')->nullable();
@@ -58,6 +58,7 @@ return new class extends Migration
             $table->foreign('facility_id')->references('facility_id')->on('facility');
             $table->foreign('store_id')->references('store_id')->on('stores');
             // $table->foreign('nhis_id')->references('nhis_id')->on('nhis_drugs');
+             $table->foreign('product_type_id')->references('product_type_id')->on('product_type');
         });
     }
 
