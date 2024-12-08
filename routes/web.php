@@ -8,6 +8,7 @@ use App\Http\Controllers\PatientVisitsController;
 use App\Http\Controllers\CodeGenerationController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\SponsorController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\PDFReportController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ReportsController;
@@ -45,18 +46,18 @@ Route::middleware('auth')->group(function () {
     });
    
     Route::resource('service', ServiceRequestController::class);
-    Route::resource('users', ProfileController::class);
+    Route::resource('users', UserController::class);
     Route::resource('sponsors', SponsorController::class); 
     Route::resource('services', ServiceRequestController::class);
     Route::resource('patients', PatientController::class);
     Route::resource('products', ProductController::class);
-    // Route::get('/patient/search', [PatientController::class, 'search'])->name('patient.search');
+    // Route::resource('products', ProductController::class);
     // Route::get('/consultation', [ConsultationController::class, 'index'])->name('consultation.index');
     Route::get('/patient/search', [PatientController::class, 'search'])->name('patient.search');
     // Route::post('code_generate', [CodeGenerationController::class, 'index']);
 
     Route::prefix('reports')->group(function () {
-        Route::get('users/{user_id}', [ReportsController::class, 'users']);
+        // Route::get('users/{user_id}', [ReportsController::class, 'users']);
         Route::get('all', [ReportsController::class, 'index']);
         Route::get('patient', [ReportsController::class, 'patient']);
     });
