@@ -34,17 +34,17 @@ class UserController extends Controller
         ]); 
     }
 
-    public function show()
+    public function show($id)
     {
 
     }
 
-    public function edit()
+    public function edit($id)
     {
 
     }
 
-    public function update(Request $request)
+    public function update(Request $request, $id)
     {
         $request->user()->fill($request->validated());
 
@@ -56,7 +56,7 @@ class UserController extends Controller
         // return Redirect::route('profile.edit')->with('status', 'profile-updated');
     }
 
-    public function destroy(Request $request)
+    public function destroy(Request $request, $id)
     {
 
         // $request->validateWithBag('userDeletion', [
