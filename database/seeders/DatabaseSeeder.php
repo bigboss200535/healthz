@@ -3,8 +3,8 @@
 namespace Database\Seeders;
 
 use App\Models\ConsultingRoom;
-use App\Models\Product;
-use App\Models\SponsorType;
+// use App\Models\Product;
+// use App\Models\SponsorType;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -20,13 +20,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        
 
-         $this->call([
+        $this->call([
             UserRoles::class,
             UserSeeder::class,
             GenderSeeder::class,
-            // HealthFacilitySeeder::class,
+            HealthFacilitySeeder::class,
             TitleSeeder::class,
             ReligionSeeder::class,
             RelationSeeder::class,
@@ -35,7 +34,7 @@ class DatabaseSeeder extends Seeder
             ClinicSeeder::class,
             SponsorTypeSeeder::class,
             SponsorsSeeder::class,
-            // ClinicAttendanceTypeSeeder::class,
+            ClinicAttendanceTypeSeeder::class,
             FacilitySeeder::class,
             ServiceAttendanceTypeSeeder::class,
             ServicesSeeder::class,
@@ -43,10 +42,10 @@ class DatabaseSeeder extends Seeder
             ServicePointSeeder::class,
             ServiceMDCSSeeder::class,
             ConsultingRoomSeeder::class,
-            // NhiaPrescriptionLevels::class,
             NhisDrugs::class,
             Store::class,
             ICD10GroupSeeder::class,
+            ProductPresentationSeeder::class,
             ProductType::class,
             Products::class,
             DiagnosisSeeder::class,
@@ -54,9 +53,9 @@ class DatabaseSeeder extends Seeder
            
         ]);
         
-        \App\Models\Patient::factory(1000)->create();
+        \App\Models\Patient::factory(2000)->create();
         \App\Models\PatientSponsor::factory(50)->create();
         \App\Models\PatNumber::factory(1000)->create();
-        \App\Models\User::factory(400)->create();
+        \App\Models\User::factory(1000)->create();
     }
 }
