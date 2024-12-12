@@ -53,9 +53,9 @@ class DatabaseSeeder extends Seeder
            
         ]);
         
-        \App\Models\Patient::factory(10000)->create();
-        \App\Models\PatientSponsor::factory(1000)->create();
-        \App\Models\PatNumber::factory(10000)->create();
-        \App\Models\User::factory(5000)->create();
+        \App\Models\Patient::factory(500)->create();
+        \App\Models\PatientSponsor::factory(200)->create();
+        \App\Models\PatNumber::factory(500)->create();
+        \App\Models\User::factory(50)->create();
     }
 }

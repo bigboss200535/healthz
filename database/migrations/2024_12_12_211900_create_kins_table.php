@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('address', 150)->nullable();
             $table->string('telephone_no', 50)->nullable();
             $table->string('mobile_no', 50)->nullable();
+            $table->string('user_id', 50)->nullable();
             $table->string('facility_id', 50)->nullable();
             $table->string('added_id', 100)->nullable();
             $table->timestamp('added_date')->nullable();
@@ -30,7 +31,7 @@ return new class extends Migration
             $table->string('archived_id', 100)->nullable();
             $table->string('archived_by', 100)->nullable();
             $table->date('archived_date', 100)->nullable();
-            $table->primary('diagnosis_id');
+            $table->primary('kins_id');
             $table->foreign('user_id')->references('user_id')->on('users');
             $table->foreign('facility_id')->references('facility_id')->on('facility');
         });
