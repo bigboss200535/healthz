@@ -14,17 +14,17 @@ class UserController extends Controller
         // ->select('users.*','user_roles.*')
         // ->get();
         // return view('users.index', compact('user'));
-        $users = [];
+        $user = [];
 
     // Use chunkById to process users in chunks
     User::where('users.archived', 'No')
         ->where('users.status', '=', 'Active')
         ->rightJoin('user_roles', 'users.role_id', '=', 'user_roles.role_id')
         ->select('users.*', 'user_roles.*')
-        ->chunkById(100, function ($userChunk) use (&$users) {
+        ->chunkById(100, function ($userChunk) use (&$user) {
             // Add each chunk to the $users array (accumulate data in smaller pieces)
-            foreach ($userChunk as $user) {
-                $users[] = $user; // This stores each user record (you can process them as needed)
+            foreach ($userChunk as $users) {
+                $user[] = $users; // This stores each user record (you can process them as needed)
             }
         });
 
