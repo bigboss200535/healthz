@@ -34,9 +34,28 @@ class AuthenticatedSessionController extends Controller
         try {
             $request->authenticate();
             $request->session()->regenerate();
-    
+
+            LoginLog::create([
+                'user_id' => Auth::id(),
+                'user_ip' => $request->ip(),
+                'user_pc' => $request->userAgent(),
+                'login_date' => now(),
+                'login_time' => now(),
+                'status' => true, // Login success
+            ]);
+
             return redirect()->intended(RouteServiceProvider::HOME);
         } catch (\Exception $e) {
+
+            LoginLog::create([
+                'user_id' => null, // No user authenticated for failed login
+                'user_ip' => $request->ip(),
+                'user_pc' => $request->userAgent(),
+                'login_date' => now(),
+                'login_time' => now(),
+                'status' => false, // Login failed
+            ]);
+
             // Catch session expiry or other issues and provide a custom message
             return redirect()->route('login')->with('message', 'Your session has expired. Please log in again.');
         }
