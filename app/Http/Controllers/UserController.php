@@ -21,7 +21,7 @@ class UserController extends Controller
         ->where('users.status', '=', 'Active')
         ->rightJoin('user_roles', 'users.role_id', '=', 'user_roles.role_id')
         ->select('users.*', 'user_roles.*')
-        ->chunkById(100, function ($userChunk) use (&$user) {
+        ->chunk(20, function ($userChunk) use (&$user) {
             // Add each chunk to the $users array (accumulate data in smaller pieces)
             foreach ($userChunk as $users) {
                 $user[] = $users; // This stores each user record (you can process them as needed)
