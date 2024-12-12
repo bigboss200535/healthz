@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('icd10_groups', function (Blueprint $table) {
+        Schema::create('diagnosis_icd_groups', function (Blueprint $table) {
             $table->string('icd_group_id', 50)->nullable();
             $table->string('group', 50)->nullable();
             $table->string('user_id', 10)->nullable();
@@ -40,6 +40,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('icd10_groups');
+        Schema::dropIfExists('diagnosis_icd10_groups');
     }
 };

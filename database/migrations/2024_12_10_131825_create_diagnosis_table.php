@@ -46,7 +46,7 @@ return new class extends Migration
             $table->primary('diagnosis_id');
             $table->foreign('user_id')->references('user_id')->on('users');
             $table->foreign('facility_id')->references('facility_id')->on('facility');
-            // $table->foreign('gender_id')->references('gender_id')->on('gender');
+            // $table->foreign('icd_group_id')->references('icd_group_id')->on('diagnosis_icd_groups');
         });
     }
 

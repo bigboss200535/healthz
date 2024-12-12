@@ -23,7 +23,6 @@ return new class extends Migration
             $table->string('lastname', 100);
             $table->string('fullname')->virtualAs("CONCAT(firstname, ' ', middlename, ' ', lastname)");
             $table->date('birth_date');
-            // $table->string('age', 10)->nullable();
             $table->string('gender_id', 50)->nullable();
             $table->string('occupation', 100)->nullable();
             $table->string('education', 100)->nullable();

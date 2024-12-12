@@ -267,21 +267,17 @@
          <!-- <span class="badge badge-center rounded-pill bg-success ms-auto">4</span> -->
       </a>
       <ul class="menu-sub">
-        <!-- <li class="menu-item">
-          <a href="/addstudent" class="menu-link">
-            <div class="text-truncate" data-i18n="List">Add Employee</div>
+        <li class="menu-item">
+          <a href="{{ url('/claims')}}" class="menu-link">
+            <div class="text-truncate" data-i18n="List">NHIS</div>
           </a>
-        </li> -->
+        </li>
          <li class="menu-item">
           <a href="#" class="menu-link">
             <div class="text-truncate" data-i18n="List">Private</div>
           </a>
         </li>
-        <li class="menu-item">
-          <a href="#" class="menu-link">
-            <div class="text-truncate" data-i18n="List">NHIS</div>
-          </a>
-        </li>
+        
         <li class="menu-item">
           <a href="#" class="menu-link">
             <div class="text-truncate" data-i18n="List">Cash</div>

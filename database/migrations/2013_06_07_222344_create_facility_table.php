@@ -33,7 +33,6 @@ return new class extends Migration
             $table->string('archived_by', 100)->nullable();
             $table->date('archived_date', 100)->nullable();
             $table->primary('facility_id');
-            // $table->foreign('user_id')->references('user_id')->on('users');
         });
     }
 
