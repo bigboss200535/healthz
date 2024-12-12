@@ -16,7 +16,7 @@ return new class extends Migration
        Schema::create('user_logs', function (Blueprint $table) {
             $table->string('user_id', 50);
             $table->timestamp('username')->nullable();
-            $table->string('user_password', 100);
+            // $table->string('user_password', 100);
             $table->date('login_date');
             $table->date('logout_date');
             $table->timestamp('login_time')->nullable();

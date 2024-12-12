@@ -26,10 +26,20 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): RedirectResponse
     {
-        $request->authenticate();
-        $request->session()->regenerate();
+        // $request->authenticate();
+        // $request->session()->regenerate();
 
-        return redirect()->intended(RouteServiceProvider::HOME);
+        // return redirect()->intended(RouteServiceProvider::HOME);
+
+        try {
+            $request->authenticate();
+            $request->session()->regenerate();
+    
+            return redirect()->intended(RouteServiceProvider::HOME);
+        } catch (\Exception $e) {
+            // Catch session expiry or other issues and provide a custom message
+            return redirect()->route('login')->with('message', 'Your session has expired. Please log in again.');
+        }
     }
 
    
