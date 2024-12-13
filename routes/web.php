@@ -11,6 +11,7 @@ use App\Http\Controllers\DiagnosisController;
 use App\Http\Controllers\SponsorController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ServicesController;
 use App\Http\Controllers\ReportsController;
 use Illuminate\Support\Facades\Route;
 use illuminate\Http\Request;
@@ -46,7 +47,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('service', ServiceRequestController::class);
     Route::resource('users', UserController::class);
     Route::resource('sponsors', SponsorController::class); 
-    Route::resource('services', ServiceRequestController::class);
+    Route::resource('services', ServicesController::class);
     Route::resource('patients', PatientController::class);
     Route::resource('products', ProductController::class);
     Route::resource('diagnosis', DiagnosisController::class);

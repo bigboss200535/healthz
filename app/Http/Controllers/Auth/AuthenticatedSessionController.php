@@ -37,14 +37,15 @@ class AuthenticatedSessionController extends Controller
             $request->session()->regenerate();
 
             LoginLog::create([
-                'user_id' => Auth::id(),
+                'user_id' => Auth::user()->user_id,
                 'logname' => 'login',
                 'user_ip' => $request->ip(),
-                'user_pc' => $request->userAgent(),
+                'user_pc' => $request->getHost(),
                 'login_date' => now(),
                 'login_time' => now(),
+                'added_date' => now(),
                 'session_id' => session()->getId(), 
-                'status' => true, // Login success
+                'status' => 'Active', // Login success
             ]);
 
             return redirect()->intended(RouteServiceProvider::HOME);
@@ -52,13 +53,14 @@ class AuthenticatedSessionController extends Controller
 
             LoginLog::create([
                 'user_id' => null, // No user authenticated for failed login
-                'user_ip' => $request->ip(),
                 'logname' => 'login',
-                'user_pc' => $request->userAgent(),
+                'user_ip' => $request->ip(),
+                'user_pc' => $request->getHost(),
                 'login_date' => now(),
                 'login_time' => now(),
+                'added_date' => now(),
                 'session_id' => session()->getId(), 
-                'status' => false, // Login failed
+                'status' => 'Inactve', // Login failed
             ]);
 
             // Catch session expiry or other issues and provide a custom message
@@ -75,14 +77,15 @@ class AuthenticatedSessionController extends Controller
     {
         if (Auth::check()) {
             LoginLog::create([
-                'user_id' => Auth::id(), 
-                'user_ip' => $request->ip(),
+                'user_id' => Auth::user()->user_id,
                 'logname' => 'logout',
-                'user_pc' => $request->userAgent(),
-                'login_date' => now(),
-                'login_time' => now(),
+                'user_ip' => $request->ip(),
+                'user_pc' => $request->getHost(),
+                'logout_date' => now(),
+                'logout_time' => now(),
+                'added_date' => now(),
                 'session_id' => session()->getId(), 
-                'status' => false, // Login failed
+                'status' => 'Active', // Login failed
             ]);
         }
 

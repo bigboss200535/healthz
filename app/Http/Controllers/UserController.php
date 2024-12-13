@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\LoginLog;
 use Illuminate\Http\Request;
 use App\Models\User;
 
@@ -86,5 +87,21 @@ class UserController extends Controller
         // $request->session()->regenerateToken();
 
         // return Redirect::to('/');
+    }
+
+    public function getuserlog()
+    {
+        $userlogs = LoginLog::where('archived', 'No')
+        ->where('user_logs.status', '=','Active')
+        // ->rightJoin('user_roles', 'users.role_id', '=', 'user_roles.role_id')
+        ->select('logname','user_ip', 'user_pc', 'session_id', 'user_id',  'login_date', 'logout_date', 'login_time', 
+        'logout_time')
+        ->get();
+
+        // $user = User::where('user_logs.archived', 'No')
+        // ->where('users.status', '=','Active')
+        // ->rightJoin('user_roles', 'users.role_id', '=', 'user_roles.role_id')
+        // ->select('users.*','user_roles.*')
+        // ->get();
     }
 }

@@ -21,11 +21,16 @@ class LoginLog extends Model
     // }
 
     protected $fillable = [
-        'user_logs',
+        'log_id',
+        'logname',
+        'user_ip',
+        'session_id',
+        'user_id',
+        'user_pc',
         'login_date',
         'login_time',
-        'user_ip',
-        'user_pc',
+        'logout_date',
+        'logout_time',
         'added_id',
         'added_date',
         'udpated_by',

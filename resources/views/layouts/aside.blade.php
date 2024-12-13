@@ -335,8 +335,8 @@
       </a>
       <ul class="menu-sub">
         <li class="menu-item">
-          <a href="#" class="menu-link">
-            <div class="text-truncate" data-i18n="Basic">Services</div>
+          <a href="{{ url('/services') }}" class="menu-link">
+            <div class="text-truncate" data-i18n="Basic">Services Fee</div>
           </a>
         </li>
       </ul>

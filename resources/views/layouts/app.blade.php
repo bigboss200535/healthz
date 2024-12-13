@@ -271,11 +271,11 @@
       }
     });
  </script>
- <script>
+ <!-- <script>
     document.addEventListener('contextmenu', event => event.preventDefault());
     document.addEventListener('keydown', event => {
         if (event.ctrlKey && (event.key === 'p' || event.key === 's')) {
             event.preventDefault();
         }
     });
-</script>
+</script> -->
