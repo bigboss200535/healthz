@@ -132,7 +132,7 @@ class UserRoles extends Seeder
         ]);
 
         $titledata = UserRole::create([
-            'role_id' => 'R14',
+            'role_id' => 'R15',
             'role_name' => 'Store Keeper',
             'added_date' => now(),
             'status' => 'Active',
@@ -140,7 +140,7 @@ class UserRoles extends Seeder
         ]);
 
         $titledata = UserRole::create([
-            'role_id' => 'R15',
+            'role_id' => 'R16',
             'role_name' => 'Secretary',
             'added_date' => now(),
             'status' => 'Active',
@@ -148,7 +148,7 @@ class UserRoles extends Seeder
         ]);
 
         $titledata = UserRole::create([
-            'role_id' => 'R15',
+            'role_id' => 'R16',
             'role_name' => 'Procurement Officer',
             'added_date' => now(),
             'status' => 'Active',
