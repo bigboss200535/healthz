@@ -29,7 +29,6 @@ class AuthenticatedSessionController extends Controller
     {
         // $request->authenticate();
         // $request->session()->regenerate();
-
         // return redirect()->intended(RouteServiceProvider::HOME);
 
         try {
@@ -69,7 +68,6 @@ class AuthenticatedSessionController extends Controller
     }
 
    
-
     /**
      * Destroy an authenticated session.
      */
