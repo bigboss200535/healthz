@@ -2,10 +2,14 @@
 
 namespace Database\Factories;
 
+use App\Models\Age;
 use App\Models\Gender;
 use App\Models\Patient;
+use App\Models\Services;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
+
 
 
 /**
@@ -21,28 +25,26 @@ class PatientAttendanceFactory extends Factory
     public function definition()
     {
         $user = User::inRandomOrder()->first();
+        $age = Age::inRandomOrder()->first();
         $gender = Gender::inRandomOrder()->where('usage','=','1')->first();
         $patient = Patient::inRandomOrder()->where('archived', '=', 'No')->first();
+        $services = Services::inRandomOrder()->where('archived', '=', 'No')->first();
 
        return [
             'patient_id' =>  $patient->patient_id,
             'attendance_date'=> now(),
             'attendance_time' => now(),
-            'pat_age' => $this->faker->randomElement(['19', '20', '21', '50', '1', '2']),
-
-            'education' => $this->faker->randomElement(['None', 'JHS/Middle', 'Primary', 'SHS', 'Tertiary', 'Vocational', 'Technical']),
-            // 'religion_id' => $religion->religion_id,
-            'nationality' => $this->faker->randomElement(['10001', '20001']),
-            'telephone' => $this->faker->phoneNumber(),
-            'telephone_verified' => $this->faker->randomElement(['Yes', 'No']),
-            'email' => $this->faker->email(),
-            'address' => $this->faker->city(),
-            'contact_person' => $this->faker->firstName,
-            'contact_telephone' => $this->faker->phoneNumber,
-            'contact_relationship' => $this->faker->colorName(),
-            // 'contact_relationship' => $this->faker->city(),
+            'pat_age' => Str::random(2),
+            'reg_type'=> $this->faker->randomElement(['New', 'Old']),
+            'service_type' => $services->service,
+            'membership_number' => Str::random(8),
+            'insured' => $this->faker->randomElement(['Yes', 'No']),
+            'claims_check_code' => Str::random(5),
+            // 'claims_check_code' => $this->faker->phoneNumber,
+            'age_id' => $this->faker->randomElement(['2', '3']),
+            'gender_id' => $this->faker->randomElement(['2', '3']),
             'user_id' =>  $user->user_id,
-            // 'remember_token' => Str::random(10),
+            // 'remember_token' => Str::random(5),
         ];
     }
 }
