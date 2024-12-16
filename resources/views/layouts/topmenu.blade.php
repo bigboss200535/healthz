@@ -140,7 +140,7 @@
                       </div>
                     </div>
                     <div class="flex-grow-1">
-                      <span class="fw-medium d-block">{{ Auth::user()->fullname }}</span>
+                      <span class="fw-medium d-block">{{ Auth::user()->firstname }}</span>
                       <small class="text-muted">{{ Auth::user()->role_id }}</small>
                     </div>
                   </div>

@@ -307,7 +307,20 @@ R12
         </li>
       </ul>
     </li>
-   
+    <li class="menu-item">
+      <a href="javascript:void(0);" class="menu-link menu-toggle">
+        <i class="menu-icon tf-icons bx bx-envelope"></i>
+        <div class="text-truncate" data-i18n="Users">Notifications</div>
+         <!-- <span class="badge badge-center rounded-pill bg-success ms-auto">4</span> -->
+      </a>
+      <ul class="menu-sub">
+        <li class="menu-item">
+          <a href="#" class="menu-link">
+            <div class="text-truncate" data-i18n="List">List</div>
+          </a>
+        </li>
+      </ul>
+    </li>
 <!-- --------------------------------------/-salaries--------------------------------------------- -->
     <li class="menu-header small text-uppercase"><span class="menu-header-text" data-i18n="Components">System Setup</span></li>
     <!-- Cards -->
