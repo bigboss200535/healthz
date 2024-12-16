@@ -78,11 +78,17 @@ Route::middleware('auth')->group(function () {
         // Route::get('/cash-management', [ClaimsController::class, 'index']);
     });
 
-    Route::prefix('claims')->group(function () {
+    Route::prefix('consultation')->group(function () {
         Route::get('/opd-consultation', [ConsultationController::class, 'index']);
-        Route::get('all', [ReportsController::class, 'index']);
-        Route::get('patient', [ReportsController::class, 'patient']);
+        Route::get('/ipd-consultation', [ReportsController::class, 'index']);
+        // Route::get('patient', [ReportsController::class, 'patient']);
     });
+
+    // Route::prefix('consultation')->group(function () {
+    //     Route::get('/', [ReportsController::class, 'users']);
+    //     Route::get('all', [ReportsController::class, 'index']);
+    //     Route::get('patient', [ReportsController::class, 'patient']);
+    // });
 });
 
 require __DIR__.'/auth.php';
