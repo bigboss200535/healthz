@@ -10,6 +10,7 @@ use App\Http\Controllers\ClaimsPrivateController;
 use App\Http\Controllers\ClaimsNhisController;
 use App\Http\Controllers\ConsultationController;
 use App\Http\Controllers\DiagnosisController;
+use App\Http\Controllers\NursesNotesController;
 use App\Http\Controllers\SponsorController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProductController;
@@ -54,16 +55,13 @@ Route::middleware('auth')->group(function () {
     Route::resource('patients', PatientController::class);
     Route::resource('products', ProductController::class);
     Route::resource('diagnosis', DiagnosisController::class);
-    // Route::resource('claims', ClaimsController::class);
-    // Route::get('/patient/search', [PatientController::class, 'search'])->name('patient.search');
-    // Route::get('/consultation', [ConsultationController::class, 'index'])->name('consultation.index');
+
     Route::get('/patient/search', [PatientController::class, 'search'])->name('patient.search');
-    // Route::post('code_generate', [CodeGenerationController::class, 'index']);
 
     Route::prefix('reports')->group(function () {
-        Route::get('/users/{user_id}', [ReportsController::class, 'users']);
-        Route::get('all', [ReportsController::class, 'index']);
-        Route::get('patient', [ReportsController::class, 'patient']);
+        // Route::get('/users/{user_id}', [ReportsController::class, 'users']);
+        // Route::get('/all', [ReportsController::class, 'index']);
+        // Route::get('/patient', [ReportsController::class, 'patient']);
     });
 
     Route::get('patient/attendance/{patient_id}', [PatientVisitsController::class, 'show'])->name('attendance.show');
@@ -82,6 +80,17 @@ Route::middleware('auth')->group(function () {
     Route::prefix('consultation')->group(function () {
         Route::get('/opd-consultation', [ConsultationController::class, 'index']);
         Route::get('/ipd-consultation', [ReportsController::class, 'index']);
+        // Route::get('patient', [ReportsController::class, 'patient']);
+    });
+
+    Route::prefix('nurses')->group(function () {
+        Route::get('/general-vitals', [NursesNotesController::class, 'index']);
+        Route::get('/notes', [NursesNotesController::class, 'index']);
+        Route::get('/24hour-report', [NursesNotesController::class, 'index']);
+        Route::get('/anc-vitals', [NursesNotesController::class, 'index']);
+        Route::get('/obgy-vitals', [NursesNotesController::class, 'index']);
+        Route::get('/eye-vitals', [NursesNotesController::class, 'index']);
+        Route::get('/medications', [NursesNotesController::class, 'index']);
         // Route::get('patient', [ReportsController::class, 'patient']);
     });
 

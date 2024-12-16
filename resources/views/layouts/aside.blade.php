@@ -107,25 +107,30 @@ R12
       </a>
       <ul class="menu-sub">
         <li class="menu-item">
-          <a href="#" class="menu-link">
+          <a href="{{ url('nurses/general-vitals')}}" class="menu-link">
             <div class="text-truncate" data-i18n="List">Vital Signs</div>
           </a>
         </li>
          <li class="menu-item">
-          <a href="#" class="menu-link">
+          <a href="{{ url('nurses/notes') }}" class="menu-link">
             <div class="text-truncate" data-i18n="List">Notes</div>
           </a>
         </li>
         <li class="menu-item">
-          <a href="#" class="menu-link">
+          <a href="{{ url('nurses/24hour-report')}}" class="menu-link">
             <div class="text-truncate" data-i18n="List">24 Hour Report</div>
           </a>
         </li>
         <li class="menu-item">
-         <a href="#" class="menu-link">
+         <a href="{{ url('nurses/medications') }}" class="menu-link">
           <div class="text-truncate" data-i18n="list">Medications</div>
          </a>
         </li>
+        <!-- <li class="menu-item">
+         <a href="{{ url('nurses/anc-vitals') }}" class="menu-link">
+          <div class="text-truncate" data-i18n="list">Antenatal Record</div>
+         </a>
+        </li> -->
       </ul>
     </li>
     @endif
