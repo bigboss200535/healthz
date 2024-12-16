@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class ServiceRequest extends Model
 {
     use HasFactory;
-    protected $table = 'patient_attendance_request';
+    protected $table = 'patient_attendance';
     // protected $primaryKey = 'age_id';
     public $timestamps = false;
     protected $keyType = 'string';
