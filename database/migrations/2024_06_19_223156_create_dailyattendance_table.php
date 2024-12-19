@@ -13,17 +13,22 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('admissions', function (Blueprint $table) {
-            $table->string('admissions_id', 50);
-            $table->string('episode_id', 50);
-            $table->string('patient_id', 50);
-            $table->string('patient_opd')->nullable();
-            $table->string('ward_id', 50)->nullable();
-            $table->string('bed_id', 50)->nullable();
-            $table->string('discharge_status')->nullable();
-            $table->string('discharge_date', 10)->nullable();
-            $table->date('ward_transfer')->nullable()->default('No');
-            $table->string('doctor_id', 50)->nullable();
+        Schema::create('daily_attendance', function (Blueprint $table) {
+            $table->id('attendance_id');
+            $table->string('system_id')->index();
+            $table->string('patient_no', 50)->nullable();
+            $table->date('attendance_date', 50)->nullable();
+            $table->timestamp('attendance_time')->nullable();
+            $table->string('pat_age', 10)->nullable();
+            $table->string('status_code', 50)->nullable();
+            $table->string('registration_type', 50)->nullable(); //new or old
+            $table->string('registration_status', 50)->nullable();//new or old
+            $table->string('member_no', 50)->nullable();
+            $table->string('is_insured', 50)->nullable();
+            $table->string('episode_id', 50)->nullable(); //+1
+            $table->string('sponsor_id', 50)->nullable();// sponsor_id or sponosor no
+            $table->string('clinic_id', 50)->nullable();
+            $table->string('age_code', 50)->nullable();
             $table->string('user_id', 10)->nullable();
             $table->string('facility_id', 50)->nullable();
             $table->string('added_id', 100)->nullable();
@@ -36,8 +41,6 @@ return new class extends Migration
             $table->date('archived_date', 100)->nullable();
             $table->foreign('user_id')->references('user_id')->on('users');
             $table->foreign('facility_id')->references('facility_id')->on('facility');
-            $table->foreign('bed_id')->references('bed_id')->on('admission_beds');
-
         });
     }
 
@@ -48,6 +51,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('admissions');
+        Schema::dropIfExists('dailyattendance');
     }
 };

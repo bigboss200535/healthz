@@ -40,7 +40,7 @@ return new class extends Migration
             $table->string('contact_person', 50)->nullable();
             $table->string('contact_telephone', 50)->nullable();
             $table->string('contact_relationship', 100)->nullable();
-            $table->string('default_sponsor', 100)->default('0001')->nullable();
+            $table->string('sponsor_priority', 100)->nullable();
             // $table->string('sponsor_name', 100)->nullable();
             // $table->string('member_no', 150)->nullable();
             $table->string('facility_id', 50)->nullable();
