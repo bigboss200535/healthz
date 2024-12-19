@@ -24,7 +24,6 @@ return new class extends Migration
             $table->string('discharge_date', 10)->nullable();
             $table->date('ward_transfer')->nullable()->default('No');
             $table->string('doctor_id', 50)->nullable();
-            // $table->string('store_id', 50)->nullable();
             $table->string('user_id', 10)->nullable();
             $table->string('facility_id', 50)->nullable();
             $table->string('added_id', 100)->nullable();
@@ -37,7 +36,6 @@ return new class extends Migration
             $table->date('archived_date', 100)->nullable();
             $table->foreign('user_id')->references('user_id')->on('users');
             $table->foreign('facility_id')->references('facility_id')->on('facility');
-            // $table->foreign('store_id')->references('store_id')->on('stores');
             $table->foreign('bed_id')->references('bed_id')->on('admission_beds');
 
         });
