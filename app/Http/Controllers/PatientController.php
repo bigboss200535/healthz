@@ -29,21 +29,21 @@ class PatientController extends Controller
 {
     public function index()
     {
-        $patient_list = DB::table('patient_info')
-            ->join('gender', 'patient_info.gender_id', '=', 'gender.gender_id')
-            ->join('patient_nos', 'patient_info.patient_id', '=', 'patient_nos.patient_id')
-            ->join('title', 'patient_info.title_id', '=', 'title.title_id')
-            ->join('patient_sponsorship', 'patient_info.patient_id', '=', 'patient_sponsorship.patient_id')
-            ->leftJoin('sponsors', 'patient_sponsorship.sponsor_id', '=', 'sponsors.sponsor_id') 
-            ->leftJoin('sponsor_type', 'sponsors.sponsor_type_id', '=', 'sponsor_type.sponsor_type_id')
-            ->select('patient_info.patient_id', 'patient_nos.opd_number', 'title.title', 'patient_info.fullname', 'patient_info.sponsor_priority', 'patient_info.email',  'gender.gender', 
-                'patient_info.birth_date', 'patient_info.added_date', 'sponsors.sponsor_name', 'sponsors.sponsor_type_id', 'sponsor_type.sponsor_type',
-                'patient_info.telephone', DB::raw('TIMESTAMPDIFF(YEAR, patient_info.birth_date, CURDATE()) as age'))
-            ->get();
+        // $patient_list = DB::table('patient_info')
+        //     ->join('gender', 'patient_info.gender_id', '=', 'gender.gender_id')
+        //     ->join('patient_nos', 'patient_info.patient_id', '=', 'patient_nos.patient_id')
+        //     ->join('title', 'patient_info.title_id', '=', 'title.title_id')
+        //     ->join('patient_sponsorship', 'patient_info.patient_id', '=', 'patient_sponsorship.patient_id')
+        //     ->leftJoin('sponsors', 'patient_sponsorship.sponsor_id', '=', 'sponsors.sponsor_id') 
+        //     ->leftJoin('sponsor_type', 'sponsors.sponsor_type_id', '=', 'sponsor_type.sponsor_type_id')
+        //     ->select('patient_info.patient_id', 'patient_nos.opd_number', 'title.title', 'patient_info.fullname', 'patient_info.sponsor_priority', 'patient_info.email',  'gender.gender', 
+        //         'patient_info.birth_date', 'patient_info.added_date', 'sponsors.sponsor_name', 'sponsors.sponsor_type_id', 'sponsor_type.sponsor_type',
+        //         'patient_info.telephone', DB::raw('TIMESTAMPDIFF(YEAR, patient_info.birth_date, CURDATE()) as age'))
+        //     ->get();
 
-        $sponsors = Sponsors::with('SponsorType')->get();
+        // $sponsors = Sponsors::with('SponsorType')->get();
 
-        return view('patient.index', compact('patient_list')); 
+        return view('patient.index'); 
     }
 
     public function create()
@@ -322,7 +322,7 @@ class PatientController extends Controller
         $pat->updated_by =  Auth::user()->user_id;
         $pat->updated_date = now();
         $pat->status = $request->input('category_status');
-        $pat->update($request->all());
+        $pat->lockForUpdate($request->all());
 
         return 201;
     }
@@ -367,7 +367,6 @@ class PatientController extends Controller
 
     public function search(Request $request)
     {
-        // Ensure the search term is provided
         $search_term = $request->input('search_patient');
 
         // Query the patients based on the search term and join with patient_nos
@@ -380,8 +379,7 @@ class PatientController extends Controller
                     ->orWhere('telephone', 'like', '%' . $search_term . '%')
                     ->orWhere('middlename', 'like', '%' . $search_term . '%')
                     ->orWhere('patient_nos.opd_number', 'like', '%' . $search_term . '%'); // Assuming opd_number is in patient_nos
-            })
-            ->get();
+            })->get();
 
         // Return a response in JSON format
         return response()->json($search_patient);

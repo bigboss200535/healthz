@@ -144,84 +144,105 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 $(document).ready(function() {
-  // Trigger search when the search button is clicked
   $('#search_item').on('click', function() {
-      var search_term = $('#search_patient').val();  // Get the search input value
-      
-      if (search_term.trim() != '') {
-          
-          $.ajax({
-              url: '/patient/search', 
-              type: "GET",
-              headers: {
+    var search_term = $('#search_patient').val();  // Get the search input value
+
+    if (search_term.trim() !== '') {
+        $.ajax({
+            url: '/patient/search',
+            type: "GET",
+            headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-              },
-              data: {search_patient: search_term},  // Send the search term
-              success: function(response) {
-                 
-                  $('#patient_searches tbody').empty(); // Clear existing table data
+            },
+            data: { search_patient: search_term },
+            success: function(response) {
+                // Clear the DataTable before appending new data
+                var table = $('#patient_list').DataTable();
+                table.clear();
 
-                  // If there are results, populate the table
-                  if (response.length > 0) {
-                      response.forEach(function(patient, index) {
-                          // Assuming birth_date is available, calculate age
-                          var age = calculateAge(patient.birth_date);  // You need to define this function
-                        
-                          // Create a new table row for each patient
-                          var row = '<tr>' +
-<<<<<<< Updated upstream
-                                '<td>' + (index + 1) + '</td>' +
-                                '<td>' + patient.fullname + '</td>' +  // Use fullname
-                                '<td>' + patient.opd_number + '</td>' +  // Use patient_id for OPD #
-                                '<td>' + (patient.gender_id === '3' ? 'Male' : 'Female') + '</td>' +  // Gender ID mapping
-                                '<td>' + age + '</td>' +  // Age calculation
-                                '<td>' + patient.telephone + '</td>' +
-                                '<td>' + patient.register_date + '</td>' +  // Using register_date as Added Date
-                                '<td>' + patient.status + '</td>' +
-                                '<td><a class="dropdown-item" href="{{ route("patients.show",' + patient.patient_id+') }}"> ...</a></td>' + // Action button
-=======
-                              '<td>' + (index + 1) + '</td>' +
-                              '<td>' + patient.fullname + '</td>' +
-                              '<td>' + patient.opd_number + '</td>' +
-                              '<td>' + patient.gender + '</td>' +
-                              '<td>' + patient.age + '</td>' +
-                              '<td>' + patient.telephone + '</td>' +
-                              '<td>' + patient.register_date + '</td>' +
-                              '<td>' + patient.status + '</td>' +
-                              '<td><button class="btn btn-info">View</button></td>' +
->>>>>>> Stashed changes
-                              '</tr>';
+                if (response.length > 0) {
+                    response.forEach(function(patient, index) {
+                        var age = calculateAge(patient.birth_date); // Calculate age
 
-                          // Append the row to the table body
-                          $('#patient_searches tbody').append(row);
-                      });
-                  } else {
-                      // If no results, display a message
-                      $('#patient_searches tbody').append('<tr><td colspan="9" class="text-center">No patients found</td></tr>');
-                  }
-              },
-              error: function(xhr, status, error) {
-                  // Handle any errors that occur during the AJAX request
-                  console.log(error);
-              }
-          });
-      } else {
-          // If the search term is empty, show a message
-          alert('Please enter a search term');
-      }
-  });
+                        // Determine the status badge color based on sponsor type
+                        var badgeClass = '';
+                        switch (patient.sponsor_type_id) {
+                            case 'PI03': badgeClass = 'bg-label-info'; break;
+                            case 'N002': badgeClass = 'bg-label-danger'; break;
+                            case 'PC04': badgeClass = 'bg-label-primary'; break;
+                            default: badgeClass = '';
+                        }
 
-  // Function to calculate the age based on birth_date
-  function calculateAge(birthDate) {
-      var birth = new Date(birthDate);
-      var today = new Date();
-      var age = today.getFullYear() - birth.getFullYear();
-      var m = today.getMonth() - birth.getMonth();
-      if (m < 0 || (m === 0 && today.getDate() < birth.getDate())) {
-          age--;
-      }
-      return age;
-  }
+                        var row = [
+                            index + 1, // S/N
+                            '<a href="/patients/' + patient.patient_id + '">' + patient.fullname + '</a>', // Name
+                            patient.opd_number, // OPD #
+                            (patient.gender_id === '3' ? 'Male' : 'Female'), // Gender
+                            age, // Age
+                            patient.telephone, // Telephone
+                            new Date(patient.register_date).toLocaleDateString('en-GB'), // Added Date
+                            '', // Status
+                            '<div class="dropdown" align="center">' +
+                                '<button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">' +
+                                    '<i class="bx bx-dots-vertical-rounded"></i>' +
+                                '</button>' +
+                                '<div class="dropdown-menu">' +
+                                    '<a class="dropdown-item" href="/patients/' + patient.patient_id + '">' +
+                                        '<i class="bx bx-lock-alt me-1"></i> More' +
+                                    '</a>' +
+                                '</div>' +
+                            '</div>' // Action
+                        ];
+
+                        // Add the row to the DataTable
+                        table.row.add(row).draw();
+                    });
+                } else {
+                    // If no results, display a message
+                    table.row.add([
+                        '', '', '', '', '', '', '', 'No patients found', ''
+                    ]).draw();
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('Error:', error);
+                alert('There was an error processing your request. Please try again.');
+            }
+        });
+    } else {
+        alert('Please enter a search term');
+    }
+});
+
+// Initialize DataTable
+$(document).ready(function() {
+    $('#patient_list').DataTable({
+        "paging": true,        // Enable pagination
+        // "searching": true,     // Enable search bar
+        // "ordering": true,      // Enable column sorting
+        "info": true,          // Show info (total records)
+        // "autoWidth": false,    // Disable automatic width calculation
+        "responsive": true,    // Make the table responsive
+        "columnDefs": [{
+            "targets": -1, // Target the last column (Action column)
+            "orderable": false // Disable sorting on the Action column
+        }]
+    });
+});
+
+// Age calculation function
+function calculateAge(birthDate) {
+    const birth = new Date(birthDate);
+    const today = new Date();
+    let age = today.getFullYear() - birth.getFullYear();
+    const month = today.getMonth();
+    const day = today.getDate();
+    if (month < birth.getMonth() || (month === birth.getMonth() && day < birth.getDate())) {
+        age--;
+    }
+    return age;
+}
+  
 });
  // Clear the search field when the "Clear" button is clicked
  $('#clear_search').on('click', function(e){
