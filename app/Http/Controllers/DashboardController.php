@@ -4,11 +4,17 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use App\Models\PatientAttendance;
+use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
     public function index()
     {   
+
+        $out_patient = PatientAttendance::where('archived', 'No')->count();
+        $in_patient = DB::table('admissions')->where('archived', 'No')->count();
+
         $current_hour = Carbon::now()->format('H');
 
         if($current_hour>=0 && $current_hour<=12)
@@ -27,7 +33,7 @@ class DashboardController extends Controller
             $greeting = 'Hello!';
         }
 
-        return view('dashboard', compact('greeting'));
+        return view('dashboard', compact('greeting', 'in_patient', 'out_patient'));
     }
 
     

@@ -36,7 +36,7 @@ class PatientController extends Controller
             ->join('patient_sponsorship', 'patient_info.patient_id', '=', 'patient_sponsorship.patient_id')
             ->leftJoin('sponsors', 'patient_sponsorship.sponsor_id', '=', 'sponsors.sponsor_id') 
             ->leftJoin('sponsor_type', 'sponsors.sponsor_type_id', '=', 'sponsor_type.sponsor_type_id')
-            ->select('patient_info.patient_id', 'patient_nos.opd_number', 'title.title', 'patient_info.fullname', 'patient_info.default_sponsor', 'patient_info.email',  'gender.gender', 
+            ->select('patient_info.patient_id', 'patient_nos.opd_number', 'title.title', 'patient_info.fullname', 'patient_info.sponsor_priority', 'patient_info.email',  'gender.gender', 
                 'patient_info.birth_date', 'patient_info.added_date', 'sponsors.sponsor_name', 'sponsors.sponsor_type_id', 'sponsor_type.sponsor_type',
                 'patient_info.telephone', DB::raw('TIMESTAMPDIFF(YEAR, patient_info.birth_date, CURDATE()) as age'))
             ->get();

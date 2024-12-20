@@ -110,7 +110,7 @@
                               </div>
                           </div>
                           <span class="fw-medium d-block mb-1">Admissions</span>
-                             <h3 class="card-title mb-2">200</h3>
+                             <h3 class="card-title mb-2">{{ $in_patient }}</h3>
                         </div>
                       </div>
                     </div>
@@ -124,7 +124,7 @@
                               </div>
                           </div>
                           <span class="fw-medium d-block mb-1">Out Patient</span>
-                             <h3 class="card-title mb-2">150</h3>
+                             <h3 class="card-title mb-2">{{ $out_patient}}</h3>
                         </div>
                       </div>
                     </div>
@@ -150,9 +150,10 @@
                         <div class="card">
                         <div class="card-body">
                           <div align="center">
-                              <a href="{{ route('patients.create') }}" class="btn btn-primary">Register New Patient</a>
-                              <!-- <a href="/service" class="btn btn-primary">Register Attendance</a> -->
-                              <a href="/appointments" class="btn btn-primary">Appointments</a>
+                              <a href="{{ route('patients.index') }}" class="btn btn-secondary">Search Patient</a>
+                              <a href="{{ route('patients.create') }}" class="btn btn-warning">Register New Patient</a>
+                              <a href="#" class="btn btn-primary">Book Appointment</a>
+                              <a href="#" class="btn btn-info">Walk-in Medications</a>
                               <a href="#" class="btn btn-primary">Walk-In Services</a>
                           </div>
                       </div>
