@@ -28,6 +28,7 @@ class PatNumber extends Model
     protected $fillable = [
         'patient_id',
         'opd_number',
+        'clinic_id',
         'registration_date',
         'registration_time',
         'user_id',

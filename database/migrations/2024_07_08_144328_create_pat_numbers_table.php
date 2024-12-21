@@ -16,7 +16,7 @@ return new class extends Migration
        Schema::create('patient_nos', function (Blueprint $table) {
             $table->string('patient_id', 50);
             $table->string('opd_number', 50);
-            $table->string('clinic_code', 100)->nullable();
+            $table->string('clinic_id', 100)->nullable();
             $table->date('registration_date')->nullable();
             $table->timestamp('registration_time')->nullable();
             $table->string('user_id', 100)->nullable();
@@ -32,6 +32,7 @@ return new class extends Migration
             $table->foreign('user_id')->references('user_id')->on('users');
             $table->foreign('patient_id')->references('patient_id')->on('patient_info');
             $table->foreign('facility_id')->references('facility_id')->on('facility');
+            $table->foreign('clinic_id')->references('clinic_id')->on('clinics');
         });
     }
 

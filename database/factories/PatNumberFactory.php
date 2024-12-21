@@ -25,7 +25,7 @@ class PatNumberFactory extends Factory
         return [
             'patient_id' => $patient->patient_id,
             'opd_number' => 'A'.$this->faker->randomNumber(8, true).'/24',
-            'clinic_code' => $this->faker->randomElement(['n', 'a']),
+            'clinic_id' => $this->faker->randomElement(['n', 'a']),
             'user_id' =>  $user->user_id,
         ];
     }
