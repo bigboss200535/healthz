@@ -114,6 +114,7 @@
         $('#patient_services').DataTable();
         $('#patient_search_list').DataTable();
         $('#patient_searches').DataTable();
+        $('#nurses_notes_patient').DataTable();
         $('.sponsor_name').select2();
         $('.sponsorship_type').select2();
     });
