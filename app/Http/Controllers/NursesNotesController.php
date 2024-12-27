@@ -10,4 +10,9 @@ class NursesNotesController extends Controller
     {
         return view('nurses.index');
     }
+
+    public function general_vitals()
+    {
+        return view('nurses.vitals');
+    }
 }
