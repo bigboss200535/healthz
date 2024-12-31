@@ -17,6 +17,16 @@
                                   <label class="form-label" for="service_name">Sevice Name <a style="color: red;">*</a></label>
                                   <input type="text" class="form-control" id="service_name" name="service_name" placeholder="Service Name">
                                 </div>
+                              </div>
+                              <div class="row mb-3">
+                                <div class="col">
+                                  <label class="form-label" for="status">Item Status <a style="color: red;">*</a></label>
+                                  <select name="status" id="status" class="form-control">
+                                    <option disabled>-Select-</option>
+                                    <option selected value="Active">Active</option>
+                                    <option value="Inactive">Inactive</option>
+                                  </select>
+                                </div>
                                 <div class="col">
                                   <label class="form-label" for="service_typ">Service Type <a style="color: red;">*</a></label>
                                   <select name="service_typ" id="service_typ" class="form-control">
@@ -34,8 +44,7 @@
                                     <option value="No">No</option>
                                   </select>
                                 </div>
-                                <br> 
-                                <br>
+                                
                               </div>
                               <div class="row mb-3">
                                 <div class="col">
@@ -98,7 +107,7 @@
                                   <input type="text" class="form-control" name="cash_amount" id="cash_amount" placeholder="0.00">
                                 </div>
                                 <div class="col">
-                                  <label class="form-label" for="service_name">Private Company Amount <a style="color: red;">*</a></label>
+                                  <label class="form-label" for="service_name">Private Insurance Amount <a style="color: red;">*</a></label>
                                   <input type="text" class="form-control" placeholder="0.00">
                                 </div>
                                 <div class="col">
@@ -112,12 +121,26 @@
                                   <input type="text" class="form-control" name="cash_amount" id="cash_amount" placeholder="0.00">
                                 </div>
                                 <div class="col">
-                                  <label class="form-label" for="service_name">NHIS Adult Tariff <a style="color: red;">*</a></label>
+                                  <label class="form-label" for="service_name">NHIS Adult Tariff</label>
                                   <input type="text" class="form-control" placeholder="0.00">
                                 </div>
                                 <div class="col">
-                                  <label class="form-label" for="report_type">NHIS Child Tariff <a style="color: red;">*</a></label>
+                                  <label class="form-label" for="report_type">NHIS Child Tariff </label>
                                   <input type="text" class="form-control" placeholder="0.00">
+                                </div>
+                              </div>
+                              <div class="row mb-3">
+                                <div class="col">
+                                  <label class="form-label" for="service_typ"> Adult GDRG </label>
+                                  <input type="text" class="form-control" name="cash_amount" id="cash_amount" placeholder="eg. OPDC06A">
+                                </div>
+                                <div class="col">
+                                  <label class="form-label" for="service_name">Child GDRG </label>
+                                  <input type="text" class="form-control" placeholder="eg. OPDC06A">
+                                </div>
+                                <div class="col">
+                                  <label class="form-label" for="report_type">NHIS Topup Amount </label>
+                                  <input type="text" class="form-control" placeholder="0.00" value="0.00">
                                 </div>
                               </div>
                                   <div class="d-flex align-content-center flex-wrap gap-3">

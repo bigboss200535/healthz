@@ -18,7 +18,7 @@ class ServicesFeeController extends Controller
         $services_fees = ServicesFee::where('services_fee.archived', 'No')
             ->where('services_fee.status', '=','Active')
             ->rightjoin('services', 'services.service_id', '=', 'services_fee.service_id')
-            ->orderBy('services.service_name', 'asc')
+            ->orderBy('services_fee.service', 'asc')
             ->get();
 
         $service_type = Services::where('archived', '=', 'No')

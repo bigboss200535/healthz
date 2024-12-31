@@ -374,8 +374,18 @@
         <!-- <span class="badge badge-center rounded-pill bg-danger ms-auto">6</span> -->
       </a>
       <ul class="menu-sub">
+      <li class="menu-item">
+          <a href="{{ url('/clinics') }}" class="menu-link">
+            <div class="text-truncate" data-i18n="Basic">Clinic</div>
+          </a>
+        </li>
+      <li class="menu-item">
+          <a href="{{ url('/service') }}" class="menu-link">
+            <div class="text-truncate" data-i18n="Basic">Services</div>
+          </a>
+        </li>
         <li class="menu-item">
-          <a href="{{ url('/services') }}" class="menu-link">
+          <a href="{{ url('/servicesandfee') }}" class="menu-link">
             <div class="text-truncate" data-i18n="Basic">Services Fee</div>
           </a>
         </li>

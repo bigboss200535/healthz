@@ -15,7 +15,9 @@ use App\Http\Controllers\SponsorController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ServicesFeeController;
+use App\Http\Controllers\ServicesController;
 use App\Http\Controllers\ReportsController;
+use App\Http\Controllers\ClinicController;
 use App\Http\Controllers\NotificationController;
 use Illuminate\Support\Facades\Route;
 use illuminate\Http\Request;
@@ -51,10 +53,13 @@ Route::middleware('auth')->group(function () {
     Route::resource('service', ServiceRequestController::class);
     Route::resource('users', UserController::class);
     Route::resource('sponsors', SponsorController::class); 
-    Route::resource('services', ServicesFeeController::class);
+    Route::resource('servicesandfee', ServicesFeeController::class);
+    Route::resource('service', ServicesController::class);
     Route::resource('patients', PatientController::class);
     Route::resource('products', ProductController::class);
     Route::resource('diagnosis', DiagnosisController::class);
+    Route::resource('clinics', ClinicController::class);
+    
 
     Route::get('/patient/search', [PatientController::class, 'search'])->name('patient.search');
 
