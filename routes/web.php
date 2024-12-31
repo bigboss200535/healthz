@@ -14,7 +14,7 @@ use App\Http\Controllers\NursesNotesController;
 use App\Http\Controllers\SponsorController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProductController;
-use App\Http\Controllers\ServicesController;
+use App\Http\Controllers\ServicesFeeController;
 use App\Http\Controllers\ReportsController;
 use App\Http\Controllers\NotificationController;
 use Illuminate\Support\Facades\Route;
@@ -51,7 +51,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('service', ServiceRequestController::class);
     Route::resource('users', UserController::class);
     Route::resource('sponsors', SponsorController::class); 
-    Route::resource('services', ServicesController::class);
+    Route::resource('services', ServicesFeeController::class);
     Route::resource('patients', PatientController::class);
     Route::resource('products', ProductController::class);
     Route::resource('diagnosis', DiagnosisController::class);

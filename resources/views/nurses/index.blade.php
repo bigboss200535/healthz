@@ -132,11 +132,11 @@
                                           <!-- <small class="text-muted">25/12/2024   11:59AM</small> -->
                                         </div>
                                         <p class="mb-2" style="color: #000000;">
-                                          <b>MALARIA</b> | B54  | OPDC06A   | 25/12/2024 
+                                          <b>MALARIA</b>  <span class="badge bg-label-info me-1">B54</span><span class="badge bg-label-danger me-1">OPDC06A</span> 25/12/2024 
                                           <!-- <a href="#"><i class="bx bx-edit"></i></a> -->
                                         </p>
                                         <p class="mb-2" style="color: #000000;">
-                                          <b>ANAEMIA</b> | D50  | OPDC06A   | 25/12/2024 
+                                          <b>ANAEMIA</b> <span class="badge bg-label-info me-1">D50</span> <span class="badge bg-label-danger me-1">OPDC06A</span> 25/12/2024 
                                           <!-- <a href="#"><i class="bx bx-edit"></i></a> -->
                                         </p>
                                         

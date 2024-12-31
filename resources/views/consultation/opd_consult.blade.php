@@ -1,6 +1,6 @@
 <x-app-layout>
 <duiiv class="container-xxl flex-grow-1 container-p-y">    
-          <div class="app-ecommerce">
+        <div class="app-ecommerce">
         <div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
         <div class="d-flex flex-column justify-content-center">
           <h4 class="mb-1 mt-3">In-patient Consultation</h4>
@@ -57,7 +57,7 @@
       <button type="submit" class="btn btn-primary">Generate</button>
       <button type="reset" class="btn btn-label-secondary">clear</button>
     </div>
-  </form>
+    </form>
   </div>
 </div>
 </div>        
