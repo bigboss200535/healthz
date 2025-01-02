@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\LoginLog;
+use App\Models\UserRole;
+use App\Models\Gender;
 use Illuminate\Http\Request;
 use App\Models\User;
 
@@ -11,12 +13,19 @@ class UserController extends Controller
     public function index()
     {
         $user = User::where('users.archived', 'No')->where('users.status', '=','Active')
-        ->rightJoin('user_roles', 'users.role_id', '=', 'user_roles.role_id')
-        ->select('users.*','user_roles.*')
-        ->orderBy('users.user_fullname', 'asc')
-        ->get();
-        // return view('users.index', compact('user'));
-        // $user = [];
+            ->rightJoin('user_roles', 'users.role_id', '=', 'user_roles.role_id')
+            ->select('users.*','user_roles.*')
+            ->orderBy('users.user_fullname', 'asc')
+            ->get();
+
+        $gender = Gender::where('archived', 'No')
+            ->where('status', 'Active')
+            ->get();
+         
+        $role = UserRole::where('archived', 'No')
+            ->where('status', 'Active')
+            ->orderBy('role_name', 'asc')
+            ->get();
 
     // Use chunkById to process users in chunks
     // User::where('users.archived', 'No')
@@ -30,7 +39,7 @@ class UserController extends Controller
     //         }
     //     });
 
-         return view('users.index', compact('user'));
+         return view('users.index', compact('user', 'gender', 'role'));
     }
 
     public function create()

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Diagnosis;
+use App\Models\Age;
+use App\Models\Gender;
 use Illuminate\Http\Request;
 
 class DiagnosisController extends Controller
@@ -15,7 +17,16 @@ class DiagnosisController extends Controller
         ->get();
         // ->paginate(20);
 
-        return view('diagnosis.index', compact('diagnosis'));
+        $age = Age::where('archived', 'No')
+            ->where('status', 'Active')
+            // ->orderBy('age_description', 'asc')
+            ->get();
+
+        $gender = Gender::where('archived', 'No')
+            ->where('status', 'Active')
+            ->get();
+
+        return view('diagnosis.index', compact('diagnosis', 'age' , 'gender'));
     
     }
 
