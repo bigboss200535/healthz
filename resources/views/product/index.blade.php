@@ -3,7 +3,6 @@
                   <h4 class="py-3 mb-4">
                     <span class="text-muted fw-light">Product/</span> List
                   </h4>
-
                   <div class="row g-4 mb-4">
                     <div class="col-sm-6 col-xl-3">
                       <div class="card">
@@ -12,7 +11,7 @@
                             <div class="content-left">
                               <span></span>
                               <div class="d-flex align-items-end mt-2">
-                                <h4 class="mb-0 me-2">{{ $total_all }}</h4>
+                                <h4 class="mb-0 me-2">{{ number_format($total_all) }}</h4>
                                 <!-- <small class="text-success">(+29%)</small> -->
                               </div>
                               <p class="mb-0">All <br>Products </p>
@@ -33,7 +32,7 @@
                             <div class="content-left">
                               <span></span>
                               <div class="d-flex align-items-end mt-2">
-                                <h4 class="mb-0 me-2">{{ $total_drugs }}</h4>
+                                <h4 class="mb-0 me-2">{{ number_format($total_drugs) }}</h4>
                                 <!-- <small class="text-success">(+18%)</small> -->
                               </div>
                               <p class="mb-0">Total <br> Drugs</p>
@@ -54,7 +53,7 @@
                             <div class="content-left">
                               <span></span>
                               <div class="d-flex align-items-end mt-2">
-                                <h4 class="mb-0 me-2">{{$total_consumable}}</h4>
+                                <h4 class="mb-0 me-2">{{ number_format($total_consumable) }}</h4>
                                 <!-- <small class="text-danger">(-14%)</small> -->
                               </div>
                               <p class="mb-0">Total <br>Consumables</p>
@@ -75,7 +74,7 @@
                             <div class="content-left">
                               <span> </span>
                               <div class="d-flex align-items-end mt-2">
-                                <h4 class="mb-0 me-2">{{ $total_others }}</h4>
+                                <h4 class="mb-0 me-2">{{ number_format( $total_others) }}</h4>
                                 <!-- <small class="text-success">(+42%)</small> -->
                               </div>
                               <p class="mb-0"><br> Others </p>
@@ -104,49 +103,49 @@
                               <div class="row mb-3">
                                 <div class="col">
                                   <label class="form-label" for="u_user_name">Product Name <a style="color: red;">*</a></label>
-                                  <input type="text" class="form-control" id="u_user_name" name="u_user_name" placeholder="Username" autocomplete="off">
+                                  <input type="text" class="form-control" id="u_user_name" name="u_user_name" placeholder="Product Name" autocomplete="off">
                                 </div>
                               </div>
                               <div class="row mb-3">
                                 <div class="col">
-                                  <label class="form-label" for="first_name">Firstname <a style="color: red;">*</a></label>
+                                  <label class="form-label" for="first_name">Product Class <a style="color: red;">*</a></label>
                                   <input type="text" class="form-control" id="first_name" name="first_name" placeholder="First Name" autocomplete="off">
                                 </div>
                                 <div class="col">
-                                  <label class="form-label" for="other_name">Othername <a style="color: red;">*</a></label>
+                                  <label class="form-label" for="other_name">Default Route</label>
                                   <input type="text" class="form-control" id="other_name" name="other_name" placeholder="Othername" autocomplete="off">
                                 </div>
                               </div>
                               <div class="row mb-3">
                                 <div class="col">
-                                  <label class="form-label" for="u_pass_word">Password <a style="color: red;">*</a></label>
-                                  <input type="password" class="form-control" id="u_pass_word" name="u_pass_word" placeholder="*****">
+                                  <label class="form-label" for="u_pass_word">Presentation <a style="color: red;">*</a></label>
+                                  <input type="text" class="form-control" id="u_pass_word" name="u_pass_word">
                                 </div>
                                 <div class="col">
-                                  <label class="form-label" for="confirm_pass">Confirm Password <a style="color: red;">*</a></label>
-                                  <input type="password" class="form-control" id="confirm_pass" name="confirm_pass" placeholder="*****">
+                                  <label class="form-label" for="confirm_pass">Store <a style="color: red;">*</a></label>
+                                  <input type="text" class="form-control" id="confirm_pass" name="confirm_pass" placeholder="*****">
                                 </div>
                               </div>   
                               <div class="row mb-3">
                                 <div class="col">
-                                  <label class="form-label" for="gender">Gender <a style="color: red;">*</a></label>
+                                  <label class="form-label" for="gender">Expirable <a style="color: red;">*</a></label>
                                   <select name="gender" id="gender" class="form-control">
                                     <option disabled selected>-Select-</option>
                                      
                                   </select>
                                 </div>
                                 <div class="col">
-                                  <label class="form-label" for="u_email">Email </label>
+                                  <label class="form-label" for="u_email">Stockable </label>
                                   <input type="text" class="form-control" id="u_email" name="u_email" placeholder="example@demo.com">
                                 </div>
                               </div>   
                               <div class="row mb-3">
                                 <div class="col">
-                                  <label class="form-label" for="u_telephone">Telephone <a style="color: red;">*</a></label>
+                                  <label class="form-label" for="u_telephone">Unit Cost <a style="color: red;">*</a></label>
                                   <input type="text" class="form-control" id="u_telephone" name="u_telephone" placeholder="Telephone">
                                 </div>
                                 <div class="col">
-                                  <label class="form-label" for="user_role">Role <a style="color: red;">*</a></label>
+                                  <label class="form-label" for="user_role">Enable NHIS <a style="color: red;">*</a></label>
                                   <select name="user_role" id="user_role" class="form-control">
                                     
                                   </select>
@@ -249,7 +248,6 @@
                           </div>
                         </div>
                     </div>
-                  
              </div>
           </div>
     </x-app-layout>
