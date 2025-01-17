@@ -21,7 +21,6 @@ use Illuminate\Support\Facades\Log;
 
 class ServiceRequestController extends Controller
 {
-    
      public function index()
     {
         // // $service_resuest = ;
@@ -65,8 +64,8 @@ class ServiceRequestController extends Controller
             ]);
 
             DB::select('CALL GetEpisodeId(?, ?, ?, ?)', [$request->p_id, 'PAT123456', 'CLAIMCODE123', $request->attendance_date]);
-            $patient = Patient::find($request->p_id);
-            $age_in_full = $this->get_age_full($patient->birth_date);
+                  $patient = Patient::find($request->p_id);
+                  $age_in_full = $this->get_age_full($patient->birth_date);
 
             $service_equest = ServiceRequest::create([
                 'patient_id' => $request->p_id,
@@ -147,26 +146,26 @@ class ServiceRequestController extends Controller
         $today = Carbon::now();
         $age_in_days = $dob->diffInDays($today);
 
-        if ($age_in_days == 1) {
-            return "1 DAY";
-        } elseif ($age_in_days < 7) {
-            return "$age_in_days DAYS";
-        } elseif ($age_in_days < 14) {
-            return "1 WEEK";
-        } elseif ($age_in_days < 30) {
-            $age_in_weeks = floor($age_in_days / 7);
-            return "$age_in_weeks WEEKS";
-        } elseif ($age_in_days == 30) {
-            return "1 MONTH";
-        } elseif ($age_in_days < 365) {
-            $age_in_months = floor($age_in_days / 30);
-            return "$age_in_months MONTHS";
-        } elseif ($age_in_days == 365) {
-            return "1 YEAR";
-        } else {
-            $age_in_years = floor($age_in_days / 365);
-            return "$age_in_years YEARS";
-        }
+            if ($age_in_days == 1) {
+                return "1 DAY";
+            } elseif ($age_in_days < 7) {
+                return "$age_in_days DAYS";
+            } elseif ($age_in_days < 14) {
+                return "1 WEEK";
+            } elseif ($age_in_days < 30) {
+                $age_in_weeks = floor($age_in_days / 7);
+                return "$age_in_weeks WEEKS";
+            } elseif ($age_in_days == 30) {
+                return "1 MONTH";
+            } elseif ($age_in_days < 365) {
+                $age_in_months = floor($age_in_days / 30);
+                return "$age_in_months MONTHS";
+            } elseif ($age_in_days == 365) {
+                return "1 YEAR";
+            } else {
+                $age_in_years = floor($age_in_days / 365);
+                return "$age_in_years YEARS";
+            }
     }
 
 
@@ -248,7 +247,6 @@ class ServiceRequestController extends Controller
         ]);
     }
 
-
     private function episode_id()
     {
         $row_count = ServiceRequest::count();
@@ -256,72 +254,11 @@ class ServiceRequestController extends Controller
         return str_pad($new_number, 6, '0', STR_PAD_LEFT);
     }
 
-    public function claims_code($request)
-    {
-        $stored_data = DB::table('facility')->where('archived', 'No')->select('ccc_type','nhia_url', 'nhia_key', 'nhia_secret')->first();
-        // $apiUrl = Http::get("https://elig.nhia.gov.gh:5000/api/hmis/genCCC");
-        // $full_url = "https://elig.nhia.gov.gh:5000/api/hmis/genCCC";
-        $end_point = 'api/hmis/genCC';
-       //"hp6658"; // API Key
-       //"ncgxs3"; // Secret
-        $full_url = Http::get($stored_data->nhia_url . $end_point);
-        $cardType = $request->input('card_type');
-        $cardNo = $request->input('member_no');
-
-        // Prepare the form data
-        $formData = [
-            'CardType' => $cardType,
-            'CardNo' => $cardNo
-        ];
-
-        if($stored_data->ccc_type=='Automatic')
-        {
-        // Send the POST request to the API
-                try {
-                    $response = Http::withHeaders([
-                        'Content-Type' => 'application/json',
-                        'x-nhia-apikey' => $stored_data->nhia_key,  // API key header
-                        'x-nhia-apisecret' =>  $stored_data->nhia_secret, // Secret key header
-                        'Authorization' => 'Basic ' . base64_encode("$stored_data->nhia_key: $stored_data->nhia_secret") // Optional, if required
-                    ])->post($full_url, $formData);
-
-                    // Check if the response is JSON or plain text
-                    if ($response->header('Content-Type') === 'application/json') {
-                        $result = $response->json(); 
-                        // Parse as JSON
-                    } else {
-                        $result = $response->body(); 
-                        // Otherwise get plain text response
-                    }
-
-                    // Return the result to the frontend or view
-                    return response()->json([
-                        'success' => true,
-                        'result' => $result
-                    ]);
-
-                } catch (\Exception $e) {
-                    return response()->json([
-                        'success' => false,
-                        'error' => $e->getMessage()
-                    ]);
-                }
-    }
-    else if ($stored_data->ccc_type==='Manual'){
-        return response()->json([
-            'success' => false,
-            'error' =>'CCC Cannot be generated'
-        ]);
-    }
-
-    }
-
     public function get_episode_no($patient_id)
     {
         $patient_status = Patient::where('death_status', '=', 'No')
         ->where('patient_id', $patient_id)
-        ->first();
-        
+        ->first();        
     }
 
 }

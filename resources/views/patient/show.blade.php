@@ -497,7 +497,6 @@
             </div>
           </div>
           <div class="col-12 text-center">
-            <!-- <button type="submit" class="btn btn-info me-3">Get CC</button> -->
             <button type="submit" class="btn btn-primary me-3">Submit</button>
             <button type="reset" class="btn btn-label-secondary" data-bs-dismiss="modal" aria-label="Close">Cancel</button>
           </div>
@@ -507,6 +506,7 @@
   </div>
 </div>
 <!--/ service_request Modal -->
+
 <!-- check claims code Modal -->
 <div class="modal fade" id="claims_check_code" tabindex="-1" aria-hidden="true" data-backdrop="static" data-bs-keyboard="false">
   <div class="modal-dialog modal-lg modal-simple modal-add-new-address">
@@ -523,11 +523,11 @@
           <div class="col-12 col-md-6">
             <label class="form-label" for="credit_amount">Member #</label>
             <input type="text" name="card_type" id="card_type" hidden value="NHISCARD">
-            <input type="text" id="member_no" name="member_no" class="form-control" placeholder="12345678" value=""/>
+            <input type="text" id="member_no" name="member_no" class="form-control" placeholder="12345678"/>
           </div>
           <div class="col-12 col-md-6">
             <label class="form-label" for="cash_amount">Claims Check Code (CCC) <a href="#" style="color: red;">*</a></label>
-            <input type="text" id="claim_code" name="claim_code" class="form-control" placeholder="xxxxx" maxlength="5" require/>
+            <input type="text" id="claim_code" name="claim_code" class="form-control" placeholder="xxxxx" maxlength="5" required readonly/>
           </div>
           <div class="col-12 col-md-6">
             <label class="form-label" for="gdrg_code"> Start Date <a href="#" style="color: red;">*</a></label>
@@ -539,15 +539,15 @@
           </div>
           <div class="col-12 col-md-6">
             <label class="form-label" for="gdrg_code"> HIN # <a href="#" style="color: red;">*</a></label>
-            <input type="text" id="hin_no" name="hin_no" class="form-control" />
+            <input type="text" id="hin_no" name="hin_no" class="form-control" readonly/>
           </div>
           <div class="col-12 col-md-6">
             <label class="form-label" for="status">Status </label>
-            <input type="text" id="card_status" name="card_status" class="form-control"/>
+            <input type="text" id="card_status" name="card_status" class="form-control" readonly/>
           </div>
           <div class="col-12 col-md-12">
-            <!-- <label class="form-label">Fullname</label> -->
-              <!-- <input type="text" name="fullname" id="fullname" class="form-control" readonly disabled> -->
+            <label class="form-label">NHIS Registration Name</label>
+              <input type="text" name="fullname" id="fullname" class="form-control" disabled>
           </div>
           <br>
           <div class="col-12 text-center">

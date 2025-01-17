@@ -19,7 +19,8 @@ use App\Http\Controllers\ServicesController;
 use App\Http\Controllers\ReportsController;
 use App\Http\Controllers\FacilityController;
 use App\Http\Controllers\ClinicController;
-use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\NotificationController; 
+use App\Http\Controllers\ExternalCallController;
 use Illuminate\Support\Facades\Route;
 use illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
@@ -112,7 +113,10 @@ Route::middleware('auth')->group(function () {
         Route::get('/all', [NotificationController::class, 'index']);
         // Route::get('all', [ReportsController::class, 'index']);
         // Route::get('patient', [ReportsController::class, 'patient']);
+        
     });
+
+    Route::post('code_generate', [ExternalCallController::class, 'claims_check_code']);
 });
 
 require __DIR__.'/auth.php';

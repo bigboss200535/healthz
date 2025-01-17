@@ -1,3 +1,8 @@
+<?php use Illuminate\Support\Facades\DB;
+
+$facility = DB::table('facility')->where('archived', 'No')->value('facility_name');
+?>
+
 <nav x-data="{ open: false }" class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme" id="layout-navbar">
         <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0   d-xl-none ">
         <a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)">
@@ -6,12 +11,13 @@
       </div>
     <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
         <div class="navbar-nav align-items-center">
-          <!-- <div class="nav-item navbar-search-wrapper mb-0">
+          <div class="nav-item navbar-search-wrapper mb-0">
             <a class="nav-item nav-link search-toggler px-0" href="javascript:void(0);">
-              <i class="bx bx-search bx-sm"></i>
-              <span class="d-none d-md-inline-block text-muted">Search (Ctrl+/)</span>
+              <!-- <i class="bx bx-search bx-sm"></i> -->
+               <h4 class="d-md-inline-block">{{ $facility }}</h4>
+              <!-- <span class="d-none d-md-inline-block"></span> -->
             </a>
-          </div> -->
+          </div>
         </div>
         <ul class="navbar-nav flex-row align-items-center ms-auto">
           <!-- Language ------------------------------------------------------------------------------------>
@@ -194,3 +200,4 @@
         <i class="bx bx-x bx-sm search-toggler cursor-pointer"></i>
       </div>
   </nav>
+ 

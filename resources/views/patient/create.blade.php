@@ -115,7 +115,6 @@
             <div class="col">
               <label class="form-label" for="old_folder">Old Folder Number</label>
               <input type="text" class="form-control" id="old_folder" name="old_folder" placeholder="Old Folder Number" autocomplete="off">
-              @error('old_folder') <span class="text-danger">{{ $message }}</span> @enderror
             </div>
           </div>
           <div class="row mb 3">
@@ -126,17 +125,14 @@
             <div class="col">
               <label class="form-label" for="telephone">Cell phone</label>
               <input type="text" class="form-control" id="telephone" name="telephone" placeholder="Telephone" autocomplete="off">
-              @error('telephone') <span class="text-danger">{{ $message }}</span> @enderror
             </div>
             <div class="col">
               <label class="form-label" for="work_telephone">Work Telephone</label>
               <input type="text" class="form-control" id="work_telephone" name="work_telephone" placeholder="Work Telephone" autocomplete="off">
-              @error('telephone') <span class="text-danger">{{ $message }}</span> @enderror
             </div>
             <div class="col">
               <label class="form-label" for="email">Email</label>
               <input type="email" class="form-control" id="email" name="email" placeholder="Email" autocomplete="off">
-              @error('address') <span class="text-danger">{{ $message }}</span> @enderror
             </div>
            
           </div>
@@ -209,12 +205,12 @@
             </div>
             <div class="col">
               <label class="form-label" for="e_relationship">OPD #</label>
-              <input type="text" class="form-control" id="opd_number" name="opd_number">
+              <input type="text" class="form-control" id="opd_number" name="opd_number" readonly>
             </div>
-            <div class="col">
-              <label class="form-label" for="e_telephone">Telephone</label>
-              <input type="text" class="form-control" id="e_telephone" name="e_telephone" placeholder="Telephone" autocomplete="off">
-            </div>
+            <!-- <div class="col"> -->
+              <!-- <label class="form-label" for="e_telephone">Telephone</label> -->
+              <!-- <input type="text" class="form-control" id="e_telephone" name="e_telephone" placeholder="Telephone" autocomplete="off"> -->
+            <!-- </div> -->
           </div>
           <!-- <br> -->
           <!-- <div class="row mb 3">
