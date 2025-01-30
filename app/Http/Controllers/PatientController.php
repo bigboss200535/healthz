@@ -207,22 +207,16 @@ class PatientController extends Controller
             ->select('patient_info.patient_id', 'patient_nos.opd_number', 'patient_info.title', 'patient_info.fullname', 'gender.gender', 
                      'patient_info.birth_date', 'patient_info.email', 'patient_info.address', 'patient_info.contact_person', 
                      'patient_info.contact_relationship', 'patient_info.contact_telephone', 'patient_info.added_date', 
-                     'patient_info.telephone', 'users.user_fullname', 'patient_info.gender_id', DB::raw('TIMESTAMPDIFF(YEAR, patient_info.birth_date, CURDATE()) as age'))
+                     'patient_info.telephone', 'users.user_fullname', 'patient_info.gender_id', 
+                     DB::raw('TIMESTAMPDIFF(YEAR, patient_info.birth_date, CURDATE()) as patient_age'))
             ->orderBy('patient_info.added_date', 'asc') 
             ->first();
 
-        $sponsor = DB::table('patient_sponsorship')
-            ->where('patient_sponsorship.archived', 'No')
-            ->where('patient_id', $patients->patient_id)
-            ->join('sponsors', 'patient_sponsorship.sponsor_id', '=', 'sponsors.sponsor_id')
-            ->select('patient_sponsorship.member_no', 'patient_sponsorship.sponsor_id', 'sponsors.sponsor_name', 
-                    'patient_sponsorship.start_date', 'patient_sponsorship.end_date', 
-                    'patient_sponsorship.status', 'patient_sponsorship.priority', 'patient_sponsorship.is_active' )
-            ->get();
+       
 
-        $ages = Age::where('min_age', '<=', $patients->age)
-            ->where('max_age', '>=', $patients->age)
-            ->where('max_age', '>=', $patients->age)
+        $ages = Age::where('min_age', '<=', $patients->patient_age)
+            ->where('max_age', '>=', $patients->patient_age)
+            ->where('max_age', '>=', $patients->patient_age)
             ->first();
 
         $clinic_attendance = ServicePoints::select('service_point_id','service_points','gender_id', 'age_id')
@@ -234,6 +228,11 @@ class PatientController extends Controller
             ->where('is_active', 'Yes')
             ->get();
 
+        $all_attendance = DB::table('patient_attendance')
+            ->where('archived', 'No')
+            ->where('patient_id', $patient->patient_id)
+            ->get();
+            
         // $request_episode = ServiceRequest::count();
         // $new_number = $request_episode + 1;
         // $episode = str_pad($new_number, 6, '0', STR_PAD_LEFT);
@@ -242,7 +241,7 @@ class PatientController extends Controller
         ->where('patient_id', $patient->patient_id)
         ->get();
 
-        return view('patient.show', compact('patients', 'sponsor', 'clinic_attendance', 'service_request'));
+        return view('patient.show', compact('patients', 'clinic_attendance', 'service_request', 'all_attendance'));
         
     }
 
@@ -453,6 +452,31 @@ class PatientController extends Controller
                 'error' => $e->getMessage()
             ]);
         }
+    }
+
+    public function get_all_patient_sponsors(Response $response, $patient_id)
+    {
+         $sponsor = DB::table('patient_sponsorship')
+            ->where('patient_sponsorship.archived', 'No')
+            ->where('patient_id', $patients->patient_id)
+            ->join('sponsors', 'patient_sponsorship.sponsor_id', '=', 'sponsors.sponsor_id')
+            // ->join('sponsor_type', 'patient_sponsorship.sponsor_id', '=', 'sponsors.sponsor_id')
+            ->select('patient_sponsorship.member_no', 'patient_sponsorship.sponsor_id', 'sponsors.sponsor_name', 
+                    'patient_sponsorship.start_date', 'patient_sponsorship.end_date', 
+                    'patient_sponsorship.status', 'patient_sponsorship.priority', 'patient_sponsorship.is_active' )
+            ->get();
+    }
+    public function get_all_patient_attendance(Response $response, $patient_id)
+    {
+         $sponsor = DB::table('patient_sponsorship')
+            ->where('patient_sponsorship.archived', 'No')
+            ->where('patient_id', $patients->patient_id)
+            ->join('sponsors', 'patient_sponsorship.sponsor_id', '=', 'sponsors.sponsor_id')
+            // ->join('sponsor_type', 'patient_sponsorship.sponsor_id', '=', 'sponsors.sponsor_id')
+            ->select('patient_sponsorship.member_no', 'patient_sponsorship.sponsor_id', 'sponsors.sponsor_name', 
+                    'patient_sponsorship.start_date', 'patient_sponsorship.end_date', 
+                    'patient_sponsorship.status', 'patient_sponsorship.priority', 'patient_sponsorship.is_active' )
+            ->get();
     }
 
       

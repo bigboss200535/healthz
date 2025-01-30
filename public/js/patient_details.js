@@ -113,9 +113,9 @@
             success: function(response) {
               var result = JSON.parse(response);
                 if (result.code === 201) {
-                  
-                  $('#patient_info')[0].reset();
-                  toastr.success('Patients saved successfully!');
+                    toastr.success('Patients saved successfully!');
+                    $('#patient_info')[0].reset();
+                 
                 //   Swal.fire({
                 //         icon: 'success',
                 //         title: 'Success',
@@ -196,7 +196,7 @@ function renderTableRows(table, data) {// Function to render the table rows
     table.draw();
 }
 
-function performSearch(searchTerm) {// Function to handle the AJAX request
+function perform_search(searchTerm) {// Function to handle the AJAX request
     if (searchTerm.trim() !== '') {
         $.ajax({
             url: '/patient/search',
@@ -225,8 +225,13 @@ const patientTable = $('#patient_search_list').DataTable();
 
 // Attach the debounced search function to the input event
 $('#search_item').on('click', debounce(function() {
-    const searchTerm = $('#search_patient').val();
-    performSearch(searchTerm);
+    const search_term = $('#search_patient').val();
+            if (search_term.length < 3) {
+                toastr.warning('Search field must be at least 3 characters long');
+                $('#search_patient').focus();  // Autofocus on the first name field
+                return;
+            }
+    perform_search(search_term);
 }, 300));
 
 // ----------------------- /PATIENT SEARCH SCRIPT ---------------------------

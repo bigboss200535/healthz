@@ -72,7 +72,7 @@
                     </tr>
                     <tr>
                       <td><b>Age</b></td>
-                      <td>{{ $patients->age }}</td>
+                      <td>{{ $patients->patient_age }}</td>
                     </tr>
                     
                    <tr>
@@ -135,49 +135,7 @@
                 </tr>
               </thead>
               <tbody>
-                     @php
-                       $counter = 1;
-                     @endphp
-                     @foreach($sponsor as $pat_sponsor)
-                <tr>
-                  <td>{{ $counter++ }}</td>
-                  <td>{{ $pat_sponsor->sponsor_name}}</td>
-                  <td>{{ $pat_sponsor->member_no}}</td>
-                  <td>{{ \Carbon\Carbon::parse($pat_sponsor->start_date)->format('d-m-Y') }}</td>
-                  <td>{{ \Carbon\Carbon::parse($pat_sponsor->end_date)->format('d-m-Y') }}</td>
-                  <td> @if($pat_sponsor->status === 'Active')
-                          <span class="badge bg-label-success me-1">Active</span>
-                           @elseif ($pat_sponsor->status === 'Inactive')
-                          <span class="badge bg-label-danger me-1">Inactive</span>
-                       @endif
-                  </td>
-                  <td>
-                   @if($pat_sponsor->is_active === 'Yes')
-                          <span class="badge bg-label-primary me-1">Yes</span>
-                           @elseif ($pat_sponsor->is_active === 'No')
-                          <span class="badge bg-label-primary me-1">No</span>
-                       @endif
-                  </td>
-                  <td>
-                                 <div class="dropdown" align="center">
-                                          <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-                                              <i class="bx bx-dots-vertical-rounded"></i>
-                                          </button>
-                                              <div class="dropdown-menu">
-                                                  <a class="dropdown-item"  href="#">
-                                                    <i class="bx bx-edit-alt me-1"></i> Edit
-                                                  </a>
-                                                  <a class="dropdown-item" href="#">
-                                                    <i class="bx bx-lock-alt me-1"></i> Details 
-                                                  </a>
-                                                  <!-- <a class="dropdown-item" href="javascript:void(0);">
-                                                      <i class="bx bx-trash me-1"></i> Delete
-                                                  </a> -->
-                                            </div>
-                                  </div>
-                  </td>
-                </tr>
-                @endforeach
+                     
               </tbody>
               <tfoot>
                 <tr>
@@ -380,21 +338,20 @@
                         @php
                             $counter = 1;
                             @endphp
-                            @foreach($service_request as $services)
+                            @foreach($all_attendance as $attendance)
 
                             <tr>
                                 <td>{{ $counter++ }}</td>
-                                <td><a href="#">{{ $services->episode_id}}</a></td>
-                                <td>{{ $services->attendance_date}}</td>
+                                <td><a href="#">{{ $attendance->episode_id}}</a></td>
+                                <td>{{ $attendance->opd_number}}</td>
                                 <td></td>
                                 <td></td>
                                 <td></td>
                                 <td></td>
                                 <td></td>
                                 <td></td>
-                          
-                              <td>
-                                            <div class="dropdown" align="center">
+                                <td>
+                                          <div class="dropdown" align="center">
                                                       <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
                                                           <i class="bx bx-dots-vertical-rounded"></i>
                                                       </button>
@@ -406,8 +363,8 @@
                                                                 <i class="bx bx-lock-alt me-1"></i> More 
                                                               </a>
                                                         </div>
-                                              </div>
-                              </td>
+                                            </div>
+                                 </td>
                             </tr>
 
                             @endforeach
@@ -431,7 +388,7 @@
                   </div>   
              </div>
 </div>   
-  
+  <!-- -------------------------------------------------------------------------------------------------- -->
 <!-- service_request Modal -->
 <div class="modal fade" id="addattendance" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-lg modal-simple modal-add-new-address">
@@ -445,14 +402,14 @@
         <form id="save_service_fee" class="row g-6" onsubmit="return false">
           @csrf
           <div id="success_diplay" class="container mt-6"></div>
-          <div class="col-12 col-md-12" hidden>
+          <div class="col-12 col-md-12">
             <label class="form-label" for="credit_amount">Fullname</label>
             <input type="text" id="fullname" name="fullname" class="form-control" value="{{ strtoupper($patients->fullname) }}" disabled/>
           </div>
-          <input type="text" name="p_id" id="p_id" value="{{ $patients->patient_id }}" hidden>
-            <input type="text" name="p_age" id="p_age" value="{{ $patients->age }}" hidden>
-            <input type="text" name="episode_id" id="episode_id" value="" hidden>
-          
+          <input type="text" name="p_id" id="p_id" value="{{ $patients->patient_id }}">
+            <input type="text" name="p_age" id="p_age" value="{{ $patients->patient_age }}">
+            <input type="text" name="episode_id" id="episode_id" value="">
+            <input type="text" name="pat_number" id="pat_number" value="{{ $patients->opd_number}}">
           <div class="col-12 col-md-6">
             <label class="form-label" for="clinics">Service Clinic</label>
              <select name="clinics" id="clinics" class="form-control">
@@ -476,7 +433,7 @@
             <label class="form-label" for="cash_amount">Cash Fee</label>
             <input type="number" id="cash_amount" name="cash_amount" class="form-control" placeholder="0.00" disabled/>
           </div>
-          <div class="col-12 col-md-6" hidden>
+          <div class="col-12 col-md-6">
             <label class="form-label" for="gdrg_code">Service G-DRG</label>
             <input type="text" id="gdrg_code" name="gdrg_code" class="form-control"/>
           </div>
