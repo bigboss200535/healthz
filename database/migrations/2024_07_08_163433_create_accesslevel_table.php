@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('access_level', function (Blueprint $table) {
+        Schema::create('user_access_level', function (Blueprint $table) {
             $table->string('user_no',50);
             $table->string('add',150); 
             $table->string('edit',150); 
@@ -45,6 +45,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('access_level');
+        Schema::dropIfExists('user_access_level');
     }
 };

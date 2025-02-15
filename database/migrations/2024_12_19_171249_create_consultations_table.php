@@ -49,7 +49,6 @@ return new class extends Migration
             $table->foreign('patient_id')->references('patient_id')->on('patient_info');
             // $table->foreign('store_id')->references('store_id')->on('stores');
             // $table->foreign('bed_id')->references('bed_id')->on('admission_beds');
-            // $table->timestamps();
         });
     }
 

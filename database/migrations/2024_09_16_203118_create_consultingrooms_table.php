@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('consulting_rooms', function (Blueprint $table) {
-            $table->string('consulting_room_id', 50);
+            $table->string('consulting_room_id', 50)->primary();
             $table->string('consulting_room', 100);
             $table->string('clinic_code', 100)->nullable();
             $table->string('color_code', 100)->nullable();
@@ -28,7 +28,6 @@ return new class extends Migration
             $table->string('archived_id', 100)->nullable();
             $table->string('archived_by', 100)->nullable();
             $table->date('archived_date', 100)->nullable();
-            $table->primary('consulting_room_id');
             $table->foreign('user_id')->references('user_id')->on('users');
             $table->foreign('facility_id')->references('facility_id')->on('facility');
         });

@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('nhis_drugs', function (Blueprint $table) {
-            $table->string('nhis_id', 50)->nullable();
+            $table->string('nhis_id', 50)->primary();
             $table->string('drug_name', 200)->nullable();
             $table->string('pricing_unit', 50)->nullable();
             $table->float('price')->nullable()->default('0.00');
@@ -31,7 +31,6 @@ return new class extends Migration
             $table->string('archived_id', 100)->nullable();
             $table->string('archived_by', 100)->nullable();
             $table->date('archived_date', 100)->nullable();
-            $table->primary('nhis_id');
             $table->foreign('user_id')->references('user_id')->on('users');
             $table->foreign('facility_id')->references('facility_id')->on('facility');
         });

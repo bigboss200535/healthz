@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('claims', function (Blueprint $table) {
-            $table->string('claim_id', 50);
+            $table->string('claim_id', 50)->primary();
             $table->string('opd_number', 100)->nullable();
             $table->string('age', 10)->nullable();
             $table->string('pat_status', 10)->nullable();
@@ -30,7 +30,7 @@ return new class extends Migration
             $table->string('service_fee', 10)->nullable();
             $table->string('episode_id', 10)->nullable();
             $table->string('facility_id', 50)->nullable();
-            // $table->string('episode_id', 10)->nullable();
+            $table->string('episode_id', 50)->nullable();
             $table->string('added_id', 100)->nullable();
             $table->timestamp('added_date')->nullable();
             $table->string('updated_by', 100)->nullable();
@@ -39,7 +39,6 @@ return new class extends Migration
             $table->string('archived_id', 100)->nullable();
             $table->string('archived_by', 100)->nullable();
             $table->date('archived_date', 100)->nullable();
-            $table->primary('claim_id');
             $table->foreign('user_id')->references('user_id')->on('users');
             $table->foreign('facility_id')->references('facility_id')->on('facility');
 

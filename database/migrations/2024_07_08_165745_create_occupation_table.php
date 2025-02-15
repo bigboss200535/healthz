@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('occupation', function (Blueprint $table) {
             $table->string('occupation_id',50)->primary();
-            $table->string('occupation',150); 
+            $table->string('occupation',150)->nullable(); 
             $table->string('facility_id', 50)->nullable();
             $table->string('user_id',50);        
             $table->string('added_id', 50)->nullable();
@@ -23,8 +23,8 @@ return new class extends Migration
             $table->date('added_date')->nullable();
             $table->string('updated_by', 100)->nullable();
             $table->date('updated_date')->nullable();
-            $table->string('status', 100)->default('Active');
-            $table->string('archived', 100)->default('No');
+            $table->string('status', 50)->default('Active');
+            $table->string('archived', 50)->default('No');
             $table->date('archived_date')->nullable();
             $table->string('archived_by', 100)->nullable();
             $table->foreign('user_id')->references('user_id')->on('users');

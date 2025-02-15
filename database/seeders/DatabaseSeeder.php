@@ -28,15 +28,17 @@ class DatabaseSeeder extends Seeder
             PatientStatusSeeder::class,
             GenderSeeder::class,
             HealthFacilitySeeder::class,
+            ServiceTypesSeeder::class,
             TitleSeeder::class,
             ReligionSeeder::class,
+            RegionSeeder::class,
             RelationSeeder::class,
             AgeSeeder::class,
             AttendanceServiceSeeder::class,
             ClinicSeeder::class,
             SponsorTypeSeeder::class,
             SponsorsSeeder::class,
-            ClinicAttendanceTypeSeeder::class,
+            // ClinicAttendanceTypeSeeder::class,
             FacilitySeeder::class,
             ServiceAttendanceTypeSeeder::class,
             ServicesSeeder::class,
@@ -53,12 +55,14 @@ class DatabaseSeeder extends Seeder
             DiagnosisSeeder::class,
             ProductClassSeeder::class,
             NationalitySeeder::class,
+            AgeGroupsSeeder::class,
+            TownSeeder::class
         ]);
         
         // \App\Models\Patient::factory(2000)->create();
         // \App\Models\PatientSponsor::factory(200)->create();
         // \App\Models\PatientOpdNumber::factory(450)->create();
-        \App\Models\User::factory(50)->create();
+        \App\Models\User::factory(1050)->create();
         // \App\Models\PatientAttendance::factory(100)->create();
         // \App\Models\ConsultingRoom::factory(10)->create();
         // \App\Models\Consultation::factory(100)->create();

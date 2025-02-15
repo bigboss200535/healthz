@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('ages', function (Blueprint $table) {
             $table->string('age_id',50)->primary();
             $table->string('age_description',150); 
+            $table->string('usage',50)->nullable('1'); 
             $table->string('min_age',150); 
             $table->string('max_age',150); 
             $table->string('user_id',50); 

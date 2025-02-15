@@ -19,4 +19,36 @@ class ServiceAttendancetype extends Model
         return $this->belongsTo(ServicePoints::class, 'attendance_type_id');
     }
 
+    public function users()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function gender()
+    {
+        return $this->belongsTo(Gender::class. 'gender_id');
+    }
+
+    public function age()
+    {
+        return $this->belongsTo(Age::class, 'age_id');
+    }
+
+    protected $fillable = [
+        'att_service_id',
+        'description',
+        'gender_id',
+        'age_id',
+        'child_code',
+        'adult_code',
+        'user_id',
+        'added_id',
+        'added_date',
+        'updated_by',
+        'status',
+        'archived',
+        'archived_id',
+        'archived_by',
+        'archived_date'
+    ];
 }

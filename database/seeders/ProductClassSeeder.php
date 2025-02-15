@@ -16,7 +16,7 @@ class ProductClassSeeder extends Seeder
      */
     public function run()
     {
-        $data_one = database_path('seeders/seeds/product_class.sql');
+        $data_one = database_path('seeders/seeds/09_product_class.sql');
         $sql_one = file_get_contents($data_one);
         DB::unprepared($sql_one); 
     }

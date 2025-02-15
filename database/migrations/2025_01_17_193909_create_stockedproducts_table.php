@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('stocked_products', function (Blueprint $table) {
+        Schema::create('xxxx', function (Blueprint $table) {
                 $table->id('stocked_product_id');
                 $table->string('product_id', 50);
                 $table->double('unit_cost', 150)->nullable();
@@ -31,7 +31,6 @@ return new class extends Migration
                 $table->string('archived_id', 100)->nullable();
                 $table->string('archived_by', 100)->nullable();
                 $table->date('archived_date', 100)->nullable();
-                // $table->primary('product_id');
                 $table->foreign('user_id')->references('user_id')->on('users');
                 $table->foreign('facility_id')->references('facility_id')->on('facility');
                 $table->foreign('store_id')->references('store_id')->on('stores');
@@ -46,6 +45,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('stocked_products');
+        Schema::dropIfExists('xxxx');
     }
 };

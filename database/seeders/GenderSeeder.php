@@ -16,13 +16,12 @@ class GenderSeeder extends Seeder
      */
     public function run()
     {
-        $user = User::inRandomOrder()->first(); 
 
         $gender = Gender::create([
             'gender_id' => '1',
-            'gender' => 'All',
+            'gender' => 'ALL',
             'usage' => '0',
-            'user_id' => $user->user_id,
+            'user_id' => 'a2c362bf-56df-4337-be34-0062ffae8bd5',
             'added_date' => now(),
             'status' => 'Active',
             'archived' => 'No',
@@ -30,9 +29,9 @@ class GenderSeeder extends Seeder
 
         $gender = Gender::create([
             'gender_id' => '2',
-            'gender' => 'Male',
+            'gender' => 'MALE',
             'usage' => '1',
-            'user_id' => $user->user_id,
+            'user_id' => 'a2c362bf-56df-4337-be34-0062ffae8bd5',
             'added_date' => now(),
             'status' => 'Active',
             'archived' => 'No',
@@ -40,9 +39,9 @@ class GenderSeeder extends Seeder
 
         $gender = Gender::create([
             'gender_id' => '3',
-            'gender' => 'Female',
+            'gender' => 'FEMALE',
             'usage' => '1',
-            'user_id' => $user->user_id,
+            'user_id' => 'a2c362bf-56df-4337-be34-0062ffae8bd5',
             'added_date' => now(),
             'status' => 'Active',
             'archived' => 'No',

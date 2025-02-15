@@ -1,5 +1,5 @@
-INSERT INTO service_attendance_type (attendance_type_id, attendance_type, status_code, 
-gender_id, age_id, child_code, patient_type, clinic_id, adult_code, type_code) 
+INSERT INTO `service_attendance_type` (attendance_type_id, attendance_type, status_code, 
+gender_id, age_id, child_code, patient_status_id, clinic_id, adult_code, type_code) 
 VALUES 
 	('AT1', 'GENERAL CONSULTATION', '2', '1', '3', '03260', '1', 'C01', '03260', '1'),
 	('AT2', 'DIRECT SERVCE', '2', '1', '3', '768', '2', 'C02', '768', '2'),
@@ -7,16 +7,16 @@ VALUES
 	('AT4', 'POSTNATAL', '2', '3', '2', '2204', '2', 'C04', '2204', '4'),
 	('AT5', 'IN-PATIENT', '2', '1', '3', '296', '3', 'C05', '296', '5'),
 	('AT6', 'PHYSIOTHERAPY', '2', '1', '3', '281', '1', 'C05', '281', '6'),
-	('AT7', 'EYE CONSULTATION', '1', '1', '3', '03972', 'C01', '4', '03972', '7'),
+	('AT7', 'EYE CONSULTATION', '1', '1', '3', '03972', '2', 'C01', '03972', '7'),
 	('AT8', 'PAEDIATRICS', '1', '1', '1', '2221', '1', 'C06', '2221', '1'),
 	('AT9', 'GYNAECOLOGY', '1', '1', '3', '1968', '1', 'C06', '1968', '9'),
 	('AT10', 'ENT CONSULTATION', '1', '1', '3', '03253', '1', 'C06', '03253', '10'),
-	('AT11', 'DENTAL  CONSULTATION', '1', '1', '3', '1184', 'C01', '3', '1184', '11'),
+	('AT11', 'DENTAL  CONSULTATION', '1', '1', '3', '1184', '2', 'C01', '1184', '11'),
 	('AT12', 'MEDICAL CONSULTATION', '1', '1', '3', '1178', '1', 'C01', '1178', '12'),
 	('AT13', 'PAEDIATRIC SURGERY', '1', '1', '1', '1187', '1', 'C01', '1187', '13'),
 	('AT14', 'ADULT SURGERY', '1', '1', '2', '1523', '1', 'C01', '1523', '14'),
 	('AT15', 'LABOUR CONSULTATION', '2', '3', '2', '1186', '2', 'C08', '1186', '9'),
-	('AT16', 'OTHORPAEDICS CONSULTATION', '1', '1', '3', '1969', 'C01', '23', '1969', '1'),
+	('AT16', 'OTHORPAEDICS CONSULTATION', '1', '1', '3', '1969', '2', 'C01', '1969', '1'),
 	('AT17', 'UROLOGY CONSULTATION', '1', '1', '3', '1970', '2', 'C08', '1970', '1'),
 	('AT18', 'SURGICAL CONSULTATION', '2', '1', '3', '2096', '2', 'C01', '2096', '1'),
 	('AT19', 'DIETETIC CONSULTATION', '2', '1', '3', '2242', '1', 'C02', '2242', '1'),

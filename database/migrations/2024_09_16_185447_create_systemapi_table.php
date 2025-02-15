@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('system_apis', function (Blueprint $table) {
-            $table->string('api_id', 50);
+            $table->string('api_id', 50)->primary();
             $table->string('api_name', 100)->nullable();
             $table->text('api_url')->nullable();
             $table->text('api_key')->nullable();
@@ -30,7 +30,6 @@ return new class extends Migration
             $table->string('archived_id', 100)->nullable();
             $table->string('archived_by', 100)->nullable();
             $table->date('archived_date', 100)->nullable();
-            $table->primary('api_id');
             $table->foreign('user_id')->references('user_id')->on('users');
             $table->foreign('facility_id')->references('facility_id')->on('facility');
         });

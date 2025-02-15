@@ -16,12 +16,11 @@ class PatientStatusSeeder extends Seeder
      */
     public function run()
     {
-        $user = User::where('archived', '=', 'No')->first();
 
         $patient_status = PatientStatus::create([
             'patient_status_id' => '1',
-            'patient_status' => 'All',
-            'user_id' => $user->user_id,
+            'patient_status' => 'ALL',
+            'user_id' => 'a2c362bf-56df-4337-be34-0062ffae8bd5',
             'added_date' => now(),
             'status' => 'Active',
             'archived' => 'No',
@@ -29,8 +28,8 @@ class PatientStatusSeeder extends Seeder
 
         $patient_status = PatientStatus::create([
             'patient_status_id' => '2',
-            'patient_status' => 'Out',
-            'user_id' => $user->user_id,
+            'patient_status' => 'OUT',
+            'user_id' => 'a2c362bf-56df-4337-be34-0062ffae8bd5',
             'added_date' => now(),
             'status' => 'Active',
             'archived' => 'No',
@@ -38,8 +37,8 @@ class PatientStatusSeeder extends Seeder
 
         $patient_status = PatientStatus::create([
             'patient_status_id' => '3',
-            'patient_status' => 'In',
-            'user_id' => $user->user_id,
+            'patient_status' => 'IN',
+            'user_id' => 'a2c362bf-56df-4337-be34-0062ffae8bd5',
             'added_date' => now(),
             'status' => 'Active',
             'archived' => 'No',

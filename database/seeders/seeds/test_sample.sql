@@ -1,6 +1,4 @@
-INSERT INTO services_fee 
-    (service_fee_id, service_id, service, service_type_code, cash_amount, 
-    private_amount, nhis_child, foreigners_amount, allow_nhis, nhis_adult, gdrg_adult, gdrg_child, gender_id, 
+INSERT INTO `services_fee` (service_fee_id, service_id, service, service_type_code, cash_amount, private_amount, nhis_child, foreigners_amount, allow_nhis, nhis_adult, gdrg_adult, gdrg_child, gender_id, 
     patient_type, age_id, editable, allow_topup, topup_amount, delivery_mode) 
 VALUES 
 ('03687', '0032', 'ANTENATAL', '5', '70', '40', '95.59', '40', 'Yes', '0', 'OPDC02A', '', '3', '1', '2', 'Yes', 'No', '0', 'INTERNAL'),

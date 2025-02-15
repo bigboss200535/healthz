@@ -17,12 +17,11 @@ class NationalitySeeder extends Seeder
      */
     public function run()
     {
-        $user = User::inRandomOrder()->first(); 
 
         $nationality = Nationality::create([
             'nationality_id' => '10001',
             'nationality' => 'Ghanaian',
-            'user_id' => $user->user_id,
+            'user_id' => 'a2c362bf-56df-4337-be34-0062ffae8bd5',
             'added_date' => now(),
             'status' => 'Active',
             'archived' => 'No',
@@ -31,7 +30,7 @@ class NationalitySeeder extends Seeder
         $nationality = Nationality::create([
             'nationality_id' => '20002',
             'nationality' => 'Non-Ghanaian',
-            'user_id' => $user->user_id,
+            'user_id' => 'a2c362bf-56df-4337-be34-0062ffae8bd5',
             'added_date' => now(),
             'status' => 'Active',
             'archived' => 'No',

@@ -247,6 +247,7 @@ class PatientController extends Controller
         $ages = Age::where('min_age', '<=', $patients->patient_age)
             ->where('max_age', '>=', $patients->patient_age)
             ->where('max_age', '>=', $patients->patient_age)
+            ->where('usage', '0')
             ->first();
 
         $clinic_attendance = ServicePoints::select('service_point_id', 'service_points', 'gender_id', 'age_id')
@@ -559,8 +560,8 @@ class PatientController extends Controller
             ->join('sponsors', 'patient_sponsorship.sponsor_id', '=', 'sponsors.sponsor_id')
             // ->join('sponsor_type', 'patient_sponsorship.sponsor_id', '=', 'sponsors.sponsor_id')
             ->select('patient_sponsorship.member_no', 'patient_sponsorship.sponsor_id', 'sponsors.sponsor_name', 
-                    'patient_sponsorship.start_date', 'patient_sponsorship.end_date', 
-                    'patient_sponsorship.status', 'patient_sponsorship.priority', 'patient_sponsorship.is_active' )
+                    'patient_sponsorship.start_date', 'patient_sponsorship.end_date', 'patient_sponsorship.status', 'patient_sponsorship.priority', 
+                    'patient_sponsorship.is_active')
             ->get();
     }
 

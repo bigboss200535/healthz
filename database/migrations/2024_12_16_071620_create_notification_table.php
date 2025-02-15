@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('notifications', function (Blueprint $table) {
-            $table->id('notification_id', 50)->nullable();
+            $table->id('notification_id', 50);
             $table->text('notification')->nullable();
             $table->string('user_id', 50)->nullable();
             $table->string('intended_for', 50)->nullable();
@@ -27,7 +27,6 @@ return new class extends Migration
             $table->string('archived_id', 100)->nullable();
             $table->string('archived_by', 100)->nullable();
             $table->date('archived_date', 100)->nullable();
-            // $table->primary('kins_id');
             $table->foreign('user_id')->references('user_id')->on('users');
             $table->foreign('facility_id')->references('facility_id')->on('facility');
         });

@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('towns', function (Blueprint $table) {
             $table->id('town_id');
             $table->string('towns', 150);
-            $table->string('user_id', 10)->nullable();
+            $table->string('user_id', 50)->nullable();
             $table->string('facility_id', 50)->nullable();
             $table->string('added_id', 100)->nullable();
             $table->timestamp('added_date')->nullable();

@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('service_attendance_type', function (Blueprint $table) {
-            $table->string('attendance_type_id', 50);
+            $table->string('attendance_type_id', 50)->primary();
             $table->string('attendance_type',150); 
             $table->string('status_code',50)->nullable(); 
             $table->string('gender_id',50)->nullable(); 
@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('adult_code',50)->nullable()->index(); 
             $table->string('clinic_id',50)->nullable()->index();  
             $table->string('type_code',50)->nullable();  
-            $table->string('patient_type',50)->nullable();  
+            $table->string('patient_status_id',50)->nullable();  
             $table->string('facility_id', 50)->nullable(); 
             $table->string('user_id',50)->nullable();               
             $table->string('added_id', 50)->nullable();
@@ -35,10 +35,10 @@ return new class extends Migration
             $table->string('archived', 100)->default('No');
             $table->date('archived_date')->nullable();
             $table->string('archived_by', 100)->nullable();
-            $table->primary('attendance_type_id');
             $table->foreign('user_id')->references('user_id')->on('users');
             $table->foreign('age_id')->references('age_id')->on('ages');
             // $table->foreign('clinic_id')->references('clinic_id')->on('clinics');
+             $table->foreign('patient_status_id')->references('patient_status_id')->on('patient_statuses');
             // $table->foreign('adult_code_id')->references('service_fee_id')->on('services_fee');
             $table->foreign('gender_id')->references('gender_id')->on('gender');
         });

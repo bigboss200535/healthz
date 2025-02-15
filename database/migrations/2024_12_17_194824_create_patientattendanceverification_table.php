@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('patient_attend_verify', function (Blueprint $table) {
-            $table->string('attendance_verify');
+            $table->string('attendance_verify', 50)->primary();
             $table->string('patient_id',50); 
             $table->string('opd_number',50); 
             $table->date('attendance_date',50)->nullable(); 
@@ -40,7 +40,6 @@ return new class extends Migration
             $table->string('archived', 100)->default('No');
             $table->date('archived_date')->nullable();
             $table->string('archived_by', 100)->nullable();
-            $table->primary('attendance_verify');
             $table->foreign('user_id')->references('user_id')->on('users');
             $table->foreign('facility_id')->references('facility_id')->on('facility');
             $table->foreign('patient_id')->references('patient_id')->on('patient_info');

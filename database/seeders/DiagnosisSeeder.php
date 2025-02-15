@@ -15,7 +15,7 @@ class DiagnosisSeeder extends Seeder
      */
     public function run()
     {
-        $data_one = database_path('seeders/seeds/diagnosis.sql');
+        $data_one = database_path('seeders/seeds/07_diagnosis.sql');
         $sql_one = file_get_contents($data_one);
         DB::unprepared($sql_one); 
     }

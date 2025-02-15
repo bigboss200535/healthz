@@ -41,8 +41,6 @@ return new class extends Migration
             $table->string('contact_telephone', 50)->nullable();
             $table->string('contact_relationship', 100)->nullable();
             $table->string('sponsor_priority', 100)->nullable();
-            // $table->string('sponsor_name', 100)->nullable();
-            // $table->string('member_no', 150)->nullable();
             $table->string('facility_id', 50)->nullable();
             $table->string('dependant', 50)->nullable();
             $table->string('email_verified', 20)->default('No');
@@ -65,7 +63,6 @@ return new class extends Migration
             $table->foreign('gender_id')->references('gender_id')->on('gender');
             $table->foreign('user_id')->references('user_id')->on('users');
             $table->foreign('nationality_id')->references('nationality_id')->on('nationality');
-
         });
     }
 

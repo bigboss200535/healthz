@@ -19,13 +19,13 @@ class ClinicSeeder extends Seeder
     public function run()
     {
         $user = User::inRandomOrder()->first(); 
-        $gender = Gender::inRandomOrder()->first(); 
-        $age = Age::inRandomOrder()->first(); 
+        // $gender = Gender::inRandomOrder()->first(); 
+        // $age = Age::inRandomOrder()->first(); 
 
         $service = Clinic::create([
             'clinic_id' => 'C01',
             'clinic' => 'General',
-            'user_id' => $user->user_id,
+            'user_id' => 'a2c362bf-56df-4337-be34-0062ffae8bd5',
             'added_date' => now(),
             'status' => 'Active',
             'archived' => 'No',
@@ -34,7 +34,7 @@ class ClinicSeeder extends Seeder
         $service = Clinic::create([
             'clinic_id' => 'C02',
             'clinic' => 'Direct Service',
-            'user_id' => $user->user_id,
+            'user_id' => 'a2c362bf-56df-4337-be34-0062ffae8bd5',
             'added_date' => now(),
             'status' => 'Active',
             'archived' => 'No',
@@ -43,7 +43,7 @@ class ClinicSeeder extends Seeder
         $service = Clinic::create([
             'clinic_id' => 'C03',
             'clinic' => 'Antenatal',
-            'user_id' => $user->user_id,
+            'user_id' => 'a2c362bf-56df-4337-be34-0062ffae8bd5',
             'added_date' => now(),
             'status' => 'Active',
             'archived' => 'No',
@@ -52,7 +52,7 @@ class ClinicSeeder extends Seeder
         $service = Clinic::create([
             'clinic_id' => 'C04',
             'clinic' => 'Postnatal',
-            'user_id' => $user->user_id,
+            'user_id' => 'a2c362bf-56df-4337-be34-0062ffae8bd5',
             'added_date' => now(),
             'status' => 'Active',
             'archived' => 'No',
@@ -61,7 +61,7 @@ class ClinicSeeder extends Seeder
         $service = Clinic::create([
             'clinic_id' => 'C05',
             'clinic' => 'In-patient',
-            'user_id' => $user->user_id,
+            'user_id' => 'a2c362bf-56df-4337-be34-0062ffae8bd5',
             'added_date' => now(),
             'status' => 'Active',
             'archived' => 'No',
@@ -70,7 +70,7 @@ class ClinicSeeder extends Seeder
         $service = Clinic::create([
             'clinic_id' => 'C06',
             'clinic' => 'Physiotherapy',
-            'user_id' => $user->user_id,
+            'user_id' => 'a2c362bf-56df-4337-be34-0062ffae8bd5',
             'added_date' => now(),
             'status' => 'Active',
             'archived' => 'No',
@@ -79,7 +79,7 @@ class ClinicSeeder extends Seeder
         $service = Clinic::create([
             'clinic_id' => 'C07',
             'clinic' => 'Eye',
-            'user_id' => $user->user_id,
+            'user_id' => 'a2c362bf-56df-4337-be34-0062ffae8bd5',
             'added_date' => now(),
             'status' => 'Active',
             'archived' => 'No',
@@ -88,7 +88,7 @@ class ClinicSeeder extends Seeder
         $service = Clinic::create([
             'clinic_id' => 'C08',
             'clinic' => 'Paediatric',
-            'user_id' => $user->user_id,
+            'user_id' => 'a2c362bf-56df-4337-be34-0062ffae8bd5',
             'added_date' => now(),
             'status' => 'Active',
             'archived' => 'No',
@@ -97,7 +97,7 @@ class ClinicSeeder extends Seeder
         $service = Clinic::create([
             'clinic_id' => 'C09',
             'clinic' => 'Gynaecology',
-            'user_id' => $user->user_id,
+            'user_id' => 'a2c362bf-56df-4337-be34-0062ffae8bd5',
             'added_date' => now(),
             'status' => 'Active',
             'archived' => 'No',
@@ -106,7 +106,7 @@ class ClinicSeeder extends Seeder
         $service = Clinic::create([
             'clinic_id' => 'C10',
             'clinic' => 'ENT',
-            'user_id' => $user->user_id,
+            'user_id' => 'a2c362bf-56df-4337-be34-0062ffae8bd5',
             'added_date' => now(),
             'status' => 'Active',
             'archived' => 'No',
@@ -115,7 +115,7 @@ class ClinicSeeder extends Seeder
         $service = Clinic::create([
             'clinic_id' => 'C11',
             'clinic' => 'Dental',
-            'user_id' => $user->user_id,
+            'user_id' => 'a2c362bf-56df-4337-be34-0062ffae8bd5',
             'added_date' => now(),
             'status' => 'Active',
             'archived' => 'No',
@@ -124,7 +124,7 @@ class ClinicSeeder extends Seeder
         $service = Clinic::create([
             'clinic_id' => 'C12',
             'clinic' => 'Medical',
-            'user_id' => $user->user_id,
+            'user_id' => 'a2c362bf-56df-4337-be34-0062ffae8bd5',
             'added_date' => now(),
             'status' => 'Active',
             'archived' => 'No',
@@ -133,7 +133,7 @@ class ClinicSeeder extends Seeder
         $service = Clinic::create([
             'clinic_id' => 'C13',
             'clinic' => 'Diabetic',
-            'user_id' => $user->user_id,
+            'user_id' => 'a2c362bf-56df-4337-be34-0062ffae8bd5',
             'added_date' => now(),
             'status' => 'Active',
             'archived' => 'No',
@@ -142,7 +142,7 @@ class ClinicSeeder extends Seeder
         $service = Clinic::create([
             'clinic_id' => 'C14',
             'clinic' => 'Casualty',
-            'user_id' => $user->user_id,
+            'user_id' => 'a2c362bf-56df-4337-be34-0062ffae8bd5',
             'added_date' => now(),
             'status' => 'Active',
             'archived' => 'No',
@@ -151,7 +151,7 @@ class ClinicSeeder extends Seeder
         $service = Clinic::create([
             'clinic_id' => 'C15',
             'clinic' => 'Psychiatric',
-            'user_id' => $user->user_id,
+            'user_id' => 'a2c362bf-56df-4337-be34-0062ffae8bd5',
             'added_date' => now(),
             'status' => 'Active',
             'archived' => 'No',
@@ -160,7 +160,7 @@ class ClinicSeeder extends Seeder
         $service = Clinic::create([
             'clinic_id' => 'C16',
             'clinic' => 'Maternity',
-            'user_id' => $user->user_id,
+            'user_id' => 'a2c362bf-56df-4337-be34-0062ffae8bd5',
             'added_date' => now(),
             'status' => 'Active',
             'archived' => 'No',
@@ -169,7 +169,7 @@ class ClinicSeeder extends Seeder
         $service = Clinic::create([
             'clinic_id' => 'C17',
             'clinic' => 'Direct Pharmacy',
-            'user_id' => $user->user_id,
+            'user_id' => 'a2c362bf-56df-4337-be34-0062ffae8bd5',
             'added_date' => now(),
             'status' => 'Active',
             'archived' => 'No',
@@ -178,7 +178,7 @@ class ClinicSeeder extends Seeder
         $service = Clinic::create([
             'clinic_id' => 'C18',
             'clinic' => 'Art',
-            'user_id' => $user->user_id,
+            'user_id' => 'a2c362bf-56df-4337-be34-0062ffae8bd5',
             'added_date' => now(),
             'status' => 'Active',
             'archived' => 'No',

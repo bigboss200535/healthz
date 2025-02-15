@@ -78,19 +78,19 @@
          <!-- <span class="badge badge-center rounded-pill bg-success ms-auto">4</span> -->
       </a>
       <ul class="menu-sub">
-      <!-- <li class="menu-item">
+      <li class="menu-item">
           <a href="{{ route('patients.create') }}" class="menu-link">
-            <div class="text-truncate" data-i18n="List">Add </div>
+            <div class="text-truncate" data-i18n="List">Add Patient</div>
           </a>
-        </li> -->
+        </li>
          <li class="menu-item">
           <a href="{{ route('patients.index') }}" class="menu-link">
-            <div class="text-truncate" data-i18n="List">Search</div>
+            <div class="text-truncate" data-i18n="List">Search Patient</div>
           </a>
         </li>
         <li class="menu-item">
           <a href="{{ route('patients.index') }}" class="menu-link">
-            <div class="text-truncate" data-i18n="List">Sponsors</div>
+            <div class="text-truncate" data-i18n="List">Patient Sponsors</div>
           </a>
         </li>
       </ul>

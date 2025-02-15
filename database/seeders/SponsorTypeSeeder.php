@@ -16,12 +16,11 @@ class SponsorTypeSeeder extends Seeder
      */
     public function run()
     {
-        $user = User::inRandomOrder()->first(); 
         
         $sponsor = SponsorType::create([
             'sponsor_type_id' => 'P001',
             'sponsor_type' => 'CASH PAYMENT',
-            'user_id' => $user->user_id,
+            'user_id' => 'a2c362bf-56df-4337-be34-0062ffae8bd5',
             'added_date' => now(),
             'status' => 'Active',
             'archived' => 'No',
@@ -30,7 +29,7 @@ class SponsorTypeSeeder extends Seeder
         $sponsor = SponsorType::create([
             'sponsor_type_id' => 'N002',
             'sponsor_type' => 'NHIS (PUBLIC)',
-            'user_id' => $user->user_id,
+            'user_id' => 'a2c362bf-56df-4337-be34-0062ffae8bd5',
             'added_date' => now(),
             'status' => 'Active',
             'archived' => 'No',
@@ -39,7 +38,7 @@ class SponsorTypeSeeder extends Seeder
         $sponsor = SponsorType::create([
             'sponsor_type_id' => 'PI03',
             'sponsor_type' => 'PRIVATE INSURANCE',
-            'user_id' => $user->user_id,
+            'user_id' => 'a2c362bf-56df-4337-be34-0062ffae8bd5',
             'added_date' => now(),
             'status' => 'Active',
             'archived' => 'No',
@@ -48,7 +47,7 @@ class SponsorTypeSeeder extends Seeder
         $sponsor = SponsorType::create([
             'sponsor_type_id' => 'PC04',
             'sponsor_type' => 'PRIVATE COMPANY',
-            'user_id' => $user->user_id,
+            'user_id' => 'a2c362bf-56df-4337-be34-0062ffae8bd5',
             'added_date' => now(),
             'status' => 'Active',
             'archived' => 'No',

@@ -1,3 +1,4 @@
+
 INSERT INTO `service_types` (`service_type_id`, `service_type`) VALUES 
 	(1,'DRUG'),
 	(2,'DIAGNOSIS'),
@@ -14,5 +15,5 @@ INSERT INTO `service_types` (`service_type_id`, `service_type`) VALUES
 	(13,'ECG'),
 	(14,'ULTRASOUNDSCAN'),
 	(15,'LAUNDARY'),
-	(17,'DETENTION'),
-	(16,'REFFERALS');
+	(16,'REFFERALS'),
+	(17,'DETENTION');

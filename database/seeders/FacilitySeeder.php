@@ -16,7 +16,6 @@ class FacilitySeeder extends Seeder
      */
     public function run()
     {
-        $user = User::inRandomOrder()->first(); 
 
         $facility = Facility::create([
             'facility_id' => 'FAC000001',
@@ -26,7 +25,7 @@ class FacilitySeeder extends Seeder
             'nhia_key' => 'hp6658',
             'nhia_secret' => 'ncgxs3',
             'ccc_type' => 'Automatic', //Manual
-            'user_id' => $user->user_id,
+            'user_id' => 'a2c362bf-56df-4337-be34-0062ffae8bd5',
             'added_date' => now(),
             'status' => 'Active',
             'archived' => 'No',

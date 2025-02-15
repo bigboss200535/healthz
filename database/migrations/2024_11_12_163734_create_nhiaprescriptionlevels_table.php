@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('nhia_prescription_levels', function (Blueprint $table) {
-            $table->string('level_id', 50);
+            $table->string('level_id', 50)->primary();
             $table->string('levels', 100)->nullable();
             $table->string('level_order', 50)->nullable();
             $table->string('code', 100)->nullable(); 
@@ -27,7 +27,6 @@ return new class extends Migration
             $table->string('archived_id', 100)->nullable();
             $table->string('archived_by', 100)->nullable();
             $table->date('archived_date', 100)->nullable();
-            $table->primary('level_id');
             $table->foreign('user_id')->references('user_id')->on('users');
         });
     }

@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('product_type', function (Blueprint $table) {
-            $table->string('product_type_id', 50);
+            $table->string('product_type_id', 50)->primary();
             $table->string('product_type', 150)->nullable();
             $table->string('user_id', 10)->nullable();
             $table->string('facility_id', 50)->nullable();
@@ -26,7 +26,6 @@ return new class extends Migration
             $table->string('archived_id', 100)->nullable();
             $table->string('archived_by', 100)->nullable();
             $table->date('archived_date', 100)->nullable();
-            $table->primary('product_type_id');
         });
     }
 

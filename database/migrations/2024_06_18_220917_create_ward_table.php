@@ -14,25 +14,25 @@ return new class extends Migration
     public function up()
     {
         Schema::create('wards', function (Blueprint $table) {
-            $table->string('ward_id')->primary();
-            $table->string('ward_name')->nullable();
-            $table->string('ward_status')->nullable();
-            $table->string('ward_gender')->nullable();
-            $table->string('bed_number')->nullable();
-            $table->string('gender_id')->nullable();
-            $table->string('age_id')->nullable();
-            $table->string('initial_bed_state')->nullable();
-            $table->string('ward_type')->nullable();
-            $table->string('rb_total')->nullable();
-            $table->string('vb_total')->nullable();
-            $table->string('arb_total')->nullable();
-            $table->string('avb_total')->nullable();
-            $table->string('user_id', 10)->nullable();
+            $table->string('ward_id', 50)->primary();
+            $table->string('ward_name', 50)->nullable();
+            $table->string('ward_status', 50)->nullable();
+            $table->string('ward_gender', 50)->nullable();
+            $table->string('bed_number', 50)->nullable();
+            $table->string('gender_id', 50)->nullable();
+            $table->string('age_id', 50)->nullable();
+            $table->string('initial_bed_state', 50)->nullable();
+            $table->string('ward_type', 50)->nullable();
+            $table->string('rb_total', 50)->nullable();
+            $table->string('vb_total', 50)->nullable();
+            $table->string('arb_total', 50)->nullable();
+            $table->string('avb_total', 50)->nullable();
+            $table->string('user_id', 50)->nullable();
             $table->string('facility_id', 50)->nullable();
-            $table->string('added_id', 100)->nullable();
+            $table->string('added_id', 50)->nullable();
             $table->timestamp('added_date')->nullable();
-            $table->string('updated_by', 100)->nullable();
-            $table->string('status', 100)->default('Active')->index();
+            $table->string('updated_by',50)->nullable();
+            $table->string('status', 50)->default('Active')->index();
             $table->string('archived', 100)->default('No')->index();
             $table->string('archived_id', 100)->nullable();
             $table->string('archived_by', 100)->nullable();

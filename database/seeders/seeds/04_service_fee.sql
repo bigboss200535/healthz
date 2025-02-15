@@ -1,6 +1,6 @@
 -- comemnt
 
-INSERT INTO `services_fee` (`service_fee_id`, `service_id`, `service`, `gender_id`, `patient_type`, `age_id`, `service_type_code`, `cash_amount`, `private_amount`, `company_amount`, `foreigners_amount`, `allow_nhis`, `nhis_adult`, `nhis_child`, `gdrg_adult`, `gdrg_child`, `editable`, `allow_topup`, `topup_amount`, `delivery_mode`) VALUES
+INSERT INTO `services_fee` (`service_fee_id`, `service_id`, `service`, `gender_id`, `patient_type`, `age_id`, `service_type_id`, `cash_amount`, `private_amount`, `company_amount`, `foreigners_amount`, `allow_nhis`, `nhis_adult`, `nhis_child`, `gdrg_adult`, `gdrg_child`, `editable`, `allow_topup`, `topup_amount`, `delivery_mode`) VALUES
 	('03321', '0001', 'ERYTHROCYTE SEDIMENTATION RATE', '1', '1', '3', '11', '40.00', '30.00', '9.75', '30.00', 'Yes', '9.75', '9.75', 'INVE42D', 'INVE42D', 'No', 'No', '0', 'INTERNAL'),
 	('03677', '0001', '2 HOUR POST PRANDIAL BLOOD GLUCOSE', '1', '1', '3', '11', '15.00', '19.00', '23.41', '19.00', 'Yes', '23.41', '23.41', 'INVE01D', 'INVE01D', 'No', 'No', '0', 'INTERNAL'),
 	('03326', '0001', '24 HR URINE FOR PROTEIN', '1', '1', '3', '11', '30.00', '36.00', '17.33', '36.00', 'No', '17.33', '17.33', 'INVE02D', 'INVE02D', 'No', 'No', '0', 'INTERNAL'),
@@ -487,7 +487,7 @@ INSERT INTO `services_fee` (`service_fee_id`, `service_id`, `service`, `gender_i
 	('04242', '0008', 'DEPOSIT IN LIEU OF BLOOD REPLACEMENT EXTERNAL HOSPITAL(1 UNIT)', '1', '1', '3', '10', '150.00', '180.00', '0.00', '180.00', 'No', '0.00', '0.00', '', '', 'No', 'No', '0', 'INTERNAL'),
 	('03814', '0045', 'DESTRUCTIVE DELIVERY', '3', '1', '2', '3', '0.00', '0.00', '361.03', '0.00', 'Yes', '0.00', '0.00', 'OBGY31A', '', 'No', 'No', '0', 'INTERNAL'),
 	('03686', '0007', 'DETENTION FOR OBSERVATION AND TREATMENT', '1', '1', '3', '17', '31.80', '31.80', '97.37', '31.80', 'Yes', '90.09', '90.09', 'ZOOM02A', 'ZOOM02C', 'No', 'No', '0', 'INTERNAL'),
-	('04276', '0058', 'DETENTION FOR OBSERVATION AND TREATMENT', '1', '1', '1', '6', '8.00', '8.00', '0.00', '8.00', 'Yes', '0.00', '0.00', '', '', 'No', 'No', '0', 'INTERNAL'),
+	('04276', '0058', 'DETENTION FOR OBSERVATION AND TREATMENT', '1', '1', '1', '17', '8.00', '8.00', '0.00', '8.00', 'Yes', '0.00', '0.00', '', '', 'No', 'No', '0', 'INTERNAL'),
 	('05187', '0150', 'DETENTION FOR OBSERVATION AND TREATMENT', '1', '1', '2', '17', '20.00', '30.00', '0.00', '30.00', 'No', '0.00', '0.00', '', '', 'No', 'No', '0', 'INTERNAL'),
 	('05193', '0065', 'DETENTION FOR OBSERVATION AND TREATMENT.', '1', '1', '1', '17', '10.00', '10.00', '0.00', '10.00', 'No', '0.00', '0.00', '', '', 'No', 'No', '0', 'INTERNAL'),
 	('03634', '0044', 'Diabetes - Complicated', '1', '1', '3', '10', '187.60', '187.60', '724.45', '187.60', 'Yes', '594.82', '594.82', 'MEDI03A', 'PAED03C', 'No', 'No', '0', 'INTERNAL'),

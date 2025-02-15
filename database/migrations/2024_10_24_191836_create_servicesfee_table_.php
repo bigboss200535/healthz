@@ -14,10 +14,10 @@ return new class extends Migration
     public function up()
     {
         Schema::create('services_fee', function (Blueprint $table) {
-            $table->string('service_fee_id', 50);
+            $table->string('service_fee_id', 50)->primary();
             $table->string('service_id', 100);
             $table->string('service', 100);
-            $table->string('service_type_code', 100);
+            $table->string('service_type_id', 50);
             $table->float('cash_amount')->nullable();
             $table->float('private_amount')->nullable();
             $table->float('company_amount')->nullable();
@@ -30,11 +30,11 @@ return new class extends Migration
             $table->string('allow_topup', 100)->nullable();
             $table->decimal('topup_amount', 10,2)->nullable()->default('0');
             $table->string('editable', 100)->nullable();
-            $table->string('delivery_mode', 100)->nullable(); //internal or external
+            $table->string('delivery_mode', 100)->nullable(); //INTERNAL or EXTERNAL
             $table->string('gender_id', 50)->nullable();
             $table->string('age_id', 50)->nullable();
-            $table->string('patient_type', 50)->nullable(); //in, out, all
-            $table->string('is_active', 50)->nullable(); //yes, no,
+            $table->string('patient_type', 50)->nullable(); //IN, OUT, ALL
+            $table->string('is_active', 50)->nullable(); //YES, NO,
             $table->string('facility_id', 50)->nullable();
             $table->string('user_id', 100)->nullable();
             $table->timestamp('added_date')->nullable();
@@ -44,9 +44,10 @@ return new class extends Migration
             $table->string('archived_id', 100)->nullable();
             $table->string('archived_by', 100)->nullable();
             $table->date('archived_date', 100)->nullable();
-            $table->primary('service_fee_id');
+            // $table->primary('service_fee_id');
             $table->foreign('user_id')->references('user_id')->on('users');
             $table->foreign('service_id')->references('service_id')->on('services');
+            // $table->foreign('service_type_id')->references('service_type_id')->on('service_types');
         });
     }
 

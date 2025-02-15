@@ -13,14 +13,20 @@ return new class extends Migration
      */
     public function up()
     {
-       Schema::create('patient_nos', function (Blueprint $table) {
+        Schema::create('patient_daily_attendance', function (Blueprint $table) {
+            $table->id('attendance_id');
             $table->string('patient_id', 50);
             $table->string('opd_number', 50);
-            $table->string('clinic_id', 100)->nullable();
-            $table->date('registration_date')->nullable();
-            $table->timestamp('registration_time')->nullable();
-            $table->string('year')->nullable();
-            $table->string('month')->nullable();
+            $table->date('attendance_date');
+            $table->date('attendance_time');
+            $table->string('pat_age', 50);
+            $table->string('registration_type', 50); //new or old
+            $table->string('registration_status', 50); //old or new
+            $table->string('insured', 50); //yes or no
+            $table->string('episode_id', 50);
+            $table->string('sponsor_id', 50);
+            $table->string('clinic_id', 50);
+            $table->string('age_category_id', 50);
             $table->string('user_id', 100)->nullable();
             $table->string('facility_id', 50)->nullable();
             $table->string('added_id', 100)->nullable();
@@ -30,11 +36,13 @@ return new class extends Migration
             $table->string('archived', 100)->default('No')->index();
             $table->string('archived_id', 100)->nullable();
             $table->string('archived_by', 100)->nullable();
-            $table->date('archived_date', 100)->nullable();
+            $table->timestamp('archived_date')->nullable();
             $table->foreign('user_id')->references('user_id')->on('users');
             $table->foreign('patient_id')->references('patient_id')->on('patient_info');
             $table->foreign('facility_id')->references('facility_id')->on('facility');
         });
+
+        // DB::statement('ALTER TABLE patient_daily_attendance MODIFY episode_id INT AUTO_INCREMENT');
     }
 
     /**
@@ -44,6 +52,6 @@ return new class extends Migration
      */
     public function down()
     {
-         Schema::dropIfExists('patient_nos');
+        Schema::dropIfExists('patient_daily_attendance');
     }
 };

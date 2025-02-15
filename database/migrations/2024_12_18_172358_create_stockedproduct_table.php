@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('stocked_product', function (Blueprint $table) {
+        Schema::create('product_stocked', function (Blueprint $table) {
             $table->id('stocked_id', 50);
             $table->string('product_id', 50);
             $table->float('unit_price')->nullable();
@@ -21,7 +21,7 @@ return new class extends Migration
             $table->date('expiry_date')->nullable();
             $table->string('batch', 50)->nullable();
             $table->string('store_id', 50)->nullable();
-            $table->string('user_id', 10)->nullable();
+            $table->string('user_id', 50)->nullable();
             $table->string('facility_id', 50)->nullable();
             $table->string('added_id', 100)->nullable();
             $table->timestamp('added_date')->nullable();
