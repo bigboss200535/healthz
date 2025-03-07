@@ -1,120 +1,209 @@
 
-
 //********************************** */ SERVICE REQUEST FORM SUBMISSION ***************************** 
-$(document).ready(function() {
-  $('#service_request_form').on('submit', function(e) {
+$(document).ready(function () {
+  // Initialize DataTable
+  const currentattendanceTable = $('#current_attendance').DataTable({
+      columns: [
+          { data: 'attendance_id' },
+          { data: 'attendance_date' },
+          { data: 'full_age' },
+          { data: 'pat_clinic' },
+          { data: 'sponsor' },
+          { data: 'attendance_type' },
+          {
+              data: 'service_issued',
+              render: function (data) {
+                  if (data === '0') {
+                      return '<span class="badge bg-label-danger me-1">Unassigned</span>';
+                  } else if (data === '1') {
+                      return '<span class="badge bg-label-success me-1">Assigned</span>';
+                  }
+                  return data; // Fallback for unexpected status values
+              }
+          },
+          { data: 'actions', orderable: false }
+      ]
+  });
+
+  // Form submission handler
+  $('#service_request_form').on('submit', function (e) {
       e.preventDefault();
-      
+
       $.ajax({
-          url: '/services/service_request', 
+          url: '/services/service_request',
           type: 'POST',
           data: $(this).serialize(),
           headers: {
               'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
           },
-          success: function(response) {
+          success: function (response) {
               // Show success message
               $('.alert-container').html(`
-                <div class="alert alert-primary alert-dismissible fade show" role="alert">
-                    Attendance Created successfully!
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            `);
-              
+                  <div class="alert alert-primary alert-dismissible fade show" role="alert">
+                      Attendance Created successfully!
+                      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                  </div>
+              `);
+
               // Reset form
               $('#service_request_form')[0].reset();
-              $('#current_attendance').refresh(); // Refresh the attendance list
-              // fetchAndRefreshData();
+
+              // Refresh the attendance table
+              refresh_attendance_table();
           },
-          error: function(xhr, status, error) {
+          error: function (xhr) {
               // Show error message
+              const errorMessage = xhr.responseJSON?.message || 'An error occurred while creating attendance.';
               $('.alert-container').html(`
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                     An error occurred while creating attendance.
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>`);
+                  <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                      ${errorMessage}
+                      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                  </div>
+              `);
           }
       });
   });
-});
 
-//********************************** */ SERVICE REQUEST FORM SUBMISSION ***************************** 
+  // Function to refresh the attendance table
+  function refresh_attendance_table() {
+      const patientId = $('#patient_id').val();
+
+      fetch(`/patient/current-attendance/${patientId}`, {
+          method: 'GET',
+          headers: {
+              'Accept': 'application/json',
+          },
+      })
+          .then(response => {
+              if (!response.ok) {
+                  throw new Error('Network response was not ok');
+              }
+              return response.json();
+          })
+          .then(currentResponse => {
+              // Clear and update the DataTable
+              currentattendanceTable.clear().rows.add(currentResponse.map(current_attendance => ({
+                  attendance_id: `<a href="/consultation/opd-consultation/${current_attendance.attendance_id}">${current_attendance.attendance_id}</a>`,
+                  attendance_date: formatDate(current_attendance.attendance_date),
+                  full_age: current_attendance.full_age || 'N/A',
+                  pat_clinic: current_attendance.pat_clinic,
+                  sponsor: current_attendance.sponsor,
+                  attendance_type: current_attendance.attendance_type || 'N/A',
+                  service_issued: current_attendance.service_issued || 'N/A',
+                  actions: `
+                      <div class="dropdown" align="center">
+                          <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                              <i class="bx bx-dots-vertical-rounded"></i>
+                          </button>
+                          <div class="dropdown-menu">
+                              <a class="dropdown-item" href="/consultation/opd-consultation/${current_attendance.attendance_id}">
+                                  <i class="bx bx-detail me-1"></i> Consult
+                              </a>
+                              <a class="dropdown-item" href="/patients/${current_attendance.attendance_id}">
+                                  <i class="bx bx-play me-1"></i> Hold
+                              </a>
+                              <a class="dropdown-item" href="/patients/${current_attendance.attendance_id}">
+                                  <i class="bx bx-trash me-1"></i> Delete
+                              </a>
+                          </div>
+                      </div>
+                  `
+              }))).draw();
+          })
+          .catch(error => {
+              console.error('Error fetching attendance data:', error);
+              $('.alert-container').html(`
+                  <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                      Error fetching attendance data. Please try again later.
+                      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                  </div>
+              `);
+          });
+  }
+
+  // Helper function to format date
+  function formatDate(dateString) {
+      const date = new Date(dateString);
+      return date.toLocaleDateString('en-GB'); // Adjust to your preferred format
+  }
+});
+// //********************************** */ SERVICE REQUEST FORM SUBMISSION ***************************** 
 
 //  ----------------------------------------------------------
- $(document).ready(function () {
-    var patient_id = $('#p_id').val();
+//  $(document).ready(function () {
+//     var patient_id = $('#p_id').val();
    
-    // Handle form submission
-    $('#save_service_fee').submit(function (e) {
-      e.preventDefault();  
+//     // Handle form submission
+//     $('#save_service_fee').submit(function (e) {
+//       e.preventDefault();  
 
-      $('.is-invalid').removeClass('is-invalid');
-      $('.invalid-feedback').remove();
+//       $('.is-invalid').removeClass('is-invalid');
+//       $('.invalid-feedback').remove();
 
-      var form_data = $(this).serialize();
+//       var form_data = $(this).serialize();
 
-      let isValid = true;
+//       let isValid = true;
       
-      if ($('#clinic_code').val() === '-Select-') {
-         $('#clinic_code').addClass('is-invalid');
-         $('#clinic_code').after('<div class="invalid-feedback">Please select a clinic.</div>');
-        isValid = false;
-      }
+//       if ($('#clinic_code').val() === '-Select-') {
+//          $('#clinic_code').addClass('is-invalid');
+//          $('#clinic_code').after('<div class="invalid-feedback">Please select a clinic.</div>');
+//         isValid = false;
+//       }
 
-      if ($('#service_type').val() === '-Select-') {
-         $('#service_type').addClass('is-invalid');
-         $('#service_type').after('<div class="invalid-feedback">Please select a service type.</div>');
-        isValid = false;
-      }
+//       if ($('#service_type').val() === '-Select-') {
+//          $('#service_type').addClass('is-invalid');
+//          $('#service_type').after('<div class="invalid-feedback">Please select a service type.</div>');
+//         isValid = false;
+//       }
 
-      if ( $('#credit_amount').empty()) {
-        $('#credit_amount').addClass('is-invalid');
-        $('#credit_amount').after('<div class="invalid-feedback">Please enter a valid Amount.</div>');
-        isValid = false;
-      }
+//       if ( $('#credit_amount').empty()) {
+//         $('#credit_amount').addClass('is-invalid');
+//         $('#credit_amount').after('<div class="invalid-feedback">Please enter a valid Amount.</div>');
+//         isValid = false;
+//       }
 
-      if ($('#cash_amount').val() ) {
-        $('#cash_amount').addClass('is-invalid');
-        $('#cash_amount').after('<div class="invalid-feedback">Please enter a valid Amount</div>');
-        isValid = false;
-      }
+//       if ($('#cash_amount').val() ) {
+//         $('#cash_amount').addClass('is-invalid');
+//         $('#cash_amount').after('<div class="invalid-feedback">Please enter a valid Amount</div>');
+//         isValid = false;
+//       }
 
-      if ($('#attendance_type').val() === '-Select-') {
-         $('#attendance_type').addClass('is-invalid');
-         $('#attendance_type').after('<div class="invalid-feedback">Please select a Attendance Type.</div>');
-        isValid = false;
-      }
+//       if ($('#attendance_type').val() === '-Select-') {
+//          $('#attendance_type').addClass('is-invalid');
+//          $('#attendance_type').after('<div class="invalid-feedback">Please select a Attendance Type.</div>');
+//         isValid = false;
+//       }
 
-      if (isValid) {
-        $.ajax({
-          url: '/services/patient_service',
-          type: 'POST',
-          data: form_data,
-          dataType: 'json',
-          success: function (response) {
-            if (response.success) {
+//       if (isValid) {
+//         $.ajax({
+//           url: '/services/patient_service',
+//           type: 'POST',
+//           data: form_data,
+//           dataType: 'json',
+//           success: function (response) {
+//             if (response.success) {
              
-              var successAlert = $('<div class="alert alert-info alert-dismissible fade show" role="alert">')
-                                .text('Service submitted!')
-                            $('#success_diplay').prepend(successAlert);
-                            // Automatically remove the alert after 5 seconds
-                            setTimeout(function () {
-                                successAlert.alert('close');
-                            }, 7000);
-              $('#save_service_fee')[0].reset();// Reset form      
+//               var successAlert = $('<div class="alert alert-info alert-dismissible fade show" role="alert">')
+//                                 .text('Service submitted!')
+//                             $('#success_diplay').prepend(successAlert);
+//                             // Automatically remove the alert after 5 seconds
+//                             setTimeout(function () {
+//                                 successAlert.alert('close');
+//                             }, 7000);
+//               $('#save_service_fee')[0].reset();// Reset form      
                
-            } else {
-              alert('There was an issue with the submission.');
-            }
-          },
-          error: function (xhr, status, error) {
-            alert('An error occurred: ' + error);
-          }
-        });
-      }
-    });
-  });
-// clinic dropdown dynamically
+//             } else {
+//               alert('There was an issue with the submission.');
+//             }
+//           },
+//           error: function (xhr, status, error) {
+//             alert('An error occurred: ' + error);
+//           }
+//         });
+//       }
+//     });
+//   });
+// ************************************ clinic dropdown dynamically **************************************************************
   $(document).on('change', '#clinic_code', function() {
     var clinic_id = $(this).val();
 
@@ -283,3 +372,149 @@ $('#claims_check_code').on('hidden.bs.modal', function () {
   clear_Form();
 });
 
+// ______________________________________________________________________________________________________________________________________________________
+
+
+  $(document).ready(function () {
+    // Handle input event on the diagnosis field
+    $('#diagnosis').on('input', function () {
+
+      const diagnosis = $(this).val().trim(); // Get the input value
+      var opd_number = $('#opdnumber').val();
+       
+      if (!diagnosis) {
+        $('#diagnosis_results').html('');
+        return;
+      }
+
+      // Send an AJAX request to fetch matching diagnoses
+      $.ajax({
+        url: '/services/add-diagnosis', // The route to fetch diagnosis details
+        method: 'POST',
+        data: {
+          _token: $('input[name="_token"]').val(), // CSRF token
+          diagnosis: diagnosis, // Diagnosis search term
+          opd_number: opd_number, 
+        },
+        success: function (response) {
+          if (response.length > 0) {
+            // Sort the diagnoses alphabetically by the diagnosis name
+            const sorted_diagnoses = response.sort((a, b) => a.diagnosis.localeCompare(b.diagnosis));
+
+            // Clear previous results
+            $('#diagnosis_results').html('');
+           
+            // Display the sorted diagnoses in a dropdown or list
+            sorted_diagnoses.forEach((diagnosis) => {
+              $('#diagnosis_results').append(
+                `<div class="diagnosis-item p-2 border-bottom" 
+                      data-icd_10="${diagnosis.icd_10}" 
+                      data-gdrg_code="${diagnosis.gdrg_code}" 
+                      data-diagnosis="${diagnosis.diagnosis}" 
+                      data-fee="${diagnosis.adult_tarif}">
+                   ${diagnosis.diagnosis} (${diagnosis.icd_10}) | 
+                   <span class="badge bg-label-primary me-1">${diagnosis.gdrg_code}</span>
+                   <span class="badge bg-label-danger me-1">${diagnosis.adult_tarif}</span>
+                 </div>`
+              );
+            });
+
+            // Handle selection of a diagnosis
+            $('.diagnosis-item').on('click', function () {
+              const icd_10 = $(this).data('icd_10');
+              const gdrg_code = $(this).data('gdrg_code');
+              const fee = $(this).data('fee');
+              const diagnosis = $(this).data('diagnosis');
+
+              // Populate the form fields
+              $('#icd_10').val(icd_10);
+              $('#gdrg_code').val(gdrg_code);
+              $('#diagnosis_fee').val(fee);
+              $('#diagnosis_name').val(diagnosis);
+
+              // Clear the results container
+              $('#diagnosis_results').html('');
+            });
+          } else {
+            // Display a message if no matching diagnoses are found
+            $('#diagnosis_results').html('<div class="text-muted">No matching diagnoses found.</div>');
+          }
+        },
+        error: function (xhr, status, error) {
+          console.error('Error fetching diagnosis details:', error);
+          $('#diagnosis_results').html('<div class="text-danger">An error occurred while fetching diagnoses.</div>');
+        },
+      });
+    });
+  });
+
+  // __________________________________________________________________________________________________________________________________________________________
+
+
+  $(document).ready(function () {
+    // Handle input event on the diagnosis field
+    $('#prescription_add').on('input', function () {
+
+      const prescription = $(this).val().trim(); // Get the input value
+      var opd_number = $('#opdnumber').val();
+       
+      if (!prescription) {
+        $('#drug_results').html('');
+        return;
+      }
+
+      // Send an AJAX request to fetch matching diagnoses
+      $.ajax({
+        url: '/services/add-prescription', 
+        method: 'POST',
+        data: {
+          _token: $('input[name="_token"]').val(), // CSRF token
+          prescription: prescription, // Diagnosis search term
+          opd_number: opd_number, 
+        },
+        success: function (response) {
+          if (response.length > 0) {
+            // Sort the diagnoses alphabetically by the diagnosis name
+            const sorted_drugs = response.sort((a, b) => a.diagnosis.localeCompare(b.diagnosis));
+
+            $('#drug_results').html('');
+           
+            sorted_drugs.forEach((drugs) => {
+              $('#drug_results').append(
+                `<div class="diagnosis-item p-2 border-bottom" 
+                      data-product_name="${drugs.product_name}" 
+                      data-average_unit_price="${drugs.average_unit_price}">
+                   ${drugs.product_name} (${drugs.average_unit_price}) | 
+                   <span class="badge bg-label-primary me-1">${drugs.product_name}</span>
+                 </div>`
+              );
+            });
+
+            // Handle selection of a diagnosis
+            $('.drug-item').on('click', function () {
+              // const icd_10 = $(this).data('icd_10');
+              // const gdrg_code = $(this).data('gdrg_code');
+              const average_unit_price = $(this).data('average_unit_price');
+              const product_name = $(this).data('product_name');
+
+              // Populate the form fields
+              $('#average_unit_price').val(average_unit_price);
+              $('#product_name').val(product_name);
+              // $('#diagnosis_fee').val(fee);
+              // $('#diagnosis_name').val(diagnosis);
+
+              // Clear the results container
+              $('#drug_results').html('');
+            });
+          } else {
+            // Display a message if no matching diagnoses are found
+            $('#drug_results').html('<div class="text-muted">No matching diagnoses found.</div>');
+          }
+        },
+        error: function (xhr, status, error) {
+          console.error('Error fetching diagnosis details:', error);
+          $('#_results').html('<div class="text-danger">An error occurred while fetching diagnoses.</div>');
+        },
+      });
+    });
+  });

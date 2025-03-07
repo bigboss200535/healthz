@@ -11,8 +11,8 @@ class DashboardController extends Controller
 {
     public function index()
     {   
-
-        $out_patient = PatientAttendance::where('archived', 'No')->count();
+        $today = date('Y-m-d');
+        $out_patient = PatientAttendance::where('archived', 'No')->where('attendance_date', $today)->count();
         $in_patient = DB::table('patient_admissions')->where('archived', 'No')->count();
 
         $current_hour = Carbon::now()->format('H');

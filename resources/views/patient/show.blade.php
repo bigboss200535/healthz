@@ -382,11 +382,11 @@
         <form id="service_request_form" class="row g-6" onsubmit="return false">
           @csrf
           <div id="success_diplay" class="container mt-6"></div>
-            <input type="text" name="patient_id" id="patient_id" value="{{ $patients->patient_id }}">
-            <input type="text" name="service_id" id="service_id">
-            <input type="text" name="service_fee_id" id="service_fee_id">
-            <input type="text" name="top_up" id="top_up" value="0.00">
-            <input type="text" name="opd_number" id="opd_number" value="{{ $patients->opd_number}}">
+            <input type="text" name="patient_id" id="patient_id" value="{{ $patients->patient_id }}" hidden>
+            <input type="text" name="service_id" id="service_id" hidden>
+            <input type="text" name="service_fee_id" id="service_fee_id" hidden>
+            <input type="text" name="top_up" id="top_up" value="0.00" hidden>
+            <input type="text" name="opd_number" id="opd_number" value="{{ $patients->opd_number}}" hidden>
           <div class="col-12 col-md-6">
             <label class="form-label" for="clinic_code">Service Clinic</label>
              <select name="clinic_code" id="clinic_code" class="form-control">

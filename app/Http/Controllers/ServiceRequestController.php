@@ -53,6 +53,7 @@ class ServiceRequestController extends Controller
                     'attendance_type' => 'nullable|string|max:50', 
                 ]);
 
+        // \Log::info('Validated Data:', $validated_data);
 
         $patient = Patient::where('archived', 'No')
             ->where('patient_id', $request->input('patient_id'))

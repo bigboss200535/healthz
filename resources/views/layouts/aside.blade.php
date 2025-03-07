@@ -89,12 +89,12 @@
           </a>
         </li>
         <li class="menu-item">
-          <a href="{{ route('patients.index') }}" class="menu-link">
+          <a href="#" class="menu-link">
             <div class="text-truncate" data-i18n="List">Patient Sponsors</div>
           </a>
         </li>
         <li class="menu-item">
-          <a href="{{ route('patients.index') }}" class="menu-link">
+          <a href="{{ route('patients.attendance') }}" class="menu-link">
             <div class="text-truncate" data-i18n="List">Patient Attendance</div>
           </a>
         </li>
@@ -139,6 +139,20 @@
     @endif
     <li class="menu-item">
       <a href="javascript:void(0);" class="menu-link menu-toggle">
+        <i class="menu-icon tf-icons bx bx-male-female"></i>
+        <div class="text-truncate" data-i18n="Users">Out-Patient</div>
+         <!-- <span class="badge badge-center rounded-pill bg-success ms-auto">4</span> -->
+      </a>
+      <ul class="menu-sub">
+        <li class="menu-item">
+          <a href="{{ url('consultation/consult') }}" class="menu-link">
+            <div class="text-truncate" data-i18n="List">Consultations</div>
+          </a>
+        </li>
+      </ul>
+    </li>
+    <li class="menu-item">
+      <a href="javascript:void(0);" class="menu-link menu-toggle">
         <i class="menu-icon tf-icons bx bx-hotel"></i>
         <div class="text-truncate" data-i18n="Users">In-Patient</div>
          <!-- <span class="badge badge-center rounded-pill bg-success ms-auto">4</span> -->
@@ -166,35 +180,7 @@
         </li>
       </ul>
     </li>
-    <li class="menu-item">
-      <a href="javascript:void(0);" class="menu-link menu-toggle">
-        <i class="menu-icon tf-icons bx bx-male-female"></i>
-        <div class="text-truncate" data-i18n="Users">Out-Patient</div>
-         <!-- <span class="badge badge-center rounded-pill bg-success ms-auto">4</span> -->
-      </a>
-      <ul class="menu-sub">
-        <li class="menu-item">
-          <a href="{{ url('consultation/consult') }}" class="menu-link">
-            <div class="text-truncate" data-i18n="List">Consultations</div>
-          </a>
-        </li>
-         <li class="menu-item">
-          <a href="#" class="menu-link">
-            <div class="text-truncate" data-i18n="List">Surgery</div>
-          </a>
-        </li>
-        <li class="menu-item">
-          <a href="#" class="menu-link">
-            <div class="text-truncate" data-i18n="List">Discharges</div>
-          </a>
-        </li>
-        <!-- <li class="menu-item">
-         <a href="#" class="menu-link">
-          <div class="text-truncate" data-i18n="list">Medications</div>
-         </a>
-        </li> -->
-      </ul>
-    </li>
+    
     <li class="menu-item">
       <a href="javascript:void(0);" class="menu-link menu-toggle">
         <i class="menu-icon tf-icons bx bx-vial"></i>

@@ -43,6 +43,7 @@
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.6/dist/sweetalert2.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.15/jquery.mask.min.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> -->
     <!-- <link rel="stylesheet" href="{{ asset('preloader.css') }}"> -->
     </head>
  <body>
@@ -102,6 +103,8 @@
     <script src="{{ asset('js/custom_js.js') }}"></script>
     <script src="{{ asset('js/patient_services.js') }}"></script>
     <script src="{{ asset('js/patient_details.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
     
   </body>
 </html>
@@ -112,18 +115,19 @@
         $('#app_list').DataTable();
         $('#attendance_details').DataTable();   
         $('#claims_code_list').DataTable();
-        $('#current_attendance').DataTable(); 
+        // $('#current_attendance').DataTable(); 
         $('#patient_sponsor').DataTable();
         $('#appointments').DataTable();
-        
-       
         $('#product_list').DataTable();
         $('#patient_list').DataTable();
         $('#patient_services').DataTable();
         $('#patient_search_list').DataTable();
         $('#patient_searches').DataTable();
         $('#nurses_notes_patient').DataTable();
+        $('#drugs').DataTable();
+        $('#diagnosis').DataTable();
         $('.sponsor_name').select2();
+        $('.diagnosis_search').select2();
         // $('.sponsor_type_id').select2();
         $('.select_2_dropbox').select2();
     });
@@ -175,3 +179,25 @@
         }
     });
 </script> -->
+<script>
+  const ctx = document.getElementById('vital_sign_chart');
+
+  new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+      datasets: [{
+        label: 'Pressure',
+        data: [12, 19, 3, 5, 2, 20],
+        borderWidth: 3
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+</script>

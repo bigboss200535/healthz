@@ -21,7 +21,8 @@ return new class extends Migration
             $table->date('attendance_date');
             $table->timestamp('attendance_time'); 
             $table->string('pat_age', 50)->nullable(); 
-            $table->string('age_id', 50)->nullable(); 
+            $table->string('age_id', 50)->nullable()->index(); 
+            $table->string('gender_id', 50)->nullable()->index(); 
             $table->string('full_age', 50)->nullable(); 
             $table->string('age_group_category', 50)->nullable(); 
             $table->string('status_code', 50)->nullable(); 
@@ -54,12 +55,13 @@ return new class extends Migration
             $table->string('archived', 100)->default('No');
             $table->date('archived_date')->nullable();
             $table->string('archived_by', 100)->nullable();
-            $table->primary(['attendance_id', 'added_date']);
+            // $table->primary(['attendance_id', 'added_date']);
             $table->foreign('user_id')->references('user_id')->on('users');
             $table->foreign('facility_id')->references('facility_id')->on('facility');
             $table->foreign('patient_id')->references('patient_id')->on('patient_info');
             $table->foreign('status_code')->references('patient_status_id')->on('patient_statuses');
             $table->foreign('age_id')->references('age_id')->on('ages');
+            $table->foreign('gender_id')->references('gender_id')->on('gender');
         });
 
     }

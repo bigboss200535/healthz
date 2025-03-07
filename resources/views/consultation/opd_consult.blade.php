@@ -1,54 +1,65 @@
 <x-app-layout>
 <div class="container-xxl flex-grow-1 container-p-y">    
-    <!-- Invoice List Widget -->
+    <!-- Widget -->
 <div class="card mb-6">
   <div class="card-widget-separator-wrapper">
     <div class="card-body card-widget-separator">
       <div class="row gy-4 gy-sm-1">
         <div class="col-sm-6 col-lg-3">
           <div class="d-flex justify-content-between align-items-center card-widget-1 border-end pb-4 pb-sm-0">
-           
             <p>
-           <table class="table table-striped">
-              <tr>
-                <td colspan="2" align="center"><h5><b>Patient Details</b></h5></td>
-              </tr>
-              <tr>
-             
-          
-                <td rowspan="" colspan="2" align="center">
-                 <img src="{{ $attendance->gender==='FEMALE' ? asset('img/avatars/female.jpg') : asset('img/avatars/male.jpg') }}" 
-                 alt="Patient Image" class="rounded-pill" style="border:1px;border-color:black; box-shadow:10px; width:50%" 
-                 align="center">
-                </td>
-              </tr>
-              <tr>
-                <td colspan="2" align="center">{{ $attendance->fullname}}</td>
-              </tr>
-            </table>
+                <table class="table table-striped">
+                    <tr>
+                      <td colspan="2" align="center"><h5><b>{{ $attendance->fullname}}</b></h5></td>
+                    </tr>
+                    <tr>
+                      <td rowspan="" colspan="2" align="center">
+                          <img src="{{ $attendance->gender==='FEMALE' ? asset('img/avatars/female.jpg') : asset('img/avatars/male.jpg') }}" 
+                          alt="Patient Image" class="rounded-pill" style="border:1px;border-color:black; box-shadow:10px; width:50%" 
+                          align="center">
+                      </td>
+                    </tr>
+                    <!-- <tr>
+                      <td colspan="2" align="center"></td>
+                    </tr> -->
+                    <tr>
+                      <td colspan="2">
+                        <table class="table">
+                          <tr>
+                            <td><b>OPD #:</b><br> {{ $attendance->opd_number}}</td>
+                            <td><b>Age: </b><br>{{ $attendance->full_age}}</td>
+                          </tr>
+                          
+                        </table>
+                      </td>
+                    </tr>
+                  </table>
            </p>
           </div>
           <hr class="d-none d-sm-block d-lg-none me-6">
         </div>
         <div class="col-sm-6 col-lg-3">
           <div class="d-flex justify-content-between align-items-center card-widget-2 border-end pb-4 pb-sm-0">
-            
            <p>
            <table class="table table-hover">
-              <tr>
-                <!-- <td colspan="2"><h5><b>Patient Information</b></h5></td> -->
-              </tr>
-              <tr>
+              <!--<tr>
+                 <td colspan="2"><h5><b>Patient Information</b></h5></td> 
+              </tr>-->
+              <!-- <tr>
                 <td><b>OPD #:</b></td>
                 <td>{{ $attendance->opd_number}}</td>
-              </tr>
+              </tr> -->
               <tr>
                 <td><b>Gender:</b></td>
                 <td>{{ $attendance->gender}}</td>
               </tr>
-              <tr>
+              <!-- <tr>
                 <td><b>Age:</b></td>
                 <td>{{ $attendance->full_age}}</td>
+              </tr> -->
+              <tr>
+                <td><b>Clinic:</b></td>
+                <td>{{ $attendance->pat_clinic}}</td>
               </tr>
               <tr>
                 <td><b>Sponsor Type:</b></td>
@@ -58,6 +69,14 @@
                 <td><b>Sponsor:</b></td>
                 <td><span class="badge bg-label-primary">{{ $attendance->sponsor}}</span></td>
               </tr>
+              <td><b>Consultation Type</b></td>
+                <td>
+                  <select name="visit_date" id="visit_date" class="form-control">
+                    <option disabled selected>-Select-</option>
+                          <option value="NEW" Selected>NEW</option>
+                          <option value="OLD">OLD</option>
+                  </select>
+                </td>
             </table>
            </p>
           </div>
@@ -71,9 +90,12 @@
                 <!-- <td colspan="2"><h5><b>Last Visit</b></h5></td> -->
               </tr>
               <tr>
+              <tr>
+                
+              <!-- </tr>
                 <td><b>Last Visit</b></td>
                 <td>24-01-2024</td>
-              </tr>
+              </tr> -->
               <tr>
                 <td><b>Consulting Room</b></td>
                 <td>
@@ -107,47 +129,39 @@
                   </select>
                 </td>
               </tr>
+              <tr>
+                <td><b>Consultation Date</b></td>
+                <td>
+                  <input type="date" class="form-control" id="consultation_date" name="consultation_date">
+                </td>
+              </tr>
+              <tr>
+                <td><b>Episode</b></td>
+                <td>
+                  <select name="episode_name" id="episode_name" class="form-control">
+                        <option value="ACUTE" selected>ACUTE</option>
+                        <option value="CHRONIC">CHRONIC</option>
+                  </select>
+                </td>
+              </tr>
             </table>
            </p>
           </div>
         </div>
         <div class="col-sm-6 col-lg-2">
-          <div class="d-flex justify-content-between align-items-center">
+         <div class="d-flex justify-content-between align-items-center border-end pb-4 pb-sm-0 card-widget-3">
             <p>
             <table>
               <tr>
-                <td><h5><b>Waiting List</h5></b></td>
+                <td><b>Episode</b></td>
+                <td>Episode</td>
               </tr>
               <tr>
-                <td>
-                 
-                </td>
+                <td><b>Last Visit</b></td>
+                <td>Episode</td>
               </tr>
-              <tr>
-                <td>
-                   <!-- <input type="submit" name="new_visit" id="new_visit" class="btn btn-secondary rounded-pill" value="Gen E-folder"> -->
-                </td>
-              </tr>
-              <tr>
-                 <td>
-                   <!-- <input type="submit" name="new_visit" id="new_visit" class="btn btn-primary rounded-pill" value="E-folder"> -->
-                </td>
-              </tr>
-              <!-- <tr>
-                <td><b>Sponsor</b></td>
-                <td><span class="badge bg-label-primary">Nhis</span></td>
-              </tr> -->
             </table>
             </p>
-            <!-- <div>
-              <h4 class="mb-0">876</h4>
-              <p class="mb-0">Unpaid</p>
-            </div> -->
-            <!-- <div class="avatar">
-              <span class="avatar-initial rounded bg-label-secondary text-heading">
-                <i class="bx bx-error-circle bx-26px"></i>
-              </span>
-            </div> -->
           </div>
         </div>
       </div>
@@ -164,112 +178,108 @@
                       <div class="nav-align-top nav-tabs-shadow mb-6">
                             <ul class="nav nav-tabs nav-fill" role="tablist">
                             <li class="nav-item">
-                                <button type="button" class="nav-link active" role="tab" data-bs-toggle="tab" data-bs-target="#navs-vitals" aria-controls="navs-justified-home" aria-selected="true">
+                               <button type="button" class="nav-link active" role="tab" data-bs-toggle="tab" data-bs-target="#navs_vitals" aria-controls="navs-justified-home" aria-selected="true">
                                   <span class="d-none d-sm-block"><b>Vital Signs</b></span>
                                 </button>
                               </li>
                               <li class="nav-item">
-                                <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#navs-presenting" aria-controls="navs-justified-home" aria-selected="true">
+                                <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#navs_clinical" aria-controls="navs-justified-home" aria-selected="true">
                                   <span class="d-none d-sm-block"><b>Clinical Notes</b></span>
                                 </button>
                               </li>
                               <li class="nav-item">
-                                <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#navs-requests" aria-controls="navs-justified-profile" aria-selected="false">
+                                <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#navs_medical" aria-controls="navs-justified-profile" aria-selected="false">
                                   <span class="d-none d-sm-block"><b>History/Medical Conditions</b></span>
                                 </button> 
                               </li>
                               <li class="nav-item">
-                                <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#navs-systems" aria-controls="navs-justified-messages" aria-selected="false">
+                                <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#navs_systems" aria-controls="navs-justified-messages" aria-selected="false">
                                   <span class="d-none d-sm-block"><b>Review of Systems</b> </span>
                                 </button>
                               </li>
                               <li class="nav-item">
-                                <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#navs-diagnosis" aria-controls="navs-justified-messages" aria-selected="false">
-                                  <span class="d-none d-sm-block"> <b>Diagnosis/Prescriptions</b></span>
+                                <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#navs_diagnosis" aria-controls="navs-justified-messages" aria-selected="false">
+                                  <span class="d-none d-sm-block"><b>Diagnosis/Prescriptions</b></span>
                                 </button>
                               </li>
                               <li class="nav-item">
-                                <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#navs-diagnosis" aria-controls="navs-justified-messages" aria-selected="false">
-                                  <span class="d-none d-sm-block"> <b>Document</b></span>
+                                <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#navs_document" aria-controls="navs-justified-messages" aria-selected="false">
+                                  <span class="d-none d-sm-block"><b>Manage Document</b></span>
                                 </button>
                               </li>
                               <li class="nav-item">
-                                <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#navs-diagnosis" aria-controls="navs-justified-messages" aria-selected="false">
-                                  <span class="d-none d-sm-block"> <b>Investigations</b></span>
+                                <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#navs_investigations" aria-controls="navs-justified-messages" aria-selected="false">
+                                  <span class="d-none d-sm-block"><b>Investigations</b></span>
                                 </button>
                               </li>
                               <li class="nav-item">
-                                <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#navs-diagnosis" aria-controls="navs-justified-messages" aria-selected="false">
-                                  <span class="d-none d-sm-block"> <b>E-Folder</b></span>
+                                <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#navs_investigations" aria-controls="navs-justified-messages" aria-selected="false">
+                                  <span class="d-none d-sm-block"><b>Charts</b></span>
                                 </button>
                               </li>
                             </ul>
-                  
                         <div class="tab-content">
-                            <div class="tab-pane fade show active" id="navs-vitals" role="tabpanel">
-                              <h4 class="py-3 mb-4">
-                                <span class="text-muted fw-light"><b>Vital Signs</b></span>
-                              </h4>
-                               <table class="table table-striped" id="product_list">
-                                <thead>
-                                  <tr>
-                                    <th>SN</th>
-                                    <th>Date</th>
-                                    <th>Temperature</th>
-                                    <th>Weight</th>
-                                    <th>Height</th>
-                                    <th>Blood Pressure</th>
-                                    <th>Pulse</th>
-                                    <th>BMI</th>
-                                    <th>Respiratory Rate</th>
-                                    <th>SpO2</th>
-                                    <th>Stool</th>
-                                    <th>Remarks</th>
-                                  </tr>
-                                </thead>
-                                <tr>
-                                  <td>1</td>
-                                  <td></td>
-                                  <td>1</td>
-                                  <td>1</td>
-                                  <td>1</td>
-                                  <td>1</td>
-                                  <td>1</td>
-                                  <td>1</td>
-                                  <td>1</td>
-                                  <td>1</td>
-                                  <td>1</td>
-                                  <td>1</td>
-                                </tr>
-                                <tfoot>
-                                <tr>
-                                    <th>SN</th>
-                                    <th>Date</th>
-                                    <th>Temperature</th>
-                                    <th>Weight</th>
-                                    <th>Height</th>
-                                    <th>Blood Pressure</th>
-                                    <th>Pulse</th>
-                                    <th>BMI</th>
-                                    <th>Respiratory Rate</th>
-                                    <th>SpO2</th>
-                                    <th>Stool</th>
-                                    <th>Remarks</th>
-                                  </tr>
-                                </tfoot>
-                               </table>
-
-                               <br>
-                               <p>
-                                  <label for="notes_time"><b>Vital Signs</b></label>
-                                  <!-- <input type="time" class="form-control" name="notes_time" id="notes_time"> -->
-                                </p>
-                                <!-- <p>
-                                    <a href="#" class="btn btn-primary">Submit</a>
-                                </p> -->
-                            </div>
-                            <div class="tab-pane fade" id="navs-justified-profile" role="tabpanel">
-                              <!-- <p>
+                          <!-- TABS VIEWS -->
+                             <div class="tab-pane fade" id="navs_vitals" role="tabpanel">  <!--------------VITAL SIGNS -->
+                                    <div class="row g-6 mb-6">
+                                          <div class="col-md">
+                                            <div class="card">
+                                              <div class="card-body">
+                                                <form class="browser-default-validation">
+                                                  <div class="row">
+                                                    <div class="col-12">
+                                                      <button type="button" data-bs-toggle='modal' data-bs-target="#add_diagnosis" class="btn btn-sm btn-primary">ADD VITAL SIGNS</button>
+                                                      <button type="button" data-bs-toggle='modal' data-bs-target="#diagnosis_history" class="btn btn-sm btn-danger">HISTORY</button>
+                                                    </div>
+                                                  </div>
+                                                </form>
+                                                <table class="table table-responsive" id="patient_list">
+                                                    <thead>
+                                                      <tr>
+                                                        <th>Sn</th>
+                                                        <th>Diagnosis</th>
+                                                        <th>ICD-10</th>
+                                                        <th>GRDG</th>
+                                                        <th>Action</th>
+                                                      </tr>
+                                                    </thead>
+                                                    <tfoot>
+                                                      <tr>
+                                                        <th>Sn</th>
+                                                        <th>Diagnosis</th>
+                                                        <th>ICD-10</th>
+                                                        <th>GRDG</th>
+                                                        <th>Action</th>
+                                                      </tr>
+                                                    </tfoot>
+                                                </table>
+                                              </div>
+                                            </div>
+                                          </div>
+                                           <!-- DIAGNOSIS VIEW -->
+                                          <!-- MEDICAITION VIEW  -->
+                                          <div class="col-md">
+                                            <div class="card">
+                                              <div class="card-body">
+                                                <form class="needs-validation" novalidate>
+                                                  <div class="row">
+                                                    <!----------------------------------------chart -->
+                                                    <div class="col-12">
+                                                       <canvas id="vital_sign_chart"></canvas>
+                                                    </div>
+                                                    <!--------------------------------------------chart -->
+                                                  </div>
+                                                </form>
+                                                  <div>
+                                                      <!-- <canvas id="vital_sign_chart"></canvas> -->
+                                                  </div>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                </div>
+                            <div class="tab-pane fade" id="navs_clinical" role="tabpanel"> <!--------------CLINIC NOTES -->
+                                 <p>
                                       <ul class="timeline mb-0">
                                           <li class="timeline-item timeline-item-transparent">
                                             <span class="timeline-point timeline-point-primary"></span>
@@ -279,7 +289,7 @@
                                                 <small class="text-muted">25/12/2024   11:59AM</small>
                                               </div>
                                               <p class="mb-2" style="color: #000000;">
-                                                Invoices have been paid to the company 
+                                               <b> Clinical</b> have been paid to the company 
                                                 I hate hospitals but all of the staff that helped me today were so helpfully and seemed genuinely concern.
                                                 I hate hospitals but all of the staff that helped me today were so helpfully and seemed genuinely concern.
                                                 <a href="#"><i class="bx bx-edit"></i></a>
@@ -287,31 +297,107 @@
                                             </div>
                                           </li>
                                         </ul>
-                                 </p> -->
+                                 </p>
                               </div>
-                                <div class="tab-pane fade" id="navs-justified-messages" role="tabpanel">
-                                  <!-- <p>
-                                      <ul class="timeline mb-0">
-                                              <li class="timeline-item timeline-item-transparent">
-                                                <span class="timeline-point timeline-point-primary"></span>
-                                                <div class="timeline-event">
-                                                  <div class="timeline-header mb-3">
-                                                    <h6 class="mb-0">DOCTOR: MOHAMMED ALHASSAN </h6>
-                                                    
+                              <div class="tab-pane fade" id="navs_medical" role="tabpanel">     <!--------------MEDICAL HISTORY -->
+                                  <p>
+                                      <b>Medical</b> have been paid to the company 
+                                                I hate hospitals but all of the staff that helped me today were so helpfully and seemed genuinely concern.
+                                                I hate hospitals but all of the staff that helped me today were so helpfully and seemed genuinely concern.
+                                                <a href="#"><i class="bx bx-edit"></i></a>
+                                   </p>
+                                </div>
+                                <div class="tab-pane fade" id="navs_systems" role="tabpanel">     <!--------------REVIEW OF SYSTEM -->
+                                  <p>
+                                      <b>system</b> have been paid to the company 
+                                                I hate hospitals but all of the staff that helped me today were so helpfully and seemed genuinely concern.
+                                                I hate hospitals but all of the staff that helped me today were so helpfully and seemed genuinely concern.
+                                                <a href="#"><i class="bx bx-edit"></i></a>
+                                   </p>
+                                </div>
+                                <div class="tab-pane fade" id="navs_diagnosis" role="tabpanel">     <!--------------DIAGNOSIS  -->
+                                    <div class="row g-6 mb-6">
+                                          <div class="col-md">
+                                            <div class="card">
+                                              <div class="card-body">
+                                                <form class="browser-default-validation">
+                                                  <div class="row">
+                                                    <div class="col-12">
+                                                      <button type="button" data-bs-toggle='modal' data-bs-target="#add_diagnosis" class="btn btn-sm btn-primary">ADD DIAGNOSIS</button>
+                                                      <button type="button" data-bs-toggle='modal' data-bs-target="#diagnosis_history" class="btn btn-sm btn-danger">DIAGNOSIS HISTORY</button>
+                                                    </div>
                                                   </div>
-                                                  <p class="mb-2" style="color: #000000;">
-                                                    <b>MALARIA</b>  <span class="badge bg-label-info me-1">B54</span><span class="badge bg-label-danger me-1">OPDC06A</span> 25/12/2024 
-                                                    <a href="#"><i class="bx bx-edit"></i></a>
-                                                  </p>
-                                                  <p class="mb-2" style="color: #000000;">
-                                                    <b>ANAEMIA</b> <span class="badge bg-label-info me-1">D50</span> <span class="badge bg-label-danger me-1">OPDC06A</span> 25/12/2024 
-                                                    <a href="#"><i class="bx bx-edit"></i></a> 
-                                                  </p>
-                                                  
-                                                </div>
-                                              </li>
-                                        </ul>
-                                   </p> -->
+                                                </form>
+                                                <table class="table table-responsive" id="diagnosis">
+                                                    <thead>
+                                                      <tr>
+                                                        <th>Sn</th>
+                                                        <th>Diagnosis</th>
+                                                        <th>ICD-10</th>
+                                                        <th>GRDG</th>
+                                                        <th>Action</th>
+                                                      </tr>
+                                                    </thead>
+                                                    <tfoot>
+                                                      <tr>
+                                                        <th>Sn</th>
+                                                        <th>Diagnosis</th>
+                                                        <th>ICD-10</th>
+                                                        <th>GRDG</th>
+                                                        <th>Action</th>
+                                                      </tr>
+                                                    </tfoot>
+                                                </table>
+                                              </div>
+                                            </div>
+                                          </div>
+                                          <div class="col-md">
+                                            <div class="card">
+                                              <div class="card-body">
+                                                <form class="needs-validation" novalidate>
+                                                  <div class="row">
+                                                    <div class="col-12">
+                                                      <button type="button" data-bs-toggle='modal' data-bs-target="#add_prescriptions" class="btn btn-sm btn-primary">ADD PRESCRIPTIONS</button>
+                                                      <button type="button" data-bs-toggle='modal' data-bs-target="#prescription_history" class="btn btn-sm btn-danger">PRESCRIPTION HISTORY</button>
+                                                    </div>
+                                                  </div>
+                                                </form>
+                                                <table class="table table-responsive" id="drugs">
+                                                    <thead>
+                                                      <tr>
+                                                        <th>Sn</th>
+                                                        <th>Prescription</th>
+                                                        <th>Action</th>
+                                                      </tr>
+                                                    </thead>
+                                                    <tfoot>
+                                                      <tr>
+                                                        <th>Sn</th>
+                                                        <th>Prescription</th>
+                                                        <th>Action</th>
+                                                      </tr>
+                                                    </tfoot>
+                                                </table>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                </div>
+                                <div class="tab-pane fade" id="navs_document" role="tabpanel">     <!--------------DOCUMENT MANAGEMENT -->
+                                  <p>
+                                      <b>document</b> have been paid to the company 
+                                                I hate hospitals but all of the staff that helped me today were so helpfully and seemed genuinely concern.
+                                                I hate hospitals but all of the staff that helped me today were so helpfully and seemed genuinely concern.
+                                                <a href="#"><i class="bx bx-edit"></i></a>
+                                   </p>
+                                </div>
+                                <div class="tab-pane fade" id="navs_investigations" role="tabpanel">     <!--------------INVESTIGATION -->
+                                  <p>
+                                      <b>INVESTIGATION</b> have been paid to the company 
+                                                I hate hospitals but all of the staff that helped me today were so helpfully and seemed genuinely concern.
+                                                I hate hospitals but all of the staff that helped me today were so helpfully and seemed genuinely concern.
+                                                <a href="#"><i class="bx bx-edit"></i></a>
+                                   </p>
                                 </div>
                     </div>
                 </div>
@@ -321,5 +407,189 @@
     </div>
   </div>
 </div>
-</div>        
+</div> 
+<style>
+      #diagnosis_results {
+      max-height: 200px;
+      overflow-y: auto;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+
+    .diagnosis-item {
+      cursor: pointer;
+      padding: 8px;
+      background-color: #f9f9f9;
+    }
+
+    .diagnosis-item:hover {
+      background-color: #f1f1f1;
+    }
+
+    #drug_results {
+      max-height: 200px;
+      overflow-y: auto;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+
+    .drug-item {
+      cursor: pointer;
+      padding: 8px;
+      background-color: #f9f9f9;
+    }
+
+    .drug-item:hover {
+      background-color: #f1f1f1;
+    }
+</style>
+          <!-- diagnosis Modal -->
+          <div class="modal fade" id="add_diagnosis" tabindex="-1" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+            <div class="modal-dialog modal-lg">
+              <div class="modal-content">
+                <div class="modal-body">
+                  <div class="mb-6">
+                    <h4>Diagnosis (Diseases)</h4>
+                  </div>
+                    <div class="alert-container"></div>
+                  <form id="diagnosis_form" class="row g-6" onsubmit="return false">
+                    @csrf
+                    <input type="text" id="opdnumber" value="{{ $attendance->opd_number }}" hidden>
+                    <div id="success_diplay" class="container mt-6"></div>
+                    <div class="col-12 col-md-12">
+                      <label class="form-label" for="diagnosis">Search</label>
+                      <input type="text" id="diagnosis" name="diagnosis" class="form-control" placeholder="Enter Diagnosis"/>
+                        <div id="diagnosis_results" class="mt-2"></div>
+                    </div>
+                    <div class="col-12 col-md-12">
+                      <label class="form-label" for="diagnosis_name">Selected Diagnosis</label>
+                      <input type="text" id="diagnosis_name" name="diagnosis_name" class="form-control" disabled/>
+                    </div>
+                    <div class="col-12 col-md-4">
+                      <label class="form-label" for="type">Type</label>
+                      <select name="type" id="type" class="form-control" required>
+                        <option value="NEW" selected>NEW</option>
+                        <option value="REVIEW">REVIEW</option>
+                     </select>
+                    </div>
+                    <div class="col-12 col-md-4">
+                      <label class="form-label" for="category">Category</label>
+                      <select name="category" id="category" class="form-control" required>
+                        <option value="FINAL" selected>FINAL</option>
+                        <option value="PROVISIONAL">PROVISIONAL</option>
+                     </select>
+                    </div>
+                    <div class="col-12 col-md-4">
+                      <label class="form-label" for="principal">Principal</label>
+                     <select name="principal" id="principal" class="form-control" required>
+                        <option value="YES" selected>YES</option>
+                        <option value="NO">NO</option>
+                     </select>
+                    </div>
+                    <div class="col-12 col-md-4" hidden>
+                      <label class="form-label" for="icd_10">ICD-10</label>
+                      <input type="text" id="icd_10" name="icd_10" class="form-control" placeholder="" disabled />
+                    </div>
+                    <div class="col-12 col-md-4" hidden>
+                      <label class="form-label" for="gdrg_code">GDRG Code</label>
+                      <input type="text" id="gdrg_code" name="gdrg_code" class="form-control" placeholder="" disabled  />
+                    </div>
+                    <div class="col-12 col-md-4" hidden>
+                      <label class="form-label" for="diagnosis_fee">Diagnosis Fee</label>
+                      <input type="text" id="diagnosis_fee" name="diagnosis_fee" class="form-control" placeholder="" disabled />
+                    </div>
+                   
+                    <div class="col-12 col-md-6" hidden>
+                      <label class="form-label" for="gdrg_code">Service G-DRG</label>
+                      <input type="text" id="gdrg_code" name="gdrg_code" class="form-control"/>
+                    </div>
+                   
+                    <div class="col-12">
+                      <div class="form-check form-switch my-2 ms-2">
+                      </div>
+                    </div>
+                    <div class="col-12 text-center">
+                      <button type="submit" class="btn btn-primary me-3">Add</button>
+                      <button type="reset" class="btn btn-danger" data-bs-dismiss="modal" aria-label="Close">Close</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!--/ diagnosis Modal -->
+
+           <!-- prescription Modal -->
+           <div class="modal fade" id="add_prescriptions" tabindex="-1" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+            <div class="modal-dialog modal-lg">
+              <div class="modal-content">
+                <div class="modal-body">
+                  <div class="mb-6">
+                    <h4 class="address-title mb-2">Medication (Prescriptions)</h4>
+                  </div>
+                    <div class="alert-container"></div>
+                  <form id="medication_form" class="row g-6" onsubmit="return false">
+                    @csrf
+                    <input type="text" id="opdnumber" value="{{ $attendance->opd_number }}" hidden>
+                    <div id="success_diplay" class="container mt-6"></div>
+                    <div class="col-12 col-md-12">
+                      <label class="form-label" for="prescription_add">Search Medications</label>
+                      <input type="text" id="prescription_add" name="prescription_add" class="form-control" placeholder="Enter Medication"/>
+                        <div id="drug_results" class="mt-2"></div>
+                    </div>
+                    <div class="col-12 col-md-12">
+                      <label class="form-label" for="product_name">Selected Medication</label>
+                      <input type="text" id="product_name" name="product_name" class="form-control" disabled/>
+                    </div>
+                    <div class="col-12 col-md-4">
+                      <label class="form-label" for="type">Dosage</label>
+                      <select name="type" id="type" class="form-control" required>
+                        <option value="NEW" selected>NEW</option>
+                        <option value="REVIEW">REVIEW</option>
+                     </select>
+                    </div>
+                    <div class="col-12 col-md-4">
+                      <label class="form-label" for="category">Frequency</label>
+                      <select name="category" id="category" class="form-control" required>
+                        <option value="FINAL" selected>FINAL</option>
+                        <option value="PROVISIONAL">PROVISIONAL</option>
+                     </select>
+                    </div>
+                    <div class="col-12 col-md-4">
+                      <label class="form-label" for="principal">Duration</label>
+                     <select name="principal" id="principal" class="form-control" required>
+                        <option value="YES" selected>YES</option>
+                        <option value="NO">NO</option>
+                     </select>
+                    </div>
+                    <div class="col-12 col-md-4">
+                      <label class="form-label" for="average_unit_price">ICD-10</label>
+                      <input type="text" id="average_unit_price" name="average_unit_price" class="form-control" placeholder="" disabled />
+                    </div>
+                    <div class="col-12 col-md-4">
+                      <label class="form-label" for="gdrg_code">GDRG Code</label>
+                      <input type="text" id="gdrg_code" name="gdrg_code" class="form-control" placeholder="" disabled  />
+                    </div>
+                    <div class="col-12 col-md-4">
+                      <label class="form-label" for="average_unit_price">Diagnosis Fee</label>
+                      <input type="text" id="average_unit_price" name="average_unit_price" class="form-control" placeholder="" disabled />
+                    </div>
+                    <div class="col-12 col-md-6">
+                      <label class="form-label" for="gdrg_code">Service G-DRG</label>
+                      <input type="text" id="gdrg_code" name="gdrg_code" class="form-control"/>
+                    </div>
+                    <div class="col-12">
+                      <div class="form-check form-switch my-2 ms-2">
+                      </div>
+                    </div>
+                    <div class="col-12 text-center">
+                      <button type="submit" class="btn btn-primary me-3">Add</button>
+                      <button type="reset" class="btn btn-danger" data-bs-dismiss="modal" aria-label="Close">Close</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!--/ diagnosis Modal -->
 </x-app-layout>

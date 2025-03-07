@@ -22,66 +22,30 @@
         <div class="col-sm-6 col-lg-12">
               <div class="col-xl-12">
               <h3>Patients List</h3>
-                <!-- <h6 class="text-body-secondary">Patients List</h6> -->
                 <div class="nav-align-top nav-tabs-shadow">
                   <ul class="nav nav-tabs" role="tablist">
                     <li class="nav-item">
-                      <button
-                        type="button"
-                        class="nav-link active"
-                        role="tab"
-                        data-bs-toggle="tab"
-                        data-bs-target="#navs-top-home"
-                        aria-controls="navs-top-home"
-                        aria-selected="true">
+                      <button type="button" class="nav-link active" role="tab" data-bs-toggle="tab" data-bs-target="#navs-top-home" aria-controls="navs-top-home" aria-selected="true">
                         <b>Waiting List</b>
                       </button>
                     </li>
                     <li class="nav-item">
-                      <button
-                        type="button"
-                        class="nav-link"
-                        role="tab"
-                        data-bs-toggle="tab"
-                        data-bs-target="#navs-top-profile"
-                        aria-controls="navs-top-profile"
-                        aria-selected="false">
+                      <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#navs-top-profile" aria-controls="navs-top-profile" aria-selected="false">
                         <b>Pending Diagnostics</b>
                       </button>
                     </li>
                     <li class="nav-item">
-                      <button
-                        type="button"
-                        class="nav-link"
-                        role="tab"
-                        data-bs-toggle="tab"
-                        data-bs-target="#navs-top-messages"
-                        aria-controls="navs-top-messages"
-                        aria-selected="false">
+                      <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#navs-top-messages" aria-controls="navs-top-messages" aria-selected="false">
                         <b>On Hold</b>
                       </button>
                     </li>
                     <li class="nav-item">
-                      <button
-                        type="button"
-                        class="nav-link"
-                        role="tab"
-                        data-bs-toggle="tab"
-                        data-bs-target="#navs_completed"
-                        aria-controls="navs_completed"
-                        aria-selected="false">
+                      <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#navs_completed" aria-controls="navs_completed" aria-selected="false">
                         <b>Completed</b>
                       </button>
                     </li>
                     <li class="nav-item">
-                      <button
-                        type="button"
-                        class="nav-link"
-                        role="tab"
-                        data-bs-toggle="tab"
-                        data-bs-target="#navs_admission"
-                        aria-controls="navs_admission"
-                        aria-selected="false">
+                      <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#navs_admission" aria-controls="navs_admission" aria-selected="false">
                         <b>Admission List</b>
                       </button>
                     </li>
@@ -89,9 +53,6 @@
                   <div class="tab-content">
                     <div class="tab-pane fade show active" id="navs-top-home" role="tabpanel">
                        <p>
-                         <!-- <a href="/consultation/opd-consultation" class="btn btn-primary rounded-pill">
-                           <i class="fas fa-plus"></i> Consult
-                         </a> -->
                         <table class="table table-responsive" id="product_list">
                             <thead>
                               <tr>
@@ -172,7 +133,7 @@
                     </div>
                     <div class="tab-pane fade" id="navs-top-profile" role="tabpanel">
                       <p>
-                      <table class="table table-responsive" id="data_table">
+                      <table class="table table-responsive" id="app_list">
                             <thead>
                               <tr>
                                 <th>Sn</th>
@@ -278,7 +239,7 @@
                     </div>
                     <div class="tab-pane fade" id="navs_admission" role="tabpanel">
                       <p>
-                      <table class="table table-responsive" id="patient_services">
+                      <table class="table table-responsive" id="patient_sponsor">
                             <thead>
                               <tr>
                                 <th>Sn</th>

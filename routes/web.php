@@ -22,10 +22,10 @@ use App\Http\Controllers\ClinicController;
 use App\Http\Controllers\NotificationController; 
 use App\Http\Controllers\AttendanceController; 
 use App\Http\Controllers\ExternalCallController;
+use App\Http\Controllers\PrescriptionController;
 use Illuminate\Support\Facades\Route;
 use illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
-
 
 /*
 |--------------------------------------------------------------------------
@@ -41,8 +41,8 @@ use Illuminate\Support\Facades\Redirect;
 // Route::get('/', function (){
 //     return view('login');
 // });
-
-Route::get('/', [AuthenticatedSessionController::class, 'create']);
+Route::redirect('/', '/login');
+// Route::get('/', [AuthenticatedSessionController::class, 'create']);
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
@@ -71,6 +71,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/new-opd-number/{service_point_id}', [PatientController::class, 'generate_opd_number'])->name('patient.generate_opd_number');
         Route::get('/single-attendance/{patient_id}', [AttendanceController::class, 'single_attendance'])->name('patient.single_attendance');
         Route::get('/current-attendance/{patient_id}', [AttendanceController::class, 'current_attendance'])->name('patient.current_attendance');
+        Route::get('/attendance', [AttendanceController::class, 'all_attendance'])->name('patients.attendance');
     });
     
     Route::prefix('services')->group(function () {
@@ -79,6 +80,8 @@ Route::middleware('auth')->group(function () {
         Route::post('/patient_service', [ServiceRequestController::class, 'store']);
         Route::get('/patient_service_data/{patient_id}', [ServiceRequestController::class, 'retrieve']); 
         Route::post('/service_request', [ServiceRequestController::class, 'store']);
+        Route::post('/add-diagnosis', [DiagnosisController::class, 'add_diagnosis']);
+        Route::post('/add-prescription', [PrescriptionController::class, 'add_medicine']);
     });
 
     Route::prefix('reports')->group(function () {
@@ -102,7 +105,7 @@ Route::middleware('auth')->group(function () {
 
     Route::prefix('consultation')->group(function () {
         Route::get('/opd-consultation/{attendance_id}', [ConsultationController::class, 'opd_consult']);
-        Route::get('/ipd-consultation', [ConsultationController::class, 'ipd-consult']);
+        Route::get('/ipd-consultation', [ConsultationController::class, 'ipd_consult']);
         Route::get('/consult', [ConsultationController::class, 'consult']);
         // Route::get('patient', [ReportsController::class, 'patient']);
     });
@@ -132,9 +135,7 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::prefix('external')->group(function () {
-        Route::get('/claims_code', [ExternalCallController::class, 'claims_check_code']);
-        
-        
+        Route::get('/claims_code', [ExternalCallController::class, 'claims_check_code']);  
     });
 
     // Route::post('code_generate', [ExternalCallController::class, 'claims_check_code']);

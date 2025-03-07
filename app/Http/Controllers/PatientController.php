@@ -448,5 +448,9 @@ class PatientController extends Controller
         return response()->json($sponsor);
     }
 
+    // public function attendance()
+    // {
+    //     return view('patient.attendance'); 
+    // }
       
 }
