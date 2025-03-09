@@ -3,7 +3,6 @@
                   <h4 class="py-3 mb-4">
                     <span class="text-muted fw-light">Consultations/</span> Waiting List
                   </h4>
-
                   <div class="app-ecommerce-category">
                   <div class="card">
                     <div class="card-datatable table-responsive">
@@ -13,7 +12,7 @@
                       <table class="datatables-category-list table border-top" id="product_list">
                         <thead>
                           <tr>
-                            <th>Sn</th>
+                            <th>SN</th>
                             <th>Fullname</th>
                             <th>Gender</th>
                             <th>Age</th>
@@ -43,11 +42,11 @@
                               <td></td>
                               <td></td>
                               <td class="text-nowrap text-sm-end" align="left">
-                                @if($patients->status === 'Active')
-                                <span class="badge bg-label-info me-1">Yes</span>
-                                @elseif ($patients->status === 'Inactive')
-                                <span class="badge bg-label-danger me-1">No</span>
-                                @endif
+                                  @if($patients->status === 'Active')
+                                  <span class="badge bg-label-info me-1">Yes</span>
+                                  @elseif ($patients->status === 'Inactive')
+                                  <span class="badge bg-label-danger me-1">No</span>
+                                  @endif
                               </td>
                               <td class="text-lg-center">
                                   <div class="dropdown" align="center">
@@ -55,7 +54,7 @@
                                               <i class="bx bx-dots-vertical-rounded"></i>
                                           </button>
                                             <div class="dropdown-menu">
-                                                  <a class="dropdown-item" href="">
+                                                  <a class="dropdown-item" href="#">
                                                     <i class="bx bx-edit-alt me-1"></i> Consult
                                                   </a>
                                                   <a class="dropdown-item" href="">
@@ -65,14 +64,14 @@
                                                       <i class="bx bx-trash me-1"></i> Delete
                                                   </a>
                                             </div>
-                                </div>  
+                                   </div>  
                               </td>
                           </tr>
                             @endforeach
                         </tbody>
                         <tfoot>
                         <tr>
-                            <th>Sn</th>
+                            <th>SN</th>
                             <th>Fullname</th>
                             <th>Gender</th>
                             <th>Age</th>
@@ -81,13 +80,11 @@
                             <th>Vitals?</th>
                             <th>Assigned?</th>
                             <th class="text-lg-center">Actions</th>
-                          </tr>
+                        </tr>
                         </tfoot>
                       </table>
                     </div>
                   </div>   
              </div>
           </div>
-          <!-- product modal form -->
-          <!-- end of product modal form -->
     </x-app-layout>

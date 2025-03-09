@@ -1,12 +1,11 @@
 <x-app-layout>
-<div class="container-xxl flex-grow-1 container-p-y">    
-    
+<div class="container-xxl flex-grow-1 container-p-y">     
 <div class="card mb-6">
   <div class="card-widget-separator-wrapper">
     <div class="card-body card-widget-separator">
       <div class="row gy-4 gy-sm-1">
         <div class="col-sm-6 col-lg-12">
-            <h4 align="center">-Kingly select a date to display attendace or Create an attendance-</h4>
+            <h4 class="text-muted text-center">-Kingly navigate a menu to display attendace-</h4>
         </div>
       </div>
     </div>
@@ -21,7 +20,7 @@
       <div class="row gy-4 gy-sm-1">
         <div class="col-sm-6 col-lg-12">
               <div class="col-xl-12">
-              <h3>Patients List</h3>
+              <h3>Patients Attendance</h3>
                 <div class="nav-align-top nav-tabs-shadow">
                   <ul class="nav nav-tabs" role="tablist">
                     <li class="nav-item">
@@ -56,50 +55,57 @@
                         <table class="table table-responsive" id="product_list">
                             <thead>
                               <tr>
-                                <th>Sn</th>
-                                <th>Date</th>
-                                <th>Name</th>
+                                <th>SN</th>
+                                <th>Attenance Date</th>
+                                <th>Patient Name</th>
                                 <th>OPD #</th>
                                 <th>Gender</th>
-                                <th>Age</th>
-                                <th>Ward</th>
-                                <th>Clinic #</th>
-                                <th>Admit Date</th>
+                                <th>Patient Age</th>
+                                <th>Attendance Sponsor</th>
+                                <th>Attendance Clinic</th>
+                                <th>Attendance Status </th>
                                 <th>Action</th>
                               </tr>
                             </thead>
                             <tbody>
-                            @php
-                              $counter = 1;
-                            @endphp
+                                  @php
+                                    $counter = 1;
+                                  @endphp
 
-                            @foreach($consult_list as $patients)
+                                  @foreach($all as $patients)
                             <tr>
                               <td>{{ $counter++ }}</td>
                               <td>{{ \Carbon\Carbon::parse($patients->attendance_date)->format('d-m-Y') }}</td>
                               <td>{{ $patients->fullname }}</td>
                               <td>{{ $patients->opd_number }}</td>
-                              <td>{{ strtoupper($patients->gender) }}</td>
-                              <td>{{ $patients->pat_age}}</td>
-                              <td>{{ $patients->attendance_type}}</td>
-                              <td>{{ $patients->attendance_type}}</td>
-                              <td>@if($patients->sponsor_type_id === 'PI03')
-                                <span class="badge bg-label-info me-1">{{ $patients->sponsor_type}}</span>
-                                @elseif ($patients->sponsor_type_id === 'N002')
-                                <span class="badge bg-label-danger me-1">{{ $patients->sponsor_type}}</span>
-                                @elseif ($patients->sponsor_type_id === 'P001')
-                                <span class="badge bg-label-warning me-1">{{ $patients->sponsor_type}}</span>
-                                @elseif ($patients->sponsor_type_id === 'PC04')
-                                <span class="badge bg-label-primary me-1">{{ $patients->sponsor_type}}</span>
-                                @endif</td>
-                              <!-- <td></td> -->
+                              <td>{{ $patients->gender }}</td>
+                              <td>{{ $patients->full_age}}</td>
+                              <td>
+                                  @if($patients->sponsor_type_id === 'PI03')
+                                  <span class="badge bg-label-info me-1">{{ $patients->sponsor}}</span>
+                                  @elseif ($patients->sponsor_type_id === 'N002')
+                                  <span class="badge bg-label-success me-1">{{ $patients->sponsor}}</span>
+                                  @elseif ($patients->sponsor_type_id === 'P001')
+                                  <span class="badge bg-label-warning me-1">{{ $patients->sponsor}}</span>
+                                  @elseif ($patients->sponsor_type_id === 'PC04')
+                                  <span class="badge bg-label-primary me-1">{{ $patients->sponsor}}</span>
+                                  @endif
+                              </td>
+                              <td>{{ $patients->pat_clinic}}</td>
+                              <td>
+                                  @if($patients->service_issued === '0')
+                                  <span class="badge bg-label-danger me-1">PENDING</span>
+                                  @elseif ($patients->service_issued === '1')
+                                  <span class="badge bg-label-success me-1">ISSUED</span>
+                                  @endif 
+                              </td>
                               <td class="text-lg-center">
                                   <div class="dropdown" align="center">
                                           <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
                                               <i class="bx bx-dots-vertical-rounded"></i>
                                           </button>
                                             <div class="dropdown-menu">
-                                                  <a class="dropdown-item" href="/consultation/opd-consultation/{{$patients->product_id}}">
+                                                  <a class="dropdown-item" href="/consultation/opd-consultation/{{ $patients->attendance_id }}">
                                                     <i class="bx bx-edit-alt me-1"></i> Consult
                                                   </a>
                                                   <a class="dropdown-item" href="">
@@ -109,24 +115,24 @@
                                                       <i class="bx bx-trash me-1"></i> Delete
                                                   </a>
                                             </div>
-                                </div>  
+                                   </div>  
                               </td>
                           </tr>
                             @endforeach
                             </tbody>
                             <tfoot>
-                               <tr>
+                              <tr>
                                 <th>Sn</th>
                                 <th>Date</th>
                                 <th>Name</th>
                                 <th>OPD #</th>
                                 <th>Gender</th>
                                 <th>Age</th>
-                                <th>Ward</th>
-                                <th>Clinic #</th>
-                                <th>Admit Date</th>
+                                <th>Clinic</th>
+                                <th>Status</th>
+                                <th>Sponsor </th>
                                 <th>Action</th>
-                                </tr>
+                              </tr>
                             </tfoot>
                           </table>
                        </p>
@@ -204,37 +210,35 @@
                  
                   <div class="tab-pane fade" id="navs_completed" role="tabpanel">
                       <p>
-                      <table class="table table-responsive" id="patient_services">
-                            <thead>
-                              <tr>
-                                <th>Sn</th>
-                                <th>Date</th>
-                                <th>Name</th>
-                                <th>Gender</th>
-                                <th>Age</th>
-                                <th>Clinic</th>
-                                <th>Sponsor Type #</th>
-                                <!-- <th>Admit Date</th> -->
-                                <th>Action</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                            
-                            </tbody>
-                            <tfoot>
-                            <tr>
-                                <th>Sn</th>
-                                <th>Date</th>
-                                <th>Name</th>
-                                <th>Gender</th>
-                                <th>Age</th>
-                                <th>Clinic</th>
-                                <th>Sponsor Type #</th>
-                                <!-- <th>Admit Date</th> -->
-                                <th>Action</th>
-                              </tr>
-                            </tfoot>
-                          </table>
+                          <table class="table table-responsive" id="patient_services">
+                                <thead>
+                                  <tr>
+                                    <th>Sn</th>
+                                    <th>Date</th>
+                                    <th>Name</th>
+                                    <th>Gender</th>
+                                    <th>Age</th>
+                                    <th>Clinic</th>
+                                    <th>Sponsor Type #</th>
+                                    <th>Action</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                
+                                </tbody>
+                                <tfoot>
+                                <tr>
+                                    <th>Sn</th>
+                                    <th>Date</th>
+                                    <th>Name</th>
+                                    <th>Gender</th>
+                                    <th>Age</th>
+                                    <th>Clinic</th>
+                                    <th>Sponsor Type #</th>
+                                    <th>Action</th>
+                                  </tr>
+                                </tfoot>
+                              </table>
                       </p>
                     </div>
                     <div class="tab-pane fade" id="navs_admission" role="tabpanel">

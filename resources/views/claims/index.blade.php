@@ -8,7 +8,7 @@
         </div>
         <div class="d-flex align-content-center flex-wrap gap-3">
           <!-- <button class="btn btn-primary">E-Claims</button> -->
-          <a href="#" class="btn btn-primary"><i class="menu-icon tf-icons bx bx-refresh"></i> Generate Claim IT </a>
+          <a href="#" class="btn btn-primary"><i class="menu-icon tf-icons bx bx-refresh"></i> Generate XML IT </a>
         </div>
       </div>
   <div class="row">

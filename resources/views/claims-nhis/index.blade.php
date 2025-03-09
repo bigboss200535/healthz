@@ -8,11 +8,11 @@
         </div>
         <div class="d-flex align-content-center flex-wrap gap-3">
           <!-- <button class="btn btn-primary">E-Claims</button> -->
-          <a href="#" class="btn btn-primary"><i class="menu-icon tf-icons bx bx-refresh"></i> Generate Claim IT </a>
+          <a href="#" class="btn btn-primary"><i class="menu-icon tf-icons bx bx-refresh"></i> Download XML Data </a>
         </div>
       </div>
   <div class="row">
-   <div class="col-12 col-lg-8">
+   <div class="col-12 col-lg-12">
       <div class="card mb-4">
         <div class="card-header">
           <h5 class="card-tile mb-0"><b>Claims Infomation</b></h5>
@@ -71,14 +71,14 @@
         </div>
       </div>
     </div>
-    <div class="col-12 col-lg-4">
+    <!-- <div class="col-12 col-lg-4">
       <div class="card mb-4">
         <div class="card-body">
             <img src="{{ asset('img/undraw/nhis_claims.svg') }}" alt="" height="210px">
             <br>
         </div>
       </div>
-    </div>
+    </div> -->
     <div class="d-flex align-content-center flex-wrap gap-3">
       <button type="submit" class="btn btn-primary">Generate</button>
       <button type="reset" class="btn btn-label-secondary">clear</button>

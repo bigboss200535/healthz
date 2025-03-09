@@ -130,19 +130,24 @@ class ConsultationController extends Controller
 
     public function consult()
     {
-        $consult_list = PatientAttendance::where('patient_attendance.archived','No')
-            ->join('patient_sponsorship', 'patient_sponsorship.patient_id', '=', 'patient_attendance.patient_id')
-            ->join('sponsors', 'sponsors.sponsor_id', '=', 'patient_sponsorship.sponsor_id')
-            ->join('sponsor_type', 'patient_sponsorship.sponsor_type_id', '=', 'sponsor_type.sponsor_type_id')
-            ->join('patient_info', 'patient_info.patient_id', '=', 'patient_attendance.patient_id')
-            ->join('gender', 'gender.gender_id', '=', 'patient_info.gender_id')
-            ->join('service_attendance_type', 'service_attendance_type.attendance_type_id', '=', 'patient_attendance.clinic_code')
-            // ->join('sponsor_type', 'gender.gender_id', '=', 'patient_info.gender_id')
-            // ->join('sponsors', 'sponsors.sponsor_id', '=', 'patient_attendance.sponsor_id')
-            // ->join('patient_sponsorship', 'patient_sponsorship.sponsor_id', '=', 'sponsors.sponsor_id')
-            ->get();
 
-       return view('consultation.consult', compact('consult_list'));
+            $all = PatientAttendance::where('patient_attendance.archived','No')
+                ->join('sponsor_type', 'patient_attendance.sponsor_type_id', '=', 'sponsor_type.sponsor_type_id')
+                ->join('patient_info', 'patient_info.patient_id', '=', 'patient_attendance.patient_id')
+                ->join('gender', 'gender.gender_id', '=', 'patient_info.gender_id')
+                ->join('sponsors', 'patient_attendance.sponsor_id', '=', 'sponsors.sponsor_id')
+                ->join('service_attendance_type', 'service_attendance_type.attendance_type_id', '=', 'patient_attendance.service_type')
+                ->select('patient_attendance.attendance_id','patient_info.fullname', 'patient_attendance.opd_number', 
+                        'patient_attendance.attendance_date', 'sponsors.sponsor_name',
+                        'patient_attendance.full_age', 'gender.gender', 'service_attendance_type.attendance_type as pat_clinic', 
+                        'sponsor_type.sponsor_type as sponsor', 'sponsor_type.sponsor_type_id',
+                        'patient_attendance.service_issued' ,'patient_attendance.attendance_type')
+                ->where('patient_attendance.archived', 'No')
+                ->orderBy('patient_attendance.attendance_id', 'desc')
+                ->get();
+
+            return view('consultation.consult', compact('all')); 
+    
     }
     
 }

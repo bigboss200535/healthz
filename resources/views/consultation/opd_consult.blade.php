@@ -1,6 +1,5 @@
 <x-app-layout>
 <div class="container-xxl flex-grow-1 container-p-y">    
-    <!-- Widget -->
 <div class="card mb-6">
   <div class="card-widget-separator-wrapper">
     <div class="card-body card-widget-separator">
@@ -29,7 +28,6 @@
                             <td><b>OPD #:</b><br> {{ $attendance->opd_number}}</td>
                             <td><b>Age: </b><br>{{ $attendance->full_age}}</td>
                           </tr>
-                          
                         </table>
                       </td>
                     </tr>
@@ -130,7 +128,7 @@
                 </td>
               </tr>
               <tr>
-                <td><b>Consultation Date</b></td>
+                <td><b>Attendance Date</b></td>
                 <td>
                   <input type="date" class="form-control" id="consultation_date" name="consultation_date">
                 </td>
@@ -177,50 +175,45 @@
              <div class="card-body">
                       <div class="nav-align-top nav-tabs-shadow mb-6">
                             <ul class="nav nav-tabs nav-fill" role="tablist">
-                            <li class="nav-item">
-                               <button type="button" class="nav-link active" role="tab" data-bs-toggle="tab" data-bs-target="#navs_vitals" aria-controls="navs-justified-home" aria-selected="true">
-                                  <span class="d-none d-sm-block"><b>Vital Signs</b></span>
-                                </button>
-                              </li>
                               <li class="nav-item">
-                                <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#navs_clinical" aria-controls="navs-justified-home" aria-selected="true">
-                                  <span class="d-none d-sm-block"><b>Clinical Notes</b></span>
-                                </button>
-                              </li>
+                                <button type="button" class="nav-link active" role="tab" data-bs-toggle="tab" data-bs-target="#navs_vitals" aria-controls="navs_vitals" aria-selected="true">
+                                    <span class="d-none d-sm-block"><b>Vital Signs</b></span>
+                                  </button>
+                                </li>
                               <li class="nav-item">
-                                <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#navs_medical" aria-controls="navs-justified-profile" aria-selected="false">
-                                  <span class="d-none d-sm-block"><b>History/Medical Conditions</b></span>
-                                </button> 
-                              </li>
-                              <li class="nav-item">
-                                <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#navs_systems" aria-controls="navs-justified-messages" aria-selected="false">
-                                  <span class="d-none d-sm-block"><b>Review of Systems</b> </span>
-                                </button>
-                              </li>
-                              <li class="nav-item">
-                                <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#navs_diagnosis" aria-controls="navs-justified-messages" aria-selected="false">
-                                  <span class="d-none d-sm-block"><b>Diagnosis/Prescriptions</b></span>
-                                </button>
-                              </li>
-                              <li class="nav-item">
-                                <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#navs_document" aria-controls="navs-justified-messages" aria-selected="false">
-                                  <span class="d-none d-sm-block"><b>Manage Document</b></span>
-                                </button>
-                              </li>
-                              <li class="nav-item">
-                                <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#navs_investigations" aria-controls="navs-justified-messages" aria-selected="false">
-                                  <span class="d-none d-sm-block"><b>Investigations</b></span>
-                                </button>
-                              </li>
-                              <li class="nav-item">
-                                <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#navs_investigations" aria-controls="navs-justified-messages" aria-selected="false">
-                                  <span class="d-none d-sm-block"><b>Charts</b></span>
-                                </button>
-                              </li>
+                                  <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#navs_medical" aria-controls="navs_medical" aria-selected="false">
+                                    <span class="d-none d-sm-block"><b>History/Medical Conditions</b></span>
+                                  </button> 
+                                </li>
+                                <li class="nav-item">
+                                  <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#navs_clinical" aria-controls="navs_clinical" aria-selected="false">
+                                    <span class="d-none d-sm-block"><b>Clinical Notes</b></span>
+                                  </button>
+                                </li>
+                                <li class="nav-item">
+                                  <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#navs_systems" aria-controls="navs_systems" aria-selected="false">
+                                    <span class="d-none d-sm-block"><b>Review of Systems</b> </span>
+                                  </button>
+                                </li>
+                                <li class="nav-item">
+                                  <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#navs_diagnosis" aria-controls="navs_diagnosis" aria-selected="false">
+                                    <span class="d-none d-sm-block"><b>Diagnosis/Prescriptions</b></span>
+                                  </button>
+                                </li>
+                                <li class="nav-item">
+                                  <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#navs_investigations" aria-controls="navs_investigations" aria-selected="false">
+                                    <span class="d-none d-sm-block"><b>Investigations</b></span>
+                                  </button>
+                                </li>
+                                <li class="nav-item">
+                                  <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#navs_document" aria-controls="navs_document" aria-selected="false">
+                                    <span class="d-none d-sm-block"><b>Charts /Documents</b></span>
+                                  </button>
+                                </li>
                             </ul>
                         <div class="tab-content">
                           <!-- TABS VIEWS -->
-                             <div class="tab-pane fade" id="navs_vitals" role="tabpanel">  <!--------------VITAL SIGNS -->
+                             <div class="tab-pane fade  show active" id="navs_vitals" role="tabpanel">  <!--------------VITAL SIGNS -->
                                     <div class="row g-6 mb-6">
                                           <div class="col-md">
                                             <div class="card">
@@ -233,10 +226,10 @@
                                                     </div>
                                                   </div>
                                                 </form>
-                                                <table class="table table-responsive" id="patient_list">
+                                                 <table class="table table-responsive" id="patient_list">
                                                     <thead>
                                                       <tr>
-                                                        <th>Sn</th>
+                                                        <th>SN</th>
                                                         <th>Diagnosis</th>
                                                         <th>ICD-10</th>
                                                         <th>GRDG</th>
@@ -245,7 +238,7 @@
                                                     </thead>
                                                     <tfoot>
                                                       <tr>
-                                                        <th>Sn</th>
+                                                        <th>SN</th>
                                                         <th>Diagnosis</th>
                                                         <th>ICD-10</th>
                                                         <th>GRDG</th>
@@ -256,8 +249,6 @@
                                               </div>
                                             </div>
                                           </div>
-                                           <!-- DIAGNOSIS VIEW -->
-                                          <!-- MEDICAITION VIEW  -->
                                           <div class="col-md">
                                             <div class="card">
                                               <div class="card-body">
@@ -278,43 +269,164 @@
                                           </div>
                                         </div>
                                 </div>
-                            <div class="tab-pane fade" id="navs_clinical" role="tabpanel"> <!--------------CLINIC NOTES -->
-                                 <p>
-                                      <ul class="timeline mb-0">
-                                          <li class="timeline-item timeline-item-transparent">
-                                            <span class="timeline-point timeline-point-primary"></span>
-                                            <div class="timeline-event">
-                                              <div class="timeline-header mb-3">
-                                                <h6 class="mb-0">NURSE: MOHAMMED ALHASSAN </h6>
-                                                <small class="text-muted">25/12/2024   11:59AM</small>
-                                              </div>
-                                              <p class="mb-2" style="color: #000000;">
-                                               <b> Clinical</b> have been paid to the company 
-                                                I hate hospitals but all of the staff that helped me today were so helpfully and seemed genuinely concern.
-                                                I hate hospitals but all of the staff that helped me today were so helpfully and seemed genuinely concern.
-                                                <a href="#"><i class="bx bx-edit"></i></a>
-                                              </p>
-                                            </div>
-                                          </li>
-                                        </ul>
-                                 </p>
-                              </div>
-                              <div class="tab-pane fade" id="navs_medical" role="tabpanel">     <!--------------MEDICAL HISTORY -->
-                                  <p>
-                                      <b>Medical</b> have been paid to the company 
-                                                I hate hospitals but all of the staff that helped me today were so helpfully and seemed genuinely concern.
-                                                I hate hospitals but all of the staff that helped me today were so helpfully and seemed genuinely concern.
-                                                <a href="#"><i class="bx bx-edit"></i></a>
-                                   </p>
+
+                            <div class="tab-pane fade" id="navs_clinical" role="tabpanel"> <!--------------CLINIC NOTES -------------->
+                              <h5>Clinical Notes</h5>
+                              <div class="row mb-7 g-12">
+                                <div class="col-md">
+                                  <div class="accordion mt-4" id="#">
+                                    <div class="accordion-item active" style="border-color:rgb(255, 3, 3); border-width: 2px;">
+                                      <h2 class="accordion-header d-flex align-items-center">
+                                         <b class="accordion-button">Vital Signs</b>
+                                      </h2>
+                                      <div id="accordionWithIcon-1" class="accordion-collapse collapse show">
+                                        <div class="accordion-body">
+                                          Lemon drops chocolate cake gummies carrot cake chupa chups muffin topping. 
+                                          Sesame snaps icing marzipan gummi bears macaroon dragée danish caramels powder. 
+                                          Bear claw dragée pastry topping soufflé. Wafer gummi bears marshmallow pastry pie.
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
                                 </div>
+                                <!--/ Accordion with Icon -->
+                                <!-- Accordion Header Color -->
+                                <div class="col-md">
+                                  <div class="accordion mt-4 accordion-header-primary" id="accordionStyle1" >
+                                    <div class="accordion-item active" style="border-color:rgb(0, 0, 0); border-width: 2px;">
+                                      <h2 class="accordion-header d-flex align-items-center">
+                                      <b class="accordion-button">History</b>
+                                      </h2>
+                                      <div id="accordionStyle1-1" class="accordion-collapse collapse show" data-bs-parent="#accordionStyle1">
+                                        <div class="accordion-body">
+                                          Lemon drops chocolate cake gummies carrot cake chupa chups muffin topping. 
+                                          Sesame snaps icing marzipan gummi bears macaroon dragée danish caramels powder. 
+                                          Bear claw dragée pastry topping soufflé. Wafer gummi bears marshmallow pastry pie.
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="row mb-7 g-12">
+                                <!-- Accordion with Icon -->
+                                <div class="col-md">
+                                  <div class="accordion mt-4" id="#">
+                                    <div class="accordion-item active" style="border-color:rgb(255, 3, 3); border-width: 2px;">
+                                      <h2 class="accordion-header d-flex align-items-center">
+                                         <b class="accordion-button" style="background-color:red; color:white">Vital Signs</b>
+                                      </h2>
+                                      <div id="accordionWithIcon-1" class="accordion-collapse collapse show">
+                                        <div class="accordion-body">
+                                          Lemon drops chocolate cake gummies carrot cake chupa chups muffin topping. 
+                                          Sesame snaps icing marzipan gummi bears macaroon dragée danish caramels powder. 
+                                          Bear claw dragée pastry topping soufflé. Wafer gummi bears marshmallow pastry pie.
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <!--/ Accordion with Icon -->
+                                <!-- Accordion Header Color -->
+                                <div class="col-md">
+                                  <div class="accordion mt-4 accordion-header-primary" id="accordionStyle1" >
+                                    <div class="accordion-item active" style="border-color:rgb(0, 0, 0); border-width: 2px;">
+                                      <h2 class="accordion-header d-flex align-items-center">
+                                      <b class="accordion-button">History</b>
+                                      </h2>
+                                      <div id="accordionStyle1-1" class="accordion-collapse collapse show" data-bs-parent="#accordionStyle1">
+                                        <div class="accordion-body">
+                                          Lemon drops chocolate cake gummies carrot cake chupa chups muffin topping. 
+                                          Sesame snaps icing marzipan gummi bears macaroon dragée danish caramels powder. 
+                                          Bear claw dragée pastry topping soufflé. Wafer gummi bears marshmallow pastry pie.
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              </div>
+                             <!-- ---------------------------------------------------------------------------------- -->
+
+                             <div class="tab-pane fade" id="navs_medical" role="tabpanel">     <!-------------- DIAGNOSIS  -------->
+                                    <div class="row g-6 mb-6">
+                                          <div class="col-md">
+                                            <div class="card">
+                                              <div class="card-body">
+                                                <form class="browser-default-validation">
+                                                  <div class="row">
+                                                    <div class="col-12">
+                                                      <button type="button" data-bs-toggle='modal' data-bs-target="#add_diagnosis" class="btn btn-sm btn-primary">ADD DIAGNOSIS</button>
+                                                      <button type="button" data-bs-toggle='modal' data-bs-target="#diagnosis_history" class="btn btn-sm btn-danger">DIAGNOSIS HISTORY</button>
+                                                    </div>
+                                                  </div>
+                                                </form>
+                                                <table class="table table-responsive" id="diagnosis">
+                                                    <thead>
+                                                      <tr>
+                                                        <th>SN</th>
+                                                        <th>Diagnosis</th>
+                                                        <th>ICD-10</th>
+                                                        <th>GRDG</th>
+                                                        <th>Action</th>
+                                                      </tr>
+                                                    </thead>
+                                                    <tfoot>
+                                                      <tr>
+                                                        <th>SN</th>
+                                                        <th>Diagnosis</th>
+                                                        <th>ICD-10</th>
+                                                        <th>GRDG</th>
+                                                        <th>Action</th>
+                                                      </tr>
+                                                    </tfoot>
+                                                </table>
+                                              </div>
+                                            </div>
+                                          </div>
+                                          <div class="col-md">
+                                            <div class="card">
+                                              <div class="card-body">
+                                                <form class="needs-validation" novalidate>
+                                                  <div class="row">
+                                                    <div class="col-12">
+                                                      <button type="button" data-bs-toggle='modal' data-bs-target="#add_prescriptions" class="btn btn-sm btn-primary">ADD PRESCRIPTIONS</button>
+                                                      <button type="button" data-bs-toggle='modal' data-bs-target="#prescription_history" class="btn btn-sm btn-danger">PRESCRIPTION HISTORY</button>
+                                                    </div>
+                                                  </div>
+                                                </form>
+                                                <table class="table table-responsive" id="drugs">
+                                                    <thead>
+                                                      <tr>
+                                                        <th>Sn</th>
+                                                        <th>Prescription</th>
+                                                        <th>Action</th>
+                                                      </tr>
+                                                    </thead>
+                                                    <tfoot>
+                                                      <tr>
+                                                        <th>Sn</th>
+                                                        <th>Prescription</th>
+                                                        <th>Action</th>
+                                                      </tr>
+                                                    </tfoot>
+                                                </table>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                </div>
+                                <!-- ---------------------------------------------------------------------------------- -->
+
                                 <div class="tab-pane fade" id="navs_systems" role="tabpanel">     <!--------------REVIEW OF SYSTEM -->
                                   <p>
                                       <b>system</b> have been paid to the company 
                                                 I hate hospitals but all of the staff that helped me today were so helpfully and seemed genuinely concern.
                                                 I hate hospitals but all of the staff that helped me today were so helpfully and seemed genuinely concern.
                                                 <a href="#"><i class="bx bx-edit"></i></a>
-                                   </p>
+                                  </p>
                                 </div>
+
                                 <div class="tab-pane fade" id="navs_diagnosis" role="tabpanel">     <!--------------DIAGNOSIS  -->
                                     <div class="row g-6 mb-6">
                                           <div class="col-md">
@@ -383,6 +495,7 @@
                                           </div>
                                         </div>
                                 </div>
+                                
                                 <div class="tab-pane fade" id="navs_document" role="tabpanel">     <!--------------DOCUMENT MANAGEMENT -->
                                   <p>
                                       <b>document</b> have been paid to the company 
@@ -391,14 +504,76 @@
                                                 <a href="#"><i class="bx bx-edit"></i></a>
                                    </p>
                                 </div>
-                                <div class="tab-pane fade" id="navs_investigations" role="tabpanel">     <!--------------INVESTIGATION -->
-                                  <p>
-                                      <b>INVESTIGATION</b> have been paid to the company 
-                                                I hate hospitals but all of the staff that helped me today were so helpfully and seemed genuinely concern.
-                                                I hate hospitals but all of the staff that helped me today were so helpfully and seemed genuinely concern.
-                                                <a href="#"><i class="bx bx-edit"></i></a>
-                                   </p>
+
+                                <div class="tab-pane fade" id="navs_investigations" role="tabpanel">     <!--------------INVESTIGATIONS  -->
+                                    <div class="row g-6 mb-6">
+                                          <div class="col-md">
+                                            <div class="card">
+                                              <div class="card-body">
+                                                <form class="browser-default-validation">
+                                                  <div class="row">
+                                                    <div class="col-12">
+                                                      <button type="button" data-bs-toggle='modal' data-bs-target="#add_diagnosis" class="btn btn-sm btn-primary">REQUEST NEW SERVICE</button>
+                                                      <!-- <button type="button" data-bs-toggle='modal' data-bs-target="#diagnosis_history" class="btn btn-sm btn-danger">DIAGNOSIS HISTORY</button> -->
+                                                    </div>
+                                                  </div>
+                                                </form>
+                                                <table class="table table-responsive" id="diagnosis">
+                                                    <thead>
+                                                      <tr>
+                                                        <th>SN</th>
+                                                        <th>Service Type</th>
+                                                        <th>Current Status</th>
+                                                        <th>Service Fee</th>
+                                                        <th>Action</th>
+                                                      </tr>
+                                                    </thead>
+                                                    <tfoot>
+                                                      <tr>
+                                                        <th>SN</th>
+                                                        <th>Service Type</th>
+                                                        <th>Current Status</th>
+                                                        <th>Service Fee</th>
+                                                        <th>Action</th>
+                                                      </tr>
+                                                    </tfoot>
+                                                </table>
+                                              </div>
+                                            </div>
+                                          </div>
+                                          <div class="col-md">
+                                            <div class="card">
+                                              <div class="card-body">
+                                                <form class="needs-validation" novalidate>
+                                                  <div class="row">
+                                                    <div class="col-12">
+                                                      <!-- <button type="button" data-bs-toggle='modal' data-bs-target="#add_prescriptions" class="btn btn-sm btn-primary">ADD PRESCRIPTIONS</button> -->
+                                                      <!-- <button type="button" data-bs-toggle='modal' data-bs-target="#prescription_history" class="btn btn-sm btn-danger">PRESCRIPTION HISTORY</button> -->
+                                                    </div>
+                                                  </div>
+                                                </form>
+                                                <table class="table table-responsive" id="drugs">
+                                                    <thead>
+                                                      <tr>
+                                                        <th>Sn</th>
+                                                        <th>Prescription</th>
+                                                        <th>Action</th>
+                                                      </tr>
+                                                    </thead>
+                                                    <tfoot>
+                                                      <tr>
+                                                        <th>Sn</th>
+                                                        <th>Prescription</th>
+                                                        <th>Action</th>
+                                                      </tr>
+                                                    </tfoot>
+                                                </table>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
                                 </div>
+                                
                     </div>
                 </div>
             </div>

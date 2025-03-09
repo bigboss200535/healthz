@@ -267,8 +267,8 @@
       </div>
     </div>
     <div class="d-flex align-content-center flex-wrap gap-3">
-      <button type="submit" class="btn btn-primary">Submit</button>
-      <button type="reset" class="btn btn-label-info"> <i class="bx bx-reset"></i> Clear</button>
+      <button type="submit" class="btn btn-primary"><i class="bx bx-save"></i> Save Patient</button>
+      <button type="reset" class="btn btn-label-info"> <i class="bx bx-reset"></i> Clear Form</button>
     </div>
   </form>
   </div>
@@ -283,7 +283,6 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 <div class="text-center mb-4">
                   <h3>Patient Search Criteria</h3>
-                  <!-- <p>Enter Search criteria <b style="color:red">All fields marked (*) are mandatory.</b></p> -->
                 </div>
                 <form id="employee_add" class="row g-3" onsubmit="return false" method="post">
                   <div class="col-12 col-md-6">
@@ -298,14 +297,7 @@
                       <option value="telephone">Telephone</option>
                      </select>
                   </div>
-                  <!-- <div class="col-12 col-md-6">
-                    <label class="form-label" for="ssnit_number">Registration Date</label>
-                    <input type="date" id="data_search" name="data_search" class="form-control modal-edit-tax-id" placeholder="123 456 7890" />
-                  </div> -->
-                  <!-- <div class="col-12 col-md-6">
-                    <label class="form-label" for="gh_card">Date of Birth</label>
-                    <input type="date" id="gh_card" name="gh_card" class="form-control modal-edit-tax-id" placeholder="123 456 7890" />
-                  </div> -->
+                 
                   <div class="col-12 col-md-6">
                     <label class="form-label" for="staff_type">Criteria<label class="text-danger" style="font-size: 15px;">*</label></label>
                     <input type="text" name="name" id="name" class="form-control" placeholder="Enter Firstname/Middlename/Surname">
