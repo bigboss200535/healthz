@@ -7,7 +7,7 @@
                       <div class="col-12 col-lg-12">
                           <div class="card mb-4">
                             <div class="card-header">
-                              <h5 class="card-tile mb-0"><b>Health Facility Setup</b></h5>
+                              <h4 class="card-tile mb-0"><b>Health Facility Setup</b></h4>
                             </div>
                             <div class="card-body">
                               <form id="clinic_form" enctype="multipart/form-data" method="post">
@@ -40,8 +40,8 @@
                                   <input type="text" class="form-control" id="website" name="website" value="{{ $facility_details->website }}">
                                 </div>
                                 <div class="col">
-                                  <label class="form-label" for="allow_api">Allow API </label>
-                                  <select name="allow_api" id="allow_api" class="form-control">
+                                  <label class="form-label" for="allow_sms_api">Allow SMS API </label>
+                                  <select name="allow_sms_api" id="allow_sms_api" class="form-control">
                                     <option disabled selected>-Select-</option>
                                     <option value="Yes">Yes</option>
                                     <option value="No">No</option>
@@ -61,7 +61,7 @@
                                 <div class="col">
                                   <label class="form-label" for="nhis_accreditted">NHIS Accredited </label>
                                   <select name="nhis_accreditted" id="nhis_accreditted" class="form-control">
-                                        <option disabled selected>-Select-</option>
+                                        <option disabled selected></option>
                                         <option value="Yes">Yes</option>
                                         <option value="No">No</option>
                                     </select>
@@ -71,7 +71,7 @@
                                 <div class="col">
                                   <label class="form-label" for="claim_code">Claims Code Type</label>
                                     <select name="claim_code" id="claim_code" class="form-control">
-                                      <!-- <option disabled selected></option> -->
+                                      <option disabled selected></option>
                                       <option value="Automatic">Automatic</option>
                                       <option value="Manual">Manual</option>
                                     </select>
@@ -88,19 +88,21 @@
                               <div class="row mb-3">
                                 <div class="col">
                                   <label class="form-label" for="u_block">CCC Api Key </label>
-                                    <input type="text" class="form-control" value="{{ $facility_details->nhia_key  }}">
+                                    <input type="password" class="form-control" value="{{ $facility_details->nhia_key  }}">
                                 </div>
                                 <div class="col">
                                   <label class="form-label" for="status">CCC Api Secret </label>
-                                    <input type="text" class="form-control" value="{{ $facility_details->nhia_secret }}">
+                                    <input type="password" class="form-control" value="{{ $facility_details->nhia_secret }}">
                                 </div>
                               </div>    
-                                  <div class="d-flex align-content-center flex-wrap gap-3">
-                                    <button type="submit" class="btn btn-primary">Submit</button>
-                                    <button type="reset" class="btn btn-label-secondary">clear</button>
-                                </div>
+                                  
                             </div>
+                            
                           </div>
+                          <div class="d-flex align-content-center flex-wrap gap-3">
+                                    <button type="submit" class="btn btn-primary"><i class="bx bx-save"></i> Save Changes</button>
+                                    <!-- <button type="reset" class="btn btn-label-warning"><i class="bx bx-reset"></i>  clear</button> -->
+                                </div>
                         </div>
                         
                     </div>

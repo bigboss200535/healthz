@@ -15,14 +15,17 @@ class ProfileController extends Controller
     /**
      * Display the user's profile form.
      */
+    
      public function index(Request $request): View
      {
         $user = User::where('archived', 'No')
             ->where('status', '=','Active')
-            ->get();
+            ->where('user_id', Auth::user()->user_id,)
+            ->first();
             
         return view('profile.index', compact('user'));
      }
+
 
     public function edit(Request $request): View
     {

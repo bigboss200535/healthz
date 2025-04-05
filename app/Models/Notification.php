@@ -18,6 +18,8 @@ class Notification extends Model
     protected $fillable = [
         'notification_id',
         'notification',
+        'notification_type',
+        'read_status',
         'intended_for',
         'user_id',
         'added_id',

@@ -36,7 +36,7 @@
                               </tr>
                           </thead>
                           <tbody class="table-border-bottom-0">
-                          @php
+                            @php
                               $counter = 1;
                             @endphp
                             @foreach($all as $patients)

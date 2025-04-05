@@ -208,8 +208,8 @@
                       <label class="form-label mb-1" for="sponsor_type_id">Sponsor Type</label>
                       <select name="sponsor_type_id" id="sponsor_type_id" class="select2 form-control sponsor_type_id">
                         <option disabled selected>-Select-</option>
-                          @foreach($payment_type as $payments)                                        
-                            <option value="{{ $payments->sponsor_type_id }}">{{ strtoupper($payments->sponsor_type) }}</option>
+                          @foreach($payment_type as $sponsor_type)                                        
+                            <option value="{{ $sponsor_type->sponsor_type_id }}">{{ strtoupper($sponsor_type->sponsor_type) }}</option>
                           @endforeach
                       </select>
                     </div>
@@ -221,14 +221,11 @@
                       <label class="form-label mb-1" for="sponsor_id">Sponsor Name </label>
                       <select id="sponsor_id" name="sponsor_id" class="select2 form-select sponsor_name">
                         <option value="" disabled selected>-Select-</option>
-                          @foreach($sponsor as $sponsors)                                        
-                            <option value="{{ $sponsors->sponsor_id }}">{{ strtoupper($sponsors->sponsor_name) }}</option>
-                          @endforeach
                       </select>
                     </div>
                     <div class="mb-3 col ecommerce-select2-dropdown sponsorship_details_settings">
                       <label class="form-label mb-1" for="member_no">Membership Number</label>
-                      <input type="text" name="member_no" id="member_no" class="form-control" maxlength="15" >
+                      <input type="text" name="member_no" id="member_no" class="form-control" >
                     </div>
                     <div class="mb-3 col ecommerce-select2-dropdown sponsorship_details_settings">
                       <label class="form-label mb-1" for="dependant">Dependant</label>
@@ -250,7 +247,7 @@
                     <div class="mb-3 col ecommerce-select2-dropdown sponsorship_details_settings">
                       <label class="form-label mb-1 d-flex justify-content-between align-items-center" for="card_status">
                         <span>Sponsor Status</span></label>
-                      <input type="text" name="card_status" id="card_status" class="form-control" disabled>
+                      <input type="text" name="card_status" id="card_status" class="form-control" readonly>
                     </div>
                   </div>
                 </div>
@@ -333,3 +330,99 @@
         </div> -->
         <!-- end modal -->
 </x-app-layout>
+
+<script>
+$(document).ready(function() {
+    // When sponsor type changes
+    $('#sponsor_type_id').on('change', function() {
+        var sponsorTypeId = $(this).val();
+        if(sponsorTypeId) {
+            // Clear current options
+            $('#sponsor_id').empty();
+            $('#sponsor_id').append('<option value="" disabled selected>-Loading Sponsors-</option>');
+            
+            // Make AJAX request to get sponsors by type
+            $.ajax({
+                url: '{{ route("get.sponsors.by.type") }}',
+                type: 'GET',
+                data: {
+                    sponsor_type_id: sponsorTypeId
+                },
+                success: function(data) {
+                    $('#sponsor_id').empty();
+                    $('#sponsor_id').append('<option value="" disabled selected>-Select-</option>');
+                    
+                    // Add the returned sponsors to the dropdown
+                    $.each(data, function(key, value) {
+                        $('#sponsor_id').append('<option value="' + value.sponsor_id + '">' + value.sponsor_name.toUpperCase() + '</option>');
+                    });
+                    
+                    // Refresh Select2 to apply changes
+                    $('#sponsor_id').trigger('change');
+                },
+                error: function() {
+                    $('#sponsor_id').empty();
+                    $('#sponsor_id').append('<option value="" disabled selected>-Error Loading Sponsors-</option>');
+                }
+            });
+            
+            // Set member number format based on sponsor type
+            if(sponsorTypeId === 'N002') {
+                // For N002, set min and max length
+                $('#member_no').attr('minlength', '8');
+                $('#member_no').attr('maxlength', '10');
+                $('#member_no').attr('pattern', '[0-9]{8,10}');
+                $('#member_no').attr('title', 'Member number must be 8-10 digits');
+            } else {
+                // For other sponsor types, remove restrictions
+                $('#member_no').removeAttr('minlength');
+                $('#member_no').removeAttr('maxlength');
+                $('#member_no').removeAttr('pattern');
+                $('#member_no').removeAttr('title');
+            }
+        } else {
+            // If no sponsor type selected, clear and reset sponsor dropdown
+            $('#sponsor_id').empty();
+            $('#sponsor_id').append('<option value="" disabled selected>-Select-</option>');
+            
+            // Reset member number field
+            $('#member_no').removeAttr('minlength');
+            $('#member_no').removeAttr('maxlength');
+            $('#member_no').removeAttr('pattern');
+            $('#member_no').removeAttr('title');
+        }
+    });
+    
+    // Function to check date range and update card status
+    function updateCardStatus() {
+        var startDate = $('#start_date').val();
+        var endDate = $('#end_date').val();
+        
+        if(startDate && endDate) {
+            var today = new Date();
+            var start = new Date(startDate);
+            var end = new Date(endDate);
+            
+            // Reset time part to compare dates only
+            today.setHours(0, 0, 0, 0);
+            start.setHours(0, 0, 0, 0);
+            end.setHours(0, 0, 0, 0);
+            
+            if(today >= start && today <= end) {
+                $('#card_status').val('Active');
+                $('#card_status').css('color', 'green');
+            } else {
+                $('#card_status').val('Inactive');
+                $('#card_status').css('color', 'red');
+            }
+        } else {
+            $('#card_status').val('');
+        }
+    }
+    
+    // Update card status when start date or end date changes
+    $('#start_date, #end_date').on('change', function() {
+        updateCardStatus();
+    });
+});
+</script>

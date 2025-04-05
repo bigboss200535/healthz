@@ -565,3 +565,43 @@ $('#claims_check_code').on('hidden.bs.modal', function () {
         }
       });
     });
+
+
+    // $('#sms_form').on('submit', function(e) {
+    //   e.preventDefault(); // Prevent default form submit
+
+    //   const telephone = $('#sms_telephone').val().trim();
+    //   const message = $('#sms_message').val().trim();
+
+    //   // Basic validation
+    //   if (!telephone) {
+    //     alert('Telephone is required!');
+    //     return;
+    //   }
+
+    //   if (!message) {
+    //     alert('Message is required!');
+    //     return;
+    //   }
+
+    //   // AJAX request
+    //   $.ajax({
+    //     url: '/notifications/send-sms',
+    //     type: 'POST',
+    //     data: {
+    //         _token: $('input[name="_token"]').val(),
+    //         telephone: telephone,
+    //         message: message
+    //     },
+    //     success: function(response) {
+    //         if (response.success) {
+    //             alert('Success: ' + response.message);
+    //         } else if(response.error){
+    //             alert('Error: ' + response.message); // Show mNotify error
+    //         }
+    //     },
+    //     error: function(xhr) {
+    //         alert('Server error: ' + xhr.responseJSON?.message || 'Try again later.');
+    //     }
+    // });
+    // });

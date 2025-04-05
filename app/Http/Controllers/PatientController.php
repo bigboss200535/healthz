@@ -352,33 +352,77 @@ class PatientController extends Controller
 
     public function search(Request $request)
     {
-            $search_term = $request->input('search_patient');
-            // Step 1: Search in the Patient table
-            $search_patient = Patient::query()
-            ->join('patient_nos', 'patient_nos.patient_id', '=', 'patient_info.patient_id',)
-                ->where(function ($query) use ($search_term) {
-                    $query->where('telephone', 'like', '%' . $search_term . '%');
-                })
-                ->get();
-            // Step 2: If no results are found in the Patient table, search in the PatientSponsor table
-            if ($search_patient->isEmpty()) {
-                $search_patient = PatientSponsor::query()
-                ->join('patient_info', 'patient_info.patient_id', '=', 'patient_sponsorship.patient_id')
+            $search_type = $request->input('search_type', 'basic');
+
+            if ($search_type === 'basic') 
+            {
+                // Basic search functionality
+                $search_term = $request->input('search_patient');
+                // Step 1: Search in the Patient table
+                $search_patient = Patient::query()
+                ->join('patient_nos', 'patient_nos.patient_id', '=', 'patient_info.patient_id',)
                     ->where(function ($query) use ($search_term) {
-                        $query->where('opd_number', 'like', '%' . $search_term . '%')
-                            ->orWhere('member_no', 'like', '%' . $search_term . '%');
+                        $query->where('telephone', 'like', '%' . $search_term . '%');
                     })
                     ->get();
-                // Step 3: If no results are found in the PatientSponsor table, search in the PatientOpdNumber table
+                // Step 2: If no results are found in the Patient table, search in the PatientSponsor table
                 if ($search_patient->isEmpty()) {
-                    $search_patient = PatientOpdNumber::query()
-                    ->join('patient_info', 'patient_info.patient_id', '=', 'patient_nos.patient_id')
+                    $search_patient = PatientSponsor::query()
+                    ->join('patient_info', 'patient_info.patient_id', '=', 'patient_sponsorship.patient_id')
                         ->where(function ($query) use ($search_term) {
-                            $query->where('opd_number', 'like', '%' . $search_term . '%');
+                            $query->where('opd_number', 'like', '%' . $search_term . '%')
+                                ->orWhere('member_no', 'like', '%' . $search_term . '%');
+                        })
+                        // ->distinct()
+                        ->get();
+                    // Step 3: If no results are found in the PatientSponsor table, search in the PatientOpdNumber table
+                    if ($search_patient->isEmpty()) {
+                        $search_patient = PatientOpdNumber::query()
+                        ->join('patient_info', 'patient_info.patient_id', '=', 'patient_nos.patient_id')
+                            ->where(function ($query) use ($search_term) {
+                                $query->where('opd_number', 'like', '%' . $search_term . '%');
+                            })
+                            ->distinct()
+                            ->get();
+                    }
+                }
+            } else {
+                // Advanced search functionality
+                $search_term = $request->input('search_patient');
+                // Step 1: Search in the Patient table
+                $search_patient = Patient::query()
+                ->join('patient_nos', 'patient_nos.patient_id', '=', 'patient_info.patient_id',)
+                    ->where(function ($query) use ($search_term) {
+                        $query->where('firstname', 'like', '%' . $search_term . '%')
+                        ->orWhere('lastname', 'like', '%' . $search_term . '%')
+                        ->orWhere('address', 'like', '%' . $search_term . '%')
+                        ->orWhere('email', 'like', '%' . $search_term . '%');
+                    })
+                    ->get();
+                // Step 2: If no results are found in the Patient table, search in the PatientSponsor table
+                if ($search_patient->isEmpty()) {
+                    $search_patient = PatientSponsor::query()
+                    ->join('patient_info', 'patient_info.patient_id', '=', 'patient_sponsorship.patient_id')
+                        ->where(function ($query) use ($search_term) {
+                            $query->where('opd_number', 'like', '%' . $search_term . '%')
+                                ->orWhere('member_no', 'like', '%' . $search_term . '%')
+                                ->orWhere('sponsor_id', 'like', '%' . $search_term . '%')
+                                ->orWhere('sponsor_type_id', 'like', '%' . $search_term . '%');
                         })
                         ->get();
+                    // Step 3: If no results are found in the PatientSponsor table, search in the PatientOpdNumber table
+                    if ($search_patient->isEmpty()) {
+                        $search_patient = PatientOpdNumber::query()
+                        ->join('patient_info', 'patient_info.patient_id', '=', 'patient_nos.patient_id')
+                            ->where(function ($query) use ($search_term) {
+                                $query->where('opd_number', 'like', '%' . $search_term . '%');
+                            })
+                            
+                            ->get();
+                    }
                 }
             }
+
             // Return the search results in JSON format
             return response()->json($search_patient);
     }

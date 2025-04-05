@@ -1,4 +1,4 @@
-    <x-app-layout>
+<x-app-layout>
                <div class="container-xxl flex-grow-1 container-p-y">    
                   <h4 class="py-3 mb-4">
                     <span class="text-muted fw-light">Patients /</span> Search
@@ -10,7 +10,7 @@
                           <div class="card" style="border-color: black; border-width:2px">
                             <!-- <div class="card-body"> -->
                                   <div align="center" class="col-lg-12"> <div class="mb-3">
-                                    <button class="btn btn-secondary mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#advancedSearch" aria-expanded="false" aria-controls="advancedSearch">
+                                    <button class="btn btn-dark mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#advancedSearch" aria-expanded="false" aria-controls="advancedSearch">
                                         <i class="bx bx-filter"></i> Advanced Search
                                     </button>
                                   </div>
@@ -36,18 +36,18 @@
                                         <div class="row g-3">
                                             <div class="col-md-4">
                                                 <label for="patient_name">Firstname</label>
-                                                <input type="text" class="form-control" id="patient_name" name="patient_name">
+                                                <input type="text" class="form-control" id="firstname" name="firstname">
                                             </div>
                                             <div class="col-md-4">
                                                 <label for="date_of_birth">Othername</label>
-                                                <input type="text" class="form-control" id="date_of_birth" name="date_of_birth">
+                                                <input type="text" class="form-control" id="othername" name="othername">
                                             </div>
                                             <div class="col-md-4">
                                                 <label for="gender">Gender</label>
                                                 <select class="form-select" id="gender" name="gender">
                                                     <option value="" disabled selected>Select Gender</option>
-                                                    <option value="M">Male</option>
-                                                    <option value="F">Female</option>
+                                                    <option value="2">Male</option>
+                                                    <option value="1">Female</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -55,18 +55,17 @@
                                         <div class="row g-3">
                                             <div class="col-md-4">
                                                 <label for="patient_name">Birth Date</label>
-                                                <input type="text" class="form-control" id="patient_name" name="patient_name">
+                                                <input type="text" class="form-control" id="birthdate" name="birthdate">
                                             </div>
                                             <div class="col-md-4">
                                                 <label for="date_of_birth">Address</label>
-                                                <input type="text" class="form-control" id="date_of_birth" name="date_of_birth">
+                                                <input type="text" class="form-control" id="address" name="address">
                                             </div>
                                             <div class="col-md-4">
                                                 <label for="gender">Sponsor</label>
-                                                <select class="form-select" id="gender" name="gender">
+                                                <select class="form-select" id="sponsor" name="sponsor">
                                                     <option disabled selected>Select Sponsor</option>
-                                                    <option value="M">Male</option>
-                                                    <option value="F">Female</option>
+                                                    <!--  -->
                                                 </select>
                                             </div>
                                         </div>
@@ -134,25 +133,181 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('clear_search').addEventListener('click', function(e) {
         e.preventDefault();
         document.getElementById('search_patient').value = '';
-        document.getElementById('patient_name').value = '';
-        document.getElementById('date_of_birth').value = '';
-        document.getElementById('gender').value = '';
-        document.getElementById('insurance_number').value = '';
+        
+        // Clear advanced search fields if they exist
+        if(document.getElementById('firstname')) document.getElementById('firstname').value = '';
+        if(document.getElementById('othername')) document.getElementById('othername').value = '';
+        if(document.getElementById('gender')) document.getElementById('gender').selectedIndex = 0;
+        if(document.getElementById('birthdate')) document.getElementById('birthdate').value = '';
+        if(document.getElementById('address')) document.getElementById('address').value = '';
+        if(document.getElementById('sponsor')) document.getElementById('sponsor').selectedIndex = 0;
+        
+        // Hide results if showing
+        document.getElementById('patient_search_result').style.display = 'none';
     });
 
     // Handle search
     document.getElementById('search_item').addEventListener('click', function() {
-        // Collect all search parameters
-        const searchData = {
-            basic_search: document.getElementById('search_patient').value,
-            patient_name: document.getElementById('patient_name').value,
-            date_of_birth: document.getElementById('date_of_birth').value,
-            gender: document.getElementById('gender').value,
-            insurance_number: document.getElementById('insurance_number').value
-        };
-
-        // TODO: Implement your search logic here
-        console.log('Search parameters:', searchData);
+        // Check if basic search has value
+        const basic_search_value = document.getElementById('search_patient').value.trim();
+        
+        // Initialize search data object
+        let searchData = {};
+        
+        // Determine which search to use (basic or advanced)
+        if (basic_search_value !== '') {
+            // Use basic search
+            searchData = {
+                search_type: 'basic',
+                search_value: basic_search_value
+            };
+        } else {
+            // Use advanced search if available
+            const advancedSearchDiv = document.getElementById('advancedSearch');
+            const isAdvancedSearchOpen = advancedSearchDiv.classList.contains('show');
+            
+            if (isAdvancedSearchOpen) {
+                searchData = {
+                    search_type: 'advanced',
+                    firstname: document.getElementById('firstname').value.trim(),
+                    othername: document.getElementById('othername').value.trim(),
+                    gender: document.getElementById('gender').value,
+                    birthdate: document.getElementById('birthdate').value.trim(),
+                    address: document.getElementById('address').value.trim(),
+                    sponsor: document.getElementById('sponsor').value
+                };
+                
+                // Check if at least one advanced search field has a value
+                const hasAdvancedSearchValue = Object.values(searchData).some((value, index) => 
+                    index > 0 && value !== '' && value !== null && value !== undefined);
+                
+                if (!hasAdvancedSearchValue) {
+                    toastr.info('Please enter at least one search criteria');
+                    return;
+                }
+            } else {
+                toastr.info('Please enter a search term or use advanced search');
+                return;
+            }
+        }
+        
+        // Show loading state
+        const searchButton = document.getElementById('search_item');
+        const originalButtonText = searchButton.innerHTML;
+        searchButton.innerHTML = '<i class="bx bx-loader-alt bx-spin"></i> Searching...';
+        searchButton.disabled = true;
+        
+        // Make AJAX request to search patients
+        $.ajax({
+            url: '{{ route("patient.search") }}',
+            type: 'GET',
+            data: searchData,
+            dataType: 'json',
+            success: function(response) {
+                // Reset button state
+                searchButton.innerHTML = originalButtonText;
+                searchButton.disabled = false;
+                
+                // Show results container
+                document.getElementById('patient_search_result').style.display = 'block';
+                
+                // Clear existing table data
+                const tableBody = document.querySelector('#patient_search_list tbody');
+                tableBody.innerHTML = '';
+                
+                // Check if we have results
+                if (response.data && response.data.length > 0) {
+                    // Populate table with results
+                    response.data.forEach((patient, index) => {
+                        const row = document.createElement('tr');
+                        
+                        // Format date of birth if it exists
+                        let formattedDob = 'N/A';
+                        let age = 'N/A';
+                        
+                        if (patient.birth_date) {
+                            const dob = new Date(patient.birth_date);
+                            formattedDob = dob.toLocaleDateString();
+                            
+                            // Calculate age
+                            const today = new Date();
+                            age = today.getFullYear() - dob.getFullYear();
+                            const monthDiff = today.getMonth() - dob.getMonth();
+                            if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dob.getDate())) {
+                                age--;
+                            }
+                        }
+                        
+                        // Format created date if it exists
+                        let formattedAddedDate = 'N/A';
+                        if (patient.added_date) {
+                            const createdDate = new Date(patient.added_date);
+                            formattedAddedDate = createdDate.toLocaleDateString();
+                        }
+                        
+                        // Determine gender display
+                        let genderDisplay = 'N/A';
+                        if (patient.gender_id === '2' || patient.gender_id === 2) {
+                            genderDisplay = 'MALE';
+                        } else if (patient.gender_id === '1' || patient.gender_id === 1) {
+                            genderDisplay = 'FEMALE';
+                        }
+                        
+                        // Build patient name with proper handling for null/undefined values
+                        const lastname = patient.lastname || '';
+                        const firstname = patient.firstname || '';
+                        const middlename = patient.middlename || '';
+                        const full_name = `${lastname} ${firstname} ${middlename}`.trim();
+                        
+                        // Build row HTML
+                        row.innerHTML = `
+                            <td>${index + 1}</td>
+                            <td>${full_name}</td>
+                            <td>${patient.opd_number || 'N/A'}</td>
+                            <td>${genderDisplay}</td>
+                            <td>${age}</td>
+                            <td>${patient.telephone || 'N/A'}</td>
+                            <td>${formattedDob}</td>
+                            <td>${formattedAddedDate}</td>
+                            <td>
+                                <div class="dropdown">
+                                    <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                                        <i class="bx bx-dots-vertical-rounded"></i>
+                                    </button>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item" href="{{ url('patients') }}/${patient.patient_id}/edit">
+                                            <i class="bx bx-edit-alt me-1"></i> Edit
+                                        </a>
+                                        <a class="dropdown-item" href="{{ url('patients') }}/${patient.patient_id}/view">
+                                            <i class="bx bx-show me-1"></i> View
+                                        </a>
+                                        <a class="dropdown-item" href="{{ url('visits/create') }}/${patient.patient_id}">
+                                            <i class="bx bx-plus-circle me-1"></i> New Visit
+                                        </a>
+                                    </div>
+                                </div>
+                            </td>
+                        `;
+                        
+                        tableBody.appendChild(row);
+                    });
+                } else {
+                    // No results found
+                    const row = document.createElement('tr');
+                    row.innerHTML = '<td colspan="9" class="text-center">No patients found matching your search criteria</td>';
+                    tableBody.appendChild(row);
+                }
+            },
+            error: function(xhr, status, error) {
+                // Reset button state
+                searchButton.innerHTML = originalButtonText;
+                searchButton.disabled = false;
+                
+                // Show error message
+                toastr.info('An error occurred while searching. Please try again.');
+                console.error('Search error:', error);
+            }
+        });
     });
 });
 </script>

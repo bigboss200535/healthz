@@ -100,6 +100,7 @@
     <script src="{{ asset('js/custom_js.js') }}"></script>
     <script src="{{ asset('js/patient_services.js') }}"></script>
     <script src="{{ asset('js/patient_details.js') }}"></script>
+    <script src="{{ asset('js/patient_extras.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js') }}"></script>
     <script src="{{ asset('js/fullcalendar.js') }}"></script>
     <script src="{{ asset('js/app-calendar-events.js') }}"></script>

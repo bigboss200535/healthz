@@ -13,6 +13,7 @@ use App\Models\PatientSponsor;
 use App\Models\PatNumber;
 use App\Models\YearlyCount;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class SponsorController extends Controller
 {
@@ -46,5 +47,18 @@ class SponsorController extends Controller
     public function destroy()
     {
 
+    }
+
+    public function getSponsorsByType(Request $request)
+    {
+        $sponsor_type_id = $request->input('sponsor_type_id');
+        
+        // Query sponsors based on sponsor type
+        $sponsors = DB::table('sponsors')
+                      ->where('sponsor_type_id', $sponsor_type_id)
+                      ->where('archived', 'No')
+                      ->get(['sponsor_id', 'sponsor_name']);
+        
+        return response()->json($sponsors);
     }
 }

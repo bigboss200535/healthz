@@ -47,6 +47,7 @@ Route::redirect('/', '/login');
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
+    Route::get('/user-profile', [ProfileController::class, 'index'])->name('profile.index');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy')
@@ -139,9 +140,13 @@ Route::middleware('auth')->group(function () {
     //     Route::get('all', [ReportsController::class, 'index']);
     //     Route::get('patient', [ReportsController::class, 'patient']);
     // });
-
+   
      Route::prefix('notifications')->group(function () {
-        Route::get('/all', [NotificationController::class, 'index']);
+        Route::get('/sms-list', [NotificationController::class, 'index'])->name('notifications.sms-list');
+        Route::post('/send-sms', [NotificationController::class, 'send_sms'])->name('notifications.send-sms');
+        Route::get('/sms-setup', [NotificationController::class, 'index']);
+        Route::get('/email-setup', [NotificationController::class, 'index']);
+        Route::get('/emails', [NotificationController::class, 'index']);
         // Route::get('all', [ReportsController::class, 'index']);
         // Route::get('patient', [ReportsController::class, 'patient']);
         
@@ -155,3 +160,6 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__.'/auth.php';
+
+// Add this route to handle the AJAX request
+Route::get('/get-sponsors-by-type', [App\Http\Controllers\SponsorController::class, 'getSponsorsByType'])->name('get.sponsors.by.type');

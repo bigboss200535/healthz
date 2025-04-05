@@ -309,7 +309,7 @@
       </a>
       <ul class="menu-sub">
         <li class="menu-item">
-          <a href="#" class="menu-link">
+          <a href="{{ url('notifications/sms-list')}}" class="menu-link">
             <div class="text-truncate" data-i18n="List">Sms</div>
           </a>
         </li>
@@ -325,6 +325,25 @@
 <!-- --------------------------------------/-salaries--------------------------------------------- -->
     <li class="menu-header small text-uppercase"><span class="menu-header-text" data-i18n="Components">System Setup</span></li>
     <!-- Cards -->
+    <li class="menu-item">
+      <a href="javascript:void(0);" class="menu-link menu-toggle">
+        <i class="menu-icon tf-icons bx bx-cog"></i>
+        <div class="text-truncate" data-i18n="Cards">Notifications</div>
+        <!-- <span class="badge badge-center rounded-pill bg-danger ms-auto">6</span> -->
+      </a>
+      <ul class="menu-sub">
+        <li class="menu-item">
+          <a href="#" class="menu-link">
+            <div class="text-truncate" data-i18n="Basic">SMS Setting</div>
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="#" class="menu-link">
+            <div class="text-truncate" data-i18n="Advance">Email setup</div>
+          </a>
+        </li>
+      </ul>
+    </li>
     <li class="menu-item">
       <a href="javascript:void(0);" class="menu-link menu-toggle">
         <i class="menu-icon tf-icons bx bx-cog"></i>

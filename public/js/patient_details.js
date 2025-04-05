@@ -125,98 +125,99 @@ $('#patient_info').on('submit', function (e) {
 // ************************* PATIENT SEARCH SCRIPT ******************
 
 // Debounce function to limit the rate of AJAX requests
-function debounce(func, wait) {
-    let timeout;
-    return function(...args) {
-        clearTimeout(timeout);
-        timeout = setTimeout(() => func.apply(this, args), wait);
-    };
-}
+// function debounce(func, wait) {
+//     let timeout;
+//     return function(...args) {
+//         clearTimeout(timeout);
+//         timeout = setTimeout(() => func.apply(this, args), wait);
+//     };
+// }
 
-// Age calculation function
-function calculateAge(birthDate) {
-    const birth = new Date(birthDate);
-    const today = new Date();
-    let age = today.getFullYear() - birth.getFullYear();
-    const month = today.getMonth();
-    const day = today.getDate();
-    if (month < birth.getMonth() || (month === birth.getMonth() && day < birth.getDate())) {
-        age--;
-    }
-    return age;
-}
+// // Age calculation function
+// function calculateAge(birthDate) {
+//     const birth = new Date(birthDate);
+//     const today = new Date();
+//     let age = today.getFullYear() - birth.getFullYear();
+//     const month = today.getMonth();
+//     const day = today.getDate();
+//     if (month < birth.getMonth() || (month === birth.getMonth() && day < birth.getDate())) {
+//         age--;
+//     }
+//     return age;
+// }
 
-function renderTableRows(table, data) {// Function to render the table rows
-    table.clear();
-    if (data.length > 0) {
-        data.forEach((patient, index) => {
-            const age = calculateAge(patient.birth_date);
-            const row = [
-                index + 1,
-                `<a href="/patients/${patient.patient_id}">${patient.fullname}</a>`,
-                patient.opd_number,
-                patient.gender_id === '3' ? 'MALE' : 'FEMALE',
-                age,
-                patient.telephone,
-                new Date(patient.birth_date).toLocaleDateString('en-GB'),
-                new Date(patient.register_date).toLocaleDateString('en-GB'),
-                `<div class="dropdown" align="center">
-                    <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-                        <i class="bx bx-dots-vertical-rounded"></i>
-                    </button>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item" href="/patients/${patient.patient_id}">
-                            <i class="bx bx-detail me-1"></i> More
-                        </a>
-                    </div>
-                </div>`
-            ];
-            table.row.add(row);
-        });
-        $('#patient_search_result').show(); // Show the table if results are found
-    } else {
-        toastr.info(' No patient found with the criteria');
-        // $('#patient_search_result').hide(); // Show the table even if no results are found
-    }
-    table.draw();
-}
+// function renderTableRows(table, data) {// Function to render the table rows
+//     table.clear();
+//     if (data.length > 0) {
+//         data.forEach((patient, index) => {
+//             const age = calculateAge(patient.birth_date);
+//             const row = [
+//                 index + 1,
+//                 `<a href="/patients/${patient.patient_id}">${patient.fullname}</a>`,
+//                 patient.opd_number,
+//                 patient.gender_id === '3' ? 'MALE' : 'FEMALE',
+//                 age,
+//                 patient.telephone,
+//                 new Date(patient.birth_date).toLocaleDateString('en-GB'),
+//                 new Date(patient.register_date).toLocaleDateString('en-GB'),
+//                 `<div class="dropdown" align="center">
+//                     <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+//                         <i class="bx bx-dots-vertical-rounded"></i>
+//                     </button>
+//                     <div class="dropdown-menu">
+//                         <a class="dropdown-item" href="/patients/${patient.patient_id}">
+//                             <i class="bx bx-detail me-1"></i> More
+//                         </a>
+//                     </div>
+//                 </div>`
+//             ];
+//             table.row.add(row);
+//         });
+//         $('#patient_search_result').show(); // Show the table if results are found
+//     } else {
+//         toastr.info(' No patient found with the criteria');
+//         // $('#patient_search_result').hide(); // Show the table even if no results are found
+//     }
+//     table.draw();
+// }
 
-function perform_search(searchTerm) {// Function to handle the AJAX request
-    if (searchTerm.trim() !== '') {
-        $.ajax({
-            url: '/patient/search',
-            type: "GET",
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
-            data: { search_patient: searchTerm },
-            success: function(response) {
-                const table = $('#patient_search_list').DataTable();
-                renderTableRows(table, response);
-            },
-            error: function(xhr, status, error) {
-                toastr.error('There was an error processing your request');
-                $('#patient_search_result').hide(); // Hide the table on error
-            }
-        });
-    } else {
-        toastr.error('Please enter a search item');
-        $('#patient_search_result').hide(); // Hide the table if search term is empty
-    }
-}
+// function perform_search(searchTerm) {// Function to handle the AJAX request
+//     if (searchTerm.trim() !== '') {
+//         $.ajax({
+//             url: '/patient/search',
+//             type: "GET",
+//             headers: {
+//                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+//             },
+//             data: { search_patient: searchTerm },
+//             success: function(response) {
+//                 const table = $('#patient_search_list').DataTable();
+//                 renderTableRows(table, response);
+//             },
+//             error: function(xhr, status, error) {
+//                 toastr.error('There was an error processing your request');
+//                 $('#patient_search_result').hide(); // Hide the table on error
+//             }
+//         });
+//     } else {
+//         toastr.error('Please enter a search item');
+//         $('#patient_search_result').hide(); // Hide the table if search term is empty
+//     }
+// }
 
-// Cache the DataTable instance
-const patientTable = $('#patient_search_list').DataTable();
-// Attach the debounced search function to the input event
-$('#search_item').on('click', debounce(function() {
-    const search_term = $('#search_patient').val();
-            if (search_term.length < 3) {
-                toastr.warning('Search field must be at least 3 characters long');
-                $('#search_patient').focus();  // Autofocus on the first name field
-                return;
-            }
-    perform_search(search_term);
-}, 300));
+// // Cache the DataTable instance
+// const patientTable = $('#patient_search_list').DataTable();
+// // Attach the debounced search function to the input event
+// $('#search_item').on('click', debounce(function() {
+//     const search_term = $('#search_patient').val();
+//             if (search_term.length < 3) {
+//                 toastr.warning('Search field must be at least 3 characters long');
+//                 $('#search_patient').focus();  
+//                 // Autofocus on the first name field
+//                 return;
+//             }
+//     perform_search(search_term);
+// }, 300));
 // ***************************/PATIENT SEARCH SCRIPT ***************************/
 
 

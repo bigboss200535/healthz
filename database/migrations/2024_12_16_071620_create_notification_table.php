@@ -15,6 +15,8 @@ return new class extends Migration
     {
         Schema::create('notifications', function (Blueprint $table) {
             $table->id('notification_id', 50);
+            $table->string('notification_type', 50)->nullable();
+            $table->string('read_status', 50)->nullable();
             $table->text('notification')->nullable();
             $table->string('user_id', 50)->nullable();
             $table->string('intended_for', 50)->nullable();

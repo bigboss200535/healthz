@@ -99,7 +99,7 @@
                               <h5 class="card-tile mb-0"><b>User List</b></h5>
                             </div>
                             <div class="card-body">
-                                <table class="datatables-category-list table border-top" id="product_list">
+                                <table class="datatables-category-list table border-top" id="app_list">
                                     <thead>
                                       <tr>
                                         <th>Sn</th>

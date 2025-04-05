@@ -154,7 +154,7 @@ $facility = DB::table('facility')->where('archived', 'No')->value('facility_name
                 <div class="dropdown-divider"></div>
               </li>
               <li>
-                <a class="dropdown-item" href="{{ url('/profile')}}">
+                <a class="dropdown-item" href="{{ url('user-profile') }}">
                   <i class="bx bx-user me-2"></i>
                   <span class="align-middle">My Profile</span>
                 </a>
