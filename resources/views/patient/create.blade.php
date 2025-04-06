@@ -254,7 +254,7 @@
               </div>
               <div class="d-flex align-content-center flex-wrap gap-3">
                 <button type="submit" class="btn btn-primary"><i class="bx bx-save"></i> Save Patient</button>
-                <button type="reset" class="btn btn-warning"> <i class="bx bx-reset"></i> Clear Form</button>
+                <button type="reset" class="btn btn-info"> <i class="bx bx-reset"></i> Clear Form</button>
                 <a href="{{ route('patients.index') }}" class="btn btn-dark"> <i class="bx bx-search"></i> Search Patient</a>
               </div>
             </form>

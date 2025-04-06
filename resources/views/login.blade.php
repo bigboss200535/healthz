@@ -65,12 +65,12 @@
            @csrf
           <div class="mb-3">
             <label for="username" class="form-label">Username</label>
-            <x-text-input id="username" placeholder="Enter Username" class="form-control" type="text" name="username" :value="old('username')" autofocus autocomplete="off" value="admin"/>
+            <x-text-input id="username" placeholder="Enter Username" class="form-control" type="text" name="username" :value="old('username')" autofocus autocomplete="off" />
             <x-input-error :messages="$errors->get('username')" class="mt-2" style="color:red"/>
           </div>
           <div class="mb-3">
             <label for="username" class="form-label">Password</label>
-            <x-text-input id="password" placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;" class="form-control" type="password" name="password" :value="old('password')" value="@Mohammed200535"/>
+            <x-text-input id="password" placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;" class="form-control" type="password" name="password" />
             <x-input-error :messages="$errors->get('password')" class="mt-2" style="color:red"/>
           </div>
           <!-- <div class="mb-3">
@@ -117,3 +117,14 @@
   <script src="{{ asset('js/pages-auth.js') }}"></script>
 </body>
 </html>
+
+<!-- Add this right after the form to debug errors -->
+@if ($errors->any())
+<div class="alert alert-danger mt-3">
+    <ul class="mb-0">
+        @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+        @endforeach
+    </ul>
+</div>
+@endif

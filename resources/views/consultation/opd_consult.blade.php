@@ -131,9 +131,71 @@
   </div>
 </div>
 
+<script>
+$(document).ready(function() {
+    // Initially hide the consultation display
+    $("#consultation_display").hide();
+    $("#required_fields_message").show();
+    
+    // Function to check if all required fields are selected
+    function checkRequiredFields() {
+        const visit_type = $("#visit_type").val();
+        const consulting_room = $("#visit_date").val();
+        const consultation_time = $("#consultation_time").val();
+        const doctor = $("#doctors").val();
+        const consultation_date = $("#consultation_date").val();
+        const episode = $("#episode_name").val();
+        
+        // Check if all required fields have values
+        if (visit_type!='' && consulting_room && consultation_time && doctor && 
+            consultation_date && episode) {
+            $("#consultation_display").show();
+            $("#required_fields_message").hide();
+            // console.log("All fields filled, showing consultation display");
+        } else {
+            $("#consultation_display").hide();
+            $("#required_fields_message").show();
+            // console.log("Missing fields, hiding consultation display");
+        }
+    }
+    
+    // Call the function on page load
+    checkRequiredFields();
+    
+    // Add change event listeners to all required fields
+    $("#visit_type, #visit_date, #consultation_time, #doctors, #consultation_date, #episode_name")
+        .change(function() {
+            checkRequiredFields();
+        });
+        
+    // Add input event listener for time field to catch manual entries
+    $("#consultation_time").on('input', function() {
+        checkRequiredFields();
+    });
+    
+    // Add input event listener for date field to catch manual entries
+    $("#consultation_date").on('input', function() {
+        checkRequiredFields();
+    });
+});
+</script>
 <br>
-
-<div class="card mb-6">
+<!-- Add a message to inform the user what's needed -->
+    <div class="card mb-6" id="required_fields_message">
+        <div class="card-widget-separator-wrapper">
+              <div class="card-body card-widget-separator">
+                   <div class="row gy-4 gy-sm-1">
+                       <div class="col-sm-6 col-lg-12">
+                          <h6 style="color: red" align='center'><i class="bx bx-info-circle me-1"></i> Please complete all consultation details before proceeding</h6>
+                          <h4 class="text-dark text-center">SELECT ALL REQUIRED FIELDS: Consultation Type, Consulting Room, Consultation Time, Doctor, Consulting Date, and Episode.</h4>
+                        </div>
+                   </div>
+              </div>
+        </div>
+     </div>
+<br>
+<!-- The existing consultation display div remains unchanged -->
+<div class="card mb-6" id="consultation_display">
   <div class="card-widget-separator-wrapper">
     <div class="card-body card-widget-separator">
       <div class="row gy-4 gy-sm-1">

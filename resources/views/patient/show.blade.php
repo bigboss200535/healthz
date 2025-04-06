@@ -116,7 +116,7 @@
             <div>
               <h5>Sponsors</h5>
                 <div class="pull-right">
-                    <a href="#" class="btn btn-info pull-right" id="clear_search">Add Sponsor</a>
+                    <!-- <a href="#" class="btn btn-info pull-right" id="clear_search">Add Sponsor</a> -->
                 </div>
             </div>
             <table class="table table-hover" id="patient_sponsor">
@@ -367,7 +367,7 @@
                   </div>   
              </div>
 </div>   
-<!-----------****************************----------------------------------------------------------->
+<!-----------****************************----------------------------------------->
 <!-- service_request Modal -->
 <div class="modal fade" id="addattendance" tabindex="-1" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
   <div class="modal-dialog modal-lg modal-simple modal-add-new-address">
@@ -496,4 +496,343 @@
 </div>
 <!--/ service_request Modal -->
  <!-- ----------------------------------------****************************---------------------------------------------------------- -->
+<!-- ----------------------------------------****************************---------------------------------------------------------- -->
+<script>
+// Add this at the beginning of your script to prevent multiple initializations
+// if (window.hasInitializedTables) {
+    // console.log('Tables already initialized, skipping initialization');
+// } else {
+    // window.hasInitializedTables = true;
+    
+//     $(document).ready(function () {
+
+//       $('#current_attendance').DataTable(); 
+
+//         const patient_Id = $('#patient_id').val();
+
+//         if (!patient_Id) {
+//             console.error('Patient id is missing.');
+//             return;
+//         }
+
+//         // Reusable function to initialize DataTables with additional safety check
+//         function initializeDataTable(table_id, columns) {
+//             // Extra check - only initialize if the table exists
+//             if (!$(table_id).length) {
+//                 console.warn(`Table ${table_id} not found`);
+//                 return null;
+//             }
+            
+//             // Destroy existing instance if it exists
+//             if ($.fn.DataTable.isDataTable(table_id)) {
+//                 $(table_id).DataTable().destroy();
+//                 console.log(`Destroyed existing DataTable instance for ${table_id}`);
+//             }
+            
+//             return $(table_id).DataTable({
+//                 paging: true,
+//                 pageLength: 5,
+//                 searching: true,
+//                 ordering: true,
+//                 responsive: true,
+//                 autoWidth: false,
+//                 columns: columns
+//             });
+//         }
+        
+//         // Helper function to format dates
+//         function formatDate(dateString) {
+//             if (!dateString) return 'N/A';
+//             const date = new Date(dateString);
+//             return date.toLocaleDateString();
+//         }
+
+//         // Helper function to fetch data from API
+//         function fetchData(url) {
+//             return fetch(url)
+//                 .then(response => {
+//                     if (!response.ok) {
+//                         throw new Error('Network response was not ok');
+//                     }
+//                     return response.json();
+//                 })
+//                 .catch(error => {
+//                     console.error('Error fetching data:', error);
+//                     return [];
+//                 });
+//         }
+
+//         // Initialize DataTables
+//         const sponsorsTable = initializeDataTable('#patient_sponsor', [
+//             { data: 'sponsor_name' },
+//             { data: 'member_no' },
+//             { data: 'start_date' },
+//             { data: 'end_date' },
+//             { data: 'status' },
+//             { data: 'priority' },
+//             { data: 'actions', orderable: false }
+//         ]);
+
+//         const attendanceTable = initializeDataTable('#attendance_details', [
+//             { data: 'attendance_id' },
+//             { data: 'attendance_date' },
+//             { data: 'full_age' },
+//             { data: 'pat_clinic' },
+//             { data: 'sponsor' },
+//             { data: 'status' },
+//             { 
+//                 data: 'service_issued',
+//                 render: function (data, type, row) {
+//                     if (data === '0') {
+//                         return '<span class="badge bg-label-danger me-1">Unassigned</span>';
+//                     } else if (data === '1') {
+//                         return '<span class="badge bg-label-success me-1">Assigned</span>';
+//                     }
+//                     return data; // Fallback for unexpected status values
+//                 }
+//             },
+//             { data: 'actions', orderable: false }
+//         ]);
+
+//         const currentattendanceTable = initializeDataTable('#current_att', [
+//             { data: 'attendance_id' },
+//             { data: 'attendance_date' },
+//             { data: 'full_age' },
+//             { data: 'pat_clinic' },
+//             { data: 'sponsor' },
+//             { data: 'attendance_type' },
+//             { 
+//                 data: 'service_issued',
+//                 render: function (data, type, row) {
+//                     if (data === '0') 
+//                     {
+//                         return '<span class="badge bg-label-danger me-1">Unassigned</span>';
+//                     } else if (data === '1') 
+//                         {
+//                         return '<span class="badge bg-label-success me-1">Assigned</span>';
+//                     }
+//                     return data; // Fallback for unexpected status values
+//                 }
+//             },
+//             { data: 'actions', orderable: false }
+//         ]);
+
+//         // Fetch and refresh data
+//         function fetchAndRefreshData() {
+//             Promise.all([
+//                 fetchData(`/patient/patient-sponsors/${patient_Id}`),
+//                 fetchData(`/patient/single-attendance/${patient_Id}`),
+//                 fetchData(`/patient/current-attendance/${patient_Id}`)
+//             ])
+//             .then(([sponsorsResponse, attendanceResponse, currentResponse]) => {
+//                 // Clear and re-populate sponsors table
+//                 sponsorsTable.clear().rows.add(sponsorsResponse.map(patient => ({
+//                     sponsor_name: `<a href="/patients/${patient_Id}">${patient.sponsor_name}</a>`,
+//                     member_no: patient.member_no,
+//                     start_date: formatDate(patient.start_date),
+//                     end_date: formatDate(patient.end_date),
+//                     status: patient.status ? 'Active' : 'Inactive',
+//                     priority: patient.priority,
+//                     actions: `
+//                         <div class="dropdown" align="center">
+//                             <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+//                                 <i class="bx bx-dots-vertical-rounded"></i>
+//                             </button>
+//                             <div class="dropdown-menu">
+//                                 <a class="dropdown-item" href="/patients/${patient_Id}">
+//                                     <i class="bx bx-detail me-1"></i> Edit
+//                                 </a>
+//                                 <a class="dropdown-item" href="/patients/${patient_Id}">
+//                                     <i class="bx bx-trash me-1"></i> Delete
+//                                 </a>
+//                             </div>
+//                         </div>
+//                     `
+//                 }))).draw();
+
+//                 // Clear and re-populate attendance table
+//                 attendanceTable.clear().rows.add(attendanceResponse.map(attendance => ({
+//                     attendance_id: `<a href="${attendance.attendance_id}">${attendance.attendance_id}</a>`,
+//                     attendance_date: formatDate(attendance.attendance_date),
+//                     full_age: attendance.full_age || 'N/A',
+//                     pat_clinic: attendance.pat_clinic,
+//                     sponsor: attendance.sponsor,
+//                     status: attendance.status ? 'Active' : 'Inactive',
+//                     service_issued: attendance.service_issued || 'N/A',
+//                     actions: `
+//                         <div class="dropdown" align="center">
+//                             <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+//                                 <i class="bx bx-dots-vertical-rounded"></i>
+//                             </button>
+//                             <div class="dropdown-menu">
+//                                <a class="dropdown-item" href="/consultation/opd-consultation/${attendance.attendance_id}">
+// //                                 <i class="bx bx-detail me-1"></i> Consult
+// //                             </a>
+//                                 <a class="dropdown-item" href="/patients/${patient_Id}">
+//                                     <i class="bx bx-detail me-1"></i> Continue
+//                                 </a>
+//                                 <a class="dropdown-item" href="/patients/${patient_Id}">
+//                                     <i class="bx bx-trash me-1"></i> E-Folder
+//                                 </a>
+//                             </div>
+//                         </div>
+//                     `
+//                 }))).draw();
+
+//                 // Clear and re-populate current attendance table
+//                 currentattendanceTable.clear().rows.add(currentResponse.map(c_attendance => ({
+//                     attendance_id: `<a href="${c_attendance.attendance_id}">${c_attendance.attendance_id}</a>`,
+//                     attendance_date: formatDate(c_attendance.attendance_date),
+//                     full_age: c_attendance.full_age || 'N/A',
+//                     pat_clinic: c_attendance.pat_clinic,
+//                     sponsor: c_attendance.sponsor,
+//                     attendance_type: c_attendance.attendance_type,
+//                     service_issued: c_attendance.service_issued || '0',
+//                     actions: `
+//                         <div class="dropdown" align="center">
+//                             <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+//                                 <i class="bx bx-dots-vertical-rounded"></i>
+//                             </button>
+//                             <div class="dropdown-menu">
+//                                 <a class="dropdown-item" href="/consultation/opd-consultation/${c_attendance.attendance_id}">
+//                                   <i class="bx bx-detail me-1"></i> Consult
+//                                  </a>
+//                                 // <a class="dropdown-item" href="/patients/${patient_Id}/attendance/${c_attendance.attendance_id}/view">
+//                                 //     <i class="bx bx-detail me-1"></i> View
+//                                 // </a>
+//                                 <a class="dropdown-item" href="/patients/${patient_Id}/attendance/${c_attendance.attendance_id}/folder">
+//                                     <i class="bx bx-folder me-1"></i> E-Folder
+//                                 </a>
+//                             </div>
+//                         </div>
+//                     `
+//                 }))).draw();
+//             });
+//         }
+
+//         // Initial data load
+//         fetchAndRefreshData();
+
+//         // Add event listener for the "Add Sponsor" button
+//         $('#add_sponsor_btn').on('click', function() {
+//             // Implement sponsor addition functionality
+//             // This could open a modal or redirect to a sponsor creation page
+//         });
+
+//         // Handle service request form submission
+//         $('#service_request_form').on('submit', function(e) {
+//             e.preventDefault();
+            
+//             const formData = new FormData(this);
+            
+//             $.ajax({
+//                 url: '/patient/add-attendance',
+//                 type: 'POST',
+//                 data: formData,
+//                 processData: false,
+//                 contentType: false,
+//                 success: function(response) {
+//                     if (response.success) {
+//                         toastr.success('Attendance added successfully');
+//                         $('#addattendance').modal('hide');
+//                         fetchAndRefreshData(); // Refresh data after successful submission
+//                     } else {
+//                         toastr.error(response.message || 'Failed to add attendance');
+//                     }
+//                 },
+//                 error: function(xhr) {
+//                     toastr.error('An error occurred while adding attendance');
+//                     console.error(xhr.responseText);
+//                 }
+//             });
+//         });
+
+//         // Handle claims code generation
+//         $('#generate_ccc').on('submit', function(e) {
+//             e.preventDefault();
+            
+//             const formData = new FormData(this);
+            
+//             $.ajax({
+//                 url: '/patient/add-claims-code',
+//                 type: 'POST',
+//                 data: formData,
+//                 processData: false,
+//                 contentType: false,
+//                 success: function(response) {
+//                     if (response.success) {
+//                         toastr.success('Claims code added successfully');
+//                         $('#claims_check_code').modal('hide');
+//                         fetchAndRefreshData(); // Refresh data after successful submission
+//                     } else {
+//                         toastr.error(response.message || 'Failed to add claims code');
+//                     }
+//                 },
+//                 error: function(xhr) {
+//                     toastr.error('An error occurred while adding claims code');
+//                     console.error(xhr.responseText);
+//                 }
+//             });
+//         });
+
+//         // Function to generate claims check code
+//         window.generateCC = function() {
+//             const memberNo = $('#member_no').val();
+            
+//             if (!memberNo) {
+//                 $('#error').text('Please enter a member number');
+//                 return;
+//             }
+            
+//             $.ajax({
+//                 url: `/patient/generate-claims-code/${memberNo}`,
+//                 type: 'GET',
+//                 success: function(response) {
+//                     if (response.success) {
+//                         $('#claim_code').val(response.code);
+//                         $('#hin_no').val(response.hin_no || '');
+//                         $('#card_status').val(response.status || 'Active');
+//                         $('#error').text('');
+//                     } else {
+//                         $('#error').text(response.message || 'Failed to generate claims code');
+//                     }
+//                 },
+//                 error: function(xhr) {
+//                     $('#error').text('An error occurred while generating claims code');
+//                     console.error(xhr.responseText);
+//                 }
+//             });
+//         };
+
+//         // Populate service types when clinic is selected
+//         $('#clinic_code').on('change', function() {
+//             const clinicId = $(this).val();
+            
+//             if (!clinicId) return;
+            
+//             $.ajax({
+//                 url: `/services/by-clinic/${clinicId}`,
+//                 type: 'GET',
+//                 success: function(response) {
+//                     const serviceTypeSelect = $('#service_type');
+//                     serviceTypeSelect.empty();
+//                     serviceTypeSelect.append('<option disabled selected>-Select-</option>');
+                    
+//                     response.forEach(service => {
+//                         serviceTypeSelect.append(`<option value="${service.service_id}">${service.service_name}</option>`);
+//                     });
+//                 },
+//                 error: function(xhr) {
+//                     console.error('Error fetching service types:', xhr.responseText);
+//                 }
+//             });
+//         });
+
+//         // Edit patient button
+//         $('.edit-btn').on('click', function() {
+//             window.location.href = `/patients/${patient_Id}/edit`;
+//         });
+//     });
+// // }
+</script>
 </x-app-layout>

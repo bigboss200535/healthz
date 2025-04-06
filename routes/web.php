@@ -86,7 +86,11 @@ Route::middleware('auth')->group(function () {
         Route::get('/add-labs/{attendance_id}', [InvestigationController::class, 'add_results']);
         Route::get('/add-ultrasound/{attendance_id}', [InvestigationController::class, 'add_results']);
         Route::get('/add-x-rays/{attendance_id}', [InvestigationController::class, 'add_results']);
+        Route::get('/getsponsortype', [App\Http\Controllers\SponsorController::class, 'getSponsorsByType'])->name('get.sponsors.by.type');
     });
+    // Add this route to handle the AJAX request
+   
+
 
     Route::prefix('services')->group(function () {
         Route::get('/{clinic}/get_specialty', [ServiceRequestController::class, 'getspecialties']);
@@ -119,7 +123,7 @@ Route::middleware('auth')->group(function () {
 
     Route::prefix('consultation')->group(function () {
         Route::get('/opd-consultation/{attendance_id}', [ConsultationController::class, 'opd_consult']);
-        Route::get('/ipd-consultation', [ConsultationController::class, 'ipd_consult']);
+        Route::get('/ipd-consultation/{attendance_id}', [ConsultationController::class, 'ipd_consult']);
         Route::get('/consult', [ConsultationController::class, 'consult']);
         // Route::get('patient', [ReportsController::class, 'patient']);
     });
@@ -161,5 +165,3 @@ Route::middleware('auth')->group(function () {
 
 require __DIR__.'/auth.php';
 
-// Add this route to handle the AJAX request
-Route::get('/get-sponsors-by-type', [App\Http\Controllers\SponsorController::class, 'getSponsorsByType'])->name('get.sponsors.by.type');

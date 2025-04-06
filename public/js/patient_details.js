@@ -122,104 +122,6 @@ $('#patient_info').on('submit', function (e) {
 });
 // *********************** PATIENT SAVE SCRIPT ************************
 
-// ************************* PATIENT SEARCH SCRIPT ******************
-
-// Debounce function to limit the rate of AJAX requests
-// function debounce(func, wait) {
-//     let timeout;
-//     return function(...args) {
-//         clearTimeout(timeout);
-//         timeout = setTimeout(() => func.apply(this, args), wait);
-//     };
-// }
-
-// // Age calculation function
-// function calculateAge(birthDate) {
-//     const birth = new Date(birthDate);
-//     const today = new Date();
-//     let age = today.getFullYear() - birth.getFullYear();
-//     const month = today.getMonth();
-//     const day = today.getDate();
-//     if (month < birth.getMonth() || (month === birth.getMonth() && day < birth.getDate())) {
-//         age--;
-//     }
-//     return age;
-// }
-
-// function renderTableRows(table, data) {// Function to render the table rows
-//     table.clear();
-//     if (data.length > 0) {
-//         data.forEach((patient, index) => {
-//             const age = calculateAge(patient.birth_date);
-//             const row = [
-//                 index + 1,
-//                 `<a href="/patients/${patient.patient_id}">${patient.fullname}</a>`,
-//                 patient.opd_number,
-//                 patient.gender_id === '3' ? 'MALE' : 'FEMALE',
-//                 age,
-//                 patient.telephone,
-//                 new Date(patient.birth_date).toLocaleDateString('en-GB'),
-//                 new Date(patient.register_date).toLocaleDateString('en-GB'),
-//                 `<div class="dropdown" align="center">
-//                     <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-//                         <i class="bx bx-dots-vertical-rounded"></i>
-//                     </button>
-//                     <div class="dropdown-menu">
-//                         <a class="dropdown-item" href="/patients/${patient.patient_id}">
-//                             <i class="bx bx-detail me-1"></i> More
-//                         </a>
-//                     </div>
-//                 </div>`
-//             ];
-//             table.row.add(row);
-//         });
-//         $('#patient_search_result').show(); // Show the table if results are found
-//     } else {
-//         toastr.info(' No patient found with the criteria');
-//         // $('#patient_search_result').hide(); // Show the table even if no results are found
-//     }
-//     table.draw();
-// }
-
-// function perform_search(searchTerm) {// Function to handle the AJAX request
-//     if (searchTerm.trim() !== '') {
-//         $.ajax({
-//             url: '/patient/search',
-//             type: "GET",
-//             headers: {
-//                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-//             },
-//             data: { search_patient: searchTerm },
-//             success: function(response) {
-//                 const table = $('#patient_search_list').DataTable();
-//                 renderTableRows(table, response);
-//             },
-//             error: function(xhr, status, error) {
-//                 toastr.error('There was an error processing your request');
-//                 $('#patient_search_result').hide(); // Hide the table on error
-//             }
-//         });
-//     } else {
-//         toastr.error('Please enter a search item');
-//         $('#patient_search_result').hide(); // Hide the table if search term is empty
-//     }
-// }
-
-// // Cache the DataTable instance
-// const patientTable = $('#patient_search_list').DataTable();
-// // Attach the debounced search function to the input event
-// $('#search_item').on('click', debounce(function() {
-//     const search_term = $('#search_patient').val();
-//             if (search_term.length < 3) {
-//                 toastr.warning('Search field must be at least 3 characters long');
-//                 $('#search_patient').focus();  
-//                 // Autofocus on the first name field
-//                 return;
-//             }
-//     perform_search(search_term);
-// }, 300));
-// ***************************/PATIENT SEARCH SCRIPT ***************************/
-
 
 // *************************** GENERATE OPD NUMBER *****************************/
 
@@ -248,7 +150,6 @@ $(document).on('change', '#folder_clinic', function() {
     });
   });
 
-//   $(":inpumst").inputmask();
   
 
   document.addEventListener('DOMContentLoaded', function () {
@@ -271,7 +172,9 @@ $(document).on('change', '#folder_clinic', function() {
 });
 
 // ************************** GET ALL PATIENT and REQUESTS?**********************************
+
 $(document).ready(function () {
+
     const patient_Id = $('#patient_id').val();
 
     if (!patient_Id) {
@@ -279,19 +182,66 @@ $(document).ready(function () {
         return;
     }
 
-// Reusable function to initialize DataTables
-    function initializeDataTable(table_id, columns) {
-        return $(table_id).DataTable({
-            paging: true,
-            pageLength: 5,
-            searching: true,
-            ordering: true,
-            responsive: true,
-            autoWidth: false,
-            columns: columns
-        });
-    }
+// // Reusable function to initialize DataTables
+//     function initializeDataTable(table_id, columns) {
+//         return $(table_id).DataTable({
+//             paging: true,
+//             pageLength: 5,
+//             searching: true,
+//             ordering: true,
+//             responsive: true,
+//             autoWidth: false,
+//             columns: columns
+//         });
+//     }
 
+
+// Reusable function to initialize DataTables with additional safety check
+        function initializeDataTable(table_id, columns) {
+            // Extra check - only initialize if the table exists
+            if (!$(table_id).length) {
+                console.warn(`Table ${table_id} not found`);
+                return null;
+            }
+            
+            // Destroy existing instance if it exists
+            if ($.fn.DataTable.isDataTable(table_id)) {
+                $(table_id).DataTable().destroy();
+                console.log(`Destroyed existing DataTable instance for ${table_id}`);
+            }
+            
+            return $(table_id).DataTable({
+                paging: true,
+                pageLength: 5,
+                searching: true,
+                ordering: true,
+                responsive: true,
+                autoWidth: false,
+                columns: columns
+            });
+        }
+        
+        // Helper function to format dates
+        function formatDate(dateString) {
+            if (!dateString) return 'N/A';
+            const date = new Date(dateString);
+            return date.toLocaleDateString();
+        }
+
+        // Helper function to fetch data from API
+        function fetchData(url) {
+            return fetch(url)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .catch(error => {
+                    console.error('Error fetching data:', error);
+                    return [];
+                });
+        }
     // Initialize DataTables
     const sponsorsTable = initializeDataTable('#patient_sponsor', [
         { data: 'sponsor_name' },
@@ -395,7 +345,7 @@ $(document).ready(function () {
                             <i class="bx bx-dots-vertical-rounded"></i>
                         </button>
                         <div class="dropdown-menu">
-                            <a class="dropdown-item" href="/patients/${patient_Id}">
+                            <a class="dropdown-item" href="/consultation/opd-consultation/${attendance.attendance_id}">
                                 <i class="bx bx-detail me-1"></i> Consult
                             </a>
                             <a class="dropdown-item" href="/patients/${patient_Id}">
@@ -449,21 +399,21 @@ $(document).ready(function () {
     // setInterval(fetchAndRefreshData, 10000); // Refresh every 10 seconds
 });
 
-// Generic function to fetch data
-function fetchData(url) {
-    return $.ajax({
-        url: url,
-        type: 'GET',
-        dataType: 'json'
-    }).catch(error => {
-        console.error('Error fetching data from', url, error);
-        throw error;
-    });
-}
+// // Generic function to fetch data
+// function fetchData(url) {
+//     return $.ajax({
+//         url: url,
+//         type: 'GET',
+//         dataType: 'json'
+//     }).catch(error => {
+//         console.error('Error fetching data from', url, error);
+//         throw error;
+//     });
+// }
 
-// Helper function to format dates
-function formatDate(dateString) {
-    if (!dateString) return 'N/A';
-    const date = new Date(dateString);
-    return isNaN(date) ? 'N/A' : date.toLocaleDateString('en-GB');
-}
+// // Helper function to format dates
+// function formatDate(dateString) {
+//     if (!dateString) return 'N/A';
+//     const date = new Date(dateString);
+//     return isNaN(date) ? 'N/A' : date.toLocaleDateString('en-GB');
+// }

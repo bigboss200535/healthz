@@ -46,8 +46,8 @@
                                                 <label for="gender">Gender</label>
                                                 <select class="form-select" id="gender" name="gender">
                                                     <option value="" disabled selected>Select Gender</option>
-                                                    <option value="2">Male</option>
-                                                    <option value="1">Female</option>
+                                                    <option value="2">MALE</option>
+                                                    <option value="1">FEMALE</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -55,7 +55,7 @@
                                         <div class="row g-3">
                                             <div class="col-md-4">
                                                 <label for="patient_name">Birth Date</label>
-                                                <input type="text" class="form-control" id="birthdate" name="birthdate">
+                                                <input type="date" class="form-control" id="birthdate" name="birthdate">
                                             </div>
                                             <div class="col-md-4">
                                                 <label for="date_of_birth">Address</label>
@@ -63,9 +63,14 @@
                                             </div>
                                             <div class="col-md-4">
                                                 <label for="gender">Sponsor</label>
-                                                <select class="form-select" id="sponsor" name="sponsor">
-                                                    <option disabled selected>Select Sponsor</option>
-                                                    <!--  -->
+                                                <!-- <select class="form-select" id="sponsor" name="sponsor"> -->
+                                                   
+                                                    <select class="form-select" id="sponsor" name="sponsor">
+                                                    <option disabled selected>-Select Sponsor-</option>
+                                                        @foreach($sponsor_types as $type)
+                                                            <option value="{{ $type->sponsor_type_id }}">{{ $type->sponsor_type }}</option>
+                                                        @endforeach
+                                                    </select>
                                                 </select>
                                             </div>
                                         </div>
@@ -90,7 +95,7 @@
                 <div class="card" id="patient_search_result" style="display: none;">
                     <div class="card-datatable table-responsive">
                       <div class="col" style="padding-left:20px;"> 
-                      <h4 class="mb-1 mt-3">Patient Search data</h4>
+                      <h4 class="mb-1 mt-3">Patient Search Results</h4>
                       </div>
                       <table class="datatables-customers table border-top" id="patient_search_list">
                           <thead>
@@ -129,7 +134,7 @@
 </x-app-layout>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Clear search form
+    // Clear search form code remains unchanged
     document.getElementById('clear_search').addEventListener('click', function(e) {
         e.preventDefault();
         document.getElementById('search_patient').value = '';
@@ -182,11 +187,11 @@ document.addEventListener('DOMContentLoaded', function() {
                     index > 0 && value !== '' && value !== null && value !== undefined);
                 
                 if (!hasAdvancedSearchValue) {
-                    toastr.info('Please enter at least one search criteria');
+                    toastr.warning('Please enter at least one search criteria');
                     return;
                 }
             } else {
-                toastr.info('Please enter a search term or use advanced search');
+                toastr.warning('Please enter a search term or use advanced search');
                 return;
             }
         }
@@ -208,6 +213,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 searchButton.innerHTML = originalButtonText;
                 searchButton.disabled = false;
                 
+                console.log("Search response:", response); // Debug: Log the response
+                
                 // Show results container
                 document.getElementById('patient_search_result').style.display = 'block';
                 
@@ -215,34 +222,66 @@ document.addEventListener('DOMContentLoaded', function() {
                 const tableBody = document.querySelector('#patient_search_list tbody');
                 tableBody.innerHTML = '';
                 
-                // Check if we have results
-                if (response.data && response.data.length > 0) {
+                // Check if we have results - handle both array and object formats
+                let patientData = [];
+                
+                if (Array.isArray(response)) {
+                    patientData = response;
+                } else if (response.data && Array.isArray(response.data)) {
+                    patientData = response.data;
+                } else if (typeof response === 'object' && response !== null) {
+                    // Single object result
+                    patientData = [response];
+                }
+                
+                console.log("Processed patient data:", patientData); // Debug: Log processed data
+                
+                if (patientData.length > 0) {
                     // Populate table with results
-                    response.data.forEach((patient, index) => {
+                    patientData.forEach((patient, index) => {
                         const row = document.createElement('tr');
+                        
+                        console.log("Processing patient:", patient); // Debug: Log each patient
                         
                         // Format date of birth if it exists
                         let formattedDob = 'N/A';
                         let age = 'N/A';
                         
                         if (patient.birth_date) {
-                            const dob = new Date(patient.birth_date);
-                            formattedDob = dob.toLocaleDateString();
-                            
-                            // Calculate age
-                            const today = new Date();
-                            age = today.getFullYear() - dob.getFullYear();
-                            const monthDiff = today.getMonth() - dob.getMonth();
-                            if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dob.getDate())) {
-                                age--;
+                            try {
+                                const dob = new Date(patient.birth_date);
+                                formattedDob = dob.toLocaleDateString();
+                                
+                                // Calculate age
+                                const today = new Date();
+                                age = today.getFullYear() - dob.getFullYear();
+                                const monthDiff = today.getMonth() - dob.getMonth();
+                                if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dob.getDate())) {
+                                    age--;
+                                }
+                            } catch (e) {
+                                console.error("Error formatting birth date:", e);
                             }
                         }
                         
                         // Format created date if it exists
                         let formattedAddedDate = 'N/A';
                         if (patient.added_date) {
-                            const createdDate = new Date(patient.added_date);
-                            formattedAddedDate = createdDate.toLocaleDateString();
+                            try {
+                                const createdDate = new Date(patient.added_date);
+                                formattedAddedDate = createdDate.toLocaleDateString();
+                            } catch (e) {
+                                console.error("Error formatting added date:", e);
+                                formattedAddedDate = patient.added_date;
+                            }
+                        } else if (patient.registration_date) {
+                            try {
+                                const regDate = new Date(patient.registration_date);
+                                formattedAddedDate = regDate.toLocaleDateString();
+                            } catch (e) {
+                                console.error("Error formatting registration date:", e);
+                                formattedAddedDate = patient.registration_date;
+                            }
                         }
                         
                         // Determine gender display
@@ -254,15 +293,22 @@ document.addEventListener('DOMContentLoaded', function() {
                         }
                         
                         // Build patient name with proper handling for null/undefined values
-                        const lastname = patient.lastname || '';
-                        const firstname = patient.firstname || '';
-                        const middlename = patient.middlename || '';
-                        const full_name = `${lastname} ${firstname} ${middlename}`.trim();
+                        let fullName = '';
+                        
+                        // Use fullname field if available
+                        if (patient.fullname) {
+                            fullName = patient.fullname;
+                        } else {
+                            const lastname = patient.lastname || '';
+                            const firstname = patient.firstname || '';
+                            const middlename = patient.middlename || '';
+                            fullName = `${lastname} ${firstname} ${middlename}`.trim();
+                        }
                         
                         // Build row HTML
                         row.innerHTML = `
                             <td>${index + 1}</td>
-                            <td>${full_name}</td>
+                            <td>${fullName}</td>
                             <td>${patient.opd_number || 'N/A'}</td>
                             <td>${genderDisplay}</td>
                             <td>${age}</td>
@@ -275,12 +321,13 @@ document.addEventListener('DOMContentLoaded', function() {
                                         <i class="bx bx-dots-vertical-rounded"></i>
                                     </button>
                                     <div class="dropdown-menu">
-                                        <a class="dropdown-item" href="{{ url('patients') }}/${patient.patient_id}/edit">
+                                     <a class="dropdown-item" href="{{ url('patients') }}/${patient.patient_id}">
+                                            <i class="bx bx-show me-1"></i> More
+                                        </a>
+                                        <a class="dropdown-item" href="{{ url('patients/show') }}/${patient.patient_id}/edit">
                                             <i class="bx bx-edit-alt me-1"></i> Edit
                                         </a>
-                                        <a class="dropdown-item" href="{{ url('patients') }}/${patient.patient_id}/view">
-                                            <i class="bx bx-show me-1"></i> View
-                                        </a>
+                                       
                                         <a class="dropdown-item" href="{{ url('visits/create') }}/${patient.patient_id}">
                                             <i class="bx bx-plus-circle me-1"></i> New Visit
                                         </a>
@@ -304,8 +351,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 searchButton.disabled = false;
                 
                 // Show error message
-                toastr.info('An error occurred while searching. Please try again.');
-                console.error('Search error:', error);
+                console.error("AJAX Error:", xhr.responseText);
+                toastr.error('An error occurred while searching. Please try again.');
             }
         });
     });

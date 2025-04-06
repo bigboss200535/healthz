@@ -32,7 +32,11 @@ class PatientController extends Controller
 {
     public function index()
     {
-        return view('patient.index'); 
+        $sponsor_types = SponsorType::where('archived', 'No')
+            ->orderBy('sponsor_type', 'asc')
+            ->get();
+            
+        return view('patient.index', compact('sponsor_types')); 
     }
 
     public function create()

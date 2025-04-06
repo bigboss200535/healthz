@@ -116,7 +116,7 @@ class ConsultationController extends Controller
         // Fetch doctors
         $doctors = User::where('status', 'Active')
             ->where('archived', 'No')
-            ->where('role_id', 'R10')
+            // ->where('role_id', 'R10')
             ->get();
         
         $systemic = DB::table('systemic_areas')

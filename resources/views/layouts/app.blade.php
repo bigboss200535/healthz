@@ -115,7 +115,7 @@
         $('#app_list').DataTable();
         $('#attendance_details').DataTable();   
         $('#claims_code_list').DataTable();
-        // $('#current_attendance').DataTable(); 
+        // $('#current_att').DataTable(); 
         $('#patient_sponsor').DataTable();
         $('#appointments').DataTable();
         $('#diagnostics_list').DataTable();
