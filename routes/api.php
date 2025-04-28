@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MedicationsController;
 use App\Http\Controllers\DiagnosisController;
+use App\Http\Controllers\SponsorController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -19,7 +20,7 @@ use App\Http\Controllers\DiagnosisController;
 
 Route::get('get-diagnosis/{attendance_id}', [DiagnosisController::class, 'get_diagnosis']);
 Route::get('search-diagnosis', [DiagnosisController::class, 'search_diagnosis']);
-
+Route::get('/getsponsortype', [App\Http\Controllers\SponsorController::class, 'get_sponsors_by_type'])->name('get.sponsors.by.type');
 // Route::get('edit-diagnosis/{diagnosis_id}', [DiagnosisController::class, 'edit_diagnosis']);
 
 

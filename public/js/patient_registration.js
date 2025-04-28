@@ -1,206 +1,186 @@
-
-    // Handle form submission
+// Handle form submission
     $('#patient_info_create').on('submit', function(e) {
         e.preventDefault();
-        const $form = $('#patient_info_create');
 
-        // Get form elements
+        // Initialize buttons
         const submitBtn = $form.find('button[type="submit"]');
         const resetBtn = $form.find('button[type="reset"]');
         const searchBtn = $form.find('a.btn-dark');
-        const formOverlay = $('<div class="form-overlay"><div class="spinner-border text-primary"></div></div>');
-
-        // Check if form is already being submitted
-        if (submitBtn.prop('disabled')) {
-            toastr.warning('Form submission in progress, please wait...');
-            return;
-        }
-
-        // Clear any previous error states
-        $('.is-invalid').removeClass('is-invalid');
-        $('.invalid-feedback').remove();
-        toastr.clear();
     
-        //    remove the loading overlay is alreading loading
-        formOverlay.fadeOut(function() {
-                    $(this).remove();
-                });
 
-        // Add loading overlay
-        $form.css('position', 'relative').append(formOverlay);
-        formOverlay.fadeIn();
-
-        // Get CSRF token from meta tag
-        const token = $('meta[name="csrf-token"]').attr('content');
-        if (!token) {
-            toastr.error('CSRF token not found. Please refresh the page.');
-            return;
-        }
-
-        // Collect and validate form data
+        const $form = $('#patient_info_create');
         const formData = new FormData($form[0]);
         const patient_save = Object.fromEntries(formData.entries());
 
-        // Trim text inputs
-        ['firstname', 'middlename', 'lastname'].forEach(field => {
-            if (patient_save[field]) {
-                patient_save[field] = patient_save[field].trim();
-                formData.set(field, patient_save[field]);
-            }
-        });
-
-
         // Client-side validation with improved feedback
-        const validationRules = [
-            { field: 'title', value: patient_save.title, message: 'Please select a title', condition: !patient_save.title || patient_save.title === "-Select-" },
-            { field: 'firstname', value: patient_save.firstname, message: 'Firstname cannot be empty', condition: !patient_save.firstname },
-            { field: 'firstname', value: patient_save.firstname, message: 'First name must be at least 3 characters long', condition: patient_save.firstname || patient_save.firstname.length < 3 },
-            { field: 'lastname', value: patient_save.lastname, message: 'Lastname cannot be empty', condition: !patient_save.lastname},
-            { field: 'lastname', value: patient_save.lastname, message: 'Lastname must be at least 3 characters long', condition: patient_save.lastname || patient_save.lastname.length < 3 },
-            { field: 'birth_date', value: patient_save.birth_date, message: 'Birth Date must be entered', condition: !patient_save.birth_date },
-            { field: 'gender_id', value: patient_save.gender_id, message: 'Please select gender', condition: !patient_save.gender_id || patient_save.gender_id === "-Select-" },
-            { field: 'occupation', value: patient_save.occupation, message: 'Please select occupation', condition: !patient_save.occupation || patient_save.occupation === "-Select-" },
-            { field: 'education', value: patient_save.education, message: 'Please select education level', condition: !patient_save.education || patient_save.education === "-Select-" },
-            { field: 'religion', value: patient_save.religion, message: 'Please select religion', condition: !patient_save.religion || patient_save.religion === "-Select-" },
-            { field: 'nationality', value: patient_save.nationality, message: 'Please select nationality', condition: !patient_save.nationality || patient_save.nationality === "-Select-" },
-            { field: 'telephone', value: patient_save.telephone, message: 'Please enter a valid phone number', condition: patient_save.telephone && !/^\+?\d{10,15}$/.test(patient_save.telephone) },
-            { field: 'work_telephone', value: patient_save.work_telephone, message: 'Please enter a valid work phone number', condition: patient_save.work_telephone && !/^\+?\d{10,15}$/.test(patient_save.work_telephone) },
-            { field: 'email', value: patient_save.email, message: 'Please enter a valid email address', condition: patient_save.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(patient_save.email) },
-            { field: 'contact_telephone', value: patient_save.contact_telephone, message: 'Please enter a valid emergency contact number', condition: patient_save.contact_telephone && !/^\+?\d{10,15}$/.test(patient_save.contact_telephone) },
-            { field: 'sponsor_type_id', value: patient_save.region, message: 'Please select a sponsor type', condition: !patient_save.sponsor_type_id || patient_save.sponsor_type_id === "-Select-" },
-            { field: 'folder_clinic', value: patient_save.region, message: 'Please select a Clinic', condition: !patient_save.folder_clinic || patient_save.folder_clinic === "-Select-" },
-            { field: 'opd_number', value: patient_save.opd_number, message: 'Record Number is invalid', condition: patient_save.opd_number && patient_save.opd_number.length < 3 }
-        ];
-
-        // Additional validation for required contact person details
-        if (patient_save.contact_person || patient_save.contact_telephone || patient_save.contact_relationship) {
-            if (!patient_save.contact_person) {
-                validationRules.push({ field: 'contact_person', value: patient_save.contact_person, message: 'Emergency contact name is required', condition: true });
-            }
-            if (!patient_save.contact_relationship) {
-                validationRules.push({ field: 'contact_relationship', value: patient_save.contact_relationship, message: 'Emergency contact relationship is required', condition: true });
-            }
-            if (!patient_save.contact_telephone) {
-                validationRules.push({ field: 'contact_telephone', value: patient_save.contact_telephone, message: 'Emergency contact phone is required', condition: true });
-            }
-        }
-
-        // Check sponsorship details if sponsor type is selected
-        if (patient_save.sponsor_type_id && patient_save.sponsor_type_id !== "-Select-") {
-            if (!patient_save.sponsor_id || patient_save.sponsor_id === "-Select-") {
-                // toastr.warning('Please select a sponsor');
-                $('#sponsor_id').addClass('is-invalid').focus();
-                return;
-            }
-            if (!patient_save.member_no) {
-                // toastr.warning('Please enter member number');
-                $('#member_no').addClass('is-invalid').focus();
-                return;
-            }
-            if (!patient_save.start_date) {
-                // toastr.warning('Please enter start date');
-                $('#start_date').addClass('is-invalid').focus();
-                return;
-            }
-            if (!patient_save.end_date) {
-                // toastr.warning('Please enter end date');
-                $('#end_date').addClass('is-invalid').focus();
-                return;
-            }
-        }
-
-        // Validate all rules
-        let hasError = false;
-        for (const rule of validationRules) {
-            const field = $(`#${rule.field}`);
-            if (rule.condition) {
-                field.addClass('is-invalid');
-                if (!field.next('.invalid-feedback').length) {
-                    field.after(`<div class="invalid-feedback">${rule.message}</div>`);
-                }
-                if (!hasError) {
-                    field.focus();
-                    hasError = true;
-                }
-                // toastr.warning(rule.message);
-            } else {
-                field.removeClass('is-invalid');
-                field.next('.invalid-feedback').remove();
-            }
-        }
-
-        if (hasError) {
+        if (!patient_save.title || patient_save.title === "-Select-"){
+            $('#title').addClass('is-invalid').focus();
             return;
         }
 
-        // Disable form buttons and show loading state
-        submitBtn.prop('disabled', true)
-                .html('<i class="bx bx-loader bx-spin"></i> Saving...');
-        resetBtn.prop('disabled', true);
-        searchBtn.addClass('disabled');
+        if (!patient_save.firstname || patient_save.firstname === ""){
+            $('#firstname').addClass('is-invalid').focus();
+            return;
+        }
+
+        if (!patient_save.lastname || patient_save.lastname === ""){
+            $('#lastname').addClass('is-invalid').focus();
+            return;
+        }
+
+        // Validate birth date is not in future
+       if (patient_save.birth_date) {
+            const birthDate = new Date(patient_save.birth_date);
+            const today = new Date();
+            today.setHours(0, 0, 0, 0); // Reset time part for accurate comparison
+            
+            if (birthDate > today) {
+                $('#birth_date').addClass('is-invalid')
+                            .after('<div class="invalid-feedback">Birth date cannot be in the future</div>')
+                            .focus();
+                return;
+            }
+        }
+        
+        if (!patient_save.gender_id || patient_save.gender_id === "-Select-"){
+            $('#gender_id').addClass('is-invalid').focus();
+            return;
+        }
+
+        if (!patient_save.education || patient_save.education === "-Select-"){
+            $('#education').addClass('is-invalid').focus();
+            return;
+        }
+
+        if (!patient_save.religion || patient_save.religion === "-Select-"){
+            $('#religion').addClass('is-invalid').focus();
+            return;
+        }
+
+        if (!patient_save.folder_clinic || patient_save.folder_clinic === "-Select-"){
+            $('#folder_clinic').addClass('is-invalid').focus();
+            return;
+        }
+
+        if (!patient_save.opd_type || patient_save.opd_type === "-Select-"){
+            $('#opd_type').addClass('is-invalid')
+                          .focus()
+                          .after('<div class="invalid-feedback">Kindly Select Opd type</div>');
+            return;
+        }
+
+
+        if (!patient_save.sponsor_type_id || patient_save.sponsor_type_id === "-Select-") {
+            // if (!patient_save.sponsor_id || patient_save.sponsor_id === "-Select-") {
+                $('#sponsor_type_id').addClass('is-invalid').focus();
+                return;
+            // }
+        }
+
+        // Enhanced validation for OPD number format
+        if (!patient_save.opd_number || patient_save.opd_number === "") {
+            $('#opd_number').addClass('is-invalid')
+                           .after('<div class="invalid-feedback">OPD number is required</div>')
+                           .focus();
+            return;
+        }
+
+        const formOverlay = $('<div class="form-overlay"><div class="spinner-border text-primary"></div></div>');
+        $('body').append(formOverlay);
 
         // Determine URL and method based on pat_id
         const url = patient_save.pat_id ? `/patients/${patient_save.pat_id}` : '/patients';
         const method = patient_save.pat_id ? 'PUT' : 'POST';
 
-        // AJAX request with improved error handling and feedback
-        $.ajax({
-            url: url,
-            type: method,
-            data: formData,
-            processData: false,
-            contentType: false,
-            headers: {
-                'X-CSRF-TOKEN': token
-            },
-            beforeSend: function() {
-                formOverlay.fadeIn();
-            },
-            success: function (response) {
-                if (response.code === 201) {
-                    toastr.success(response.message || 'Patient saved successfully');
-                    $form[0].reset();
-                    $('#pat_id').val('');
-                    $('.is-invalid').removeClass('is-invalid');
-                    $('.invalid-feedback').remove();
-                    submitBtn.prop('disabled', false);
-                } else if (response.code === 200) {
-                    toastr.warning(response.message || 'Patient data already exists');
-                } else {
-                    toastr.error(response.message || 'Error saving patient data');
-                }
-            },
-            error: function (xhr, status, error) {
-                let errorMessage = xhr.responseJSON?.message || 'Error saving patient data';
-                toastr.error(errorMessage);
-                
-                if (xhr.responseJSON?.errors) {
-                    Object.entries(xhr.responseJSON.errors).forEach(([field, messages]) => {
-                        const input = $(`#${field}`);
-                        if (input.length) {
-                            input.addClass('is-invalid')
-                                 .after(`<div class="invalid-feedback">${messages[0]}</div>`);
-                            
-                            if (!input.is(':visible')) {
-                                input.closest('.collapse').collapse('show');
-                            }
+        if(patient_save.opd_number && patient_save.sponsor_type_id && patient_save.opd_type){
+
+                // AJAX request with improved error handling and feedback
+                $.ajax({
+                    url: url,
+                    type: method,
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    beforeSend: function() {
+                        formOverlay.fadeIn();
+                        submitBtn.prop('disabled', true);
+                        resetBtn.prop('disabled', true);
+                        searchBtn.addClass('disabled');
+                    },
+                    success: function (response) {
+                        if (response.code === 201) {
+                            toastr.success(response.message || 'Patient saved successfully');
+                            $form[0].reset();
+                            $('#pat_id').val('');
+                            formOverlay.fadeOut();
+                            // $('.is-invalid').removeClass('is-invalid');
+                            // $('.invalid-feedback').remove();
+                            submitBtn.prop('disabled', false);
+                        } else if (response.code === 200) {
+                            toastr.warning(response.message || 'Patient data already exists');
+                            formOverlay.fadeOut();
+                        } else {
+                            toastr.error(response.message || 'Error saving patient data');
+                            formOverlay.fadeOut();
                         }
-                    });
-                    $('.is-invalid:first').focus();
-                }
-            },
-            complete: function () {
-                submitBtn.prop('disabled', false)
-                         .html('<i class="bx bx-save"></i> Save Patient');
-                resetBtn.prop('disabled', false);
-                searchBtn.removeClass('disabled');
-                formOverlay.fadeOut(function() {
-                    $(this).remove();
+                    },
+                    error: function (xhr, status, error) {
+                        let errorMessage = xhr.responseJSON?.message || 'Error saving patient data';
+                        toastr.error(errorMessage);
+                        formOverlay.fadeOut();
+                        // Clear previous errors
+                        $('.is-invalid').removeClass('is-invalid');
+                        $('.invalid-feedback').remove();
+                    },
+                    complete: function () {
+                        
+                        if (formOverlay) {
+                            formOverlay.fadeOut(function() {
+                                $(this).remove();
+                            });
+                        }
+                            if (submitBtn) submitBtn.prop('disabled', false).html('<i class="bx bx-save"></i> Save Patient');
+                            if (resetBtn) resetBtn.prop('disabled', false);
+                            if (searchBtn) searchBtn.removeClass('disabled');
+                    }
                 });
-            }
-        });
+        }
 
     });
+
+
+    // *************************** GENERATE OPD NUMBER *****************************/
+
+
+    $(document).on('change', '#folder_clinic', function() {
+  
+        var opd_type = $('#opd_type').val();
+        var folder_clinic = $('#folder_clinic').val();
+      
+        $('#opd_number').val('');
+      
+        $.ajax({
+            url: '/patient/new-opd-number/'+folder_clinic,
+            type: 'GET',
+            data: {opd_type:opd_type, folder_clinic:folder_clinic},
+            success: function(response) {
+                if (response.code===201) {
+                    // $('#opd_number').prop('disabled', true);
+                    $('#opd_number').val(response.result);
+                } else if (response.code === 200) {
+                    // $('#opd_number').prop('disabled', false);
+                }
+            },
+            error: function(xhr, status, error) {
+                toastr.error('Error Generating OPD data! Try again.'); // Display error message if AJAX request fails
+            }
+        });
+    
+    });
+// *************************** end GENERATE OPD NUMBER *****************************/
 
 
 // When sponsor type changes
@@ -213,7 +193,8 @@ $('#sponsor_type_id').on('change', function() {
             
             // Make AJAX request to get sponsors by type
             $.ajax({
-                url: '{{ route("get.sponsors.by.type") }}',
+                // url: '{{ route("get.sponsors.by.type") }}',
+                url: '/api/getsponsortype',
                 type: 'GET',
                 data: {
                     sponsor_type_id: sponsorTypeId
@@ -239,11 +220,25 @@ $('#sponsor_type_id').on('change', function() {
             // Set member number format based on sponsor type
             if(sponsorTypeId === 'N002') {
                 // For N002, set min and max length
+                $('.sponsorship_details_settings').show();
                 $('#member_no').attr('minlength', '8');
                 $('#member_no').attr('maxlength', '10');
                 $('#member_no').attr('pattern', '[0-9]{8,10}');
                 $('#member_no').attr('title', 'Member number must be 8-10 digits');
+
+            }else if(sponsorTypeId === 'P001'){	
+                
+                $('#member_no').val('');
+                $('#sponsor_id').empty();
+                $('#start_date').val('');
+                $('#end_date').val('');
+                $('#card_status').val('');
+               
+                $('.sponsorship_details_settings').hide();
+                // $('#member_no').removeAttr('title');
+                
             } else {
+                $('.sponsorship_details_settings').show();
                 // For other sponsor types, remove restrictions
                 $('#member_no').removeAttr('minlength');
                 $('#member_no').removeAttr('maxlength');

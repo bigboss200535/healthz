@@ -82,8 +82,8 @@
                         <label class="form-label" for="gender_id">Gender <span class="text-danger">*</span></label>
                         <select name="gender_id" id="gender_id" class="form-control" wire:model="gender">
                           <option value="" disabled selected>-Select-</option>
-                            @foreach($gender as $patient_gender)                                        
-                              <option value="{{ $patient_gender->gender_id }}">{{ strtoupper($patient_gender->gender) }}</option>
+                            @foreach($gender as $sex)                                        
+                              <option value="{{ $sex->gender_id }}">{{ strtoupper($sex->gender) }}</option>
                             @endforeach
                         </select>
                       </div>
@@ -118,8 +118,8 @@
                       <div class="col">
                         <label class="form-label" for="nationality">Nationality <span class="text-danger">*</span></label>
                         <select name="nationality" id="nationality" class="form-control">
-                          <option disabled selected>-Select-</option>
-                          <option value="10001">GHANAIAN</option>
+                          <!-- <option disabled selected>-Select-</option> -->
+                          <option value="10001" selected>GHANAIAN</option>
                           <option value="20001">NON-GHANAIAN</option>
                         </select>
                       </div>
@@ -202,8 +202,8 @@
                     <div class="col">
                         <label class="form-label" for="opd_type">OPD # Type <span class="text-danger">*</span></label>
                         <select name="opd_type" id="opd_type" class="form-control">
-                          <!-- <option value="" selected disabled>-Select OPD #-</option> -->
-                          <option value="1" selected>NEW</option>
+                          <option value="" selected disabled>-Select-</option>
+                          <option value="1">NEW</option>
                           <option value="0">OLD</option>
                         </select>
                       </div>
@@ -228,7 +228,7 @@
                 <div class="card mb-4">
                   <div class="card-body">
                     <div class="row mb 3">
-                          <h5 class="card-tile mb-0"><b>Sponsorship Type</b></h5>
+                          <h5 class="card-tile mb-0"><b>Payment Type</b></h5>
                     </div>
                     <br>
                   <div class="mb-3 col ecommerce-select2-dropdown">
@@ -241,7 +241,7 @@
                       </select>
                     </div>
                     <div class="row mb 3 sponsorship_details_settings" >
-                          <h5 class="card-tile mb-0"><b>Sponsorship Details</b></h5>
+                          <h5 class="card-tile mb-0"><b>Payment Details</b></h5>
                     </div>
                     <br>
                     <div class="mb-3 col ecommerce-select2-dropdown sponsorship_details_settings" >
@@ -291,7 +291,7 @@
             </div>
           </div>
           </div>   
-<script>
+<!-- <script>
   $(document).ready(function() {
    
   
@@ -340,6 +340,6 @@
         }
     });
 });
-</script>
+</script> -->
 
 </x-app-layout>

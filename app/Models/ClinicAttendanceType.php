@@ -15,6 +15,11 @@ class ClinicAttendanceType extends Model
     protected $keyType = 'string';
     public $incrementing = false;
 
+    public function users()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+    
     protected $fillable = [
         'attendance_type_id',
         'attendance_type',

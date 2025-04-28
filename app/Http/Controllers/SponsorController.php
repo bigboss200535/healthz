@@ -10,6 +10,7 @@ use App\Models\Region;
 use App\Models\Relation;
 use App\Models\Patient;
 use App\Models\PatientSponsor;
+use App\Models\Sponsors;
 use App\Models\PatNumber;
 use App\Models\YearlyCount;
 use Carbon\Carbon;
@@ -17,47 +18,18 @@ use Illuminate\Support\Facades\DB;
 
 class SponsorController extends Controller
 {
-    public function index()
-    {
-       
-    
-    }
-
-
-    public function create()
-    {
-
-    }
-
-    public function edit()
-    {
-
-    }
-
-    public function store()
-    {
-
-    }
-
-    public function show()
-    {
-
-    }
-
-    public function destroy()
-    {
-
-    }
 
     public function get_sponsors_by_type(Request $request)
     {
-        $sponsor_type_id = $request->input('sponsor_type_id');
-        
-        // Query sponsors based on sponsor type
-        $sponsors = DB::table('sponsors')
-                      ->where('sponsor_type_id', $sponsor_type_id)
-                      ->where('archived', 'No')
-                      ->get(['sponsor_id', 'sponsor_name']);
+        // fetch sponsors for patient registration
+        $request->validate([
+            'sponsor_type_id' => 'required|string|max:10'
+        ]);
+
+        $sponsors = Sponsors::where('sponsor_type_id', $request->sponsor_type_id)
+                    ->where('archived', 'No')
+                    ->get();
+    
         
         return response()->json($sponsors);
     }

@@ -1,52 +1,26 @@
-// *************************** GENERATE OPD NUMBER *****************************/
-
-$(document).on('change', '#folder_clinic', function() {
-  
-    var opd_type = $('#opd_type').val();
-    var folder_clinic = $('#folder_clinic').val();
-  
-    $('#opd_number').val('');
-  
-    $.ajax({
-        url: '/patient/new-opd-number/'+folder_clinic,
-        type: 'GET',
-        data: {opd_type:opd_type, folder_clinic:folder_clinic},
-        success: function(response) {
-            if (response.code===201) {
-                // $('#opd_number').prop('disabled', true);
-                $('#opd_number').val(response.result);
-            } else if (response.code === 200) {
-                // $('#opd_number').prop('disabled', false);
-            }
-        },
-        error: function(xhr, status, error) {
-            toastr.error('Error Generating OPD data! Try again.'); // Display error message if AJAX request fails
-        }
-    });
-
 
 
 
 // ***************************************** Sponsor change ***********************************
 
-    document.addEventListener('DOMContentLoaded', function () {
-        const sponsorTypeSelect = document.getElementById('sponsor_type_id');
-        const sponsorshipDetails = document.querySelectorAll('.sponsorship_details_settings');
+    // document.addEventListener('DOMContentLoaded', function () {
+    //     const sponsorTypeSelect = document.getElementById('sponsor_type_id');
+    //     const sponsorshipDetails = document.querySelectorAll('.sponsorship_details_settings');
     
-        // Hide sponsorship details if "Cash" is selected
-        function toggleSponsorshipDetails() {
-            if (sponsorTypeSelect.value === 'P001') { // Assuming "1001" is for "Cash"
-                sponsorshipDetails.forEach(detail => detail.style.display = 'none');
-            } else {
-                sponsorshipDetails.forEach(detail => detail.style.display = 'block');
-            }
-        }
-        // Initialize based on the default selection
-        toggleSponsorshipDetails();
+    //     // Hide sponsorship details if "Cash" is selected
+    //     function toggleSponsorshipDetails() {
+    //         if (sponsorTypeSelect.value === 'P001') { // Assuming "1001" is for "Cash"
+    //             sponsorshipDetails.forEach(detail => detail.style.display = 'none');
+    //         } else {
+    //             sponsorshipDetails.forEach(detail => detail.style.display = 'block');
+    //         }
+    //     }
+    //     // Initialize based on the default selection
+    //     toggleSponsorshipDetails();
     
-        // Event listener for dropdown change
-        sponsorTypeSelect.addEventListener('change', toggleSponsorshipDetails);
-    });
+    //     // Event listener for dropdown change
+    //     sponsorTypeSelect.addEventListener('change', toggleSponsorshipDetails);
+    // });
 
 
 
@@ -267,7 +241,7 @@ fetchAndRefreshData();
 
 
 
-  });
+
 
   
 

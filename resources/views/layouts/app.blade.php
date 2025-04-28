@@ -99,7 +99,7 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>  
     <script src="{{ asset('js/custom_js.js') }}"></script>
     <!-- <script src="{{ asset('js/patient_services.js') }}"></script> -->
-    <!-- <script src="{{ asset('js/patient_details.js') }}"></script> -->
+    <script src="{{ asset('js/patient_details.js') }}"></script>
     <!-- <script src="{{ asset('js/patient_extras.js') }}"></script> -->
     <script src="{{ asset('js/diagnosis_and_drugs.js') }}"></script>
      <script src="{{ asset('js/patient_registration.js') }}"></script>

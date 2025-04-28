@@ -5,12 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class SponsorType extends Model
+class PatientRelations extends Model
 {
     use HasFactory;
 
-    protected $table = 'sponsor_type';
-    protected $primaryKey = 'sponsor_type_id';
+    protected $table = 'patient_relations';
+    protected $primaryKey = 'relations_id';
     public $timestamps = false;
     protected $keyType = 'string';
     public $incrementing= false;
@@ -20,14 +20,14 @@ class SponsorType extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function sponsorsw()
-    {
-        return $this->hasMany(Sponsors::class, 'sponsor_type_id');
-    }
-    
     protected $fillable = [
-        'sponsor_type_id',
-        'sponsor_type',
+        'relations_id',
+        'patient_id',
+        'opd_number',
+        'relation_name',
+        'relationship',
+        'contact',
+        'telephone',
         'user_id',
         'added_id',
         'added_date',
@@ -36,6 +36,7 @@ class SponsorType extends Model
         'archived',
         'archived_id',
         'archived_by',
-        'archived_date'
+        'archived_date',
+        '_token'
     ];
 }

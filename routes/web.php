@@ -87,8 +87,9 @@ Route::middleware('auth')->group(function () {
         Route::get('/add-labs/{attendance_id}', [InvestigationController::class, 'add_results']);
         Route::get('/add-ultrasound/{attendance_id}', [InvestigationController::class, 'add_results']);
         Route::get('/add-x-rays/{attendance_id}', [InvestigationController::class, 'add_results']);
-        Route::get('/getsponsortype', [App\Http\Controllers\SponsorController::class, 'get_sponsors_by_type'])->name('get.sponsors.by.type');
+       
     });
+    
     // Add this route to handle the AJAX request
    
 

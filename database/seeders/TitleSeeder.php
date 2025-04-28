@@ -17,48 +17,55 @@ class TitleSeeder extends Seeder
      */
     public function run()
     {
-        $gender = Gender::inRandomOrder()->first(); 
-
-        $titledata = Title::create([
-            'title_id' => 't001',
-            'title' => 'Mr',
-            'gender_id' => $gender->gender_id,
+        $title = Title::create([
+            'title_id' => 'T001',
+            'title' => 'Mr.',
+            'gender_id' => '2',
             'added_date' => now(),
             'status' => 'Active',
             'archived' => 'No',
         ]);
 
-        $titledata = Title::create([
-            'title_id' => 't002',
-            'title' => 'Mrs',
-            'gender_id' => $gender->gender_id,
+        $title = Title::create([
+            'title_id' => 'T002',
+            'title' => 'Mrs.',
+            'gender_id' => '3',
             'added_date' => now(),
             'status' => 'Active',
             'archived' => 'No',
         ]);
 
-        $titledata = Title::create([
-            'title_id' => 't003',
-            'title' => 'Miss',
-            'gender_id' => $gender->gender_id,
+        $title = Title::create([
+            'title_id' => 'T003',
+            'title' => 'Miss.',
+            'gender_id' => '3',
             'added_date' => now(),
             'status' => 'Active',
             'archived' => 'No',
         ]);
 
-        $titledata = Title::create([
-            'title_id' => 't005',
-            'title' => 'Dr',
-            'gender_id' => $gender->gender_id,
+        $title = Title::create([
+            'title_id' => 'T005',
+            'title' => 'Dr.',
+            'gender_id' => '1',
             'added_date' => now(),
             'status' => 'Active',
             'archived' => 'No',
         ]);
 
-        $titledata = Title::create([
-            'title_id' => 't006',
+        $title = Title::create([
+            'title_id' => 'T006',
             'title' => 'Madam',
-            'gender_id' => $gender->gender_id,
+            'gender_id' => '3',
+            'added_date' => now(),
+            'status' => 'Active',
+            'archived' => 'No',
+        ]);
+
+        $title = Title::create([
+            'title_id' => 'T007',
+            'title' => 'Madam',
+            'gender_id' => '3',
             'added_date' => now(),
             'status' => 'Active',
             'archived' => 'No',

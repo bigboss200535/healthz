@@ -20,15 +20,15 @@ class Sponsors extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
     
-    public function sponsortype()
-    {
-        return $this->belongsTo(SponsorType::class, 'sponsor_type_id');
-    }
+    // public function sponsortype()
+    // {
+    //     return $this->belongsTo(SponsorType::class, 'sponsor_type_id');
+    // }
     
-    public function patientSponsors()
-    {
-        return $this->hasMany(PatientSponsor::class, 'sponsor_id');
-    }
+    // public function patientSponsors()
+    // {
+    //     return $this->hasMany(PatientSponsor::class, 'sponsor_id');
+    // }
 
     protected $fillable = [
         'sponsor_id',
