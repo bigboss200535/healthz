@@ -31,7 +31,7 @@ class PatientRelations extends Model
         'user_id',
         'added_id',
         'added_date',
-        'udpated_by',
+        'updated_by',
         'status',
         'archived',
         'archived_id',

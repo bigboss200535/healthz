@@ -10,6 +10,30 @@ use Illuminate\Support\Facades\DB;
 
 class AttendanceController extends Controller
 {
+    public function generate_episode(Request $request)
+    {
+         $today_date = date('Y-m-d');
+
+         $episode = Episode::where('patient_id', $request->patient_id)
+             ->where('added_date', $today_date)
+             ->get();
+         
+             if(!$episode)
+             {
+                 Episode::create([
+                     'patient_id' => $request->patient_id,
+                     'pat_number' => $request->pat_number,
+                     'request_date' => $request->pat_number,
+                     'start_date' => $validated_data['sponsor_id'],
+                      'end_date' => $validated_data['sponsor_id'],
+                     'code' => $validated_data['member_no'],
+                     'facility_id' => Auth::user()->facility_id,
+                     'user_id' => Auth::user()->user_id,
+                     'added_date' => $now,
+                 ]);
+             }
+    }
+
     public function single_attendance($patient_id)
     {
         $all_single_attendance = PatientAttendance::where('patient_attendance.archived','No')

@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
     {
 
         $this->call([
+            FacilitySeeder::class,
             UserRoles::class,
             UserSeeder::class,
             OccupationSeeder::class,
@@ -40,7 +41,6 @@ class DatabaseSeeder extends Seeder
             SponsorTypeSeeder::class,
             SponsorsSeeder::class,
             // ClinicAttendanceTypeSeeder::class,
-            FacilitySeeder::class,
             ServiceAttendanceTypeSeeder::class,
             ServicesSeeder::class,
             ServiceFeeSeeder::class, //check excel data
@@ -67,7 +67,7 @@ class DatabaseSeeder extends Seeder
         // \App\Models\Patient::factory(2000)->create();
         // \App\Models\PatientSponsor::factory(200)->create();
         // \App\Models\PatientOpdNumber::factory(450)->create();
-        \App\Models\User::factory(10)->create();
+        \App\Models\User::factory(20)->create();
         // \App\Models\PatientAttendance::factory(100)->create();
         // \App\Models\ConsultingRoom::factory(10)->create();
         // \App\Models\Consultation::factory(100)->create();

@@ -660,7 +660,7 @@
                                                                                       </div>
                                                                                       
                                                                                       <div class="col-12" >
-                                                                                      <table class="table table-responsive" id="drugs">
+                                                                                      <table class="table table-responsive" id="prescriptions_list">
                                                                                             <thead>
                                                                                               <tr>
                                                                                                 <th>Sn</th>
@@ -746,7 +746,7 @@
                                                     </div>
                                                   </div>
                                                 </form>
-                                                <table class="table table-responsive" id="">
+                                                <table class="table table-responsive" id="service_request">
                                                     <thead>
                                                       <tr>
                                                         <th>SN</th>

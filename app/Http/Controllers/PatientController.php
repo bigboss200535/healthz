@@ -24,6 +24,7 @@ use App\Models\Sponsors;
 use App\Models\SponsorType;
 use App\Models\YearlyCount;
 use App\Models\Town;
+use App\Models\PatientRelations;
 use Carbon\Carbon;
 use App\Models\Sponsor;
 
@@ -143,9 +144,6 @@ class PatientController extends Controller
                             'address' => strtoupper($validated_data['address'] ?? ''),
                             'town' => strtoupper($validated_data['town'] ?? ''),
                             'region' => strtoupper($validated_data['region'] ?? ''),
-                            'contact_person' => $validated_data['contact_person'] ?? null,
-                            'contact_telephone' => $validated_data['contact_telephone'] ?? null,
-                            'contact_relationship' => strtoupper($validated_data['contact_relationship'] ?? ''),
                             'added_date' => $now,
                             // 'records_id' => $transaction_id,
                             'records_id' => $patient_records,
@@ -162,6 +160,17 @@ class PatientController extends Controller
                             'month' => $current_year = date('m'),
                             'registration_date' => $now,
                             'registration_time' => $now,
+                            'user_id' =>  $user_id,
+                            'added_date' => $now,
+                        ]);
+
+                        PatientRelations::create([
+                            'patient_id' => $patient_id_no,
+                            'opd_number' => $validated_data['opd_number'] ?? null,
+                            'relation_name' => $validated_data['contact_person'] ?? null,
+                            'relationship' =>  strtoupper($validated_data['contact_relationship'] ?? ''),
+                            'contact' => $validated_data['contact_telephone'] ?? null,
+                            // 'telephone' => $now,
                             'user_id' =>  $user_id,
                             'added_date' => $now,
                         ]);
@@ -208,31 +217,32 @@ class PatientController extends Controller
 
     private function get_age_full($birthdate)
     {
+        if (empty($birthdate)) {
+            return "N/A";
+        }
        
         $dob = Carbon::parse($birthdate); 
         $today = Carbon::now();
         $age_in_days = $dob->diffInDays($today);
 
-            if ($age_in_days == 1) {
-                return "1 DAY";
-            } elseif ($age_in_days < 7) {
-                return "$age_in_days DAYS";
-            } elseif ($age_in_days < 14) {
-                return "1 WEEK";
-            } elseif ($age_in_days < 30) {
-                $age_in_weeks = floor($age_in_days / 7);
-                return "$age_in_weeks WEEKS";
-            } elseif ($age_in_days == 30) {
-                return "1 MONTH";
-            } elseif ($age_in_days < 365) {
-                $age_in_months = floor($age_in_days / 30);
-                return "$age_in_months MONTHS";
-            } elseif ($age_in_days == 365) {
-                return "1 YEAR";
-            } else {
-                 $age_in_years = floor($age_in_days / 365);
-                return "$age_in_years YEARS";
-            }
+        $dob = Carbon::parse($birthdate); 
+        $today = Carbon::now();
+        $age_in_days = $dob->diffInDays($today);
+
+        if ($age_in_days < 7) {
+            return $age_in_days == 1 ? "1 DAY" : "$age_in_days DAYS";
+        } 
+        if ($age_in_days < 30) {
+            $age_in_weeks = floor($age_in_days / 7);
+            return $age_in_weeks == 1 ? "1 WEEK" : "$age_in_weeks WEEKS";
+        } 
+        if ($age_in_days < 365) {
+            $age_in_months = $dob->diffInMonths($today);
+            return $age_in_months == 1 ? "1 MONTH" : "$age_in_months MONTHS";
+        }
+        
+        $age_in_years = $dob->diffInYears($today);
+        return $age_in_years == 1 ? "1 YEAR" : "$age_in_years YEARS";
     }
 
 
@@ -240,8 +250,8 @@ class PatientController extends Controller
     {
         $age_full = $this->get_age_full($patient->birth_date);
 
-        $patients = DB::table('patient_info')
-            ->where('patient_info.patient_id', $patient->patient_id)
+        // $patients = DB::table('patient_info')
+        $patients = Patient::where('patient_info.patient_id', $patient->patient_id)
             ->join('gender', 'patient_info.gender_id', '=', 'gender.gender_id')
             ->join('patient_nos', 'patient_nos.patient_id', '=', 'patient_info.patient_id')
             ->join('users', 'patient_info.user_id', '=', 'users.user_id')
@@ -253,7 +263,6 @@ class PatientController extends Controller
             ->orderBy('patient_info.added_date', 'asc') 
             ->first();
 
-            
         $ages = Age::where('min_age', '<=', $patients->patient_age)
             ->where('max_age', '>=', $patients->patient_age)
             ->where('max_age', '>=', $patients->patient_age)
@@ -263,22 +272,48 @@ class PatientController extends Controller
         $clinic_attendance = ServicePoints::select('service_point_id', 'service_points', 'gender_id', 'age_id')
                     ->where(function ($query) use ($patients) {
                         $query->where('gender_id', $patients->gender_id)
-                            ->orWhere('gender_id', 1); // Assuming 1 is a default gender_id
+                            ->orWhere('gender_id', 1); // Assuming 1 is a all gender group
                     })
                     ->where(function ($query) use ($ages) {
                         $query->where('age_id', $ages->age_id)
-                            ->orWhere('age_id', 3); // Assuming 3 is a default age_id
+                            ->orWhere('age_id', 3); // Assuming 3 is a all age groupd
                     })
                     ->where('archived', 'No')
                     ->where('is_active', 'Yes')
                     ->get();
   
-            
+        $patient_sponsor = PatientSponsor::where('patient_sponsorship.opd_number', $patients->opd_number)
+                    ->where('patient_sponsorship.priority', '1')
+                    ->where('patient_sponsorship.archived', 'No')
+                    ->where('patient_sponsorship.status', 'Active')
+                    ->first();
+
+        if (!$patient_sponsor) {
+            $patient_payments = (object)[
+                'sponsor_name' => 'CASH PAYMENT',
+                'sponsor_type' => 'CASH PAYMENT'
+            ];
+        }else
+        {
+            $patient_payments = PatientSponsor::where('patient_sponsorship.opd_number', $patients->opd_number)
+                    ->join('sponsors', 'sponsors.sponsor_id', '=', 'patient_sponsorship.sponsor_id')
+                    ->join('sponsor_type', 'patient_sponsorship.sponsor_type_id', '=', 'sponsor_type.sponsor_type_id')
+                    ->where('patient_sponsorship.priority', '1')
+                    ->where('patient_sponsorship.archived', 'No')
+                    ->where('patient_sponsorship.status', 'Active')
+                    ->select('sponsor_name', 'sponsor_type', 'member_no')
+                    ->first();
+        }
+
+        $relatives = PatientRelations::where('archived', 'No')
+                ->where('patient_id', $patients->patient_id)
+                ->get();
+
         // $request_episode = ServiceRequest::count();
         // $new_number = $request_episode + 1;
         // $episode = str_pad($new_number, 6, '0', STR_PAD_LEFT);
 
-        return view('patient.show', compact('patients', 'clinic_attendance', 'age_full'));
+        return view('patient.show', compact('patients', 'clinic_attendance', 'age_full', 'patient_payments', 'relatives'));
         
     }
 

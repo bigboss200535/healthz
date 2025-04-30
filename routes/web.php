@@ -159,8 +159,8 @@ Route::middleware('auth')->group(function () {
         
     });
     // Route::get('/search-prescription', [MedicationsController::class, 'search_prescription']);
-    Route::prefix('external')->group(function () {
-        Route::get('/claims_code', [ExternalCallController::class, 'claims_check_code']);  
+    Route::prefix('claims_code')->group(function () {
+        Route::post('/save-ccc', [NotificationController::class, 'send_sms'])->name('notifications.save-ccc');
     });
 
     Route::delete('delete-diagnosis/{diagnosis_id}', [DiagnosisController::class, 'delete_diagnosis']);

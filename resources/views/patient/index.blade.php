@@ -120,9 +120,9 @@
                                   <th>Name</th>
                                   <th>OPD #</th>
                                   <th>Gender</th>
+                                  <th>Birth Date</th>
                                   <th>Age</th>
                                   <th>Telephone</th>
-                                  <th>Birth Date</th>
                                   <th>Added Date</th>
                                   <th>Action</th>
                               </tr>
@@ -131,21 +131,22 @@
                     </div>
             </div>
           </div>
-</x-app-layout>
-<script>
+
+<!-- <script>
    document.addEventListener('DOMContentLoaded', function() {
     // Clear search form code remains unchanged
     document.getElementById('clear_search').addEventListener('click', function(e) {
         e.preventDefault();
+
         document.getElementById('search_patient').value = '';
         
         // Clear advanced search fields if they exist
-        if(document.getElementById('firstname')) document.getElementById('firstname').value = '';
-        if(document.getElementById('othername')) document.getElementById('othername').value = '';
-        if(document.getElementById('gender')) document.getElementById('gender').selectedIndex = 0;
-        if(document.getElementById('birthdate')) document.getElementById('birthdate').value = '';
-        if(document.getElementById('address')) document.getElementById('address').value = '';
-        if(document.getElementById('sponsor')) document.getElementById('sponsor').selectedIndex = 0;
+        // if(document.getElementById('firstname')) document.getElementById('firstname').value = '';
+        // if(document.getElementById('othername')) document.getElementById('othername').value = '';
+        // if(document.getElementById('gender')) document.getElementById('gender').selectedIndex = 0;
+        // if(document.getElementById('birthdate')) document.getElementById('birthdate').value = '';
+        // if(document.getElementById('address')) document.getElementById('address').value = '';
+        // if(document.getElementById('sponsor')) document.getElementById('sponsor').selectedIndex = 0;
         
         // Hide results if showing
         document.getElementById('patient_search_result').style.display = 'none';
@@ -213,8 +214,6 @@
                 searchButton.innerHTML = originalButtonText;
                 searchButton.disabled = false;
                 
-                // console.log("Search response:", response); // Debug: Log the response
-                
                 // Show results container
                 document.getElementById('patient_search_result').style.display = 'block';
                 
@@ -234,14 +233,10 @@
                     patientData = [response];
                 }
                 
-                // console.log("Processed patient data:", patientData); // Debug: Log processed data
-                
                 if (patientData.length > 0) {
                     // Populate table with results
                     patientData.forEach((patient, index) => {
                         const row = document.createElement('tr');
-                        
-                        // console.log("Processing patient:", patient); // Debug: Log each patient
                         
                         // Format date of birth if it exists
                         let formattedDob = 'N/A';
@@ -322,14 +317,199 @@
                                     </button>
                                     <div class="dropdown-menu">
                                      <a class="dropdown-item" href="{{ url('patients') }}/${patient.patient_id}">
-                                            <i class="bx bx-show me-1"></i> View
+                                            <i class="bx bx-show me-1"></i> More
                                         </a>
                                         <a class="dropdown-item" href="{{ url('patients/show') }}/${patient.patient_id}/edit">
                                             <i class="bx bx-edit-alt me-1"></i> Edit
                                         </a>
-                                       
                                         <a class="dropdown-item" href="{{ url('visits/create') }}/${patient.patient_id}">
                                             <i class="bx bx-plus-circle me-1"></i> New Visit
+                                        </a>
+                                         <a class="dropdown-item" href="{{ url('#') }}/${patient.patient_id}">
+                                            <i class="bx bx-plus me-1"></i> Manage Sponsors
+                                        </a>
+                                    </div>
+                                </div>
+                            </td>
+                        `;
+                        
+                        tableBody.appendChild(row);
+                    });
+                } else {
+                    // No results found
+                    const row = document.createElement('tr');
+                    row.innerHTML = '<td colspan="9" class="text-center">No patients found matching your search criteria</td>';
+                    tableBody.appendChild(row);
+                }
+            },
+            error: function(xhr, status, error) {
+                // Reset button state
+                searchButton.innerHTML = originalButtonText;
+                searchButton.disabled = false;
+                
+                // Show error message
+                // console.error("AJAX Error:", xhr.responseText);
+                toastr.error('An error occurred while searching. Please try again.');
+            }
+        });
+    });
+});
+</script> -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+    // Clear search form
+    document.getElementById('clear_search').addEventListener('click', function(e) {
+        e.preventDefault();
+        document.getElementById('search_patient').value = '';
+        document.getElementById('patient_search_result').style.display = 'none';
+    });
+
+    // Handle search
+    document.getElementById('search_item').addEventListener('click', function() {
+        // Get search value
+        const searchValue = document.getElementById('search_patient').value.trim();
+        
+        if (searchValue === '') {
+            toastr.warning('Please enter a search term');
+            return;
+        }
+        
+        // Show loading state
+        const searchButton = document.getElementById('search_item');
+        const originalButtonText = searchButton.innerHTML;
+        searchButton.innerHTML = '<i class="bx bx-loader-alt bx-spin"></i> Searching...';
+        searchButton.disabled = true;
+        
+        // Make AJAX request to search patients
+        $.ajax({
+            url: '{{ route("patient.search") }}',
+            type: 'GET',
+            data: {
+                search_type: 'basic',
+                search_value: searchValue
+            },
+            dataType: 'json',
+            success: function(response) {
+                // Reset button state
+                searchButton.innerHTML = originalButtonText;
+                searchButton.disabled = false;
+                
+                // Show results container
+                const resultsContainer = document.getElementById('patient_search_result');
+                if (resultsContainer) {
+                    resultsContainer.style.display = 'block';
+                }
+                
+                // Clear existing table data
+                const tableBody = document.querySelector('#patient_search_list tbody');
+                if (!tableBody) {
+                    console.error('Table body not found');
+                    return;
+                }
+                tableBody.innerHTML = '';
+                
+                // Check if we have results - handle both array and object formats
+                let patientData = [];
+                
+                if (Array.isArray(response)) {
+                    patientData = response;
+                } else if (response && response.data && Array.isArray(response.data)) {
+                    patientData = response.data;
+                } else if (response && typeof response === 'object' && response !== null) {
+                    // Single object result
+                    patientData = [response];
+                }
+                
+                if (patientData.length > 0) {
+                    // Populate table with results
+                    patientData.forEach((patient, index) => {
+                        const row = document.createElement('tr');
+                        
+                        // Format date of birth if it exists
+                        let formatted_dob = 'N/A';
+                        let age = 'N/A';
+                        
+                        if (patient.birth_date) {
+                            try {
+                                const dob = new Date(patient.birth_date);
+                                if (!isNaN(dob.getTime())) {
+                                    formatted_dob = dob.toLocaleDateString();
+                                    
+                                    // Calculate age
+                                    const today = new Date();
+                                    age = today.getFullYear() - dob.getFullYear();
+                                    const monthDiff = today.getMonth() - dob.getMonth();
+                                    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dob.getDate())) {
+                                        age--;
+                                    }
+                                }
+                            } catch (e) {
+                                // console.error("Error formatting birth date:", e);
+                            }
+                        }
+                        
+                        // Format created date if it exists
+                        let formatted_added_date = 'N/A';
+                        if (patient.added_date) {
+                            try {
+                                const createdDate = new Date(patient.added_date);
+                                if (!isNaN(createdDate.getTime())) {
+                                    formatted_added_date = createdDate.toLocaleDateString();
+                                }
+                            } catch (e) {
+                                // console.error("Error formatting added date:", e);
+                                formatted_added_date = patient.added_date;
+                            }
+                        } else if (patient.registration_date) {
+                            try {
+                                const regDate = new Date(patient.registration_date);
+                                if (!isNaN(regDate.getTime())) {
+                                    formatted_added_date = regDate.toLocaleDateString();
+                                }
+                            } catch (e) {
+                                // console.error("Error formatting registration date:", e);
+                                formatted_added_date = patient.registration_date;
+                            }
+                        }
+                        
+                        // Determine gender display
+                        let genderDisplay = 'N/A';
+                        if (patient.gender_id === '2' || patient.gender_id === 2) {
+                            genderDisplay = 'MALE';
+                        } else if (patient.gender_id === '1' || patient.gender_id === 1) {
+                            genderDisplay = 'FEMALE';
+                        } else if (patient.gender) {
+                            genderDisplay = patient.gender.toUpperCase();
+                        }
+                        
+                        // Build patient name
+                        let full_name = patient.fullname || 
+                                      `${patient.lastname || ''} ${patient.firstname || ''} ${patient.middlename || ''}`.trim();
+                        
+                        // Build row HTML
+                        row.innerHTML = `
+                            <td>${index + 1}</td>
+                            <td>${full_name}</td>
+                            <td>${patient.opd_number || 'N/A'}</td>
+                            <td>${genderDisplay}</td>
+                            <td>${formatted_dob}</td>
+                            <td>${age}</td>
+                            <td>${patient.telephone || 'N/A'}</td>
+                            <td>${formatted_added_date}</td>
+                            <td>
+                                <div class="dropdown">
+                                    <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                                        <i class="bx bx-dots-vertical-rounded"></i>
+                                    </button>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item" href="{{ url('patients') }}/${patient.patient_id}">
+                                            <i class="bx bx-show me-1"></i> More
+                                        </a>
+                                        <a class="dropdown-item" href="{{ url('visits/create') }}/${patient.patient_id}">
+                                            <i class="bx bx-plus-circle me-1"></i> New Visit
+                                        </a>
+                                        <a class="dropdown-item" href="{{ url('#') }}/${patient.patient_id}">
+                                            <i class="bx bx-plus me-1"></i> Manage Sponsors
                                         </a>
                                     </div>
                                 </div>
@@ -358,3 +538,4 @@
     });
 });
 </script>
+</x-app-layout>

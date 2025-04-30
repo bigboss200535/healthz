@@ -19,6 +19,7 @@ class Facility extends Model
         'facility_id',
         'facility_name',
         'nhis_description',
+        'allow_api_generation',
         'nhis_api',
         'nhia_url',
         'nhia_key',
@@ -51,5 +52,10 @@ class Facility extends Model
     public function getApiUrlAttribute($value)
     {
         return base64_decode($value);
+    }
+
+    public function isApiEnabled()
+    {
+        return $this->ccc_type === 'Automatic' && $this->status==='Active' && !empty($this->nhia_url) && !empty($this->nhia_key) && !empty($this->nhia_secret);
     }
 }

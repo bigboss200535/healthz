@@ -1,6 +1,3 @@
-
-
-
 // ***************************************** Sponsor change ***********************************
 
     // document.addEventListener('DOMContentLoaded', function () {

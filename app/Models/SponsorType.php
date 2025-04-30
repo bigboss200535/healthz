@@ -20,7 +20,7 @@ class SponsorType extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function sponsorsw()
+    public function sponsors()
     {
         return $this->hasMany(Sponsors::class, 'sponsor_type_id');
     }

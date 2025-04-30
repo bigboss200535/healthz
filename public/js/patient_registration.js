@@ -3,29 +3,31 @@
         e.preventDefault();
 
         // Initialize buttons
-        const submitBtn = $form.find('button[type="submit"]');
-        const resetBtn = $form.find('button[type="reset"]');
-        const searchBtn = $form.find('a.btn-dark');
-    
+        const $form = $(this);
+        const $submitBtn = $('#save_patient_info');
+        const $restBtn = $('#reset_button');
 
-        const $form = $('#patient_info_create');
+        const original_text = $submitBtn.html();
         const formData = new FormData($form[0]);
         const patient_save = Object.fromEntries(formData.entries());
 
+        $restBtn.prop('disabled', true);
+        // const $form = $('#patient_info_create');
+       
         // Client-side validation with improved feedback
         if (!patient_save.title || patient_save.title === "-Select-"){
             $('#title').addClass('is-invalid').focus();
-            return;
+            return false;
         }
 
         if (!patient_save.firstname || patient_save.firstname === ""){
             $('#firstname').addClass('is-invalid').focus();
-            return;
+            return false;
         }
 
         if (!patient_save.lastname || patient_save.lastname === ""){
             $('#lastname').addClass('is-invalid').focus();
-            return;
+            return false;
         }
 
         // Validate birth date is not in future
@@ -38,42 +40,42 @@
                 $('#birth_date').addClass('is-invalid')
                             .after('<div class="invalid-feedback">Birth date cannot be in the future</div>')
                             .focus();
-                return;
+                return false;
             }
         }
         
         if (!patient_save.gender_id || patient_save.gender_id === "-Select-"){
             $('#gender_id').addClass('is-invalid').focus();
-            return;
+            return false;
         }
 
         if (!patient_save.education || patient_save.education === "-Select-"){
             $('#education').addClass('is-invalid').focus();
-            return;
+            return false; 
         }
 
         if (!patient_save.religion || patient_save.religion === "-Select-"){
             $('#religion').addClass('is-invalid').focus();
-            return;
+            return false;
         }
 
         if (!patient_save.folder_clinic || patient_save.folder_clinic === "-Select-"){
             $('#folder_clinic').addClass('is-invalid').focus();
-            return;
+            return false;
         }
 
         if (!patient_save.opd_type || patient_save.opd_type === "-Select-"){
             $('#opd_type').addClass('is-invalid')
                           .focus()
                           .after('<div class="invalid-feedback">Kindly Select Opd type</div>');
-            return;
+            return false;
         }
 
 
         if (!patient_save.sponsor_type_id || patient_save.sponsor_type_id === "-Select-") {
             // if (!patient_save.sponsor_id || patient_save.sponsor_id === "-Select-") {
                 $('#sponsor_type_id').addClass('is-invalid').focus();
-                return;
+                return false;
             // }
         }
 
@@ -82,17 +84,12 @@
             $('#opd_number').addClass('is-invalid')
                            .after('<div class="invalid-feedback">OPD number is required</div>')
                            .focus();
-            return;
+            return false;
         }
-
-        const formOverlay = $('<div class="form-overlay"><div class="spinner-border text-primary"></div></div>');
-        $('body').append(formOverlay);
 
         // Determine URL and method based on pat_id
         const url = patient_save.pat_id ? `/patients/${patient_save.pat_id}` : '/patients';
         const method = patient_save.pat_id ? 'PUT' : 'POST';
-
-        if(patient_save.opd_number && patient_save.sponsor_type_id && patient_save.opd_type){
 
                 // AJAX request with improved error handling and feedback
                 $.ajax({
@@ -105,49 +102,46 @@
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
                     beforeSend: function() {
-                        formOverlay.fadeIn();
-                        submitBtn.prop('disabled', true);
-                        resetBtn.prop('disabled', true);
-                        searchBtn.addClass('disabled');
+                        // formOverlay.fadeIn();
+                        // submitBtn.prop('disabled', true);
+                        // resetBtn.prop('disabled', true);
+                        $restBtn.prop('disabled', false);
+                        $submitBtn.prop('disabled', true)
+                        .html('<span class="spinner-border spinner-border-sm" role="status"></span> Submitting...');
+        
                     },
                     success: function (response) {
                         if (response.code === 201) {
                             toastr.success(response.message || 'Patient saved successfully');
                             $form[0].reset();
                             $('#pat_id').val('');
-                            formOverlay.fadeOut();
-                            // $('.is-invalid').removeClass('is-invalid');
-                            // $('.invalid-feedback').remove();
-                            submitBtn.prop('disabled', false);
+                            $('.is-invalid').removeClass('is-invalid');
+                            $submitBtn.prop('disabled', false);
+                            $restBtn.prop('disabled', false);
                         } else if (response.code === 200) {
                             toastr.warning(response.message || 'Patient data already exists');
-                            formOverlay.fadeOut();
+                            $submitBtn.prop('disabled', false);
+                            $restBtn.prop('disabled', false);
                         } else {
                             toastr.error(response.message || 'Error saving patient data');
-                            formOverlay.fadeOut();
+                            $submitBtn.prop('disabled', false);
+                            $restBtn.prop('disabled', false);
                         }
                     },
                     error: function (xhr, status, error) {
                         let errorMessage = xhr.responseJSON?.message || 'Error saving patient data';
                         toastr.error(errorMessage);
-                        formOverlay.fadeOut();
-                        // Clear previous errors
+                        $submitBtn.prop('disabled', false);
+                        $restBtn.prop('disabled', false);
                         $('.is-invalid').removeClass('is-invalid');
                         $('.invalid-feedback').remove();
                     },
                     complete: function () {
-                        
-                        if (formOverlay) {
-                            formOverlay.fadeOut(function() {
-                                $(this).remove();
-                            });
-                        }
-                            if (submitBtn) submitBtn.prop('disabled', false).html('<i class="bx bx-save"></i> Save Patient');
-                            if (resetBtn) resetBtn.prop('disabled', false);
-                            if (searchBtn) searchBtn.removeClass('disabled');
+                            $submitBtn.prop('disabled', false).html('<i class="bx bx-save"></i> Save Patient');
+                            $restBtn.prop('disabled', false);
                     }
                 });
-        }
+        // }
 
     });
 

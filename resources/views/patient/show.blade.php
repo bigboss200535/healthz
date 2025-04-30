@@ -97,16 +97,33 @@
                         </td>
                       </tr>
                       <tr>
-                        <td><b>Fullname</b></td>
-                        <td>{{ $patients->contact_person }}</td>
-                      </tr>
-                      <tr>
-                        <td><b>Telephone</b></td>
-                        <td>{{ $patients->contact_telephone }}</td>
-                      </tr>
-                      <tr>
-                        <td><b>Relationship</b></td>
-                        <td>{{ $patients->contact_relationship}}</td>
+                          <table class="table table-reponsive">
+                            <thead>
+                              <tr>
+                                <th>Name</th>
+                                <th>Relationship</th>
+                                <th>Contact</th>
+                                <th></th>
+                             </tr>
+                            </thead>
+                            @foreach($relatives as $relative)  
+                            <tr>
+                              <td>{{ $relative->relative_name }}</td>
+                              <td>{{ $relative->relationship }}</td>
+                              <td>{{ $relative->contact }}</td>
+                              <td>{{ $relative->contact }}</td>
+                            </tr>
+                            @endforeach
+                            <tfoot>
+                              <tr>
+                                <th>Name</th>
+                                <th>Relationship</th>
+                                <th>Contact</th>
+                                <th></th>
+                              </tr>
+                            </tfoot>
+                          </table>
+                      
                       </tr>
                     </table>
           </p>
@@ -290,34 +307,39 @@
             </tr>
             <tr>
               <td><b>Current Sponsor</b>:</td>
-              <td><span class="badge bg-label-danger me-1">NO AVAILABLE</span></td>
+              <td><span class="badge bg-label-primary me-1">{{$patient_payments->sponsor_type}}</span></td>
             </tr>
             <tr>
               <td><b>Member #</b>:</td>
-              <td><span class="badge bg-label-danger me-1"> UNAVAILABLE</span></td>
+              <td><span class="badge bg-label-primary me-1"> {{$patient_payments->member_no}}</span></td>
             </tr>
             <tr>
               <td><b>Registered By</b>:</td>
               <td>{{ $patients->user_fullname}}</td>
             </tr>
+            @if($patients->death_status==='Yes')
             <tr>
-              <td><b>Deceased</b>:</td>
-              <td><span class="badge bg-label-danger me-1">{{ $patients->death_status}}</span></td>
+              <td><b>Patient Status</b>:</td>
+              <td>
+                <span class="badge bg-label-danger me-1">DEAD </span>
+              </td>
             </tr>
+            @endif
+            @if($patients->death_status==='No')
             <tr>
               <td colspan="2" align="center">
                 <div class="btn-group">
                         <button type="button" data-bs-toggle='modal' data-bs-target="#claims_check_code" class="btn btn-sm btn-info">GET CCC </button>
                         <button type="button" class="btn btn-sm btn-warning edit-btn">EDIT PATIENT</button>
-                        <button type="button" data-bs-toggle='modal' data-bs-target="#addattendance" class="btn btn-sm btn-primary">NEW ATTENDANCE</button>
+                        <button type="button" data-bs-toggle='modal' data-bs-target="#add_attendance" class="btn btn-sm btn-primary">NEW ATTENDANCE</button>
                 </div>
               </td>
-                 <!-- <td colspan="2">
-                    <a href="#" class="btn btn-secondary" data-bs-toggle='modal' data-bs-target="#claims_check_code"><i class="bx bx-plus"></i> C.C</a>
-                    <a href="#" class="btn btn-warning"><i class="bx bx-pencil"></i> Edit</a>
-                    <a href="#" class="btn btn-primary" data-bs-toggle='modal' data-bs-target="#addattendance"><i class="bx bx-plus"></i> Visit</a>
-                </td> -->
+              @elseif($patients->death_status==='Yes')
+                 <td colspan="2">
+                  <span class="badge bg-label-danger me-1">PATIENT IS DEAD</span>
+                </td>
             </tr>
+            @endif
            </table>
           </div>
         </div>
@@ -330,7 +352,7 @@
                   <div class="card">
                     <div class="card-datatable table-responsive">
                       <div style="margin:15px">
-                        <h5>Patient Attendance</h5>
+                        <h5>Patient Attendance </h5>
                       </div>
                       <table class="datatables-category-list table border-top" id="current_attendance">
                         <thead>
@@ -369,7 +391,7 @@
 </div>   
 <!-----------****************************----------------------------------------->
 <!-- service_request Modal -->
-<div class="modal fade" id="addattendance" tabindex="-1" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+<div class="modal fade" id="add_attendance" tabindex="-1" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
   <div class="modal-dialog modal-lg modal-simple modal-add-new-address">
     <div class="modal-content">
       <div class="modal-body">
@@ -431,8 +453,8 @@
             </div>
           </div>
           <div class="col-12 text-center">
-            <button type="submit" class="btn btn-primary me-3">Submit</button>
-            <button type="reset" class="btn btn-danger" data-bs-dismiss="modal" aria-label="Close"><i class="bx bx-trash"></i>Close</button>
+            <button type="submit" class="btn btn-primary me-3" id="service_request_save" name="service_request_save">Submit</button>
+            <button type="reset" class="btn btn-danger" data-bs-dismiss="modal" aria-label="Close" id="reset_close"><i class="bx bx-trash"></i>Close</button>
           </div>
         </form>
       </div>
@@ -449,19 +471,27 @@
       <div class="modal-body">
         <div class="text-center mb-6">
           <h4 class="address-title mb-2">Patient NHIS Verification</h4>
+          <button type="button" class="btn btn-info" onclick="generateCC()" id="generate_cc">Generate CC</button>
           <!-- <p class="address-subtitle">Click on the generate to get CCC or enter it in the CCC input box</p> -->
           <p class="address-subtitle" id="error" style="color:red"></p>
         </div>
         <form id="generate_ccc" class="row g-6" onsubmit="return false">
            @csrf
+           <div class="col-12 col-md-12">
+            <label class="form-label" for="credit_amount">Card Type</label>
+            <select name="card_type" id="card_type" class="form-control">
+              <option value="NHISCARD" selected>NHIS</option>
+              <option value="GHANACARD">GHANA CARD</option>
+            </select>
+          </div>
           <div class="col-12 col-md-6">
             <label class="form-label" for="credit_amount">Member #</label>
             <input type="text" name="card_type" id="card_type" hidden value="NHISCARD">
-            <input type="text" id="member_no" name="member_no" class="form-control" placeholder="12345678"/>
+            <input type="text" id="member_no" name="member_no" class="form-control" placeholder="12345678" value="{{$patient_payments->member_no}}"/>
           </div>
           <div class="col-12 col-md-6">
             <label class="form-label" for="cash_amount">Claims Check Code (CCC) <a href="#" style="color: red;">*</a></label>
-            <input type="text" id="claim_code" name="claim_code" class="form-control" placeholder="xxxxx" maxlength="5" required readonly/>
+            <input type="text" id="claim_code" name="claim_code" class="form-control" placeholder="xxxxx" maxlength="5"/>
           </div>
           <div class="col-12 col-md-6">
             <label class="form-label" for="gdrg_code"> Start Date <a href="#" style="color: red;">*</a></label>
@@ -473,21 +503,22 @@
           </div>
           <div class="col-12 col-md-6">
             <label class="form-label" for="gdrg_code"> HIN # <a href="#" style="color: red;">*</a></label>
-            <input type="text" id="hin_no" name="hin_no" class="form-control" readonly/>
+            <input type="text" id="hin_no" name="hin_no" class="form-control"/>
           </div>
           <div class="col-12 col-md-6">
             <label class="form-label" for="status">Status </label>
-            <input type="text" id="card_status" name="card_status" class="form-control" readonly/>
+            <input type="text" id="card_status" name="card_status" class="form-control" disabled/>
           </div>
-         <div class="col-12">
-            <!-- <label class="form-label">NHIS Registration Name</label> -->
-              <!-- <input type="text" name="fullname" id="fullname" class="form-control" disabled> -->
+          <br><br>
+          <div class="col-12 col-md-6">
+               <label class="form-label">NHIS Registration Name</label> 
+               <label for="fullname" id="fullname" id="fullname"></label>
+               <!-- <input type="text" name="fullname" id="fullname" class="form-control" disabled>  -->
           </div> 
-          <br>
+          <br><br>
           <div class="col-12 col-md-12" align="center">
-            <button type="button" class="btn btn-info" onclick="generateCC()">Generate CC</button>
-            <button type="submit" class="btn btn-primary me-3">Submit</button>
-            <button type="reset" class="btn btn-danger" data-bs-dismiss="modal" aria-label="Close"><i class="bx bx-trash"></i>Close</button>
+            <button type="submit" class="btn btn-primary" id="save_ccc" name="save_ccc">Submit</button>
+            <button type="reset" id="reset_ccc" class="btn btn-danger" data-bs-dismiss="modal" aria-label="Close"><i class="bx bx-x"></i>Close</button>
           </div>
         </form>
       </div>
@@ -495,7 +526,6 @@
   </div>
 </div>
 <!--/ service_request Modal -->
- <!-- ----------------------------------------****************************---------------------------------------------------------- -->
 <!-- ----------------------------------------****************************---------------------------------------------------------- -->
 <script>
 // Add this at the beginning of your script to prevent multiple initializations

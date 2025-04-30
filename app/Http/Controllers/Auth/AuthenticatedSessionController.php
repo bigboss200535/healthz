@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 use Carbon\Carbon;
 use App\Models\LoginLog;
+use App\Models\User;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -31,6 +32,11 @@ class AuthenticatedSessionController extends Controller
             $request->authenticate();
             $request->session()->regenerate();
 
+            $facility = User::where('status', 'Active')
+                ->where('archived', 'No')  
+                ->where('facility_id', Auth::user()->user_id)      
+                ->first();
+
             LoginLog::create([
                 'user_id' => Auth::user()->user_id,
                 'logname' => 'login',
@@ -38,6 +44,7 @@ class AuthenticatedSessionController extends Controller
                 'user_pc' => $request->getHost(),
                 'login_date' => now(),
                 'login_time' => now(),
+                'facility_id' => $facility->facility_id,
                 'added_date' => now(),
                 'session_id' => session()->getId(), 
                 'status' => 'Success', // Login success
@@ -74,17 +81,24 @@ class AuthenticatedSessionController extends Controller
     public function destroy(Request $request): RedirectResponse
     {
         if (Auth::check()) {
-            LoginLog::create([
-                'user_id' => Auth::user()->user_id,
-                'logname' => 'logout',
-                'user_ip' => $request->ip(),
-                'user_pc' => $request->getHost(),
-                'logout_date' => now(),
-                'logout_time' => now(),
-                'added_date' => now(),
-                'session_id' => session()->getId(), 
-                'status' => 'Active', // Login failed
-            ]);
+            
+            $update_log = LoginLog::where('session_id', session()->getId())
+                ->first();
+            
+            $update_log->logout_date = now();
+            $update_log->logout_time = now();
+            $update_log->save();
+            // LoginLog::create([
+            //     'user_id' => Auth::user()->user_id,
+            //     'logname' => 'logout',
+            //     'user_ip' => $request->ip(),
+            //     'user_pc' => $request->getHost(),
+            //     'logout_date' => now(),
+            //     'logout_time' => now(),
+            //     'added_date' => now(),
+            //     'session_id' => session()->getId(), 
+            //     'status' => 'Active', // Login failed
+            // ]);
         }
 
         Auth::guard('web')->logout();

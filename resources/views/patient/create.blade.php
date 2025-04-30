@@ -284,7 +284,7 @@
                   <i class="bx bx-save"></i> 
                   Save Patient
                 </button>
-                <button type="reset" class="btn btn-info"> <i class="bx bx-reset"></i> Clear Form</button>
+                <button type="reset" class="btn btn-info" id="reset_button" name="reset_button"> <i class="bx bx-reset"></i> Clear Form</button>
                 <!-- <a href="{{ route('patients.index') }}" class="btn btn-dark"> <i class="bx bx-search"></i> Search Patient</a> -->
               </div>
             </form>

@@ -8,6 +8,7 @@ use App\Models\PatientAttendance;
 use App\Models\Stores;
 use App\Models\User;
 use App\Models\Diagnosis;
+use App\Models\Claim;
 use App\Models\Product;
 use App\Models\ServiceRequest;
 use Illuminate\Http\Request;
@@ -159,10 +160,13 @@ class ConsultationController extends Controller
         $attendance = $attendance_query->first();
     
         if (!$attendance) {
-            // return response()->json('Attendance details not found.vvv');
             //  return  'Attendance details not found.';
+        }else{
+             //  update service to issued if found
+            PatientAttendance::where('attendance_id', $attendance->attendance_id)->update('service_issued', '1');
         }
     
+
         // Fetch consulting rooms
         $con_room = ConsultingRoom::where('Archived', 'No')
             ->where('status', 'Active')
@@ -177,6 +181,25 @@ class ConsultationController extends Controller
         $systemic = DB::table('systemic_areas')
             ->where('archived', 'No')
             ->get();  
+
+        $claims = Claim::where('attendance_id', $attendance_id)->get();
+
+        if(!$claims){
+            $new_claim = Claim::create([
+                'opd_number' => $attendance_query->opd_number,
+                'age' => $attendance_query->pat_age,
+                'pat_status' => $attendance_query->status_code,
+                'attendance_date' => $attendance_query->attendance_date,
+                'claim_start_date' => $attendance_query->attendance_date,
+                'claims_end_date' => $attendance_query->attendance_date,
+                // 'no_of_visits' => $attendance_query->service_type,
+                'attendance_type' => $attendance_query->attendance_type,
+                'gdrg' => $attendance_query->gdrg_code,
+                'service_fee' => $attendance_query->credit_amount,
+                'episode_id' => $attendance_query->episode_id,
+                'user_id' => auth()->id()
+            ]);
+        }
 
         return view('consultation.opd_consult', compact( 'attendance', 'doctors', 'con_room', 'systemic'));
     }

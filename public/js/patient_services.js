@@ -24,10 +24,36 @@ $(document).ready(function () {
           { data: 'actions', orderable: false }
       ]
   });
-
+// ------------------------------------------------------------------------------------
   // Form submission handler
   $('#service_request_form').on('submit', function (e) {
       e.preventDefault();
+
+      const $form = $(this);
+      const formData = new FormData($form[0]);
+      const $submitBtn = $('#service_request_save');
+      const $closeBtn = $('#reset_close');
+      const service_requests = Object.fromEntries(formData.entries());
+
+      if (!service_requests.clinic_code || service_requests.clinic_code === "-Select-"){
+        $('#clinic_code').addClass('is-invalid').focus();
+        return false;
+      }
+
+      if (!service_requests.service_type || service_requests.service_type === "-Select-"){
+        $('#service_type').addClass('is-invalid').focus();
+        return false;
+      }
+
+      if (!service_requests.attendance_date){
+        $('#attendance_date').addClass('is-invalid').focus();
+        return false;
+      }
+      if (!service_requests.attendance_type || service_requests.attendance_type === "-Select-"){
+        $('#attendance_type').addClass('is-invalid').focus();
+        return false;
+      }
+
 
       $.ajax({
           url: '/services/service_request',
@@ -36,6 +62,12 @@ $(document).ready(function () {
           headers: {
               'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
           },
+          beforeSend: function() {
+            $closeBtn.prop('disabled', true);
+            $submitBtn.prop('disabled', true)
+            .html('<span class="spinner-border spinner-border-sm" role="status"></span> Submitting...');
+
+        },
           success: function (response) {
               // Show success message
               $('.alert-container').html(`
@@ -47,7 +79,7 @@ $(document).ready(function () {
 
               // Reset form
               $('#service_request_form')[0].reset();
-
+              $closeBtn.prop('disabled', false);
               // Refresh the attendance table
               refresh_attendance_table();
           },
@@ -60,9 +92,15 @@ $(document).ready(function () {
                       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                   </div>
               `);
-          }
+              $closeBtn.prop('disabled', false);
+          },
+          complete: function () {
+            $submitBtn.prop('disabled', false).html('<i class="bx bx-save"></i> Submit');
+            $closeBtn.prop('disabled', false);
+    }
       });
   });
+// ---------------------------------------------------------------
 
   // Function to refresh the attendance table
   function refresh_attendance_table() {
@@ -127,6 +165,90 @@ $(document).ready(function () {
       return date.toLocaleDateString('en-GB'); // Adjust to your preferred format
   }
 });
+
+// -----------------------SAVE CLAIMS CODE -----------------------------
+  // Form submission handler
+  $('#generate_ccc').on('submit', function (e) {
+    e.preventDefault();
+
+    const $form = $(this);
+    const formData = new FormData($form[0]);
+    const $submitBtn = $('#save_ccc');
+    const $closeBtn = $('#reset_ccc');
+    const ccc = Object.fromEntries(formData.entries());
+
+    if (!ccc.member_no){
+      $('#member_no').addClass('is-invalid').focus();
+      return false;
+    }
+
+    if (!ccc.claim_code){
+      $('#claim_code').addClass('is-invalid').focus();
+      return false;
+    }
+
+    if (!ccc.start_date){
+      $('#start_date').addClass('is-invalid').focus();
+      return false;
+    }
+    if (!ccc.end_date){
+      $('#end_date').addClass('is-invalid').focus();
+      return false;
+    }
+    if (!ccc.card_status){
+      $('#card_status').addClass('is-invalid').focus();
+      return false;
+    }
+
+    $.ajax({
+        url: '/services/save-ccc',
+        type: 'POST',
+        data: $(this).serialize(),
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        beforeSend: function() {
+          $closeBtn.prop('disabled', true);
+          $submitBtn.prop('disabled', true)
+          .html('<span class="spinner-border spinner-border-sm" role="status"></span> Submitting...');
+
+      },
+        success: function (response) {
+            // Show success message
+            $('.alert-container').html(`
+                <div class="alert alert-primary alert-dismissible fade show" role="alert">
+                    Attendance Created successfully!
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            `);
+
+            // Reset form
+            $('#service_request_form')[0].reset();
+            $closeBtn.prop('disabled', false);
+            // Refresh the attendance table
+            refresh_attendance_table();
+        },
+        error: function (xhr) {
+            // Show error message
+            const errorMessage = xhr.responseJSON?.message || 'An error occurred while creating attendance.';
+            $('.alert-container').html(`
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    ${errorMessage}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            `);
+            $closeBtn.prop('disabled', false);
+        },
+        complete: function () {
+          $submitBtn.prop('disabled', false).html('<i class="bx bx-save"></i> Submit');
+          $closeBtn.prop('disabled', false);
+  }
+    });
+}); 
+
+
+
+
 // //********************************** */ SERVICE REQUEST FORM SUBMISSION ***************************** 
 
 //  ----------------------------------------------------------
@@ -313,7 +435,7 @@ document.addEventListener("DOMContentLoaded", function() {
  $('#clear_search').on('click', function(e){
   e.preventDefault(); // Prevent default link behavior
  $('#search_patient').val('');  // Clear the input field
- $('#patient_search_list tbody').refresh();  // Clear the table body
+//  $('#patient_search_list tbody').refresh();  // Clear the table body
 });
 
 // });
@@ -321,43 +443,68 @@ document.addEventListener("DOMContentLoaded", function() {
 
 // ***************************** CCC FUNCTION***************************** ***************************** ***************************** 
 function generateCC() {
-        var member_no = $('#member_no').val();
-        var card_type = $('#card_type').val();
+        var CardNo = $('#member_no').val();
+        var CardType = $('#card_type').val();
 
-        if (!member_no) {
-          alert('Please enter a member number.');
+        const $submitBtn = $('#generate_cc');
+
+        if (!CardNo) {
+          toastr.error('Entership Member #');
           return;
         }
         // Perform AJAX request
         $.ajax({
-            url: '/external/claims_code',
-            type: 'get', 
-            data: { member_no: member_no, card_type: card_type }, 
+            url: '/api/claims_code',
+            type: 'post', 
+            data: { CardNo: CardNo, CardType: CardType }, 
             dataType: 'json',
             headers: {
                // Ensure CSRF token is fetched correctly
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') 
             },
+            beforeSend: function() {
+                   $('#claim_code').val(''); 
+                    $('#start_date').val('')
+                    $('#end_date').val('');
+                    $('#hin_no').val(''); 
+                    $('#card_status').val('');
+              $submitBtn.prop('disabled', true)
+              .html('<span class="spinner-border spinner-border-sm" role="status"></span> Fetching...');
+
+          },
             success: function(response) {
                 if (response.success) {
-                  var result = JSON.parse(response.result);
+                  var result = response.data;
+                  var current_status = $('#card_status').val().trim();
+
                     $('#claim_code').val(result.MobCCC || ''); // Set to empty if null
                     $('#start_date').val(result.EligibilityStartDate.split('T')[0])
                     $('#end_date').val(result.EligibilityEndDate.split('T')[0]);
                     $('#hin_no').val(result.HIN); 
-                    $('#card_status').val(result.Status);
-                    // $('#fullname').val(result.MemberName);
-                  
+
+                      if(current_status === 'Active') {
+                          $('#card_status').val('ACTIVE').css('color', 'green');
+                      }else{
+                          $('#card_status').val('INACTIVE').css('color', 'red');
+                          $submitBtn.prop('disabled', true);
+                      }
+              
+                    $('#fullname').val(result.MemberName);
+                    
+                    $submitBtn.prop('disabled', false);
                 } else {
-                    // alert('Error: ' + response.message); 
-                    $('#error').val(result.message);
+                    // toastr.error(result.message);
+                    $submitBtn.prop('disabled', false)
                 }
             },
             error: function(xhr, status, error) {
                 // Handle AJAX error
-                console.error('AJAX Error: ', error);
-                alert('An error occurred while generating CC. Please try again.');
-            }
+                $submitBtn.prop('disabled', false);
+            },
+            complete: function () {
+              $submitBtn.prop('disabled', false).html('Generate CC');
+              $restBtn.prop('disabled', false);
+      }
         });
       }
 
