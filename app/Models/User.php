@@ -32,13 +32,14 @@ class User extends Authenticatable
         'password',
         'firstname',
         'othername', 
-        'gender',
-        // 'salt',
+        'gender_id',
+        'oldpassword',
         'salt',
+        'facility_id',
         'telephone',
         'telephone_verified',
         'telephone_verified_at',
-        'role_id',
+        'user_roles_id',
         'mode',
         'email',
         'email_verified',
@@ -58,10 +59,11 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
-    // protected $hidden = [
-    //     'password',
-    //     'remember_token',
-    // ];
+    protected $hidden = [
+        'password',
+        'remember_token',
+        'salt'
+    ];
 
     /**
      * The attributes that should be cast.

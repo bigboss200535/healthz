@@ -69,7 +69,8 @@
     <li class="menu-header small text-uppercase">
       <span class="menu-header-text" data-i18n="Apps & Pages">Apps</span>
     </li>
-    @if(Auth::user()->role_id == 'R1')
+
+    
     <!-- -----------------------------------patient------------------->
     <li class="menu-item">
       <a href="javascript:void(0);" class="menu-link menu-toggle">
@@ -78,11 +79,13 @@
          <!-- <span class="badge badge-center rounded-pill bg-success ms-auto">4</span> -->
       </a>
       <ul class="menu-sub">
+      @if(auth()->user()->can('PATIENT REGISTRATION'))
       <li class="menu-item">
           <a href="{{ route('patients.create') }}" class="menu-link">
             <div class="text-truncate" data-i18n="List">Add Patient</div>
           </a>
         </li>
+        @endif
          <li class="menu-item">
           <a href="{{ route('patients.index') }}" class="menu-link">
             <div class="text-truncate" data-i18n="List">Search Patient</div>
@@ -100,9 +103,9 @@
         </li>
       </ul>
     </li>
-    @endif
+    
   <!-----------nurses------------------------>
-  @if(Auth::user()->role_id == 'R1' ||Auth::user()->role_id == 'R2')
+  
   <li class="menu-item">
       <a href="javascript:void(0);" class="menu-link menu-toggle">
         <i class="menu-icon tf-icons bx bx-injection"></i>
@@ -136,7 +139,7 @@
         </li> -->
       </ul>
     </li>
-    @endif
+    
     <li class="menu-item">
       <a href="javascript:void(0);" class="menu-link menu-toggle">
         <i class="menu-icon tf-icons bx bx-male-female"></i>

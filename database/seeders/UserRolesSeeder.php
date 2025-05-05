@@ -8,7 +8,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 
-class UserRoles extends Seeder
+class UserRolesSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -19,136 +19,137 @@ class UserRoles extends Seeder
     public function run()
     {
         $titledata = UserRole::create([
-            'role_id' => 'R1',
-            'role_name' => 'Developer',
+            'user_roles_id' => 'R1',
+            'role_type' => 'DEVELOPER',
+            'usage' => '1',
             'added_date' => now(),
             'status' => 'Active',
             'archived' => 'No',
         ]);
 
         $titledata = UserRole::create([
-            'role_id' => 'R2',
-            'role_name' => 'System Administrator',
+            'user_roles_id' => 'R2',
+            'role_type' => 'SYSTEM ADMINISTRATOR',
             'added_date' => now(),
             'status' => 'Active',
             'archived' => 'No',
         ]);
 
         $titledata = UserRole::create([
-            'role_id' => 'R3',
-            'role_name' => 'IT Officer',
+            'user_roles_id' => 'R3',
+            'role_type' => 'IT OFFICER',
             'added_date' => now(),
             'status' => 'Active',
             'archived' => 'No',
         ]);
 
         $titledata = UserRole::create([
-            'role_id' => 'R4',
-            'role_name' => 'Claim Officer',
+            'user_roles_id' => 'R4',
+            'role_type' => 'Claim Officer',
             'added_date' => now(),
             'status' => 'Active',
             'archived' => 'No',
         ]);
 
         $titledata = UserRole::create([
-            'role_id' => 'R5',
-            'role_name' => 'Hospital Administrator',
+            'user_roles_id' => 'R5',
+            'role_type' => 'Hospital Administrator',
             'added_date' => now(),
             'status' => 'Active',
             'archived' => 'No',
         ]);
 
         $titledata = UserRole::create([
-            'role_id' => 'R6',
-            'role_name' => 'Chief Executive Officer',
+            'user_roles_id' => 'R6',
+            'role_type' => 'Chief Executive Officer',
             'added_date' => now(),
             'status' => 'Active',
             'archived' => 'No',
         ]);
 
         $titledata = UserRole::create([
-            'role_id' => 'R7',
-            'role_name' => 'Accounts Officer',
+            'user_roles_id' => 'R7',
+            'role_type' => 'Accounts Officer',
             'added_date' => now(),
             'status' => 'Active',
             'archived' => 'No',
         ]);
 
         $titledata = UserRole::create([
-            'role_id' => 'R8',
-            'role_name' => 'Accountant',
+            'user_roles_id' => 'R8',
+            'role_type' => 'Accountant',
             'added_date' => now(),
             'status' => 'Active',
             'archived' => 'No',
         ]);
 
         $titledata = UserRole::create([
-            'role_id' => 'R9',
-            'role_name' => 'Nurse',
+            'user_roles_id' => 'R9',
+            'role_type' => 'Nurse',
             'added_date' => now(),
             'status' => 'Active',
             'archived' => 'No',
         ]);
 
         $titledata = UserRole::create([
-            'role_id' => 'R10',
-            'role_name' => 'Doctors',
+            'user_roles_id' => 'R10',
+            'role_type' => 'Doctors',
             'added_date' => now(),
             'status' => 'Active',
             'archived' => 'No',
         ]);
 
         $titledata = UserRole::create([
-            'role_id' => 'R11',
-            'role_name' => 'Data Entry Clerk',
+            'user_roles_id' => 'R11',
+            'role_type' => 'Data Entry Clerk',
             'added_date' => now(),
             'status' => 'Active',
             'archived' => 'No',
         ]);
 
         $titledata = UserRole::create([
-            'role_id' => 'R12',
-            'role_name' => 'Opd Clerk',
+            'user_roles_id' => 'R12',
+            'role_type' => 'Opd Clerk',
             'added_date' => now(),
             'status' => 'Active',
             'archived' => 'No',
         ]);
 
         $titledata = UserRole::create([
-            'role_id' => 'R13',
-            'role_name' => 'Auditor',
+            'user_roles_id' => 'R13',
+            'role_type' => 'Auditor',
             'added_date' => now(),
             'status' => 'Active',
             'archived' => 'No',
         ]);
 
         $titledata = UserRole::create([
-            'role_id' => 'R14',
-            'role_name' => 'Store Manager',
+            'user_roles_id' => 'R14',
+            'role_type' => 'Store Manager',
             'added_date' => now(),
             'status' => 'Active',
             'archived' => 'No',
         ]);
 
         $titledata = UserRole::create([
-            'role_id' => 'R15',
-            'role_name' => 'Store Keeper',
+            'user_roles_id' => 'R15',
+            'role_type' => 'Store Keeper',
             'added_date' => now(),
             'status' => 'Active',
             'archived' => 'No',
         ]);
 
         $titledata = UserRole::create([
-            'role_id' => 'R16',
-            'role_name' => 'Secretary',
+            'user_roles_id' => 'R16',
+            'role_type' => 'Secretary',
             'added_date' => now(),
             'status' => 'Active',
             'archived' => 'No',
         ]);
 
         $titledata = UserRole::create([
-            'role_id' => 'R17',
-            'role_name' => 'Procurement Officer',
+            'user_roles_id' => 'R17',
+            'role_type' => 'Procurement Officer',
             'added_date' => now(),
             'status' => 'Active',
             'archived' => 'No',

@@ -125,6 +125,7 @@
             $('#patient_searches').DataTable();
             $('#nurses_notes_patient').DataTable();
             $('#drugs').DataTable();
+            $('#users_list').DataTable();
             $('#diagnosis_list').DataTable();
             $('.sponsor_name').select2();
             $('.diagnosis_search').select2();
@@ -178,6 +179,216 @@
 <!-- <script>
  
 </script> -->
+<script>
 
+              $(document).ready(function() {
+                  $('#user_form').submit(function(e) {
+                      e.preventDefault();
+
+                      const $submitBtn = $('#save_user');
+                      const $clearBtn = $('#clear_user_form');
+                      const $form = $('#user_form'); // Added missing form reference
+
+                      const original_text = $submitBtn.html();
+                      const formData = new FormData($form[0]);
+                      const user_save = Object.fromEntries(formData.entries());
+
+                      $clearBtn.prop('disabled', true);
+
+                      // Clear previous validation errors
+                      $('.is-invalid').removeClass('is-invalid');
+
+                      if (!user_save.u_user_name || user_save.u_user_name === ""){
+                          $('#u_user_name').addClass('is-invalid').focus();
+                          return false;
+                      }
+
+                      if (!user_save.first_name || user_save.first_name === ""){
+                          $('#first_name').addClass('is-invalid').focus();
+                          return false;
+                      }
+
+                      if (!user_save.other_name || user_save.other_name === ""){
+                          $('#other_name').addClass('is-invalid').focus();
+                          return false;
+                      }
+                      
+                      if (!user_save.u_pass_word || user_save.u_pass_word === ""){
+                          $('#u_pass_word').addClass('is-invalid').focus();
+                          return false;
+                      }
+
+                      if (!user_save.confirm_pass || user_save.confirm_pass === ""){
+                          $('#confirm_pass').addClass('is-invalid').focus();
+                          return false;
+                      }
+
+                      if (!user_save.gender || user_save.gender === ""){
+                          $('#gender').addClass('is-invalid').focus();
+                          return false;
+                      }
+
+                      if (!user_save.user_role || user_save.user_role === ""){
+                          $('#user_role').addClass('is-invalid').focus();
+                          return false;
+                      }
+
+                      // Validate password match
+                      if (user_save.u_pass_word !== user_save.confirm_pass) {
+                          toastr.warning('Password and Confirm Password do not match');
+                          $('#u_pass_word').addClass('is-invalid').focus();
+                          $('#confirm_pass').addClass('is-invalid');
+                          return false;
+                      }
+
+                      const url = user_save.user_id ? `/users/${user_save.user_id}` : '/users';
+                      const method = user_save.user_id ? 'PUT' : 'POST'; // Fixed variable name from patient_save to user_save
+
+                      $.ajax({
+                          url: url,
+                          type: method,
+                          data: formData,
+                          processData: false,
+                          contentType: false,
+                          headers: {
+                               'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                          },
+                          beforeSend: function() {
+                              $clearBtn.prop('disabled', true);
+                              $submitBtn.prop('disabled', true)
+                              .html('<span class="spinner-border spinner-border-sm" role="status"></span> Submitting...');
+                          },
+                          success: function(response) {
+                              if(response.code === 201) {
+                                  toastr.success('User created successfully');
+                                  $submitBtn.prop('disabled', false);
+                                  $clearBtn.prop('disabled', false);
+                                  $form[0].reset(); // Reset form after successful submission
+                                  
+                                  // Reload the table section via AJAX
+                                  reload_user_table();
+                              } else if (response.code === 200) {
+                                  toastr.warning('Ops! ' + response.message);
+                                  $submitBtn.prop('disabled', false);
+                                  $clearBtn.prop('disabled', false);
+                              } 
+                            //   else {
+                            //       toastr.error(response.message || 'Error saving User');
+                            //       $submitBtn.prop('disabled', false);
+                            //       $clearBtn.prop('disabled', false);
+                            //   }
+                          },
+                          error: function(xhr) {
+                              let errors = xhr.responseJSON?.errors || {};
+                              let errorMessage = '';
+                              
+                              $.each(errors, function(key, value) {
+                                  errorMessage += value + '\n';
+                                  $(`#${key}`).addClass('is-invalid');
+                              });
+                              toastr.error('Ops! ' + errorMessage);
+                              $submitBtn.prop('disabled', false);
+                              $clearBtn.prop('disabled', false);
+                          },
+                          complete: function () {
+                            $submitBtn.prop('disabled', false).html('Submit');
+                            $clearBtn.prop('disabled', false);
+                          }
+                      });
+                  });
+
+                  function reload_user_table() {
+                        $.get(window.location.href, function(data) {
+                            const newTable = $(data).find('#users_list').html();
+                            $('#users_list').html(newTable);
+                            
+                            // Re-initialize any plugins if needed
+                            // $('#users_list').DataTable();
+                        }).fail(function() {
+                            toastr.error('Could not refresh user list');
+                        });
+                    }
+              });
+</script>
+<script>
+$(document).ready(function() {
+    // Handle main permission toggle (is_granted)
+    $(document).on('change', 'table#app_list tbody tr td:first-child input[type="checkbox"]', function() {
+        const checkbox = $(this);
+        const isChecked = checkbox.is(':checked') ? 1 : 0;
+        const row = checkbox.closest('tr');
+        const permissionId = row.find('.dropdown-menu a.product_delete_btn[data-id]').attr('data-id');
+        
+        // If no permission ID found in the row, it's likely the first checkbox
+        if (!permissionId) {
+            console.error('Permission ID not found');
+            return;
+        }
+
+        updatePermission(permissionId, { is_granted: isChecked });
+    });
+
+    // Handle specific permission toggles (read, create, delete, update)
+    $(document).on('change', 'table#app_list tbody tr td:nth-child(4) input[type="checkbox"]', function() {
+        // View/Read permission (4th column)
+        const checkbox = $(this);
+        const isChecked = checkbox.is(':checked') ? '1' : '0';
+        const permissionId = getPermissionIdFromRow(checkbox);
+        updatePermission(permissionId, { read: isChecked });
+    });
+
+    $(document).on('change', 'table#app_list tbody tr td:nth-child(5) input[type="checkbox"]', function() {
+        // Add/Create permission (5th column)
+        const checkbox = $(this);
+        const isChecked = checkbox.is(':checked') ? '1' : '0';
+        const permissionId = getPermissionIdFromRow(checkbox);
+        updatePermission(permissionId, { create: isChecked });
+    });
+
+    $(document).on('change', 'table#app_list tbody tr td:nth-child(6) input[type="checkbox"]', function() {
+        // Delete permission (6th column)
+        const checkbox = $(this);
+        const isChecked = checkbox.is(':checked') ? '1' : '0';
+        const permissionId = getPermissionIdFromRow(checkbox);
+        updatePermission(permissionId, { delete: isChecked });
+    });
+
+    $(document).on('change', 'table#app_list tbody tr td:nth-child(7) input[type="checkbox"]', function() {
+        // Edit/Update permission (7th column)
+        const checkbox = $(this);
+        const isChecked = checkbox.is(':checked') ? '1' : '0';
+        const permissionId = getPermissionIdFromRow(checkbox);
+        updatePermission(permissionId, { update: isChecked });
+    });
+
+    // Helper function to get permission ID from a row
+    function getPermissionIdFromRow(element) {
+        const row = element.closest('tr');
+        return row.find('.dropdown-menu a.product_delete_btn[data-id]').attr('data-id');
+    }
+
+    // Function to send AJAX request
+    function updatePermission(permissionId, data) {
+        $.ajax({
+            url: '/permissions/' + permissionId,
+            type: 'PUT',
+            data: {
+                _token: $('meta[name="csrf-token"]').attr('content'),
+                ...data
+            },
+            success: function(response) {
+                // Optional: Show success message
+                toastr.success('Permission updated successfully');
+            },
+            error: function(xhr) {
+                // Revert checkbox on error
+                checkbox.prop('checked', !isChecked);
+                toastr.error('Error updating permission');
+                console.error(xhr.responseText);
+            }
+        });
+    }
+});
+</script>
 </body>
 </html>

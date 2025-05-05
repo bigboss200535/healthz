@@ -91,7 +91,12 @@ Route::middleware('auth')->group(function () {
     });
     
     // Add this route to handle the AJAX request
-   
+   Route::prefix('users')->group(function (){
+    Route::get('/manage-permissions/{user_id}', [UserController::class, 'permissions'])->name('users.permissions');
+    Route::get('/permissions/{user_id}', [UserController::class, 'permissions'])->name('users.permissions');
+    
+    // Route::post('/add-users', [UserController::class, 'store'])->name('users.store');
+   });
 
 
     Route::prefix('services')->group(function () {

@@ -102,13 +102,9 @@
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
                     beforeSend: function() {
-                        // formOverlay.fadeIn();
-                        // submitBtn.prop('disabled', true);
-                        // resetBtn.prop('disabled', true);
-                        $restBtn.prop('disabled', false);
+                        $restBtn.prop('disabled', true);
                         $submitBtn.prop('disabled', true)
                         .html('<span class="spinner-border spinner-border-sm" role="status"></span> Submitting...');
-        
                     },
                     success: function (response) {
                         if (response.code === 201) {
@@ -122,11 +118,15 @@
                             toastr.warning(response.message || 'Patient data already exists');
                             $submitBtn.prop('disabled', false);
                             $restBtn.prop('disabled', false);
-                        } else {
+                        } else if(response.code === 200){
+                            toastr.error(response.message);
+                            $submitBtn.prop('disabled', false);
+                            $restBtn.prop('disabled', false);
+                        }else {
                             toastr.error(response.message || 'Error saving patient data');
                             $submitBtn.prop('disabled', false);
                             $restBtn.prop('disabled', false);
-                        }
+                        }                  
                     },
                     error: function (xhr, status, error) {
                         let errorMessage = xhr.responseJSON?.message || 'Error saving patient data';

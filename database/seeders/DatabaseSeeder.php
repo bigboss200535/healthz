@@ -24,11 +24,11 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             FacilitySeeder::class,
-            UserRoles::class,
+            UserRolesSeeder::class,
+            GenderSeeder::class,
             UserSeeder::class,
             OccupationSeeder::class,
             PatientStatusSeeder::class,
-            GenderSeeder::class,
             HealthFacilitySeeder::class,
             ServiceTypesSeeder::class,
             TitleSeeder::class,
@@ -61,13 +61,17 @@ class DatabaseSeeder extends Seeder
             DocumentationRepoSeeder::class,
             ClinicalHistorySeeder::class,
             SystemicAreasSeeder::class,
-            FrequenciesSeeder::class
+            FrequenciesSeeder::class,
+            PermissionRoleSeeder::class,
+            PermissionsSeeder::class,
+            UserCategoryAccessLevelSeeder::class,
+            UserPermissionsSeeder::class
         ]);
-        
+        // \App\Models\User::factory(20)->create();
         // \App\Models\Patient::factory(2000)->create();
         // \App\Models\PatientSponsor::factory(200)->create();
         // \App\Models\PatientOpdNumber::factory(450)->create();
-        \App\Models\User::factory(20)->create();
+       
         // \App\Models\PatientAttendance::factory(100)->create();
         // \App\Models\ConsultingRoom::factory(10)->create();
         // \App\Models\Consultation::factory(100)->create();

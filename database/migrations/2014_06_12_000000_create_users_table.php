@@ -29,8 +29,8 @@ return new class extends Migration
             $table->string('locked', 50)->default('No');
             $table->timestamp('expiry_date')->nullable();
             $table->timestamp('telephone_verified_at')->nullable();
-            $table->string('gender', 50);
-            $table->string('role_id', 50)->nullable();
+            $table->string('gender_id', 50);
+            $table->string('user_roles_id', 50)->nullable();
             $table->string('mode', 50)->default('New')->nullable();
             $table->string('email')->nullable()->unique();
             $table->string('email_verified', 20)->nullable();
@@ -45,7 +45,8 @@ return new class extends Migration
             $table->string('archived_by', 100)->nullable();
             $table->date('archived_date', 100)->nullable();
             $table->foreign('facility_id')->references('facility_id')->on('facility');
-            $table->foreign('role_id')->references('role_id')->on('user_roles');
+            $table->foreign('gender_id')->references('gender_id')->on('gender');
+            $table->foreign('user_roles_id')->references('user_roles_id')->on('user_roles');
         });
     }
 
