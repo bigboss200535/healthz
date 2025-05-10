@@ -33,7 +33,8 @@ class PatientController extends Controller
 {
     public function index()
     {
-        $sponsor_types = SponsorType::where('archived', 'No')
+        $sponsor_types = SponsorType::select('sponsor_type')
+            ->where('archived', 'No')
             ->orderBy('sponsor_type', 'asc')
             ->get();
             
@@ -42,6 +43,11 @@ class PatientController extends Controller
 
     public function create()
     {
+        $today = date('Y-m-d');
+        $recent_patient = Patient::where('archived', 'No')
+        // ->where('added_date', $today)
+        ->orderBy('added_date', 'desc')->get();
+
         $title = Title::where('archived', 'No')->where('status', '=','Active')->get();
         $religion = Religion::where('archived', 'No')->where('status', '=','Active')->get();
         $gender = Gender::where('archived', 'No')->where('status', '=','Active')->where('usage', '=','1')->get();
@@ -59,7 +65,7 @@ class PatientController extends Controller
                 ->orderBy('service_points', 'asc') 
                 ->get();
 
-        return view('patient.create', compact('clinic_attendance','title', 'religion', 'gender', 'region', 'relation', 'payment_type', 'towns','occupations', 'sponsor'));
+        return view('patient.create', compact('recent_patient', 'clinic_attendance', 'title', 'religion', 'gender', 'region', 'relation', 'payment_type', 'towns','occupations', 'sponsor'));
     }
 
    
@@ -67,6 +73,8 @@ class PatientController extends Controller
     {
         
         $validated_data = $request->validate([
+            '_token' => 'required|string',
+            // 'old_folder' => 'nullable|string|max:255',
             'pat_id' => 'nullable',
             'title' => 'required|string|max:255',
             'firstname' => 'required|string|min:3|max:255',
@@ -255,10 +263,21 @@ class PatientController extends Controller
             ->join('gender', 'patient_info.gender_id', '=', 'gender.gender_id')
             ->join('patient_nos', 'patient_nos.patient_id', '=', 'patient_info.patient_id')
             ->join('users', 'patient_info.user_id', '=', 'users.user_id')
-            ->select('patient_info.patient_id', 'patient_nos.opd_number', 'patient_info.title', 'patient_info.fullname', 'gender.gender', 
-                     'patient_info.birth_date', 'patient_info.email', 'patient_info.address', 'patient_info.contact_person', 
-                     'patient_info.contact_relationship', 'patient_info.contact_telephone', 'patient_info.added_date', 
-                     'patient_info.telephone', 'users.user_fullname', 'patient_info.gender_id', 'gender.gender','patient_info.death_status',
+            ->select('patient_info.patient_id', 
+                    'patient_nos.opd_number', 
+                    'patient_info.title', 
+                    'patient_info.fullname', 
+                    'gender.gender', 
+                     'patient_info.birth_date', 
+                     'patient_info.email', 
+                     'patient_info.address', 'patient_info.contact_person', 
+                     'patient_info.contact_relationship', 
+                     'patient_info.contact_telephone', 
+                     'patient_info.added_date', 
+                     'patient_info.telephone', 
+                     'users.user_fullname', 
+                     'patient_info.gender_id', 
+                     'patient_info.death_status',
                      DB::raw('TIMESTAMPDIFF(YEAR, patient_info.birth_date, CURDATE()) as patient_age'))
             ->orderBy('patient_info.added_date', 'asc') 
             ->first();
@@ -272,11 +291,11 @@ class PatientController extends Controller
         $clinic_attendance = ServicePoints::select('service_point_id', 'service_points', 'gender_id', 'age_id')
                     ->where(function ($query) use ($patients) {
                         $query->where('gender_id', $patients->gender_id)
-                            ->orWhere('gender_id', 1); // Assuming 1 is a all gender group
+                            ->orWhere('gender_id', 1); //  1 is a all gender group
                     })
                     ->where(function ($query) use ($ages) {
                         $query->where('age_id', $ages->age_id)
-                            ->orWhere('age_id', 3); // Assuming 3 is a all age groupd
+                            ->orWhere('age_id', 3); //  3 is a all age group
                     })
                     ->where('archived', 'No')
                     ->where('is_active', 'Yes')
@@ -318,8 +337,6 @@ class PatientController extends Controller
     }
 
     
-
-
     public function edit($patient_id)
     {  
         
@@ -344,6 +361,7 @@ class PatientController extends Controller
     public function update(Request $request, $pat_id)
     {
         $data = $request->validate([
+            '_token' => 'required|string',
             'pat_id' => 'nullable',
             'title' => 'required',
             'firstname' => 'required|min:3',
@@ -530,9 +548,19 @@ class PatientController extends Controller
         return response()->json($sponsor);
     }
 
-    // public function attendance()
-    // {
-    //     return view('patient.attendance'); 
-    // }
+    public function list_all_patient_sponsors(Request $request)
+    {
+         $sponsor_list = DB::table('patient_sponsorship')
+            ->where('patient_sponsorship.archived', 'No')
+            ->join('sponsors', 'patient_sponsorship.sponsor_id', '=', 'sponsors.sponsor_id')
+            ->join('patient_info', 'patient_info.patient_id', '=', 'patient_sponsorship.patient_id')
+            ->join('sponsor_type', 'sponsor_type.sponsor_type_id', '=', 'sponsors.sponsor_type_id')
+            ->select('patient_info.fullname', 'patient_sponsorship.sponsor_type_id','sponsor_type.sponsor_type','patient_sponsorship.member_no', 'patient_sponsorship.sponsor_id', 'sponsors.sponsor_name', 
+                    'patient_sponsorship.start_date', 'patient_sponsorship.end_date', 'patient_sponsorship.added_date', 'patient_sponsorship.status as card_status',
+                    'patient_sponsorship.status', 'patient_sponsorship.priority', 'patient_sponsorship.is_active', 'sponsors.sponsor_name', 'sponsor_type.sponsor_type' )
+            ->get();
+
+            return view('patient.sponsors', compact('sponsor_list'));
+    }
       
 }

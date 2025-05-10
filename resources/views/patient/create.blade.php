@@ -195,6 +195,68 @@
                       </div>
                     </div>
                     <div class="row mb 3">
+                          <h5 class="card-tile mb-0"><b>Payment Type</b></h5>
+                    </div>
+                    <br>
+                    <div class="row mb-3">
+                      <div class="col">
+                      <label class="form-label mb-1" for="sponsor_type_id">Sponsor Type</label>
+                        <select name="sponsor_type_id" id="sponsor_type_id" class="select2 form-control sponsor_type_id">
+                          <option disabled selected>-Select-</option>
+                            @foreach($payment_type as $sponsor_type)                                        
+                              <option value="{{ $sponsor_type->sponsor_type_id }}">{{ strtoupper($sponsor_type->sponsor_type) }}</option>
+                            @endforeach
+                        </select>
+                        </div>
+                        <div class="col sponsorship_details_settings" >
+                          <label class="form-label mb-1" for="sponsor_id">Sponsor Name </label>
+                          <select id="sponsor_id" name="sponsor_id" class="select2 form-select sponsor_name">
+                            <option value="" disabled selected>-Select-</option>
+                          </select>
+                        </div>
+                        <div class="col sponsorship_details_settings">
+                          <label class="form-label mb-1" for="member_no">Membership Number</label>
+                          <input type="text" name="member_no" id="member_no" class="form-control" >
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                      <div class="col sponsorship_details_settings">
+                          <label class="form-label mb-1" for="dependant">Dependant</label>
+                          <select class="form-control" class="form-control" id="dependant" name="dependant">
+                            <option value="NO" selected>NO</option>
+                            <option value="YES">YES</option>
+                          </select>
+                        </div>
+                        <div class="col sponsorship_details_settings" >
+                          <label class="form-label mb-1 d-flex justify-content-between align-items-center" for="start_date">
+                          <span>Start Date</span></label>
+                            <input type="date" name="start_date" id="start_date" class="form-control">
+                        </div>
+                        <div class="col sponsorship_details_settings">
+                          <label class="form-label mb-1 d-flex justify-content-between align-items-center" for="end_date">
+                            <span>End Date</span></label>
+                          <input type="date" name="end_date" id="end_date" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                      <div class="col sponsorship_details_settings">
+                      <label class="form-label mb-1 d-flex justify-content-between align-items-center" for="card_status">
+                        <span>Sponsor Status</span></label>
+                        <input type="text" name="card_status" id="card_status" class="form-control" readonly>
+                      </div>
+                      <div class="col sponsorship_details_settings">
+                      <!-- <label class="form-label mb-1 d-flex justify-content-between align-items-center" for="card_status">
+                        <span>Sponsor Status</span></label>
+                        <input type="text" name="card_status" id="card_status" class="form-control" readonly> -->
+                      </div>
+                      <div class="col sponsorship_details_settings">
+                      <!-- <label class="form-label mb-1 d-flex justify-content-between align-items-center" for="card_status">
+                        <span>Sponsor Status</span></label>
+                        <input type="text" name="card_status" id="card_status" class="form-control" readonly> -->
+                      </div>
+                  </div>
+                  <br>
+                    <div class="row mb 3">
                           <h5 class="card-tile mb-0"><b>Clinic #</b></h5>
                     </div>
                     <br>
@@ -228,53 +290,64 @@
                 <div class="card mb-4">
                   <div class="card-body">
                     <div class="row mb 3">
-                          <h5 class="card-tile mb-0"><b>Payment Type</b></h5>
+                        <h5 class="card-tile mb-0"><b>Current Registrations</b></h5>
+                        <label style="color:green"></label>
                     </div>
                     <br>
                   <div class="mb-3 col ecommerce-select2-dropdown">
-                      <label class="form-label mb-1" for="sponsor_type_id">Sponsor Type</label>
-                      <select name="sponsor_type_id" id="sponsor_type_id" class="select2 form-control sponsor_type_id">
-                        <option disabled selected>-Select-</option>
-                          @foreach($payment_type as $sponsor_type)                                        
-                            <option value="{{ $sponsor_type->sponsor_type_id }}">{{ strtoupper($sponsor_type->sponsor_type) }}</option>
-                          @endforeach
-                      </select>
-                    </div>
-                    <div class="row mb 3 sponsorship_details_settings" >
-                          <h5 class="card-tile mb-0"><b>Payment Details</b></h5>
-                    </div>
-                    <br>
-                    <div class="mb-3 col ecommerce-select2-dropdown sponsorship_details_settings" >
-                      <label class="form-label mb-1" for="sponsor_id">Sponsor Name </label>
-                      <select id="sponsor_id" name="sponsor_id" class="select2 form-select sponsor_name">
-                        <option value="" disabled selected>-Select-</option>
-                      </select>
-                    </div>
+                     <table class="table table-reponsive" id="app_list">
+                        <thead>
+                          <th>SN</th>
+                          <th>Patient Name</th>
+                          <th>Action</th>
+                        </thead>
+                        <tbody>
+                              @php
+                                $counter = 1;
+                               @endphp
+                            @foreach($recent_patient as $pat_list)
+                            <tr>
+                              <td>{{ $counter++ }}</td>
+                              <td>{{ $pat_list->fullname }}</td>
+                              <td>
+                                    <div class="dropdown" align="center">
+                                        <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                                              <i class="bx bx-dots-vertical-rounded"></i>
+                                        </button>
+                                              <div class="dropdown-menu">
+                                                    <a class="dropdown-item" href="/patients/{{ $pat_list->patient_id }}" >
+                                                        <i class="bx bx-edit-alt me-1"></i> Edit
+                                                    </a>
+                                                    <a class="dropdown-item" href="/patients/{{ $pat_list->patient_id }}">
+                                                        <i class="bx bx-detail me-1"></i>  More
+                                                    </a>
+                                                     <a class="dropdown-item" href="/patients/{{ $pat_list->patient_id }}">
+                                                        <i class="bx bx-plus me-1"></i>  Create Attendance
+                                                    </a>
+                                                    <a class="dropdown-item " href="/patients/{{ $pat_list->patient_id }}">
+                                                        <i class="bx bx-plus me-1"></i>  Add Relative
+                                                    </a>
+                                                     <a class="dropdown-item" href="/patients/{{ $pat_list->patient_id }}">
+                                                        <i class="bx bx-plus me-1"></i>  Add Clinic
+                                                    </a>
+                                              </div>
+                                  </div>
+                              </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                        <tfoot>
+                           <th>SN</th>
+                          <th>Patient Name</th>
+                          <th>Action</th>
+                        </tfoot>
+                     </table>
+                  </div>
+                    
                     <div class="mb-3 col ecommerce-select2-dropdown sponsorship_details_settings">
-                      <label class="form-label mb-1" for="member_no">Membership Number</label>
-                      <input type="text" name="member_no" id="member_no" class="form-control" >
-                    </div>
-                    <div class="mb-3 col ecommerce-select2-dropdown sponsorship_details_settings">
-                      <label class="form-label mb-1" for="dependant">Dependant</label>
-                      <select class="form-control" class="form-control" id="dependant" name="dependant">
-                        <option value="NO" selected>NO</option>
-                        <option value="YES">YES</option>
-                      </select>
-                    </div>
-                    <div class="mb-3 col ecommerce-select2-dropdown sponsorship_details_settings">
-                      <label class="form-label mb-1 d-flex justify-content-between align-items-center" for="start_date">
-                        <span>Start Date</span></label>
-                      <input type="date" name="start_date" id="start_date" class="form-control">
-                    </div>
-                    <div class="mb-3 col ecommerce-select2-dropdown sponsorship_details_settings">
-                      <label class="form-label mb-1 d-flex justify-content-between align-items-center" for="end_date">
-                        <span>End Date</span></label>
-                      <input type="date" name="end_date" id="end_date" class="form-control">
-                    </div>
-                    <div class="mb-3 col ecommerce-select2-dropdown sponsorship_details_settings">
-                      <label class="form-label mb-1 d-flex justify-content-between align-items-center" for="card_status">
+                      <!-- <label class="form-label mb-1 d-flex justify-content-between align-items-center" for="card_status">
                         <span>Sponsor Status</span></label>
-                      <input type="text" name="card_status" id="card_status" class="form-control" readonly>
+                      <input type="text" name="card_status" id="card_status" class="form-control" readonly> -->
                     </div>
                   </div>
                 </div>
@@ -341,5 +414,4 @@
     });
 });
 </script> -->
-
 </x-app-layout>

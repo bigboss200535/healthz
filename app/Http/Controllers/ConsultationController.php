@@ -163,10 +163,9 @@ class ConsultationController extends Controller
             //  return  'Attendance details not found.';
         }else{
              //  update service to issued if found
-            PatientAttendance::where('attendance_id', $attendance->attendance_id)->update('service_issued', '1');
+            PatientAttendance::where('attendance_id', $attendance->attendance_id)->update(['service_issued' => '1']);
         }
     
-
         // Fetch consulting rooms
         $con_room = ConsultingRoom::where('Archived', 'No')
             ->where('status', 'Active')

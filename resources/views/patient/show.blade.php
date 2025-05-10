@@ -285,7 +285,7 @@
             <img src="{{ $patients->gender==='FEMALE' ? asset('img/avatars/female.jpg') : asset('img/avatars/male.jpg') }}" alt="Patient Image" class="rounded-pill" style="border:1px;border-color:black; box-shadow:10px ">
           </div>
           <div class="mb-3 col ecommerce-select2-dropdown" align="center">
-            <h5 class="card-tile mb-0"><b>{{ $patients->title}}. {{ $patients->fullname }}</b></h5>
+            <h5 class="card-tile mb-0"><b>{{ $patients->title}} {{ $patients->fullname }}</b></h5>
           </div>
           <div class="mb-3 col ecommerce-select2-dropdown">
            <table class="table">
@@ -311,7 +311,7 @@
             </tr>
             <tr>
               <td><b>Member #</b>:</td>
-              <td><span class="badge bg-label-primary me-1"> {{$patient_payments->member_no}}</span></td>
+              <td><span class="badge bg-label-primary me-1"> {{$patient_payments->member_no ?? ''}}</span></td>
             </tr>
             <tr>
               <td><b>Registered By</b>:</td>
@@ -321,7 +321,7 @@
             <tr>
               <td><b>Patient Status</b>:</td>
               <td>
-                <span class="badge bg-label-danger me-1">DEAD </span>
+                <span class="badge bg-label-danger me-1">DEAD</span>
               </td>
             </tr>
             @endif
@@ -487,7 +487,7 @@
           <div class="col-12 col-md-6">
             <label class="form-label" for="credit_amount">Member #</label>
             <input type="text" name="card_type" id="card_type" hidden value="NHISCARD">
-            <input type="text" id="member_no" name="member_no" class="form-control" placeholder="12345678" value="{{$patient_payments->member_no}}"/>
+            <input type="text" id="member_no" name="member_no" class="form-control" placeholder="12345678" value="{{$patient_payments->member_no ?? ''}}"/>
           </div>
           <div class="col-12 col-md-6">
             <label class="form-label" for="cash_amount">Claims Check Code (CCC) <a href="#" style="color: red;">*</a></label>

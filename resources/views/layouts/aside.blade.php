@@ -90,7 +90,7 @@ $access = $userController->permissions(Auth::user()->user_id);
           </a>
         </li>
         <li class="menu-item">
-          <a href="#" class="menu-link">
+          <a href="{{ route('patient.list_all_patient_sponsors') }}" class="menu-link">
             <div class="text-truncate" data-i18n="List">Patient Sponsors</div>
           </a>
         </li>

@@ -68,6 +68,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('healthfacilitysetup', FacilityController::class);
     
     Route::prefix('patient')->group(function () {
+        Route::get('/attendance', [AttendanceController::class, 'all_attendance'])->name('patient.attendance');
         Route::get('/search', [PatientController::class, 'search'])->name('patient.search');
         Route::get('/patient-sponsors/{patient_id}', [PatientController::class, 'get_patient_sponsor'])->name('patient.get_patient_sponsor');
         Route::get('/patient-request/{patient_id}', [ServiceRequestController::class, 'get_patient_request'])->name('patient.get_patient_sponsor');
@@ -75,10 +76,11 @@ Route::middleware('auth')->group(function () {
         Route::get('/single-attendance/{patient_id}', [AttendanceController::class, 'single_attendance'])->name('patient.single_attendance');
         Route::get('/current-attendance/{patient_id}', [AttendanceController::class, 'current_attendance'])->name('patient.current_attendance');
         Route::get('/add-appointment', [AttendanceController::class, 'add_appointment'])->name('patients.appointments');
+        Route::get('/sponsors', [PatientController::class, 'list_all_patient_sponsors'])->name('patient.list_all_patient_sponsors');
     });
 
     Route::prefix('attendance')->group(function () {
-        Route::get('/list', [AttendanceController::class, 'all_attendance'])->name('patient.attendance');
+        
         Route::get('/delete-attendance/{attendance_id}', [AttendanceController::class, 'delete_attendance']);
     });
 
@@ -86,7 +88,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/investigations', [InvestigationController::class, 'index'])->name('investigations.index');
         Route::get('/add-labs/{attendance_id}', [InvestigationController::class, 'add_results']);
         Route::get('/add-ultrasound/{attendance_id}', [InvestigationController::class, 'add_results']);
-        Route::get('/add-x-rays/{attendance_id}', [InvestigationController::class, 'add_results']);
+        Route::get('/add-x-rays/{attendance_id}', [InvestigationController::class, 'add_results'])->where('attendance_id', '[0-9]+');
        
     });
     
@@ -103,7 +105,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/{clinic}/get_specialty', [ServiceRequestController::class, 'getspecialties']);
         Route::get('/{service_id}/service_tarif', [ServiceRequestController::class, 'gettarrifs']);
         Route::post('/patient_service', [ServiceRequestController::class, 'store']);
-        Route::get('/patient_service_data/{patient_id}', [ServiceRequestController::class, 'retrieve']); 
+        Route::get('/patient_service_data/{patient_id}', [ServiceRequestController::class, 'retrieve'])->middleware('auth'); 
         Route::post('/service_request', [ServiceRequestController::class, 'store']);
         Route::post('/add-diagnosis', [DiagnosisController::class, 'add_diagnosis']);
         Route::post('/add-prescription', [PrescriptionController::class, 'add_medicine']);
@@ -185,4 +187,5 @@ require __DIR__.'/auth.php';
 // Route::post('/consultation/hold-attendance/{id}', [App\Http\Controllers\ConsultationController::class, 'holdAttendance']);
 // Route::post('/consultation/resume-attendance/{id}', [App\Http\Controllers\ConsultationController::class, 'resumeAttendance']);
 // Route::get('/consultation/get-on-hold-patients', [App\Http\Controllers\ConsultationController::class, 'getOnHoldPatients']);
+// Route::post('/login', [AuthenticatedSessionController::class, 'store'])->middleware('regenerate-session');
 

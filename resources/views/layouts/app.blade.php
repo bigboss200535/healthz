@@ -111,7 +111,9 @@
 
     <script type="text/javascript">
         $(document).ready( function () {
-            $('#app_list').DataTable();
+            $('#app_list').DataTable({
+                searching: false
+            });
             $('#attendance_details').DataTable();   
             $('#claims_code_list').DataTable();
             $('#prescriptions_list').DataTable(); 
