@@ -1,3 +1,5 @@
+// PATIENT REGISTRATION FORM
+
 // Handle form submission
     $('#patient_info_create').on('submit', function(e) {
         e.preventDefault();
@@ -283,4 +285,65 @@ $('#sponsor_type_id').on('change', function() {
     $('#start_date, #end_date').on('change', function() {
         updateCardStatus();
     });
+
+
+    // PATIENT FETCH MODIFICATIONS
+
+// $(document).ready(function() {
+    // Handle edit button click
+    $('.edit-patient').on('click', function(e) {
+        e.preventDefault();
+        var patient_id = $(this).data('patient-id');
+        
+        // Show loading indicator
+        $('#patient_info_create').addClass('btn-submitting');
+        
+        // AJAX request to fetch patient data
+        $.ajax({
+            url: '/patients/' + patient_id + '/edit',
+            method: 'GET',
+            success: function(response) {
+                // Populate form fields with response data
+                $('#pat_id').val(response.patient_id);
+                $('#title').val(response.title_id);
+                $('#firstname').val(response.firstname);
+                $('#middlename').val(response.middlename);
+                $('#lastname').val(response.lastname);
+                $('#birth_date').val(response.birth_date);
+                $('#gender_id').val(response.gender_id);
+                $('#occupation').val(response.occupation);
+                $('#religion').val(response.religion);
+                $('#nationality').val(response.nationality);
+                $('#ghana_card').val(response.ghana_card);
+                $('#telephone').val(response.telephone);
+                $('#work_telephone').val(response.work_telephone);
+                $('#email').val(response.email);
+                $('#address').val(response.address);
+                $('#town').val(response.town);
+                $('#region').val(response.region);
+                $('#education').val(response.education);
+                // $('#contact_relationship').val(response.contact_relationship);
+                // $('#contact_telephone').val(response.contact_telephone);
+                $('#sponsor_type_id').val(response.sponsor_type_id);
+                $('#sponsor_id').val(response.sponsor_id);
+                $('#member_no').val(response.member_no);
+                $('#dependant').val(response.dependant);
+                $('#start_date').val(response.start_date);
+                $('#end_date').val(response.end_date);
+                $('#card_status').val(response.card_status);
+                $('#opd_type').val(response.opd_type);
+                $('#folder_clinic').val(response.folder_clinic);
+                $('#opd_number').val(response.opd_number);
+                $('#age').val(response.pat_age)
+                
+                // Hide loading indicator
+                $('#patient_info_create').removeClass('btn-submitting');
+            },
+            error: function(xhr) {
+                toastr.warning("Error Fetching Patient");
+                $('#patient_info_create').removeClass('btn-submitting');
+            }
+        });
+    });
+// });
 

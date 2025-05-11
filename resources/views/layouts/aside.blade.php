@@ -99,6 +99,11 @@ $access = $userController->permissions(Auth::user()->user_id);
             <div class="text-truncate" data-i18n="List">Attendance</div>
           </a>
         </li>
+        <li class="menu-item">
+          <a href="{{ route('patient.appointments') }}" class="menu-link">
+            <div class="text-truncate" data-i18n="List">Appointments</div>
+          </a>
+        </li>
       </ul>
     </li>
     @endif

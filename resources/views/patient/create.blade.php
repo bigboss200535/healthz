@@ -44,13 +44,13 @@
                     <!-- <input type="hidden" name="_token" value="{{ csrf_token() }}"> -->
                       <meta name="csrf-token" content="{{ csrf_token() }}">
                     <div class="row mb-3">
-                    <input type="text" class="form-control" id="pat_id" name="pat_id" hidden>
+                    <input type="text" class="form-control" id="pat_id" name="pat_id">
                       <div class="col">
                         <label class="form-label" for="title">Title <span class="text-danger">*</span></label>
                         <select name="title" id="title" class="form-control">
                           <option disabled selected>-Select-</option>
                               @foreach($title as $patient_title)                                        
-                                <option value="{{ $patient_title->title }}">{{ strtoupper($patient_title->title) }}</option>
+                                <option value="{{ $patient_title->title_id }}">{{ strtoupper($patient_title->title) }}</option>
                               @endforeach
                         </select>
                       </div>
@@ -91,7 +91,7 @@
                         <label class="form-label" for="occupation">Occupation <span class="text-danger">*</span></label>
                         <select name="occupation" id="occupation" class="form-control">
                           <option disabled selected>-Select-</option>
-                          <option value="N/A">NONE</option>
+                          <!-- <option value="N/A">NONE</option> -->
                           @foreach($occupations as $works)                                        
                               <option value="{{ $works->occupation_id }}">{{ $works->occupation }}</option>
                             @endforeach
@@ -210,7 +210,7 @@
                         </div>
                         <div class="col sponsorship_details_settings" >
                           <label class="form-label mb-1" for="sponsor_id">Sponsor Name </label>
-                          <select id="sponsor_id" name="sponsor_id" class="select2 form-select sponsor_name">
+                          <select id="sponsor_id" name="sponsor_id" class="select2 form-select">
                             <option value="" disabled selected>-Select-</option>
                           </select>
                         </div>
@@ -223,8 +223,8 @@
                       <div class="col sponsorship_details_settings">
                           <label class="form-label mb-1" for="dependant">Dependant</label>
                           <select class="form-control" class="form-control" id="dependant" name="dependant">
-                            <option value="NO" selected>NO</option>
-                            <option value="YES">YES</option>
+                            <option value="0" selected>NO</option>
+                            <option value="1">YES</option>
                           </select>
                         </div>
                         <div class="col sponsorship_details_settings" >
@@ -315,7 +315,11 @@
                                               <i class="bx bx-dots-vertical-rounded"></i>
                                         </button>
                                               <div class="dropdown-menu">
-                                                    <a class="dropdown-item" href="/patients/{{ $pat_list->patient_id }}" >
+                                                
+                                                    <!-- <a class="dropdown-item" href="{{ route('patients.edit', $pat_list->patient_id) }}" >
+                                                        <i class="bx bx-edit-alt me-1"></i> Edit
+                                                    </a> -->
+                                                    <a class="dropdown-item edit-patient" href="#" data-patient-id="{{ $pat_list->patient_id }}">
                                                         <i class="bx bx-edit-alt me-1"></i> Edit
                                                     </a>
                                                     <a class="dropdown-item" href="/patients/{{ $pat_list->patient_id }}">

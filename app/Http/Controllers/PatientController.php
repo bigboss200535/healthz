@@ -100,6 +100,7 @@ class PatientController extends Controller
             'sponsor_id' => 'nullable',
             'member_no' => 'nullable|string|max:255',
             'clinic_type' => 'nullable|string|max:255',
+            'opd_type' => 'nullable|string|max:255',
             'opd_number' => 'nullable|string|max:255',
             'sponsor_type_id' => 'nullable|string|max:255',
             'dependant' => 'nullable',
@@ -135,7 +136,7 @@ class PatientController extends Controller
                         
                         $patient = new Patient([
                             'patient_id' => $patient_id_no,
-                            'title' => strtoupper($validated_data['title']),
+                            'title_id' => strtoupper($validated_data['title']),
                             'firstname' => strtoupper($validated_data['firstname']),
                             'middlename' => strtoupper($validated_data['middlename'] ?? ''),
                             'lastname' => strtoupper($validated_data['lastname']),
@@ -145,6 +146,7 @@ class PatientController extends Controller
                             'education' => strtoupper($validated_data['education']),
                             'religion_id' => $validated_data['religion'],
                             'nationality_id' => $validated_data['nationality'],
+                            'ghana_card' => $validated_data['ghana_card'],
                             'old_folder' => $validated_data['old_folder'] ?? null,
                             'telephone' => $validated_data['telephone'] ?? null,
                             'work_telephone' => $validated_data['work_telephone'] ?? null,
@@ -153,7 +155,7 @@ class PatientController extends Controller
                             'town' => strtoupper($validated_data['town'] ?? ''),
                             'region' => strtoupper($validated_data['region'] ?? ''),
                             'added_date' => $now,
-                            // 'records_id' => $transaction_id,
+                            'opd_type' => $validated_data['opd_type'],
                             'records_id' => $patient_records,
                             'user_id' =>  $user_id,
                         ]);
@@ -199,6 +201,7 @@ class PatientController extends Controller
                                 'start_date' => $validated_data['start_date'],
                                 'end_date' => $validated_data['end_date'],
                                 'priority' => '1',
+                                'dependant' => $validated_data['dependant'],
                                 'user_id' =>  $user_id,
                                 'added_date' => $now,
                                 'status' => 'Active',
@@ -265,11 +268,12 @@ class PatientController extends Controller
             ->join('users', 'patient_info.user_id', '=', 'users.user_id')
             ->select('patient_info.patient_id', 
                     'patient_nos.opd_number', 
-                    'patient_info.title', 
+                    'patient_info.title_id', 
                     'patient_info.fullname', 
                     'gender.gender', 
                      'patient_info.birth_date', 
                      'patient_info.email', 
+                     'patient_info.ghana_card',
                      'patient_info.address', 'patient_info.contact_person', 
                      'patient_info.contact_relationship', 
                      'patient_info.contact_telephone', 
@@ -339,23 +343,87 @@ class PatientController extends Controller
     
     public function edit($patient_id)
     {  
+       $patient = Patient::where('patient_info.patient_id', $patient_id)
+        ->join('gender', 'patient_info.gender_id', '=', 'gender.gender_id')
+        ->join('patient_nos', 'patient_nos.patient_id', '=', 'patient_info.patient_id')
+        ->select(
+            'patient_info.patient_id',
+            'patient_info.title_id',
+            'patient_info.firstname',
+            'patient_info.middlename',
+            'patient_info.lastname',
+            'patient_info.birth_date',
+            'patient_info.gender_id',
+            'patient_info.occupation',
+            'patient_info.religion_id as religion',
+            'patient_info.nationality_id as nationality',
+            'patient_info.ghana_card',
+            'patient_info.education',
+            'patient_info.telephone',
+            'patient_info.work_telephone',
+            'patient_info.email',
+            'patient_info.address',
+            'patient_info.town',
+            'patient_info.region',
+            // 'patient_info.contact_person',
+            // 'patient_info.contact_relationship',
+            // 'patient_info.contact_telephone',
+            'patient_nos.opd_number',
+            'patient_nos.clinic_id as folder_clinic',
+            'patient_info.opd_type',
+             DB::raw('TIMESTAMPDIFF(YEAR, patient_info.birth_date, CURDATE()) as patient_age')
+        )
+        ->first();
+
+    if (!$patient) {
+        return response()->json(['error' => 'Patient not found'], 404);
+    }
+
+    // Fetch sponsor details if exists
+    $sponsor = PatientSponsor::where('patient_id', $patient_id)
+        ->where('priority', '1')
+        ->where('archived', 'No')
+        ->where('status', 'Active')
+        ->first();
+
+    $response = [
+        'patient_id' => $patient->patient_id,
+        'title_id' => $patient->title_id,
+        'firstname' => $patient->firstname,
+        'middlename' => $patient->middlename,
+        'lastname' => $patient->lastname,
+        'birth_date' => $patient->birth_date,
+        'gender_id' => $patient->gender_id,
+        'occupation' => $patient->occupation,
+        'education' => $patient->education,
+        'religion' => $patient->religion,
+        'nationality' => $patient->nationality,
+        'ghana_card' => $patient->ghana_card,
+        'telephone' => $patient->telephone,
+        'work_telephone' => $patient->work_telephone,
+        'email' => $patient->email,
+        'address' => $patient->address,
+        'town' => $patient->town,
+        'region' => $patient->region,
+        'contact_person' => $patient->contact_person,
+        'contact_relationship' => $patient->contact_relationship,
+        'contact_telephone' => $patient->contact_telephone,
+        'sponsor_type_id' => $sponsor->sponsor_type_id ?? null,
+        'sponsor_id' => $sponsor->sponsor_id ?? null,
+        'member_no' => $sponsor->member_no ?? null,
+        'dependant' => $sponsor->dependant ?? 'NO',
+        'start_date' => $sponsor->start_date ?? null,
+        'end_date' => $sponsor->end_date ?? null,
+        'card_status' => $sponsor->status ?? 'Active',
+        'opd_type' => $patient->opd_type,
+        'pat_age' => $patient->patient_age,
+        'folder_clinic' => $patient->folder_clinic,
+        'opd_number' => $patient->opd_number
+    ];
+
+    return response()->json($response); 
+
         
-        $title = Title::where('archived', 'No')->where('status', '=','Active')->get();
-        $religion = Religion::where('archived', 'No')->where('status', '=','Active')->get();
-        $gender = Gender::where('archived', 'No')->where('status', '=','Active')->where('usage', '=','1')->get();
-        $region = Region::where('archived', 'No')->where('status', '=','Active')->get();
-        $relation = Relation::where('archived', 'No')->where('status', '=','Active')->get();
-
-        $patient_list = DB::table('patient_info')
-            ->whereDate('patient_info.register_date', now())
-            ->join('gender', 'patient_info.gender_id', '=', 'gender.gender_id')
-            ->join('title', 'patient_info.title_id', '=', 'title.title_id')
-            ->select('patient_info.patient_id', 'title.title', 'patient_info.firstname', 'patient_info.default_sponsor',  
-                      'gender.gender',  'patient_info.birth_date', 'patient_info.added_date', 'patient_info.telephone', 
-                       DB::raw('TIMESTAMPDIFF(YEAR, patient_info.birth_date, CURDATE()) as age'))
-            ->get();
-
-        return view('patient.create', compact('title', 'religion', 'gender', 'region', 'relation', 'patient_list'));
     }
 
     public function update(Request $request, $pat_id)

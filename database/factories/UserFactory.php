@@ -28,7 +28,7 @@ class UserFactory extends Factory
             'othername' => $this->faker->lastName,
             'telephone' => $this->faker->phoneNumber,
             'gender_id' => $this->faker->randomElement(['2', '3']),
-            'role_id' => $role->role_id,
+            'user_roles_id' => $role->role_id,
             'facility_id' => 'FAC000001',
             'mode' => $this->faker->randomElement(['New', 'Old']),
             'email' => $this->faker->unique()->safeEmail(),
