@@ -115,6 +115,7 @@
             $('#app_list').DataTable({
                 searching: false
             });
+             $('#system_table').DataTable();
             $('#attendance_details').DataTable();   
             $('#claims_code_list').DataTable();
             $('#prescriptions_list').DataTable(); 

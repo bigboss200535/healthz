@@ -71,7 +71,6 @@ class PatientController extends Controller
    
     public function store(Request $request)
     {
-        
         $validated_data = $request->validate([
             '_token' => 'required|string',
             // 'old_folder' => 'nullable|string|max:255',
@@ -93,9 +92,12 @@ class PatientController extends Controller
             'address' => 'nullable|string|max:255',
             'town' => 'nullable|string|max:255',
             'region' => 'nullable|string|max:255',
-            'contact_person' => 'nullable|string|max:255',
-            'contact_telephone' => 'nullable|string|max:20',
-            'contact_relationship' => 'nullable|string|max:255',
+            'contact_person' => 'nullable|array',
+            'contact_person.*' => 'nullable|string|max:255',
+            'contact_telephone' => 'nullable|array',
+            'contact_telephone.*' => 'nullable|string|max:20',
+            'contact_relationship' => 'nullable|array',
+            'contact_relationship.*' => 'nullable|string|max:255',
             'folder_clinic' => 'nullable|string|min:3|max:255',
             'sponsor_id' => 'nullable',
             'member_no' => 'nullable|string|max:255',
@@ -174,16 +176,20 @@ class PatientController extends Controller
                             'added_date' => $now,
                         ]);
 
-                        PatientRelations::create([
-                            'patient_id' => $patient_id_no,
-                            'opd_number' => $validated_data['opd_number'] ?? null,
-                            'relation_name' => $validated_data['contact_person'] ?? null,
-                            'relationship' =>  strtoupper($validated_data['contact_relationship'] ?? ''),
-                            'contact' => $validated_data['contact_telephone'] ?? null,
-                            // 'telephone' => $now,
-                            'user_id' =>  $user_id,
-                            'added_date' => $now,
-                        ]);
+                        // Save multiple emergency contacts
+                        if (!empty($validated_data['contact_person'])) {
+                            foreach ($validated_data['contact_person'] as $index => $contact) {
+                                PatientRelations::create([
+                                    'patient_id' => $patient_id_no,
+                                    'opd_number' => $validated_data['opd_number'] ?? null,
+                                    'relation_name' => $validated_data['contact_person'][$index] ?? '',
+                                    'relation_id' => $validated_data['contact_relationship'][$index] ?? '',
+                                    'contact' => $validated_data['contact_telephone'][$index] ?? null,
+                                    'user_id' => $user_id,
+                                    'added_date' => $now,
+                                ]);
+                            }
+                        }
 
                         // Check and save sponsor information
                         $sponsor_types = ['PI03', 'N002', 'PC04'];
@@ -271,12 +277,10 @@ class PatientController extends Controller
                     'patient_info.title_id', 
                     'patient_info.fullname', 
                     'gender.gender', 
-                     'patient_info.birth_date', 
-                     'patient_info.email', 
-                     'patient_info.ghana_card',
-                     'patient_info.address', 'patient_info.contact_person', 
-                     'patient_info.contact_relationship', 
-                     'patient_info.contact_telephone', 
+                    'patient_info.birth_date', 
+                    'patient_info.email', 
+                    'patient_info.ghana_card',
+                    'patient_info.address', 
                      'patient_info.added_date', 
                      'patient_info.telephone', 
                      'users.user_fullname', 
@@ -328,8 +332,9 @@ class PatientController extends Controller
                     ->first();
         }
 
-        $relatives = PatientRelations::where('archived', 'No')
-                ->where('patient_id', $patients->patient_id)
+        $relatives = PatientRelations::where('patient_relations.archived', 'No')
+                ->rightJoin('relation', 'relation.relation_id', '=', 'patient_relations.relation_id')
+                ->where('patient_relations.patient_id', $patients->patient_id)
                 ->get();
 
         // $request_episode = ServiceRequest::count();
@@ -344,36 +349,32 @@ class PatientController extends Controller
     public function edit($patient_id)
     {  
        $patient = Patient::where('patient_info.patient_id', $patient_id)
-        ->join('gender', 'patient_info.gender_id', '=', 'gender.gender_id')
-        ->join('patient_nos', 'patient_nos.patient_id', '=', 'patient_info.patient_id')
-        ->select(
-            'patient_info.patient_id',
-            'patient_info.title_id',
-            'patient_info.firstname',
-            'patient_info.middlename',
-            'patient_info.lastname',
-            'patient_info.birth_date',
-            'patient_info.gender_id',
-            'patient_info.occupation',
-            'patient_info.religion_id as religion',
-            'patient_info.nationality_id as nationality',
-            'patient_info.ghana_card',
-            'patient_info.education',
-            'patient_info.telephone',
-            'patient_info.work_telephone',
-            'patient_info.email',
-            'patient_info.address',
-            'patient_info.town',
-            'patient_info.region',
-            // 'patient_info.contact_person',
-            // 'patient_info.contact_relationship',
-            // 'patient_info.contact_telephone',
-            'patient_nos.opd_number',
-            'patient_nos.clinic_id as folder_clinic',
-            'patient_info.opd_type',
-             DB::raw('TIMESTAMPDIFF(YEAR, patient_info.birth_date, CURDATE()) as patient_age')
-        )
-        ->first();
+            ->join('gender', 'patient_info.gender_id', '=', 'gender.gender_id')
+            ->join('patient_nos', 'patient_nos.patient_id', '=', 'patient_info.patient_id')
+            ->select(
+                'patient_info.patient_id',
+                'patient_info.title_id',
+                'patient_info.firstname',
+                'patient_info.middlename',
+                'patient_info.lastname',
+                'patient_info.birth_date',
+                'patient_info.gender_id',
+                'patient_info.occupation',
+                'patient_info.religion_id as religion',
+                'patient_info.nationality_id as nationality',
+                'patient_info.ghana_card',
+                'patient_info.education',
+                'patient_info.telephone',
+                'patient_info.work_telephone',
+                'patient_info.email',
+                'patient_info.address',
+                'patient_info.town',
+                'patient_info.region',
+                'patient_nos.opd_number',
+                'patient_nos.clinic_id as folder_clinic',
+                'patient_info.opd_type',
+                DB::raw('TIMESTAMPDIFF(YEAR, patient_info.birth_date, CURDATE()) as patient_age'))
+            ->first();
 
     if (!$patient) {
         return response()->json(['error' => 'Patient not found'], 404);
@@ -385,6 +386,22 @@ class PatientController extends Controller
         ->where('archived', 'No')
         ->where('status', 'Active')
         ->first();
+    
+   // Fetch all emergency contacts
+    $relations = PatientRelations::where('patient_id', $patient_id) 
+        ->where('archived', 'No') 
+        ->where('status', 'Active') 
+        ->get(); 
+
+    // emergency contacts for JSON response
+    $emergency_contacts = [];
+        foreach ($relations as $relation) {
+            $emergency_contacts[] = [
+                'relation_name' => $relation->relation_name,
+                'relation_id' => $relation->relation_id,
+                'contact' => $relation->contact
+            ];
+    }
 
     $response = [
         'patient_id' => $patient->patient_id,
@@ -405,9 +422,6 @@ class PatientController extends Controller
         'address' => $patient->address,
         'town' => $patient->town,
         'region' => $patient->region,
-        'contact_person' => $patient->contact_person,
-        'contact_relationship' => $patient->contact_relationship,
-        'contact_telephone' => $patient->contact_telephone,
         'sponsor_type_id' => $sponsor->sponsor_type_id ?? null,
         'sponsor_id' => $sponsor->sponsor_id ?? null,
         'member_no' => $sponsor->member_no ?? null,
@@ -418,7 +432,9 @@ class PatientController extends Controller
         'opd_type' => $patient->opd_type,
         'pat_age' => $patient->patient_age,
         'folder_clinic' => $patient->folder_clinic,
-        'opd_number' => $patient->opd_number
+        'opd_number' => $patient->opd_number,
+         // Add the emergency contacts array to the response
+        'emergency_contacts' => $emergency_contacts
     ];
 
     return response()->json($response); 

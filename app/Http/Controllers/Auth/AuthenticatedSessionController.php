@@ -28,9 +28,9 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): RedirectResponse
     {
-        // $facility = User::where('status', 'Active')
+        // $logged_user = User::where('status', 'Active')
         //     ->where('archived', 'No')  
-        //     ->where('facility_id', Auth::user()->facility_id)      
+        //     ->where('username', $request->input('username))      
         //     ->first();
 
         try {
@@ -82,7 +82,6 @@ class AuthenticatedSessionController extends Controller
     public function destroy(Request $request): RedirectResponse
     {
        
-
         if (Auth::check()) {
             
             $update_log = LoginLog::where('session_id', session()->getId())

@@ -54,7 +54,7 @@ class RelationSeeder extends Seeder
 
         $region = Relation::create([
             'relation_id' => '005',
-            'relation' => 'Niece',
+            'relation' => 'Nephew',
             'user_id' => 'a2c362bf-56df-4337-be34-0062ffae8bd5',
             'added_date' => now(),
             'status' => 'Active',

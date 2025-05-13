@@ -14,7 +14,7 @@
                                     <button class="btn btn-primary" name="add_permissions" id="add_permissions"><i class="bx bx-plus"></i> New Permission</button>
                                 </div>
                                 <br>
-                                <table class="datatables-category-list table border-top" id="app_list">
+                                <table class="datatables-category-list table border-top" id="system_table">
                                     <thead>
                                       <tr>
                                         <th>Assign</th>

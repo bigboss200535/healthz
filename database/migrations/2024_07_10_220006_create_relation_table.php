@@ -14,8 +14,8 @@ return new class extends Migration
     public function up()
     {
         Schema::create('relation', function (Blueprint $table) {
-            $table->id('relation_id');
-            $table->string('relation',50); 
+            $table->string('relation_id', 50)->primary();
+            $table->string('relation',50)->nullable(); 
             $table->string('facility_id', 50)->nullable();
             $table->string('user_id',50)->nullable();        
             $table->string('added_id', 50)->nullable();

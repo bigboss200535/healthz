@@ -20,7 +20,7 @@
                       <div class="col" style="padding-left:20px;"> 
                       <h4 class="mb-1 mt-3 text-mute">Patient Sponsors</h4>
                       </div>
-                      <table class="datatables-customers table border-top table-hover" id="app_list">
+                      <table class="datatables-customers table border-top table-hover" id="system_table">
                           <thead>
                               <tr>
                                   <th>S/N</th>

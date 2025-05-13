@@ -35,7 +35,7 @@
             <div class="col-12 col-lg-8">
                 <div class="card mb-4">
                   <div class="card-header">
-                    <h5 class="card-tile mb-0"><b>Bio-Information</b></h5>
+                    <h5 class="card-tile mb-0"><b>BIO INFORMATION</b></h5>
                     <label style="color:red">All fields marked * are mandatory</label>
                   </div>
                   <div class="card-body">
@@ -44,7 +44,7 @@
                     <!-- <input type="hidden" name="_token" value="{{ csrf_token() }}"> -->
                       <meta name="csrf-token" content="{{ csrf_token() }}">
                     <div class="row mb-3">
-                    <input type="text" class="form-control" id="pat_id" name="pat_id">
+                    <input type="text" class="form-control" id="pat_id" name="pat_id" hidden>
                       <div class="col">
                         <label class="form-label" for="title">Title <span class="text-danger">*</span></label>
                         <select name="title" id="title" class="form-control">
@@ -129,7 +129,7 @@
                       </div>
                     </div>
                     <div class="row mb 3">
-                        <h5 class="card-tile mb-0"><b>Contact Information</b></h5>
+                        <h5 class="card-tile mb-0"><b>CONTACT INFORMATION</b></h5>
                     </div>
                     <br>
                     <div class="row mb-3">
@@ -172,30 +172,52 @@
                     </div>
                     <br>
                     <div class="row mb 3">
-                          <h5 class="card-tile mb-0"><b>Emergency Contact</b></h5>
+                        <div class="col">
+                            <h5 class="card-tile mb-0"><b>EMERGENCY CONTACT</b></h5>
+                        </div>
+                        <div class="col text-end">
+                            <button type="button" class="btn btn-primary" id="addEmergencyContact">Add </button>
+                        </div>
                     </div>
                     <br>
-                    <div class="row mb-3">
-                      <div class="col">
-                        <label class="form-label" for="contact_person">Fullname</label>
-                        <input type="text" class="form-control" id="contact_person" name="contact_person" placeholder="eg. JANE DOE">
-                      </div>
-                      <div class="col">
-                        <label class="form-label" for="contact_relationship">Relationship</label>
-                        <select name="contact_relationship" id="contact_relationship" class="form-control">
-                          <option disabled selected>-Select-</option>
-                          @foreach($relation as $rel)                                        
-                            <option value="{{ $rel->relation_id }}">{{ strtoupper($rel->relation) }}</option>
-                          @endforeach
-                        </select>
-                      </div>
-                      <div class="col">
-                        <label class="form-label" for="contact_telephone">Telephone</label>
-                        <input type="text" class="form-control" id="contact_telephone" name="contact_telephone" placeholder="0xxxxxxxxx" autocomplete="off">
-                      </div>
+                    <div id="emergencyContactsContainer">
+                        <div class="row mb-3 emergency-contact">
+
+                           <table class="table table-hover">
+                              <td>
+                                <div class="col">
+                                  <label class="form-label" for="contact_person">Fullname</label>
+                                  <input type="text" class="form-control" name="contact_person[]" placeholder="eg. JANE DOE">
+                                </div>
+                              </td>
+                              <td>
+                                <div class="col">
+                                  <label class="form-label" for="contact_relationship">Relationship</label>
+                                  <select name="contact_relationship[]" class="form-control">
+                                      <option disabled selected>-Select-</option>
+                                      @foreach($relation as $rel)                                        
+                                          <option value="{{ $rel->relation_id }}">{{ strtoupper($rel->relation) }}</option>
+                                      @endforeach
+                                  </select>
+                                </div>
+                              </td>
+                              <td>
+                                <div class="col">
+                                  <label class="form-label" for="contact_telephone">Telephone</label>
+                                  <input type="text" class="form-control" name="contact_telephone[]" placeholder="0xxxxxxxxx" autocomplete="off">
+                                </div>
+                              </td>
+                              <td>
+                              <td>
+                                  <button class='btn btn-danger'><i class="bx bx-trash"></i></button>
+                              </td>
+                              </td>
+                           </table>
+                        </div>
                     </div>
+                    <br>
                     <div class="row mb 3">
-                          <h5 class="card-tile mb-0"><b>Payment Type</b></h5>
+                          <h5 class="card-tile mb-0"><b>PAYMENT TYPE</b></h5>
                     </div>
                     <br>
                     <div class="row mb-3">
@@ -208,7 +230,7 @@
                             @endforeach
                         </select>
                         </div>
-                        <div class="col sponsorship_details_settings" >
+                        <div class="col sponsorship_details_settings_settings" >
                           <label class="form-label mb-1" for="sponsor_id">Sponsor Name </label>
                           <select id="sponsor_id" name="sponsor_id" class="select2 form-select">
                             <option value="" disabled selected>-Select-</option>
@@ -257,7 +279,7 @@
                   </div>
                   <br>
                     <div class="row mb 3">
-                          <h5 class="card-tile mb-0"><b>Clinic #</b></h5>
+                          <h5 class="card-tile mb-0"><b>CLINIC #</b></h5>
                     </div>
                     <br>
                     <div class="row mb-3">
@@ -290,7 +312,7 @@
                 <div class="card mb-4">
                   <div class="card-body">
                     <div class="row mb 3">
-                        <h5 class="card-tile mb-0"><b>Patient List</b></h5>
+                        <h5 class="card-tile mb-0"><b>PATIENT LIST</b></h5>
                         <label style="color:green"></label>
                     </div>
                     <br>
@@ -368,54 +390,18 @@
             </div>
           </div>
           </div>   
-<!-- <script>
-  $(document).ready(function() {
-   
-  
-    // Handle form submission
-    // Add real-time validation for required fields and format validation
-    $('select[required], input[required]').on('change blur', function() {
-        const field = $(this);
-        if (!field.val()) {
-            field.addClass('is-invalid');
-            if (!field.next('.invalid-feedback').length) {
-                field.after(`<div class="invalid-feedback">This field is required</div>`);
-            }
-        } else {
-            field.removeClass('is-invalid');
-            field.next('.invalid-feedback').remove();
-        }
-    });
 
-    // Phone number validation
-    $('input[id$="telephone"]').on('input blur', function() {
-        const field = $(this);
-        const phoneRegex = /^0[0-9]{9}$/;
-        if (field.val() && !phoneRegex.test(field.val())) {
-            field.addClass('is-invalid');
-            if (!field.next('.invalid-feedback').length) {
-                field.after(`<div class="invalid-feedback">Please enter a valid 10-digit phone number starting with 0</div>`);
-            }
-        } else {
-            field.removeClass('is-invalid');
-            field.next('.invalid-feedback').remove();
-        }
+<script>
+    document.getElementById('addEmergencyContact').addEventListener('click', function() {
+        const container = document.getElementById('emergencyContactsContainer');
+        const newContact = document.querySelector('.emergency-contact').cloneNode(true);
+        
+        // Clear input values in the new row
+        newContact.querySelectorAll('input').forEach(input => input.value = '');
+        newContact.querySelectorAll('select').forEach(select => select.selectedIndex = 0);
+        
+        container.appendChild(newContact);
     });
+</script>
 
-    // Email validation
-    $('#email').on('input blur', function() {
-        const field = $(this);
-        const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
-        if (field.val() && !emailRegex.test(field.val())) {
-            field.addClass('is-invalid');
-            if (!field.next('.invalid-feedback').length) {
-                field.after(`<div class="invalid-feedback">Please enter a valid email address</div>`);
-            }
-        } else {
-            field.removeClass('is-invalid');
-            field.next('.invalid-feedback').remove();
-        }
-    });
-});
-</script> -->
 </x-app-layout>

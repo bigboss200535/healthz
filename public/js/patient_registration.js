@@ -336,6 +336,52 @@ $('#sponsor_type_id').on('change', function() {
                 $('#opd_number').val(response.opd_number);
                 $('#age').val(response.pat_age)
                 
+                 $('#emergencyContactsContainer').empty();
+
+                // Populate emergency contacts
+                    if (response.emergency_contacts && response.emergency_contacts.length > 0) {
+                        response.emergency_contacts.forEach((contact, index) => {
+                            const contactHtml = `
+                                <div class="row mb-3 emergency-contact">
+                                    <table class="table table-hover">
+                              <td>
+                                <div class="col">
+                                  <label class="form-label" for="contact_person">Fullname</label>
+                                  <input type="text" class="form-control" name="contact_person[]" value="${contact.relation_name || ''}" placeholder="eg. JANE DOE">
+                                </div>
+                              </td>
+                              <td>
+                                <div class="col">
+                                  <label class="form-label" for="contact_relationship">Relationship</label>
+                                  <select name="contact_relationship[]" class="form-control">
+                                      <option disabled selected>-Select-</option>
+                                      @foreach($relation as $rel)                                        
+                                          <option value="{{ $rel->relation_id }}" ${contact.relation_id == '{{ $rel->relation_id }}' ? 'selected' : ''}>{{ strtoupper($rel->relation) }}</option>
+                                      @endforeach
+                                  </select>
+                                </div>
+                              </td>
+                              <td>
+                                <div class="col">
+                                  <label class="form-label" for="contact_telephone">Telephone</label>
+                                   <input type="text" class="form-control" name="contact_telephone[]" value="${contact.contact || ''}" placeholder="0xxxxxxxxx" autocomplete="off">
+                                </div>
+                              </td>
+                              <td>
+                              <td>
+                                  <button class='btn btn-danger'><i class="bx bx-trash"></i></button>
+                              </td>
+                              </td>
+                           </table>
+                                </div>
+                            `;
+                            $('#emergencyContactsContainer').append(contactHtml);
+                        });
+                        } else {
+                            // Add at least one emergency contact field
+                            $('#emergencyContactsContainer').append($('.emergency-contact').first().clone());
+                        }
+
                 // Hide loading indicator
                 $('#patient_info_create').removeClass('btn-submitting');
             },

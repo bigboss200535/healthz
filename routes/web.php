@@ -57,7 +57,6 @@ Route::middleware('auth')->group(function () {
     });
    
     // Route::resource('service', ServiceRequestController::class);
-    Route::resource('users', UserController::class);
     Route::resource('sponsors', SponsorController::class); 
     Route::resource('servicesandfee', ServicesFeeController::class);
     Route::resource('service', ServicesController::class);
@@ -77,6 +76,12 @@ Route::middleware('auth')->group(function () {
         Route::get('/current-attendance/{patient_id}', [AttendanceController::class, 'current_attendance'])->name('patient.current_attendance');
         Route::get('/appointments', [AttendanceController::class, 'appointments'])->name('patient.appointments');
         Route::get('/sponsors', [PatientController::class, 'list_all_patient_sponsors'])->name('patient.list_all_patient_sponsors');
+        
+        Route::get('/investigations', [InvestigationController::class, 'index'])->name('investigations.index');
+        Route::get('/add-labs/{attendance_id}', [InvestigationController::class, 'add_results']);
+        Route::get('/add-ultrasound/{attendance_id}', [InvestigationController::class, 'add_results']);
+        Route::get('/add-x-rays/{attendance_id}', [InvestigationController::class, 'add_results'])->where('attendance_id', '[0-9]+');
+       
     });
 
     Route::prefix('attendance')->group(function () {
@@ -84,18 +89,16 @@ Route::middleware('auth')->group(function () {
         Route::get('/delete-attendance/{attendance_id}', [AttendanceController::class, 'delete_attendance']);
     });
 
-    Route::prefix('patient')->group(function () {
-        Route::get('/investigations', [InvestigationController::class, 'index'])->name('investigations.index');
-        Route::get('/add-labs/{attendance_id}', [InvestigationController::class, 'add_results']);
-        Route::get('/add-ultrasound/{attendance_id}', [InvestigationController::class, 'add_results']);
-        Route::get('/add-x-rays/{attendance_id}', [InvestigationController::class, 'add_results'])->where('attendance_id', '[0-9]+');
+    // Route::prefix('patient')->group(function () {
        
-    });
+    // });
     
     // Add this route to handle the AJAX request
-   Route::prefix('users')->group(function (){
-    Route::get('/manage-permissions/{user_id}', [UserController::class, 'permissions'])->name('users.permissions');
-    Route::get('/permissions/{user_id}', [UserController::class, 'permissions'])->name('users.permissions');
+    Route::resource('users', UserController::class);
+
+    Route::prefix('users')->group(function (){
+        Route::get('/manage-permissions/{user_id}', [UserController::class, 'permissions'])->name('users.permissions');
+        Route::get('/permissions/{user_id}', [UserController::class, 'permissions'])->name('users.permissions');
     
     // Route::post('/add-users', [UserController::class, 'store'])->name('users.store');
    });
