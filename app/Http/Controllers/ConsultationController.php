@@ -73,6 +73,13 @@ class ConsultationController extends Controller
          // Check if the consultation already exists
           $existing_consultation = Consultation::where('episode_id', $validated_data['episode_id'])
              ->first();
+        
+            if ($existing_consultation) {
+            // return response()->json([
+            //     'message' => 'Patient data available',
+            //     'code' => 200
+            //     ], 200);
+        }
 
     }
 
