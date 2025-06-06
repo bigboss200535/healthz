@@ -46,7 +46,7 @@ class PatientController extends Controller
         $today = date('Y-m-d');
         $recent_patient = Patient::where('archived', 'No')
         // ->where('added_date', $today)
-        ->orderBy('added_date', 'desc')->get();
+         ->orderBy('added_date', 'desc')->get();
 
         $title = Title::where('archived', 'No')->where('status', '=','Active')->get();
         $religion = Religion::where('archived', 'No')->where('status', '=','Active')->get();

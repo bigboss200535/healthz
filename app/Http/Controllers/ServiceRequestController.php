@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Age;
-use App\Models\EpisodeGenerate;
+use App\Models\Episode;
 use App\Models\Patient;
 use App\Models\ServiceAttendancetype;
 use App\Models\PatientAttendance;
@@ -84,8 +84,28 @@ class ServiceRequestController extends Controller
 
         // $age_full = $this->get_age_full($patient->birth_date);
         $ages = $this->get_age_id($patient->birth_date);
-        
+        $old_episode_id = 0;
+        $today = date('Y-m-d');
                 DB::beginTransaction();
+               
+
+                $old_episode_id = Episode::get()->count();
+                $new_episode_id = $old_episode_id + 1;
+
+                $check_episode_today = Episode::where('patient_id', $validated_data['patient_id'])->where('added_date', $today)->get();
+
+                if(!$check_episode_today){
+                    $new_episode = Episode::create([
+                    'episode_id' => $new_episode_id,
+                    'patient_id' => $validated_data['patient_id'],
+                    'pat_number' => $validated_data['opd_number'],
+                    'request_date' => now(),
+                    'episode_clinic' => $validated_data['clinic_code'],
+                    'code' => $new_episode_id,
+                    'user_id' => Auth::user()->user_id,
+                    'added_date' => now()
+                ]);
+                }
                  
                  $service_request = PatientAttendance::create([
                     'patient_id' => $validated_data['patient_id'],
@@ -98,6 +118,7 @@ class ServiceRequestController extends Controller
                     'service_type' => $validated_data['service_type'],
                     'age_id' => $ages->age_id,
                     'request_type' => 'INWARD',
+                    'episode_id' => $new_episode_id ?? $check_episode_today->episode_id,
                     'sponsor_type_id' => $sponsor->sponsor_type_id ?? 'P001',
                     'sponsor_id' => $sponsor->sponsor_id ?? '',
                     'credit_amount' => $validated_data['credit_amount'],

@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Models\Diagnosis;
 use App\Models\Claim;
 use App\Models\Product;
+use App\Models\Consultation;
 use App\Models\ServiceRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -41,8 +42,37 @@ class ConsultationController extends Controller
 
     }
 
-    public function store()
+    public function store(Request $request)
     {
+
+        $validated_data = $request->validate([
+            '_token' => 'required|string',
+            'patient_id' => 'required|string|max:255',
+            'opd_number' => 'nullable|string|max:255',
+            'gender_id' => 'required|string|min:3|max:255',
+            'patient_age' => 'required|string|min:3|max:255',
+            'clinic' => 'nullable|min:3|max:255',
+            'sponsor_type' => 'required|integer',
+            'sponsor' => 'nullable|string|max:255',
+            'consultation_type' => 'nullable|string|max:20',
+            'episode_type' => 'nullable|string|max:20',
+            'consulting_room' => 'nullable|email|max:255',
+            'prescriber' => 'nullable|string|max:255',
+            'user_id' => 'nullable|string|max:255',
+            'consultation_date' => 'nullable|string|max:255',
+            'contact_person' => 'nullable|array',
+            'consultation_time' => 'nullable|string|max:255',
+            'attendance_date' => 'nullable',
+            'outcome' => 'nullable|string|max:50',
+            'episode_id' => 'nullable|string|max:50', 
+            'attendance_id' => 'required|string|max:50',
+            'gender_id' => 'required|string',
+            'age_id' => 'required|string'
+        ]);
+
+         // Check if the consultation already exists
+          $existing_consultation = Consultation::where('episode_id', $validated_data['episode_id'])
+             ->first();
 
     }
 
@@ -126,6 +156,7 @@ class ConsultationController extends Controller
                 'patient_attendance.full_age',
                 'patient_info.fullname',
                 'ages.age_id',
+                'patient_attendance.episode_id',
                 'gender.gender',
                 'gender.gender_id',
                 'service_attendance_type.attendance_type as pat_clinic'

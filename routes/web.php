@@ -139,6 +139,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/opd-waiting', [ConsultationController::class, 'getWaitingList']); // New AJAX endpoint
         Route::get('/opd-consultation/{attendance_id}', [ConsultationController::class, 'opd_consult']);
         Route::get('/ipd-consultation/{attendance_id}', [ConsultationController::class, 'ipd_consult']);
+        Route::post('/save', [ConsultationController::class, 'store'])->name('consultation.store');
         Route::get('/consult', [ConsultationController::class, 'consult']);
         Route::get('/get-systemic-symptoms/{systemic_id}', [ConsultationController::class, 'getSystemicSymptoms']); // New route for fetching symptoms
         // Route::get('patient', [ReportsController::class, 'patient']);

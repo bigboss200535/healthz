@@ -9,7 +9,7 @@ class Episode extends Model
 {
     use HasFactory;
 
-    protected $table = 'attendance_episode';
+    protected $table = 'patient_episode';
     protected $primaryKey = 'episode_id';
     public $timestamps = false;
     protected $keyType = 'string';
@@ -18,8 +18,14 @@ class Episode extends Model
     
     protected $fillable = [
         'episode_id',
+        'patient_id',
+        'pat_number',
+        'request_date',
+        'episode_clinic',
+        'code',
+        'facility_id',
         'user_id',
-        'added_id',
+        // 'added_id',
         'added_date',
         'udpated_by',
         'status',

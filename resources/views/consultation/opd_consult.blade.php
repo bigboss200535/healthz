@@ -37,6 +37,13 @@
         <div class="col-sm-6 col-lg-3">
           <div class="d-flex justify-content-between align-items-center card-widget-3 border-end pb-4 pb-sm-0">
                 <table class="table">
+                  <form id="consultation_form" method="post">
+                      @csrf
+
+                  <input type="text" value="{{ $attendance->episode_id }}" id="episode_id" name="episode_id" hidden>
+                  <input type="text" value="{{ $attendance->attendance_id }}" id="attendance_id" name="attendance_id" hidden>
+                  <input type="text" value="{{ $attendance->gender_id }}" id="gender_id" name="gender_id" hidden>
+                  <input type="text" value="{{ $attendance->age_id }}" id="age_id" name="age_id" hidden>
                     <tr>
                       <td class="text-center"><h5><b>{{ $attendance->fullname}}</b></h5></td>
                     </tr>
@@ -62,6 +69,7 @@
           </div>
         </div>
         <div class="col-sm-6 col-lg-4">
+          <!-- <div class="d-flex justify-content-between align-items-center border-end pb-4 pb-sm-0 card-widget-3"> -->
           <div class="d-flex justify-content-between align-items-center card-widget-2 border-end pb-4 pb-sm-0">
            <p>
            <table class="table table-striped">
@@ -84,36 +92,33 @@
               <tr>
                   <td><b>Consultation Type</b></td>
                   <td>
-                      <select name="visit_type" id="visit_type" class="form-control">
+                      <select name="consulting_type" id="consulting_type" class="form-control">
                             <option value="NEW" Selected>NEW</option>
                             <option value="OLD">OLD</option>
                       </select>
                   </td>
                 </tr>
                 <tr>
-                  <td><b>Discharged Outcome</b></td>
+                  <td><b>Episode</b></td>
                   <td>
-                  <select name="visit_type" id="visit_type" class="form-control">
-                            <option selected disabled></option>
-                            <option value="PENDING DIAGNOSTIC">PENDING DIAGNOSTIC</option>
-                            <option value="DISCHARGED">DISCHARGED</option>
-                            <option value="DISCHARGED AGAINST MEDICAL ADVICE">DISCHARGED AGAINST MEDICAL ADVICE</option>
-                      </select>
+                    <select name="consulting_episode" id="consulting_episode" class="form-control">
+                        <option value="ACUTE" selected>ACUTE</option>
+                        <option value="CHRONIC">CHRONIC</option>
+                    </select>
                   </td>
                 </tr>
             </table>
            </p>
           </div>
         </div>
-        <div class="col-sm-6 col-lg-4">
+        <div class="col-sm-6 col-lg-5">
           <div class="d-flex justify-content-between align-items-center border-end pb-4 pb-sm-0 card-widget-3">
-          <p>
            <table class="table table-striped">
               <tr>
-                <td><b>Consulting Room</b></td>
+                <td><b>Room #</b></td>
                 <td>
-                    <select name="visit_date" id="visit_date" class="form-control">
-                    <!-- <option disabled selected>-Select-</option> -->
+                    <select name="consulting_room" id="consulting_room" class="form-control">
+                         <option disabled selected>-Select-</option>
                            @foreach($con_room as $consulting_room)                                        
                               <option value="{{ $consulting_room->consulting_room_id}}">{{ $consulting_room->consulting_room }}</option>
                            @endforeach
@@ -121,64 +126,102 @@
                 </td>
               </tr>
               <tr>
-                <td><b>Consultation Time</b></td>
+                <td><b>Time</b></td>
                 <td>
-                  <input type="time" class="form-control" name="consultation_time" id="consultation_time" value="<?php echo $currentTime; ?>">
+                  
+                  <input type="time" class="form-control" name="consulting_time" id="consulting_time" value="<?php echo $currentTime; ?>">
                 </td>
               </tr>
               <tr>
-                <td><b>Consulting Doctor</b></td>
+                <td><b> Doctor</b></td>
                 <td>
-                    <select name="doctors" id="doctors" class="form-control">
-                      <option value="" selected selected>-Select-</option>
-                          @foreach($doctors as $doc)                                        
-                                <option value="{{ $doc->user_id}}">{{ $doc->title. ' '. $doc->user_fullname }}</option>
-                            @endforeach
+                    <select name="consulting_doctors" id="consulting_doctors" class="form-control">
+                        @php
+                          
+                              $user = Auth::user(); // Get the logged-in user
+                            if($user && $user->user_roles_id === 'R10') { // Check if user has role R10
+                                $doctor = \App\Models\User::where('user_id', $user->user_id)->first();  // Display only the logged-in doctor if they have role R10
+                                
+                                if($doctor) {
+                                    echo '<option value="'.$doctor->user_id.'" selected disabled>'.$doctor->title.' '.strtoupper($doctor->user_fullname).'</option>';
+                                }
+
+                            } else {
+                                
+                                 //$doctors = \App\Models\User::where('user_roles_id', 'R10') // Display all doctors for other roles
+                                 $doctors = \App\Models\User::where('archived', 'No') // Display all doctors for other roles
+                                        ->orderBy('user_fullname', 'asc')
+                                        ->get();
+                                
+                                foreach($doctors as $doc) {
+                                    echo '<option value="'.$doc->user_id.'">'.$doc->title.' '.strtoupper($doc->user_fullname).'</option>';
+                                }
+                            }
+                        @endphp
                     </select>
                 </td>
               </tr>
               <tr>
-                <td><b>Consulting Date</b></td>
+                <td><b> Date</b></td>
                 <td>
-                  <input type="date" class="form-control" id="consultation_date" name="consultation_date" value="{{ $today }}">
+                  <input type="date" class="form-control" id="consulting_date" name="consulting_date" value="{{ $today }}">
                 </td>
               </tr>
-              <tr>
-                <td><b>Episode</b></td>
-                <td>
-                    <select name="episode_name" id="episode_name" class="form-control">
-                        <option value="ACUTE" selected>ACUTE</option>
-                        <option value="CHRONIC">CHRONIC</option>
-                    </select>
-                </td>
-              </tr>
+              <!-- <tr>
+                <td><b> Outcome</b></td>
+                  <td>
+                  <select name="consulting_outcome" id="consulting_outcome" class="form-control">
+                             <option selected disabled></option>
+                            <option value="PENDING DIAGNOSTIC">PENDING DIAGNOSTIC</option>
+                            <option value="DISCHARGED">DISCHARGED</option>
+                            <option value="DISCHARGED AGAINST MEDICAL ADVICE">DISCHARGED AGAINST MEDICAL ADVICE</option>
+                      </select>
+                  </td>
+              </tr> -->
+               <tr>
+                <td><label for=""></label></td>
+                  <td>
+                     <div class="btn-group">
+                        <!-- <button type="button" data-bs-toggle='modal' data-bs-target="#claims_check_code" class="btn btn-sm btn-info">GET CCC </button> -->
+                        <!-- <button type="button" class="btn btn-sm btn-warning edit-btn">Review</button> -->
+                        <button type="button" id="consultation_continue" class="btn btn-sm btn-primary">Continue</button>
+                     </div>
+                  </td>
+                </tr>
             </table>
-           </p>
+          </form>
+           <!-- </p> -->
           </div>
         </div>
       </div>
     </div>
   </div>
 </div>
-<br>
+<!-- <br> -->
 <!-- Add a message to inform the user what's needed -->
     <div class="card mb-6" id="required_fields_message">
         <div class="card-widget-separator-wrapper">
               <div class="card-body card-widget-separator">
                    <div class="row gy-4 gy-sm-1">
                        <div class="col-sm-6 col-lg-12">
-                          <h6 style="color: red" align='center'><i class="bx bx-info-circle me-1"></i>Please complete all consultation details before proceeding</h6>
+                          <h6 style="color: red" align='center'><i class="bx bx-info-circle me-1"></i>
+                             Please complete all <b>CONSULTATION</b> details before proceeding
+                          </h6>
                           <!-- <h4 class="text-dark text-center"> <b style="color:green">SELECT ALL REQUIRED FIELDS:</b> Consultation Type, Doctor, Consulting Date, and Episode.</h4> -->
                         </div>
                    </div>
               </div>
         </div>
      </div>
-<br>
+<!-- <br> -->
 <!-- The existing consultation display div remains unchanged -->
-<div class="card mb-6" id="consultation_display" hidden>
+<div class="card mb-6" id="consultation_display" style="display: none;">
   <div class="card-widget-separator-wrapper">
     <div class="card-body card-widget-separator">
+                <div class="col-12 pull-right">
+                    <button type="button" data-bs-toggle='modal' data-bs-target="#add_" class="btn btn-sm btn-primary">VISIT OUTCOME</button>
+                           <!-- <button type="button" data-bs-toggle='modal' data-bs-target="#_history" class="btn btn-sm btn-danger">HISTORY</button> -->
+                </div>
       <div class="row gy-4 gy-sm-1">
         <div class="col-sm-6 col-lg-12">
              <div class="card-body">
@@ -418,19 +461,23 @@
                                                                                               @if(isset($grouped_questions[$history->clinical_history_id]))
                                                                                                 @foreach($grouped_questions[$history->clinical_history_id] as $index => $question)
                                                                                                   <tr>
-                                                                                                    <td>
+                                                                                                    <td width="5%">
                                                                                                       <input type="checkbox" class="form-check-input" name="selected_questions[]" value="{{ $question->clinical_history_qtn_id }}">
                                                                                                     </td>
-                                                                                                    <td>
-                                                                                                      @if($index === 0)
-                                                                                                        <b>{{ $history->clinical_history }}</b>
-                                                                                                      @endif
+                                                                                                    <td width="20%">
+                                                                                                        @if($index === 0)
+                                                                                                          <b>{{ $history->clinical_history }}</b>
+                                                                                                        @endif
                                                                                                     </td>
-                                                                                                    <td>{{ $question->clinical_history_question }}</td>
-                                                                                                    <td>
+                                                                                                    <td width="40%">
+                                                                                                      {{ $question->clinical_history_question }}
+                                                                                                    </td>
+                                                                                                    <td width="30%">
                                                                                                       <input type="text" class="form-control" name="response[{{ $question->clinical_history_qtn_id }}]" placeholder="Enter response">
                                                                                                     </td>
-                                                                                                    <td><button type="button" class="btn btn-sm btn-primary">Add</button></td>
+                                                                                                    <td width="5%">
+                                                                                                      <button type="button" class="btn btn-sm btn-primary">Add</button>
+                                                                                                    </td>
                                                                                                   </tr>
                                                                                                 @endforeach
                                                                                               @endif
@@ -603,7 +650,7 @@
                                                                                           @foreach($systemic as $systemics) 
                                                                                             <tr>
                                                                                               <td>
-                                                                                                <input type="checkbox" name="select_system" id="select_system">
+                                                                                                <input type="checkbox" class="form-check-input" name="select_system" id="select_system">
                                                                                               </td>
                                                                                               <td>{{ $systemics->systemic_item }}</td>
                                                                                               <td>
@@ -1099,221 +1146,6 @@
             </div>
           </div>
           <!--/ prescription Modal -->
-<!-- 
 
-<script>
-  // Prescription management functionality
-$(document).ready(function() {
-    // Update end date when duration changes
-    $('#pres_duration').on('change', function() {
-        var startDate = new Date($('#pres_start_date').val());
-        var duration = parseInt($(this).val());
-        
-        if (!isNaN(startDate.getTime()) && duration) {
-            var endDate = new Date(startDate);
-            endDate.setDate(endDate.getDate() + duration);
-            $('#pres_end_date').val(endDate.toISOString().split('T')[0]);
-        }
-    });
-    
-    // Validate dates before form submission
-    $('#add_medication_form').on('submit', function(e) {
-        var startDate = new Date($('#pres_start_date').val());
-        var endDate = new Date($('#pres_end_date').val());
-        
-        if (endDate < startDate) {
-            $('.alert-container').html('<div class="alert alert-danger">End date cannot be earlier than start date</div>');
-            return false;
-        }
-    });
 
-    // Initialize prescription search with autocomplete
-    $('#pres_search').autocomplete({
-        source: function(request, response) {
-            $.ajax({
-                url: '/search-prescription',
-                method: 'GET',
-                data: { query: request.term },
-                success: function(data) {
-                    response(data.map(function(item) {
-                        return {
-                            label: item.product_name,
-                            value: item.product_name,
-                            id: item.product_id
-                        };
-                    }));
-                }
-            });
-        },
-        minLength: 2,
-        select: function(event, ui) {
-            $('#pres_product_id').val(ui.item.id);
-            return true;
-        }
-    });
-
-    // Handle prescription form submission
-    $('#add_medication_form').submit(function(e) {
-        e.preventDefault();
-        
-        // Validate required fields
-        if (!$('#pres_product_id').val()) {
-            $('.alert-container').html('<div class="alert alert-danger">Please select a medication from the search results</div>');
-            return;
-        }
-        
-        if (!$('#pres_dosage').val() || !$('#pres_frequency').val() || !$('#pres_duration').val() || !$('#pres_qty').val()) {
-            $('.alert-container').html('<div class="alert alert-danger">Please fill in all required fields</div>');
-            return;
-        }
-        
-        $.ajax({
-            url: '/save-prescription',
-            method: 'POST',
-            data: {
-                opd_number: $('#pres_opdnumber').val(),
-                patient_id: $('#patient_id').val(),
-                pres_product_id: $('#pres_product_id').val(),
-                // attendance_id: $('#diag_attendance_id').val(),
-                dosage: $('#pres_dosage').val(),
-                frequency: $('#pres_frequency').val(),
-                duration: $('#pres_duration').val(),
-                quantity: $('#pres_qty').val(),
-                price: $('#pres_price').val(),
-                type: $('#pres_type').val(),
-                start_date: $('#pres_start_date').val(),
-                end_date: $('#pres_end_date').val(),
-                pres_sponsor: $('#pres_sponsor').val(),
-                pres_gdrg: $('#pres_gdrg').val(),
-                _token: $('input[name="_token"]').val()
-            },
-            success: function(response) {
-                if (response.success) {
-                    // Show success message
-                    $('.alert-container').html(
-                        '<div class="alert alert-success">Prescription added successfully</div>'
-                    );
-                    
-                    // Refresh prescription table
-                    refreshPrescriptionTable();
-                    
-                    // Reset form
-                    $('#add_prescription_form')[0].reset();
-                    
-                    // Close modal after delay
-                    setTimeout(function() {
-                        $('#add_prescriptions').modal('hide');
-                        $('.alert-container').html('');
-                    }, 2000);
-                }
-            },
-            error: function(xhr) {
-                let errorMessage = 'Error saving prescription';
-                if (xhr.responseJSON && xhr.responseJSON.message) {
-                    errorMessage = xhr.responseJSON.message;
-                } else if (xhr.responseJSON && xhr.responseJSON.errors) {
-                    errorMessage = Object.values(xhr.responseJSON.errors).flat().join('<br>');
-                }
-                $('.alert-container').html(
-                    `<div class="alert alert-danger">${errorMessage}</div>`
-                );
-            }
-        });
-    });
-
-    // Function to refresh prescription table
-    function refreshPrescriptionTable() {
-        $.ajax({
-            url: '/get-prescriptions/' + $('#pres_opdnumber').val(),
-            method: 'GET',
-            success: function(data) {
-                if (!Array.isArray(data)) {
-                    console.error('Expected array of prescriptions');
-                    return;
-                }
-                
-                let tableBody = '';
-                data.forEach(function(item, index) {
-                    if (!item || !item.product_name) return;
-                    
-                    const frequency = item.frequencies || 'N/A';
-                    const duration = item.duration ? `${item.duration} days` : 'N/A';
-                    const dosage = item.dosage ? `${item.dosage} ${item.presentation || 'MLS'}` : 'N/A';
-                    
-                    tableBody += `
-                        <tr>
-                            <td>${index + 1}</td>
-                            <td>
-                                ${item.product_name}<br>
-                                <small class="text-muted">
-                                    ${dosage}, ${frequency}, ${duration}
-                                </small>
-                            </td>
-                            <td>
-                                <button class="btn btn-sm btn-danger delete-prescription" data-id="${item.prescription_id}">
-                                    <i class="bx bx-trash"></i>
-                                </button>
-                                <button class="btn btn-sm btn-primary edit-prescription" data-id="${item.prescription_id}">
-                                    <i class="bx bx-edit"></i>
-                                </button>
-                            </td>
-                        </tr>
-                    `;
-                });
-                $('#drugs tbody').html(tableBody || '<tr><td colspan="3" class="text-center">No prescriptions found</td></tr>');
-            },
-            error: function(xhr) {
-                console.error('Error fetching prescriptions:', xhr);
-                $('#drugs tbody').html('<tr><td colspan="3" class="text-center">Error loading prescriptions</td></tr>');
-            }
-        });
-    }
-
-    // Handle prescription deletion
-    $(document).on('click', '.delete-prescription', function() {
-        if (confirm('Are you sure you want to delete this prescription?')) {
-            const prescriptionId = $(this).data('id');
-            $.ajax({
-                url: '/delete-prescription/' + prescriptionId,
-                method: 'DELETE',
-                data: {
-                    _token: $('input[name="_token"]').val()
-                },
-                success: function(response) {
-                    if (response.success) {
-                        refreshPrescriptionTable();
-                    }
-                }
-            });
-        }
-    });
-
-    // Handle prescription edit
-    $(document).on('click', '.edit-prescription', function() {
-        const prescriptionId = $(this).data('id');
-        // Load prescription data and populate form
-        $.ajax({
-            url: '/get-prescription/' + prescriptionId,
-            method: 'GET',
-            success: function(data) {
-                $('#pres_search').val(data.product_name);
-                $('#pres_product_id').val(data.product_id);
-                $('#pres_dosage').val(data.dosage);
-                $('#pres_frequency').val(data.frequency_id);
-                $('#pres_duration').val(data.duration);
-                $('#pres_qty').val(data.quantity);
-                $('#pres_price').val(data.price);
-                $('#pres_type').val(data.type);
-                $('#pres_sponsor').val(data.sponsor);
-                
-                // Show modal
-                $('#add_prescriptions').modal('show');
-            }
-        });
-    });
-
-    // Initialize the prescription table on page load
-    refreshPrescriptionTable();
-});
-</script> -->
 </x-app-layout>

@@ -42,6 +42,7 @@ class PatientAttendance extends Model
         'pat_age',
         'age_id',
         'full_age',
+        'episode_id',
         'service_id',
         'service_fee_id',
         'clinic_code',

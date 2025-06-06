@@ -46,6 +46,7 @@ class AttendanceController extends Controller
                          'sponsor_type.sponsor_type as sponsor', 'patient_attendance.service_type', 'patient_attendance.service_issued')  
                 ->where('patient_attendance.patient_id', $patient_id)
                 ->orderBy('patient_attendance.attendance_id', 'asc')
+
                 ->get();
 
         return response()->json($all_single_attendance);
@@ -62,7 +63,7 @@ class AttendanceController extends Controller
             'patient_attendance.full_age',  'service_attendance_type.attendance_type as pat_clinic' , 'sponsor_type.sponsor_type as sponsor',
             'patient_attendance.service_issued' ,'patient_attendance.attendance_type')
             ->where('patient_attendance.patient_id', $patient_id)
-            ->whereDate('patient_attendance.attendance_date',  $todays_date) 
+            // ->whereDate('patient_attendance.attendance_date',  $todays_date) 
             ->orderBy('patient_attendance.attendance_id', 'desc')
             ->get();
 
@@ -104,9 +105,6 @@ class AttendanceController extends Controller
                 ->where('patient_attendance.archived', 'No')
                 ->orderBy('patient_attendance.attendance_id', 'desc')
                 ->get();
-
-
-
 
 
             return view('patient.appointments', compact('appointments')); 

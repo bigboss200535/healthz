@@ -109,7 +109,21 @@
     <!-- <script src="{{ asset('js/fullcalendar.js') }}"></script> -->
     <!-- <script src="{{ asset('js/app-calendar-events.js') }}"></script> -->
     <!-- <script src="{{ asset('js/app-calendar.js') }}"></script> -->
-
+<script>
+  $(document).ready(function() {
+    $('#consulting_room, #consulting_type, #consulting_doctors, #consulting_date, #consulting_episode').change(function() {
+        if ($('#consulting_room').val() && $('#consulting_type').val() && $('#consulting_doctors').val() && $('#consulting_date').val() && $('#consulting_episode').val()) 
+        {
+            $('#consultation_display').show();
+            $('#required_fields_message').hide();
+            
+        } else {
+            $('#consultation_display').hide();
+            $('#required_fields_message').show();
+        }
+    });
+});
+</script>
     <script type="text/javascript">
         $(document).ready( function () {
             $('#app_list').DataTable({
