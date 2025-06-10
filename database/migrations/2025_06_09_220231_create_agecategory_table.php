@@ -13,10 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('documentation_repo', function (Blueprint $table) {
-            $table->id('repo_id');
-            $table->string('keyword', 50)->nullable();
-            $table->text('template')->nullable();
+        Schema::create('age_category', function (Blueprint $table) {
+            $table->id('age_category_id');
+            $table->string('age_category', 150);
+            // $table->string('age_category', 150);
+            // $table->string('gender_id', 50)->nullable();
+            // $table->string('age_id', 50)->nullable();
             $table->string('user_id', 50)->nullable();
             $table->string('facility_id', 50)->nullable();
             $table->string('added_id', 50)->nullable();
@@ -27,9 +29,8 @@ return new class extends Migration
             $table->string('archived_id', 50)->nullable();
             $table->string('archived_by', 100)->nullable();
             $table->date('archived_date', 100)->nullable();
-            // Foreign key constraint
-            // $table->foreign('user_id')->references('user_id')->on('users');
-            // $table->foreign('facility_id')->references('facility_id')->on('facility');
+            $table->foreign('user_id')->references('user_id')->on('users');
+            $table->foreign('facility_id')->references('facility_id')->on('facility');
         });
     }
 
@@ -40,6 +41,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('documentation_repo');
+        Schema::dropIfExists('age_category');
     }
 };
