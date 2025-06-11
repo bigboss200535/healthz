@@ -109,6 +109,8 @@ class DiagnosisController extends Controller
         $diagnosis = new PatientDiagnosis();
         $diagnosis->attendance_diagnosis_id = $count + 1;
         $diagnosis->opd_number = $request->input('opd_number');
+        $diagnosis->episode_id = $request->input('episode_id');
+        $diagnosis->consultation_id = $request->input('consultation_id');
         $diagnosis->patient_id = $request->input('patient_id');
         $diagnosis->attendance_id = $request->input('attendance_id');
         $diagnosis->diagnosis_id = $request->input('diagnosis_id');

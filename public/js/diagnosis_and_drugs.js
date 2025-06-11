@@ -201,6 +201,8 @@ $('#add_diagnosis_form').submit(function(e) {
         method: 'POST',
         data: {
             opd_number: $('#diag_opdnumber').val(),
+            consultation_id: $('#consultation_id').val(),
+            episode_id: $('#episode_id').val(),
             patient_id: $('#diag_patient_id').val(),
             attendance_id: $('#diag_attendance_id').val(),
             diagnosis_id: $('#diag_id').val(),

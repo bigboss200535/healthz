@@ -39,10 +39,17 @@
                 <table class="table">
                   <form id="consultation_form" method="post">
                       @csrf
-                  <input type="text" value="{{ $attendance->episode_id }}" id="episode_id" name="episode_id" hidden>
-                  <input type="text" value="{{ $attendance->attendance_id }}" id="attendance_id" name="attendance_id" hidden>
-                  <input type="text" value="{{ $attendance->gender_id }}" id="gender_id" name="gender_id" hidden>
-                  <input type="text" value="{{ $attendance->age_id }}" id="age_id" name="age_id" hidden>
+                      <input type="text" value="{{ $consultation_id }}" id="consultation_id" name="consultation_id" hidden>
+                        <input type="text" value="{{ $attendance->episode_id }}" id="episode_id" name="episode_id" hidden>
+                        <input type="text" value="{{ $attendance->attendance_id }}" id="attendance_id" name="attendance_id" hidden>
+                        <input type="text" value="{{ $attendance->gender_id }}" id="gender_id" name="gender_id" hidden>
+                        <input type="text" value="{{ $attendance->age_id }}" id="age_id" name="age_id" hidden>
+                        <input type="text" value="{{ $attendance->patient_id }}" id="con_patient_id" name="con_patient_id" hidden>
+                        <input type="text" value="{{ $attendance->opd_number }}" id="con_opd_number" name="con_opd_number" hidden>
+                        <input type="text" value="{{ $attendance->full_age }}" id="con_full_age" name="con_full_age" hidden>
+                        <input type="text" value="{{ $attendance->sponsor_id }}" id="con_sponsor" name="con_sponsor" hidden>
+                        <input type="text" value="{{ $attendance->sponsor_type_id }}" id="con_sponsor_type" name="con_sponsor_type" hidden>
+                         <input type="text" value="{{ $attendance->pat_clinic }}" id="con_clinic" name="con_clinic" hidden>
                     <tr>
                       <td class="text-center"><h5><b>{{ $attendance->fullname}}</b></h5></td>
                     </tr>
@@ -55,13 +62,12 @@
                     </tr>
                     <tr>
                       <td class="text-center">
-                        <table class="table">
-                          <tr>
-                            <td><b>OPD #:</b><br> {{ $attendance->opd_number}}</td>
-                            <td style="width: 2px; background-color: #dee2e6; padding: 0;"></td>
-                            <td><b>Age: </b><br>{{ $attendance->full_age}}</td>
-                          </tr>
-                        </table>
+                         <b>Age: </b>{{ $attendance->full_age}}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="text-center">
+                         <b>OPD #: </b>{{ $attendance->opd_number}} 
                       </td>
                     </tr>
                   </table>
@@ -113,6 +119,7 @@
         <div class="col-sm-6 col-lg-5">
           <div class="d-flex justify-content-between align-items-center border-end pb-4 pb-sm-0 card-widget-3">
            <table class="table table-striped">
+            
               <tr>
                 <td><b>Room #</b></td>
                 <td>
@@ -166,7 +173,7 @@
                   <input type="date" class="form-control" id="consulting_date" name="consulting_date" value="{{ $today }}">
                 </td>
               </tr>
-              <!-- <tr>
+               <!-- <tr> 
                 <td><b> Outcome</b></td>
                   <td>
                   <select name="consulting_outcome" id="consulting_outcome" class="form-control">
@@ -174,17 +181,19 @@
                             <option value="PENDING DIAGNOSTIC">PENDING DIAGNOSTIC</option>
                             <option value="DISCHARGED">DISCHARGED</option>
                             <option value="DISCHARGED AGAINST MEDICAL ADVICE">DISCHARGED AGAINST MEDICAL ADVICE</option>
-                      </select>
+                      </select> 
+                      
                   </td>
               </tr> -->
                <tr>
                 <td><label for=""></label></td>
                   <td>
-                     <div class="btn-group">
+                     <!-- <div class="btn-group"> -->
                         <!-- <button type="button" data-bs-toggle='modal' data-bs-target="#claims_check_code" class="btn btn-sm btn-info">GET CCC </button> -->
-                        <!-- <button type="button" class="btn btn-sm btn-warning edit-btn">Review</button> -->
-                        <button type="button" id="consultation_continue" class="btn btn-sm btn-primary">Continue To Consult</button>
-                     </div>
+                       
+                        <button type="button" id="consultation_continue" class="btn btn-sm btn-primary">Continue</button>
+                        <button type="button" disabled class="btn btn-sm btn-danger" id="discharge_patient">Discharge</button>
+                     <!-- </div> -->
                   </td>
                 </tr>
             </table>

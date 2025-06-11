@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('age_class', 50)->nullable();
             $table->string('opd_number', 50)->nullable();
             $table->date('attendance_date')->nullable();
-            $table->timestamp('attendance_time')->nullable();
+            $table->timestamp('attendance_time')->nullable()->default(DB::raw('CURRENT_DATE'));
             $table->date('entry_date')->nullable();
             $table->string('episode_id', 200)->nullable();
             $table->string('diagnosis_id', 50)->nullable();

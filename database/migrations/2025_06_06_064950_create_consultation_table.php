@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('age_class', 50)->nullable();
             $table->string('patient_age', 50)->nullable();
             $table->string('clinic', 50)->nullable();
-            $table->string('patient_status', 50)->nullable();
+            $table->string('patient_status_id', 50)->nullable();
             $table->string('facility_id', 50)->nullable();
             $table->string('is_insured', 50)->default('No')->nullable();
             $table->string('is_pregnant', 50)->default('No')->nullable();
