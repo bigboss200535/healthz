@@ -124,7 +124,6 @@ class DiagnosisController extends Controller
         $diagnosis->icd_10 = $request->input('icd_10');
         $diagnosis->doctor_id = $request->input('doctor_id');
         $diagnosis->user_id = Auth::user()->user_id;
-       
         $diagnosis->save();
 
         return response()->json(['success' => true]);

@@ -21,6 +21,7 @@ return new class extends Migration
             $table->date('attendance_date')->nullable();
             $table->timestamp('attendance_time')->nullable();
             $table->date('entry_date')->nullable();
+            $table->string('age_group_id', 50)->nullable();
             $table->string('episode_id', 200)->nullable();
             $table->float('unit_price', 50)->nullable();
             $table->string('product_id', 50)->nullable();
@@ -47,8 +48,10 @@ return new class extends Migration
             $table->string('archived_id', 100)->nullable();
             $table->string('archived_by', 100)->nullable();
             $table->date('archived_date', 100)->nullable();
+            // keys
             $table->foreign('user_id')->references('user_id')->on('users');
             $table->foreign('facility_id')->references('facility_id')->on('facility');
+            $table->foreign('age_group_id')->references('age_group_id')->on('age_groups');
         });
     }
 

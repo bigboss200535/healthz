@@ -17,12 +17,12 @@ return new class extends Migration
             $table->id('consult_id');
             $table->date('consult_date');
             $table->date('consult_time');
-            $table->string('consult_type');
+            $table->string('consult_type', 50)->nullable();
             $table->date('attendance_date');
-            $table->string('patient_id', 50);
-            $table->string('opd_number', 50);
-            $table->string('status_code', 50);
-            $table->string('patiient_age', 50);
+            $table->string('patient_id', 50)->nullable();
+            $table->string('opd_number', 50)->nullable();
+            $table->string('status_code', 50)->nullable();
+            $table->string('patiient_age', 50)->nullable();
             $table->string('sponsor_name', 50);
             $table->string('is_insured', 50)->default('No');
             $table->string('doctor_id', 50)->default('No');
