@@ -227,7 +227,7 @@
   <div class="card-widget-separator-wrapper">
     <div class="card-body card-widget-separator">
                 <div class="col-12 pull-right">
-                    <button type="button" data-bs-toggle='modal' data-bs-target="#add_" class="btn btn-sm btn-primary">VISIT OUTCOME</button>
+                    <!-- <button type="button" data-bs-toggle='modal' data-bs-target="#add_" class="btn btn-sm btn-primary">VISIT OUTCOME</button> -->
                            <!-- <button type="button" data-bs-toggle='modal' data-bs-target="#_history" class="btn btn-sm btn-danger">HISTORY</button> -->
                 </div>
       <div class="row gy-4 gy-sm-1">

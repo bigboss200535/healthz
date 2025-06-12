@@ -26,8 +26,8 @@ return new class extends Migration
             $table->string('facility_id', 50)->nullable();
             $table->string('is_insured', 50)->default('No')->nullable();
             $table->string('is_pregnant', 50)->default('No')->nullable();
-            $table->string('sponsor', 50)->nullable();
-            $table->string('sponsor_type', 50)->nullable();
+            $table->string('sponsor_id', 50)->nullable();
+            $table->string('sponsor_type_id', 50)->nullable();
             $table->string('episode_id', 50)->nullable();
             $table->string('episode_type', 50)->nullable();
             $table->string('consulting_room', 50)->nullable();
@@ -53,6 +53,8 @@ return new class extends Migration
             $table->foreign('age_id')->references('age_id')->on('ages');
             $table->foreign('gender_id')->references('gender_id')->on('gender');
             $table->foreign('age_group_id')->references('age_group_id')->on('age_groups');
+            $table->foreign('sponsor_id')->references('sponsor_id')->on('sponsors');
+            $table->foreign('sponsor_type_id')->references('sponsor_type_id')->on('sponsor_type');
         });
     }
 

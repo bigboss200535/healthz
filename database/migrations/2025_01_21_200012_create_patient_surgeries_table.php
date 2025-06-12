@@ -31,7 +31,7 @@ return new class extends Migration
             $table->string('assistant_two');
             $table->string('scrub_nurse');
             $table->string('anaesthetist', 50)->nullable();
-            $table->text('age_group_id', 50)->nullable();
+            $table->string('age_group_id', 50)->nullable();
             $table->text('complications')->nullable();
             $table->string('assistant_surgery_doctor');
             $table->text('surgery');

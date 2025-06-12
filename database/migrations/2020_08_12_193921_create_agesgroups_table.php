@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('age_groups', function (Blueprint $table) {
-            $table->id('age_group_id');
+            $table->string('age_group_id', 50)->primary();
             $table->string('age_groups', 150);
             $table->string('gender_id', 50)->nullable();
             $table->string('age_id', 50)->nullable();

@@ -100,8 +100,8 @@ class ConsultationController extends Controller
                     $consultation->patient_age = $validated_data['patient_age'];
                     $consultation->clinic = $validated_data['clinic'];
                     $consultation->patient_status = '2' ?? $validated_data['patient_status_id'];
-                    $consultation->sponsor_type = $validated_data['sponsor_type'];
-                    $consultation->sponsor = $validated_data['sponsor'];
+                    $consultation->sponsor_type_id = $validated_data['sponsor_type'];
+                    $consultation->sponsor_id = $validated_data['sponsor'];
                     $consultation->episode_id = $validated_data['episode_id'];
                     $consultation->episode_type = $validated_data['episode_type'];
                     $consultation->consulting_room = $validated_data['consulting_room'];
