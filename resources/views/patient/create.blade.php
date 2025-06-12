@@ -250,14 +250,14 @@
                           </select>
                         </div>
                         <div class="col sponsorship_details_settings" >
-                          <label class="form-label mb-1 d-flex justify-content-between align-items-center" for="start_date">
+                          <label class="form-label mb-1 d-flex justify-content-between align-items-center" for="card_start_date">
                           <span>Start Date</span></label>
-                            <input type="date" name="start_date" id="start_date" class="form-control">
+                            <input type="date" name="card_start_date" id="card_start_date" class="form-control">
                         </div>
                         <div class="col sponsorship_details_settings">
-                          <label class="form-label mb-1 d-flex justify-content-between align-items-center" for="end_date">
+                          <label class="form-label mb-1 d-flex justify-content-between align-items-center" for="card_end_date">
                             <span>End Date</span></label>
-                          <input type="date" name="end_date" id="end_date" class="form-control">
+                          <input type="date" name="card_end_date" id="card_end_date" class="form-control">
                         </div>
                     </div>
                     <div class="row mb-3">
@@ -337,21 +337,22 @@
                                               <i class="bx bx-dots-vertical-rounded"></i>
                                         </button>
                                               <div class="dropdown-menu">
+                                                <a class="dropdown-item" href="/patients/{{ $pat_list->patient_id }}">
+                                                        <i class="bx bx-plus me-1"></i>  New Attendance
+                                                    </a>
                                                     <a class="dropdown-item edit-patient" href="#" data-patient-id="{{ $pat_list->patient_id }}">
-                                                        <i class="bx bx-edit-alt me-1"></i> Edit
+                                                        <i class="bx bx-edit-alt me-1"></i> Edit Details
                                                     </a>
                                                     <a class="dropdown-item" href="/patients/{{ $pat_list->patient_id }}">
-                                                        <i class="bx bx-detail me-1"></i>  More
+                                                        <i class="bx bx-detail me-1"></i>  Show More
                                                     </a>
-                                                     <a class="dropdown-item" href="/patients/{{ $pat_list->patient_id }}">
-                                                        <i class="bx bx-plus me-1"></i>  Create Attendance
-                                                    </a>
-                                                    <a class="dropdown-item " href="/patients/{{ $pat_list->patient_id }}">
+                                                     
+                                                    <!-- <a class="dropdown-item " href="/patients/{{ $pat_list->patient_id }}">
                                                         <i class="bx bx-plus me-1"></i>  Add Relative
                                                     </a>
                                                      <a class="dropdown-item" href="/patients/{{ $pat_list->patient_id }}">
                                                         <i class="bx bx-plus me-1"></i>  Add Clinic
-                                                    </a>
+                                                    </a> -->
                                               </div>
                                   </div>
                               </td>
@@ -359,7 +360,7 @@
                             @endforeach
                         </tbody>
                         <tfoot>
-                           <th>SN</th>
+                          <th>SN</th>
                           <th>Patient Name</th>
                           <th>Action</th>
                         </tfoot>

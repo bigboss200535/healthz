@@ -116,9 +116,9 @@
                             $('.is-invalid').removeClass('is-invalid');
 
                             // Reload the app_list table
-                            if ($('#patient_list').length) {
+                            // if ($('#patient_list').length) {
                                 $('#patient_list').DataTable().ajax.reload();
-                            }
+                            // }
                             $submitBtn.prop('disabled', false);
                             $restBtn.prop('disabled', false);
                         } else if (response.code === 200) {
@@ -181,8 +181,7 @@
         });
     
     });
-// *************************** end GENERATE OPD NUMBER *****************************/
-
+// *************************** END GENERATE OPD NUMBER *****************************/
 
 // When sponsor type changes
 $('#sponsor_type_id').on('change', function() {
@@ -231,8 +230,8 @@ $('#sponsor_type_id').on('change', function() {
                 
                 $('#member_no').val('');
                 $('#sponsor_id').empty();
-                $('#start_date').val('');
-                $('#end_date').val('');
+                $('#card_start_date').val('');
+                $('#card_end_date').val('');
                 $('#card_status').val('');
                
                 $('.sponsorship_details_settings').hide();
@@ -261,8 +260,8 @@ $('#sponsor_type_id').on('change', function() {
 
     // Function to check date range and update card status
     function updateCardStatus() {
-        var startDate = $('#start_date').val();
-        var endDate = $('#end_date').val();
+        var startDate = $('#card_start_date').val();
+        var endDate = $('#card_end_date').val();
         
         if(startDate && endDate) {
             var today = new Date();
@@ -287,7 +286,7 @@ $('#sponsor_type_id').on('change', function() {
     }
 
     // Update card status when start date or end date changes
-    $('#start_date, #end_date').on('change', function() {
+    $('#card_start_date, #card_end_date').on('change', function() {
         updateCardStatus();
     });
 
@@ -333,8 +332,8 @@ $('#sponsor_type_id').on('change', function() {
                 $('#sponsor_id').val(response.sponsor_id);
                 $('#member_no').val(response.member_no);
                 $('#dependant').val(response.dependant);
-                $('#start_date').val(response.start_date);
-                $('#end_date').val(response.end_date);
+                $('#card_start_date').val(response.start_date);
+                $('#card_end_date').val(response.end_date);
                 $('#card_status').val(response.card_status);
                 $('#opd_type').val(response.opd_type);
                 $('#folder_clinic').val(response.folder_clinic);

@@ -1,4 +1,5 @@
-<?php use Illuminate\Support\Facades\DB;
+<?php 
+use Illuminate\Support\Facades\DB;
 
 $facility = DB::table('facility')->where('archived', 'No')->value('facility_name');
 ?>
