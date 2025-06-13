@@ -30,7 +30,6 @@ return new class extends Migration
             $table->string('sponsor_type_id', 50)->nullable();
             $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();
-            // $table->string('sponsor_id', 50)->nullable();
             $table->string('store_id', 50)->nullable();
             $table->string('dosage', 50)->nullable();
             $table->string('unit_measure', 50)->nullable(); //tab, capsule, ml, etc
@@ -54,7 +53,8 @@ return new class extends Migration
             $table->foreign('user_id')->references('user_id')->on('users');
             $table->foreign('facility_id')->references('facility_id')->on('facility');
             $table->foreign('age_group_id')->references('age_group_id')->on('age_groups');
-             $table->foreign('sponsor_id')->references('sponsor_id')->on('sponsors');
+            $table->foreign('sponsor_id')->references('sponsor_id')->on('sponsors');
+            $table->foreign('product_id')->references('product_id')->on('products');
             $table->foreign('sponsor_type_id')->references('sponsor_type_id')->on('sponsor_type');
         });
     }

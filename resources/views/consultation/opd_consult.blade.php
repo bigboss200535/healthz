@@ -196,8 +196,8 @@
 <!-- <br> -->
 <!-- Add a message to inform the user what's needed -->
 @php 
-$doctor = \App\Models\User::where('user_id', $user->user_id)->first();
-     @endphp
+  $doctor = \App\Models\User::where('user_id', $user->user_id)->first();
+@endphp
 
     <div class="card mb-6" id="required_fields_message">
         <div class="card-widget-separator-wrapper">
@@ -208,10 +208,8 @@ $doctor = \App\Models\User::where('user_id', $user->user_id)->first();
                              Please complete all <b>CONSULTATION</b> details before proceeding
                           </h6>
                           <div class="col-sm-6 col-lg-12" align='center'>
-                              <button type="button" id="consultation_continue" class="btn btn-sm btn-primary">Proceed</button>
+                              <button type="button" id="consultation_continue" class="btn btn-sm btn-primary">PROCEED</button>
                           </div>
-                           
-                          <!-- <h4 class="text-dark text-center"> <b style="color:green">SELECT ALL REQUIRED FIELDS:</b> Consultation Type, Doctor, Consulting Date, and Episode.</h4> -->
                         </div>
                    </div>
               </div>
@@ -766,10 +764,10 @@ $doctor = \App\Models\User::where('user_id', $user->user_id)->first();
                                                                                                 <div class="timeline-event">
                                                                                                   <div class="timeline-header mb-3">
                                                                                                     <h6 class="mb-0">DOCTOR: <label>{{ $p_diagnosis->doctor }}</label></h6>
-                                                                                                    <small class="text-body-dark"><label><b>DIAGNOSIS</b>: {{ $p_diagnosis->diagnosis }}</label> </small>
-                                                                                                    <small class="text-body-dark"><label><b>SYMPTOM:</b> {{ $p_diagnosis->icd_10 }} </label> </small>
-                                                                                                    <small class="text-body-dark"><label><b>G-DRG:</b> {{ $p_diagnosis->gdrg_code }} </label> </small>
-                                                                                                    <small class="text-body-dark"><label><b>DATE:</b> {{ $p_diagnosis->entry_date }}</label> </small>
+                                                                                                    <small class="text-body-dark"><label><b>DIAGNOSIS</b> {{ $p_diagnosis->diagnosis }}</label> </small>
+                                                                                                    <small class="text-body-dark"><label><b>SYMPTOM</b> {{ $p_diagnosis->icd_10 }} </label> </small>
+                                                                                                    <small class="text-body-dark"><label><b>G-DRG</b> {{ $p_diagnosis->gdrg_code }} </label> </small>
+                                                                                                    <small class="text-body-dark"><label><b>DATE</b> {{ $p_diagnosis->entry_date }}</label> </small>
                                                                                                   </div>
                                                                                                 </div>
                                                                                               </li>
@@ -1141,6 +1139,4 @@ $doctor = \App\Models\User::where('user_id', $user->user_id)->first();
             </div>
           </div>
           <!--/ prescription Modal -->
-
-
 </x-app-layout>

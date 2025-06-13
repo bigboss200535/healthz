@@ -14,8 +14,8 @@ return new class extends Migration
     public function up()
     {
         Schema::create('product_stocked', function (Blueprint $table) {
-            $table->id('stocked_id', 50);
-            $table->string('product_id', 50);
+            $table->string('stocked_id', 50)->primary();
+            $table->string('product_id', 50)->nullable();
             $table->float('unit_price')->nullable();
             $table->decimal('stock_level', 10)->nullable();
             $table->date('expiry_date')->nullable();
@@ -31,6 +31,7 @@ return new class extends Migration
             $table->string('archived_id', 100)->nullable();
             $table->string('archived_by', 100)->nullable();
             $table->date('archived_date', 100)->nullable();
+            // key
             $table->foreign('user_id')->references('user_id')->on('users');
             $table->foreign('facility_id')->references('facility_id')->on('facility');
             $table->foreign('store_id')->references('store_id')->on('stores');

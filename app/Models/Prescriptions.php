@@ -65,4 +65,9 @@ class Prescriptions extends Model
         return $this->belongsTo(Facility::class, 'facility_id');
     }
 
+    public function products()
+    {
+        return $this->belongsTo(Facility::class, 'product_id');
+    }
+
 }
