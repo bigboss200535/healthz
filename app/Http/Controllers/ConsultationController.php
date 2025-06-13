@@ -68,7 +68,6 @@ class ConsultationController extends Controller
         ]);
 
          $records_no = intval(Consultation::all()->count()) + 1;
-        
 
          // Check if the consultation already exists
         //   $existing_consultation = Consultation::where('episode_id', $validated_data['episode_id'])
@@ -225,7 +224,6 @@ class ConsultationController extends Controller
                 'ages.age_id',
                 'patient_attendance.episode_id',
                 'gender.gender',
-                // '',
                 'gender.gender_id',
                 'service_attendance_type.attendance_type as pat_clinic'
                 )
@@ -257,16 +255,9 @@ class ConsultationController extends Controller
         }
     
         $attendance = $attendance_query->first();
-    
-        if (!$attendance) {
-            //  return  'Attendance details not found.';
-        }else{
-             //  update service to issued if found
-            PatientAttendance::where('attendance_id', $attendance->attendance_id)->update(['service_issued' => '1']);
-        }
-    
+        
         // Fetch consulting rooms
-        $con_room = ConsultingRoom::where('Archived', 'No')
+        $consulting_room = ConsultingRoom::where('Archived', 'No')
             ->where('status', 'Active')
             ->get();
     
@@ -299,31 +290,31 @@ class ConsultationController extends Controller
 
         $claims = Claim::where('attendance_id', $attendance_id)->get();
 
-        if(!$claims){
-            $new_claim = Claim::create([
-                'opd_number' => $attendance_query->opd_number,
-                'age' => $attendance_query->pat_age,
-                'pat_status' => $attendance_query->status_code,
-                'attendance_date' => $attendance_query->attendance_date,
-                'claim_start_date' => $attendance_query->attendance_date,
-                'claims_end_date' => $attendance_query->attendance_date,
-                // 'no_of_visits' => $attendance_query->service_type,
-                'attendance_type' => $attendance_query->attendance_type,
-                'gdrg' => $attendance_query->gdrg_code,
-                'service_fee' => $attendance_query->credit_amount,
-                'episode_id' => $attendance_query->episode_id,
-                'user_id' => auth()->id()
-            ]);
-        }
-
+        // if(!$claims){
+        //     $new_claim = Claim::create([
+        //         'opd_number' => $attendance_query->opd_number,
+        //         'age' => $attendance_query->pat_age,
+        //         'pat_status' => $attendance_query->status_code,
+        //         'attendance_date' => $attendance_query->attendance_date,
+        //         'claim_start_date' => $attendance_query->attendance_date,
+        //         'claims_end_date' => $attendance_query->attendance_date,
+        //         // 'no_of_visits' => $attendance_query->service_type,
+        //         'attendance_type' => $attendance_query->attendance_type,
+        //         'gdrg' => $attendance_query->gdrg_code,
+        //         'service_fee' => $attendance_query->credit_amount,
+        //         'episode_id' => $attendance_query->episode_id,
+        //         'user_id' => auth()->id()
+        //     ]);
+        // }
+        $check_status = 
         $diagnosis_history = PatientDiagnosis::where('patient_diagnosis.archived','No')
             ->where('patient_diagnosis.patient_id', $attendance->patient_id)
             ->join('users', 'users.user_id', '=', 'patient_diagnosis.doctor_id')
             ->join('diagnosis', 'diagnosis.diagnosis_id', 'patient_diagnosis.diagnosis_id')
-            ->select('users.user_fullname', 'diagnosis.diagnosis', 'patient_diagnosis.icd_10', 'patient_diagnosis.gdrg_code', 'patient_diagnosis.entry_date')
+            ->select('users.user_fullname as doctor', 'diagnosis.diagnosis', 'patient_diagnosis.icd_10', 'patient_diagnosis.gdrg_code', 'patient_diagnosis.entry_date')
             ->get();
 
-        return view('consultation.opd_consult', compact('diagnosis_history', 'consultation_id', 'attendance', 'doctors', 'con_room', 'systemic', 'clinical_history', 'grouped_questions'));
+        return view('consultation.opd_consult', compact('diagnosis_history', 'consultation_id', 'attendance', 'doctors', 'consulting_room', 'systemic', 'clinical_history', 'grouped_questions'));
     }
 
 

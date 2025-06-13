@@ -39,7 +39,8 @@
                 <table class="table">
                   <form id="consultation_form" method="post">
                       @csrf
-                      <input type="text" value="{{ $consultation_id }}" id="consultation_id" name="consultation_id" hidden>
+                        <input type="text" value="" id="patient_status" name="patient_status" hidden>
+                        <input type="text" value="{{ $consultation_id }}" id="consultation_id" name="consultation_id" hidden>
                         <input type="text" value="{{ $attendance->episode_id }}" id="episode_id" name="episode_id" hidden>
                         <input type="text" value="{{ $attendance->attendance_id }}" id="attendance_id" name="attendance_id" hidden>
                         <input type="text" value="{{ $attendance->gender_id }}" id="gender_id" name="gender_id" hidden>
@@ -125,8 +126,8 @@
                 <td>
                     <select name="consulting_room" id="consulting_room" class="form-control">
                          <option disabled selected>-Select-</option>
-                           @foreach($con_room as $consulting_room)                                        
-                              <option value="{{ $consulting_room->consulting_room_id}}">{{ $consulting_room->consulting_room }}</option>
+                           @foreach($consulting_room as $room)                                        
+                              <option value="{{ $room->consulting_room_id}}">{{ $room->consulting_room }}</option>
                            @endforeach
                     </select>
                 </td>
@@ -134,7 +135,6 @@
               <tr>
                 <td><b>Time</b></td>
                 <td>
-                  
                   <input type="time" class="form-control" name="consulting_time" id="consulting_time" value="<?php echo $currentTime; ?>">
                 </td>
               </tr>
@@ -155,7 +155,7 @@
                             } else {
                                 
                                  //$doctors = \App\Models\User::where('user_roles_id', 'R10') // Display all doctors for other roles
-                                 $doctors = \App\Models\User::where('archived', 'No') // Display all doctors for other roles
+                                  $doctors = \App\Models\User::where('archived', 'No') // Display all doctors for other roles
                                         ->orderBy('user_fullname', 'asc')
                                         ->get();
                                 
@@ -176,11 +176,11 @@
                <tr>
                 <td><b>Action</b></td>
                   <td>
-                        <button type="button" id="consultation_continue" class="btn btn-sm btn-primary">Continue</button>
+                        <!-- <button type="button" id="consultation_continue" class="btn btn-sm btn-primary">Proceed</button> -->
                   </td>
                 </tr>
                 <tr>
-                <td><label for="">Outcome</label></td>
+                <td><b>Outcome</b></td>
                   <td>
                         <button type="button" disabled class="btn btn-sm btn-danger" id="discharge_patient">Discharge</button>
                   </td>
@@ -195,6 +195,10 @@
 </div>
 <!-- <br> -->
 <!-- Add a message to inform the user what's needed -->
+@php 
+$doctor = \App\Models\User::where('user_id', $user->user_id)->first();
+     @endphp
+
     <div class="card mb-6" id="required_fields_message">
         <div class="card-widget-separator-wrapper">
               <div class="card-body card-widget-separator">
@@ -203,6 +207,10 @@
                           <h6 style="color: red" align='center'><i class="bx bx-info-circle me-1"></i>
                              Please complete all <b>CONSULTATION</b> details before proceeding
                           </h6>
+                          <div class="col-sm-6 col-lg-12" align='center'>
+                              <button type="button" id="consultation_continue" class="btn btn-sm btn-primary">Proceed</button>
+                          </div>
+                           
                           <!-- <h4 class="text-dark text-center"> <b style="color:green">SELECT ALL REQUIRED FIELDS:</b> Consultation Type, Doctor, Consulting Date, and Episode.</h4> -->
                         </div>
                    </div>
@@ -211,7 +219,7 @@
      </div>
 <!-- <br> -->
 <!-- The existing consultation display div remains unchanged -->
-<div class="card mb-6" id="consultation_display" style="display: none;">
+<div class="card mb-6" id="consultation_display">
   <div class="card-widget-separator-wrapper">
     <div class="card-body card-widget-separator">
                 <div class="col-12 pull-right">
@@ -751,49 +759,22 @@
                                                                               <div class="col-md">
                                                                                 <div class="row">
                                                                                       <div class="col-12" >
-                                                                                         @foreach($diagnosis_history as $p_diagnosis) 
                                                                                           <ul class="timeline timeline-outline mb-0">
+                                                                                              @foreach($diagnosis_history as $p_diagnosis) 
                                                                                               <li class="timeline-item timeline-item-transparent border-dashed">
                                                                                                 <span class="timeline-point timeline-point-primary"></span>
                                                                                                 <div class="timeline-event">
                                                                                                   <div class="timeline-header mb-3">
-                                                                                                    <h6 class="mb-0">Doctor: <label>Dr. Ansah Sasraku Jnr</label></h6>
-                                                                                                    <small class="text-body-dark"><label><b>System</b>: GENERAL/CONSTITUTIONAL</label> </small>
-                                                                                                    <small class="text-body-dark"><label><b>SYMPTOM:</b> FEVER</label> </small>
-                                                                                                    <small class="text-body-dark"><label><b>DATE:</b> 12/03/2025</label> </small>
-                                                                                                    <small class="text-body-dark">
-                                                                                                      <a href="#" class="btn btn-sm btn-danger"><i class="bx bx-trash"></i> </a>
-                                                                                                      <!-- <button type="button" class="btn btn-sm btn-danger">Delete</button> -->
-                                                                                                    </small>
+                                                                                                    <h6 class="mb-0">DOCTOR: <label>{{ $p_diagnosis->doctor }}</label></h6>
+                                                                                                    <small class="text-body-dark"><label><b>DIAGNOSIS</b>: {{ $p_diagnosis->diagnosis }}</label> </small>
+                                                                                                    <small class="text-body-dark"><label><b>SYMPTOM:</b> {{ $p_diagnosis->icd_10 }} </label> </small>
+                                                                                                    <small class="text-body-dark"><label><b>G-DRG:</b> {{ $p_diagnosis->gdrg_code }} </label> </small>
+                                                                                                    <small class="text-body-dark"><label><b>DATE:</b> {{ $p_diagnosis->entry_date }}</label> </small>
                                                                                                   </div>
-                                                                                                  <p class="mb-2"><b>REMARKS:</b> Invoices have been paid to the company</p>
                                                                                                 </div>
                                                                                               </li>
+                                                                                                @endforeach
                                                                                             </ul>
-                                                                                      <!-- <table class="table table-responsive" id="">
-                                                                                        <thead>
-                                                                                          <tr>
-                                                                                            <th>Sn</th>
-                                                                                            <th>Attendance #</th>
-                                                                                            <th>Diagnosis</th>
-                                                                                            <th>ICD-10</th>
-                                                                                            <th>Doctor</th>
-                                                                                            <th>Date</th>
-                                                                                            <th>Action</th>
-                                                                                          </tr>
-                                                                                        </thead>
-                                                                                        <tfoot>
-                                                                                          <tr>
-                                                                                            <th>Sn</th>
-                                                                                            <th>Attendance #</th>
-                                                                                            <th>Diagnosis</th>
-                                                                                            <th>ICD-10</th>
-                                                                                            <th>Doctor</th>
-                                                                                            <th>Date</th>
-                                                                                            <th>Action</th>
-                                                                                          </tr>
-                                                                                        </tfoot>
-                                                                                    </table> -->
                                                                                       </div>                                                                                    
                                                                                 </div>
                                                                             </div>

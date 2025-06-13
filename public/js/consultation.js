@@ -42,10 +42,9 @@
 
     //SAVING CONSULTATION AJAX 
     // Hide the main consultation content initially
-    // $('#consultation_tabs').hide();
-    // $('#required_fields_message').show();
+    
      $('#discharge_patient').prop('disabled', true);
-    // $('#discharge_patient').hide();
+    
     // Handle the Continue button click
     $('#consultation_continue').click(function() {
         // Get form values
@@ -59,7 +58,6 @@
             return;
         }
         
-    
         // Prepare data for AJAX request
         const formData = {
             consultation_id: $('#consultation_id').val(), // This will be overridden by server
@@ -106,8 +104,9 @@
                      
                     // Disable the form fields
                     $('#consulting_type, #consulting_episode, #consulting_room, #consulting_time, #consulting_doctors, #consulting_date').prop('disabled', true);
-                    $('#consultation_continue').hide();
-                    $('#discharge_patient').prop('disabled', false);
+                    // $('#consultation_continue').hide();
+                    $('#discharge_patient').prop('disabled', true);
+                    // $('#discharge_patient').prop('disabled', false);
                 } else {
                     // Show error message
                     toastr.error(response.message);
