@@ -50,11 +50,11 @@ class PrescriptionController extends Controller
 
         $opd_number = $request->input('opd_number');
         $patient_id = $request->input('patient_id');
-        $query = $request->input('prescription_query');
+        $medicine_query_search = $request->input('prescription_query');
 
-        $start = '&'. $query;
-        $contain = '&' . $query . '&';
-        $end = $query . '&';
+        $start = '&'. $medicine_query_search;
+        $contain = '&' . $medicine_query_search . '&';
+        $end = $medicine_query_search . '&';
 
         $attendance = DB::table('patient_attendance')
             ->where('archived', 'No')
@@ -79,14 +79,14 @@ class PrescriptionController extends Controller
                     ->orWhere('products.gender_id', '1');
             })
 
-            ->where('diagnosis', 'like', '%' . $diagnosis_query . '%')
-             ->select('products.product_id', 'products.product_name', 'product_stocked.store_id', 'product_stocked.stock_level', 
+            ->where('products.product_name', 'like', '%' . $medicine_query_search . '%')
+            ->select('products.product_id', 'products.product_name', 'product_stocked.store_id', 'product_stocked.stock_level', 
                     'product_stocked.expiry_date', 'products.age_id', 'products.gender_id')
             ->orderBy('products.product_name', 'asc')
             ->limit(50)
             ->get();
 
-             return response()->json($diagnosis);
+             return response()->json($prescriptions);
 
     }
 }
