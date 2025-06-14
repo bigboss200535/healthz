@@ -1081,7 +1081,7 @@
                       <label class="form-label" for="prescription_duration">Duration</label>
                      <select name="prescription_duration" id="prescription_duration" class="form-control" required>
                        <option disabled selected>-Select-</option>
-                        @for($i = 1; $i <= 60; $i++)
+                        @for($i = 1; $i <= 120; $i++)
                             <option value="{{ $i }}">{{ $i }}</option>
                         @endfor
                      </select>
@@ -1102,8 +1102,8 @@
                       </select>
                     </div>
                     <div class="col-12 col-md-3">
-                      <label class="form-label" for="pres_start_date">Prescription Date</label>
-                      <input type="date" id="pres_start_date" name="pres_start_date" class="form-control" value="<?php echo date('Y-m-d'); ?>"  disabled/>
+                      <label class="form-label" for="prescription_start_date">Prescription Date</label>
+                      <input type="date" id="prescription_start_date" name="prescription_start_date" class="form-control" value="<?php echo date('Y-m-d'); ?>"  disabled/>
                     </div>
                     <div class="col-12 col-md-3">
                       <label class="form-label" for="prescription_end_date">End Date</label>

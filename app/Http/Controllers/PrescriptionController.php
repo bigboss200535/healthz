@@ -67,11 +67,11 @@ class PrescriptionController extends Controller
     {
         $opd_number = $request->input('opd_number');
         $patient_id = $request->input('patient_id');
-        $medicine_query_search = $request->input('prescription_query');
+        $prescription_query = $request->input('prescription_query');
 
-        $start = '&'. $medicine_query_search;
-        $contain = '&' . $medicine_query_search . '&';
-        $end = $medicine_query_search . '&';
+        $start = '&'. $prescription_query;
+        $contain = '&' . $prescription_query . '&';
+        $end = $prescription_query . '&';
 
         $attendance = DB::table('patient_attendance')
             ->where('archived', 'No')
@@ -93,9 +93,9 @@ class PrescriptionController extends Controller
                     ->orWhere('products.gender_id', '1');
             })
 
-            ->where('products.product_name', 'like', '%' . $medicine_query_search . '%')
+            ->where('products.product_name', 'like', '%' . $prescription_query . '%')
             ->select('products.product_id', 'products.product_name', 'product_stocked.store_id', 'product_stocked.stock_level', 
-                    'product_stocked.expiry_date', 'products.age_id', 'products.gender_id', 'product_prices.unit_cost', 
+                    'product_stocked.expiry_date', 'products.pres_quanity_per_issue_unit','products.age_id', 'products.gender_id', 'product_prices.unit_cost', 
                     'product_prices.cash_price', 'product_prices.cooperate_price', 'product_prices.private_insurance_price', 
                     'product_prices.nhis_amount', 'product_prices.nhis_topup')
             ->orderBy('products.product_name', 'asc')

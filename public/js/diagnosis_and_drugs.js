@@ -304,10 +304,10 @@ $('#prescription_search').on('input', function() {
                     _token: $('input[name="_token"]').val()
                 },
                 success: function(response) {
-                    let medicationList = $('<ul class="list-group position-absolute w-100"></ul>');
-                    
+                    let medicationList = $('<ul class="list-group position-absolute"></ul>');
+                   
                     response.forEach(function(item) {
-                        let listItem = $('<li class="list-group-item list-group-item-action"></li>')
+                        let listItem = $('<li class="list-group-item"   style="background: white; overflow-y:auto;border: 2px solid #ddd" list-group-item-action"></li>')
                             .text(item.product_name)
                             .data('medication', item);
                             
@@ -315,8 +315,10 @@ $('#prescription_search').on('input', function() {
                             let med = $(this).data('medication');
                             $('#prescription_search').val(med.product_name);
                             $('#prescription_product_id').val(med.product_id);
+                            $('#prescription_dosage').val(med.pres_quanity_per_issue_unit);
                             $('#prescription_price').val(med.cash_price);
-                            $('#prescription_gdrg').val(med.nhis_amount);
+                            $('#prescription_presentation').val(med.presentation);
+                            // $('#prescription_gdrg').val(med.nhis_amount);
                             medicationList.remove();
                         });
                         
@@ -329,5 +331,47 @@ $('#prescription_search').on('input', function() {
                     console.error('Error searching medications:', xhr);
                 }
             });
+        }
+    });
+
+
+    // Form submission
+    $('#add_prescription_form').on('submit', function(e) {
+        e.preventDefault();
+        
+        $.ajax({
+            url: '/save-prescription',
+            method: 'POST',
+            data: $(this).serialize(),
+            success: function(response) {
+                if (response.success) {
+                    $('.alert-container').html(
+                        '<div class="alert alert-success">Prescription saved successfully!</div>'
+                    );
+                    $('#add_prescription_form')[0].reset();
+                    // Optionally refresh prescriptions list if you have one
+                } else {
+                    $('.alert-container').html(
+                        '<div class="alert alert-danger">' + response.message + '</div>'
+                    );
+                }
+            },
+            error: function(xhr) {
+                $('.alert-container').html(
+                    '<div class="alert alert-danger">Error saving prescription. Please try again.</div>'
+                );
+            }
+        });
+    });
+
+    // Calculate end date when duration changes
+    $('#prescription_duration').on('change', function() {
+        let startDate = new Date($('#prescription_start_date').val());
+        let duration = parseInt($(this).val());
+        
+        if (!isNaN(duration) && startDate instanceof Date && !isNaN(startDate)) {
+            let endDate = new Date(startDate);
+            endDate.setDate(startDate.getDate() + duration);
+            $('#prescription_end_date').val(endDate.toISOString().split('T')[0]);
         }
     });
