@@ -155,6 +155,10 @@ Route::middleware('auth')->group(function () {
         // Route::get('patient', [ReportsController::class, 'patient']);
     });
 
+    Route::prefix('medication')->group(function (){
+        Route::post('/search', [PrescriptionController::class, 'search_medications']);
+         Route::post('/save', [PrescriptionController::class, 'save']);
+    });
     // Route::prefix('consultation')->group(function () {
     //     Route::get('/', [ReportsController::class, 'users']);
     //     Route::get('all', [ReportsController::class, 'index']);

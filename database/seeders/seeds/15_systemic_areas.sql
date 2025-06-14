@@ -220,4 +220,11 @@ INSERT INTO `product_stocked` (`product_id`, `stocked_id`, `unit_price`, `stock_
 	('P000002', 'OO2','13.2', '200', '0012', '2025-12-01', '01982'),
 	('P000004', 'OO4', '20', '19', '0012', '2025-12-01', '19920'),
 	('P000005', 'OO5', '31.17', '20', '0012', '2025-12-01', '0872');
+
+INSERT INTO `product_prices` (`product_id`, `unit_cost`, `cash_price`, `cooperate_price`, `private_insurance_price`, `nhis_amount`, `nhis_topup`) 
+	VALUES
+	('P000001', '12','15.0', '17', '19', '21', '10'),
+	('P000002', '3','6', '8', '9', '12', '10'),
+	('P000004', '5', '8', '10', '12', '20', '19'),
+	('P000005', '8', '12.17', '19', '20', '202', '21');
 	COMMIT;

@@ -1048,26 +1048,26 @@
                     <h4 class="address-title mb-2">Medications / Prescriptions</h4>
                   </div>
                     <div class="alert-container"></div>
-                  <form id="add_medication_form" class="row g-6" onsubmit="return false">
+                  <form id="add_prescription_form" class="row g-6" onsubmit="return false">
                     @csrf
-                    <input type="text" id="pres_opdnumber" name="pres_opdnumber" value="{{ $attendance->opd_number }}" hidden>
-                    <input type="text" id="patient_id" name="patient_id" value="{{ $attendance->patient_id }}" hidden>
-                    <input type="text" id="pres_product_id" name="pres_product_id" hidden>
+                     <input type="text" id="prescription_opdnumber" name="prescription_opdnumber" value="{{ $attendance->opd_number }}" hidden>
+                     <input type="text" id="prescription_patient_id" name="prescription_patient_id" value="{{ $attendance->patient_id }}" hidden>
+                     <input type="text" id="prescription__product_id" name="prescription__product_id" hidden>
                     <div id="success_diplay" class="container mt-6"></div>
                     <div class="col-12 col-md-12">
-                      <label class="form-label" for="pres_search">Search Medications</label>
-                      <input type="text" id="pres_search" name="pres_search" class="form-control" placeholder="Enter Medication"/>
+                      <label class="form-label" for="prescription_search">Search Medications</label>
+                      <input type="text" id="prescription_search" name="prescription_search" class="form-control" placeholder="Enter Medication"/>
                     </div>
                     <div class="col-12 col-md-3">
-                      <label class="form-label" for="pres_dosage">Dosage</label>
+                      <label class="form-label" for="prescription_dosage">Dosage</label>
                       <div class="input-group">
-                      <input type="text" class="form-control" name="pres_dosage" id="pres_dosage"/>
-                      <span class="input-group-text" id="pres_presentation">MLS</span>
+                      <input type="text" class="form-control" name="prescription_dosage" id="prescription_dosage"/>
+                      <span class="input-group-text" id="prescription_presentation">MLS</span>
                       </div>
                     </div>
                     <div class="col-12 col-md-3">
-                      <label class="form-label" for="pres_frequency">Frequency</label>
-                      <select name="pres_frequency" id="pres_frequency" class="form-control" required>
+                      <label class="form-label" for="prescription_frequency">Frequency</label>
+                      <select name="prescription_frequency" id="prescription_frequency" class="form-control" required>
                         <option selected disabled>-Select-</option>
                             @php
                                 $frequencies = \App\Models\Frequencies::orderBy('frequency_id', 'asc')->get();
@@ -1078,26 +1078,26 @@
                      </select>
                     </div>
                     <div class="col-12 col-md-3">
-                      <label class="form-label" for="pres_duration">Duration</label>
-                     <select name="pres_duration" id="pres_duration" class="form-control" required>
-                     <option value="" disabled selected>-Select-</option>
+                      <label class="form-label" for="prescription_duration">Duration</label>
+                     <select name="prescription_duration" id="prescription_duration" class="form-control" required>
+                       <option disabled selected>-Select-</option>
                         @for($i = 1; $i <= 60; $i++)
                             <option value="{{ $i }}">{{ $i }}</option>
                         @endfor
                      </select>
                     </div>
                     <div class="col-12 col-md-3">
-                      <label class="form-label" for="pres_qty">Qty</label>
-                      <input type="number" id="pres_qty" name="pres_qty" class="form-control"/>
+                      <label class="form-label" for="prescription_qty">Qty</label>
+                      <input type="number" id="prescription_qty" name="prescription_qty" class="form-control"/>
                     </div>
                     <div class="col-12 col-md-3">
-                      <label class="form-label" for="pres_price">Unit Price</label>
-                      <input type="text" id="pres_price" name="pres_price" class="form-control" disabled />
+                      <label class="form-label" for="prescription_price">Unit Price</label>
+                      <input type="text" id="prescription_price" name="prescription_price" class="form-control" disabled />
                     </div>
                     <div class="col-12 col-md-3">
-                      <label class="form-label" for="pres_type">Type</label>
-                      <select name="pres_type" id="pres_type" class="form-control">
-                        <option value="INWARD">IN-WARD</option>
+                      <label class="form-label" for="prescription_type">Type</label>
+                      <select name="prescription_type" id="prescription_type" class="form-control">
+                        <option value="INWARD" selected>IN-WARD</option>
                         <option value="OUTWARD">OUT-WARD</option>
                       </select>
                     </div>
@@ -1106,24 +1106,24 @@
                       <input type="date" id="pres_start_date" name="pres_start_date" class="form-control" value="<?php echo date('Y-m-d'); ?>"  disabled/>
                     </div>
                     <div class="col-12 col-md-3">
-                      <label class="form-label" for="pres_end_date">End Date</label>
-                      <input type="date" id="pres_end_date" name="pres_end_date" class="form-control" disabled />
+                      <label class="form-label" for="prescription_end_date">End Date</label>
+                      <input type="date" id="prescription_end_date" name="prescription_end_date" class="form-control" disabled />
                     </div>
                     <div class="col-12 col-md-6">
-                      <label class="form-label" for="pres_sponsor">Sponsor</label>
-                      <select name="pres_sponsor" id="pres_sponsor" class="form-control">
-                          @php
+                      <label class="form-label" for="prescription_sponsor">Sponsor</label>
+                      <select name="prescription_sponsor" id="prescription_sponsor" class="form-control">
+                            @php
                                 $sponsors = \App\Models\SponsorType::orderBy('sponsor_type_id', 'asc')->get();
                             @endphp
                             @foreach($sponsors as $sponsor_type)
                                 <option value="{{ $sponsor_type->sponsor_type }}">{{ $sponsor_type->sponsor_type }}</option>
                             @endforeach
-                        <option value="CASH">CASH PAYMENT</option>
+                         <option value="CASH">CASH PAYMENT</option>
                       </select>
                     </div>
                     <div class="col-12 col-md-6">
-                      <label class="form-label" for="pres_gdrg">Drug G-RDG</label>
-                      <input type="text" id="pres_gdrg" name="pres_gdrg" class="form-control" disabled />
+                      <label class="form-label" for="prescription_gdrg">Drug G-RDG</label>
+                      <input type="text" id="prescription_gdrg" name="prescription_gdrg" class="form-control" disabled />
                     </div>
                     <div class="col-12">
                       <div class="form-check form-switch my-2 ms-2">

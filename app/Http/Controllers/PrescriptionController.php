@@ -44,10 +44,27 @@ class PrescriptionController extends Controller
 
         return response()->json($medicine);
     }
+// public function search_diagnosis(Request $request)
+// {
+//     $diagnosis_query = $request->input('diagnosis_query');
+    
+//     $diagnoses = DB::table('diagnosis')
+//         ->where('archived', 'No')
+//         ->where('status', 'Active')
+//         ->where(function($query) use ($diagnosis_query) {
+//             $query->where('diagnosis_name', 'like', '%' . $diagnosis_query . '%')
+//                   ->orWhere('diagnosis_code', 'like', '%' . $diagnosis_query . '%');
+//         })
+//         ->select('diagnosis_id', 'diagnosis_name', 'diagnosis_code')
+//         ->orderBy('diagnosis_name', 'asc')
+//         ->limit(50)
+//         ->get();
+        
+//     return response()->json($diagnoses);
+// }
 
-    public function search_products(Request $request)
+    public function search_medications(Request $request)
     {
-
         $opd_number = $request->input('opd_number');
         $patient_id = $request->input('patient_id');
         $medicine_query_search = $request->input('prescription_query');
@@ -62,14 +79,11 @@ class PrescriptionController extends Controller
             ->orderBy('attendance_id', 'desc')
             ->first();
 
-        // if (!$attendance) {
-        //         return response()->json([]);
-        //     }
-
-       // Fetch prescriptions
-       $prescriptions = ProductStock::where('product_stocked.archived', 'No')
+         // Fetch prescriptions
+        $prescriptions = ProductStock::where('product_stocked.archived', 'No')
             ->where('product_stocked.status', 'Active')
             ->join('products', 'product_stocked.product_id', 'products.product_id')
+            ->join('product_prices', 'product_prices.product_id', 'product_stocked.product_id')
             ->where(function ($query) use ($attendance) {
                 $query->where('products.age_id', $attendance->age_id)
                     ->orWhere('products.age_id', '3');
@@ -81,7 +95,9 @@ class PrescriptionController extends Controller
 
             ->where('products.product_name', 'like', '%' . $medicine_query_search . '%')
             ->select('products.product_id', 'products.product_name', 'product_stocked.store_id', 'product_stocked.stock_level', 
-                    'product_stocked.expiry_date', 'products.age_id', 'products.gender_id')
+                    'product_stocked.expiry_date', 'products.age_id', 'products.gender_id', 'product_prices.unit_cost', 
+                    'product_prices.cash_price', 'product_prices.cooperate_price', 'product_prices.private_insurance_price', 
+                    'product_prices.nhis_amount', 'product_prices.nhis_topup')
             ->orderBy('products.product_name', 'asc')
             ->limit(50)
             ->get();
