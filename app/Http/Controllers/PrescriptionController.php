@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Gender;
 use App\Models\Product;
 use App\Models\ProductStock;
+use App\Models\Prescription;
 
 class PrescriptionController extends Controller
 {
@@ -44,24 +45,6 @@ class PrescriptionController extends Controller
 
         return response()->json($medicine);
     }
-// public function search_diagnosis(Request $request)
-// {
-//     $diagnosis_query = $request->input('diagnosis_query');
-    
-//     $diagnoses = DB::table('diagnosis')
-//         ->where('archived', 'No')
-//         ->where('status', 'Active')
-//         ->where(function($query) use ($diagnosis_query) {
-//             $query->where('diagnosis_name', 'like', '%' . $diagnosis_query . '%')
-//                   ->orWhere('diagnosis_code', 'like', '%' . $diagnosis_query . '%');
-//         })
-//         ->select('diagnosis_id', 'diagnosis_name', 'diagnosis_code')
-//         ->orderBy('diagnosis_name', 'asc')
-//         ->limit(50)
-//         ->get();
-        
-//     return response()->json($diagnoses);
-// }
 
     public function search_medications(Request $request)
     {
@@ -97,11 +80,88 @@ class PrescriptionController extends Controller
             ->select('products.product_id', 'products.product_name', 'product_stocked.store_id', 'product_stocked.stock_level', 
                     'product_stocked.expiry_date', 'products.pres_quanity_per_issue_unit','products.age_id', 'products.gender_id', 'product_prices.unit_cost', 
                     'product_prices.cash_price', 'product_prices.cooperate_price', 'product_prices.private_insurance_price', 
-                    'product_prices.nhis_amount', 'product_prices.nhis_topup')
+                    'product_prices.nhis_amount', 'product_prices.nhis_topup', 'products.presentation')
             ->orderBy('products.product_name', 'asc')
             ->limit(50)
             ->get();
 
             return response()->json($prescriptions);
     }
+
+    public function store(Request $request)
+    {
+        $validated_data = $request->validate([
+            'prescription_opdnumber' => 'required|min:3|max:50',
+            'prescription_patient_id' => 'required|min:3|max:50',
+            'prescription_product_id' => 'required|min:3',
+            'prescription_dosage' => 'nullable',
+            'prescription_presentation' => 'required',
+            'prescription_frequency' => 'required',
+            'prescription_duration' => 'required',
+            'prescription_qty' => 'required|min:3|max:50',
+            'prescription_price' => 'required',
+            'prescription_type' => 'required|min:3|max:50',
+            'prescription_start_date' => 'required',
+            'prescription_end_date' => 'required|min:3|max:50',
+            'prescription_sponsor' => 'required',
+            'prescription_gdrg' => 'required|min:3|max:50',
+        ]); 
+
+        // $existing_product = Prescription::where('product_name', $request->input('product_name')) ->first();
+
+        // if ($existing_product)
+        // {
+        //     return 200;
+        //  }
+
+        $pres_id = $this->prescription_id($request);         
+        $prescription = new Prescription();
+        $prescription->prescriptions_id = $pres_id;
+        $prescription->attendance_id = $request->input('');
+        $prescription->patient_id = $request->input('prescription_patient_id');
+        $prescription->opd_number = $request->input('prescription_opdnumber');
+        $prescription->attendance_date = $request->input('');
+        $prescription->attendance_time = $request->input('');
+        $prescription->entry_date = $request->input('');
+        $prescription->age_group_id = $request->input('');
+        $prescription->episode_id = $request->input('');
+        $prescription->unit_price = $request->input('');
+        $prescription->presentation = $request->input('prescription_presentation');
+        $prescription->product_id = $request->input('prescription_product_id');
+        $prescription->prescription_type = $request->input('prescription_type');
+        $prescription->sponsor_id = $request->input('prescription_sponsor');
+        $prescription->start_date = $request->input('prescription_start_date');
+        $prescription->end_date = $request->input('prescription_end_date');
+        $prescription->store_id = $request->input('');
+        $prescription->dosage = $request->input('prescription_dosage');
+        $prescription->unit_measure = $request->input('');
+        $prescription->frequencies = $request->input('prescription_frequency');
+        $prescription->duration = $request->input('prescription_duration');
+        $prescription->quantity_given = $request->input('');
+        $prescription->quantity_serve = $request->input('');
+        $prescription->gdrg_code = $request->input('prescription_gdrg');
+        $prescription->doctor_id = $request->input('');
+        $prescription->facility_id = $request->input('');
+        $prescription->added_date = now();
+        $prescription->user_id = Auth::user()->user_id;
+        $prescription->added_by = Auth::user()->fullname;
+        $prescription->added_id = Auth::user()->user_id;
+        $prescription->save();
+
+        return 201;
+
+    }
+
+     private function prescription_id(Request $request)
+    {
+        $count_prescription = Prescription::count();
+        $count_plus_one = $count_prescription + 1;
+        $desired_length = 4;
+        $alphabet = 'P';
+        $formatted_id = str_pad($count_plus_one, $desired_length, '0', STR_PAD_LEFT);
+        $prescription_id = $alphabet.$formatted_id;
+
+        return $prescription_id;
+    }
+
 }

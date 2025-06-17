@@ -13,7 +13,6 @@ class ProductController extends Controller
     public function index()
     {
         $product = Product::where('archived', 'No')->where('status', '=','Active')->get();
-
         $total_all = Product::where('archived', '=', 'No')->count();
         $total_drugs = Product::where('product_type_id', '=', '1')->count();
         $total_consumable = Product::where('product_type_id', '=', '2')->count();

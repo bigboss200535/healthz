@@ -1052,7 +1052,7 @@
                     @csrf
                      <input type="text" id="prescription_opdnumber" name="prescription_opdnumber" value="{{ $attendance->opd_number }}" hidden>
                      <input type="text" id="prescription_patient_id" name="prescription_patient_id" value="{{ $attendance->patient_id }}" hidden>
-                     <input type="text" id="prescription__product_id" name="prescription__product_id" hidden>
+                     <input type="text" id="prescription_product_id" name="prescription_product_id" hidden>
                     <div id="success_diplay" class="container mt-6"></div>
                     <div class="col-12 col-md-12">
                       <label class="form-label" for="prescription_search">Search Medications</label>
@@ -1062,7 +1062,8 @@
                       <label class="form-label" for="prescription_dosage">Dosage</label>
                       <div class="input-group">
                       <input type="text" class="form-control" name="prescription_dosage" id="prescription_dosage"/>
-                      <span class="input-group-text" id="prescription_presentation">MLS</span>
+                      <span class="input-group-text" id="prescription_presentation"> </span>
+                      <input type="hidden" name="prescription_presentation" id="prescription_presentation_input" hidden> 
                       </div>
                     </div>
                     <div class="col-12 col-md-3">

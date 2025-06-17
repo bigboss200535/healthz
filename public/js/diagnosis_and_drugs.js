@@ -374,7 +374,8 @@ $(document).on('click', '.prescription-item', function() {
     $('#prescription_product_id').val(id);
     $('#prescription_dosage').val(dosage);
     $('#prescription_price').val(price);
-    $('#prescription_presentation').val(presentation);
+    $('#prescription_presentation').text(presentation ?? '');
+    // $('#prescription_presentation').val(presentation ?? '');
     
     prescriptionResultsDiv.hide();
 });
