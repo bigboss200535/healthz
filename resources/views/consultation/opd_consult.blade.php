@@ -50,7 +50,7 @@
                         <input type="text" value="{{ $attendance->full_age }}" id="con_full_age" name="con_full_age" hidden>
                         <input type="text" value="{{ $attendance->sponsor_id }}" id="con_sponsor" name="con_sponsor" hidden>
                         <input type="text" value="{{ $attendance->sponsor_type_id }}" id="con_sponsor_type" name="con_sponsor_type" hidden>
-                         <input type="text" value="{{ $attendance->pat_clinic }}" id="con_clinic" name="con_clinic" hidden>
+                        <input type="text" value="{{ $attendance->pat_clinic }}" id="con_clinic" name="con_clinic" hidden>
                     <tr>
                       <td class="text-center"><h5><b>{{ $attendance->fullname}}</b></h5></td>
                     </tr>
@@ -120,7 +120,6 @@
         <div class="col-sm-6 col-lg-5">
           <div class="d-flex justify-content-between align-items-center border-end pb-4 pb-sm-0 card-widget-3">
            <table class="table table-striped">
-            
               <tr>
                 <td><b>Room #</b></td>
                 <td>
@@ -1063,7 +1062,7 @@
                       <div class="input-group">
                       <input type="text" class="form-control" name="prescription_dosage" id="prescription_dosage"/>
                       <span class="input-group-text" id="prescription_presentation"> </span>
-                      <input type="hidden" name="prescription_presentation" id="prescription_presentation_input" hidden> 
+                      <input type="text" name="prescription_presentation_input" id="prescription_presentation_input" hidden> 
                       </div>
                     </div>
                     <div class="col-12 col-md-3">

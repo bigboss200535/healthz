@@ -16,7 +16,7 @@ class AgeGroupsSeeder extends Seeder
      */
     public function run()
     {
-        $user = User::inRandomOrder()->first(); 
+        // $user = User::inRandomOrder()->first(); 
 
         $age_group = AgeGroups::create([
             'age_group_id' => '1',

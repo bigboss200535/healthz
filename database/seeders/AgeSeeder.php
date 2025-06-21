@@ -16,7 +16,7 @@ class AgeSeeder extends Seeder
      */
     public function run()
     {
-        $user = User::inRandomOrder()->first(); 
+        // $user = User::inRandomOrder()->first(); 
 
         $age = Age::create([
             'age_id' => '1',

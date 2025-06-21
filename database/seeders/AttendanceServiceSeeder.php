@@ -18,7 +18,7 @@ class AttendanceServiceSeeder extends Seeder
      */
     public function run()
     {
-        $user = User::inRandomOrder()->first(); 
+        // $user = User::inRandomOrder()->first(); 
         $gender = Gender::inRandomOrder()->first(); 
         $age = Age::inRandomOrder()->first(); 
 
