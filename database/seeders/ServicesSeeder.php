@@ -18,6 +18,5 @@ class ServicesSeeder extends Seeder
         $data_one = database_path('seeders/seeds/03_services.sql');
         $sql_one = file_get_contents($data_one);
         DB::unprepared($sql_one); 
-
     }
 }

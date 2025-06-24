@@ -17,6 +17,7 @@ class ReligionSeeder extends Seeder
     public function run()
     {
         // $user = User::inRandomOrder()->first(); 
+        
         $region = Religion::create([
             'religion_id' => 'R001',
             'religion' => 'Islam',

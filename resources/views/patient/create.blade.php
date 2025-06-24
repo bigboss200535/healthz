@@ -4,6 +4,7 @@
           position: relative;
           padding-left: 2.5rem;
       }
+
       .btn-submitting:before {
           content: "";
           position: absolute;
@@ -17,6 +18,7 @@
           border-top-color: #fff;
           animation: spin 1s ease-in-out infinite;
       }
+
       @keyframes spin {
           to { transform: translateY(-50%) rotate(360deg); }
       }
@@ -40,11 +42,11 @@
                   </div>
                   <div class="card-body">
                     <form id="patient_info_create" method="post" onsubmit="return false">
-                    @csrf
-                    <!-- <input type="hidden" name="_token" value="{{ csrf_token() }}"> -->
-                      <meta name="csrf-token" content="{{ csrf_token() }}">
+                     @csrf
+                
+                    <meta name="csrf-token" content="{{ csrf_token() }}">
                     <div class="row mb-3">
-                    <input type="text" class="form-control" id="pat_id" name="pat_id" hidden>
+                      <input type="text" id="pat_id" name="pat_id" hidden>
                       <div class="col">
                         <label class="form-label" for="title">Title <span class="text-danger">*</span></label>
                         <select name="title" id="title" class="form-control">
@@ -80,7 +82,7 @@
                     <div class="row mb-3">
                       <div class="col">
                         <label class="form-label" for="gender_id">Gender <span class="text-danger">*</span></label>
-                        <select name="gender_id" id="gender_id" class="form-control" wire:model="gender">
+                        <select name="gender_id" id="gender_id" class="form-control">
                           <option value="" disabled selected>-Select-</option>
                             @foreach($gender as $sex)                                        
                               <option value="{{ $sex->gender_id }}">{{ strtoupper($sex->gender) }}</option>
@@ -92,7 +94,7 @@
                         <select name="occupation" id="occupation" class="form-control">
                           <option disabled selected>-Select-</option>
                           <!-- <option value="N/A">NONE</option> -->
-                          @foreach($occupations as $works)                                        
+                            @foreach($occupations as $works)                                        
                               <option value="{{ $works->occupation_id }}">{{ $works->occupation }}</option>
                             @endforeach
                         </select>
@@ -119,8 +121,9 @@
                         <label class="form-label" for="nationality">Nationality <span class="text-danger">*</span></label>
                         <select name="nationality" id="nationality" class="form-control">
                           <!-- <option disabled selected>-Select-</option> -->
-                          <option value="10001" selected>GHANAIAN</option>
-                          <option value="20001">NON-GHANAIAN</option>
+                         @foreach($nationality as $national)                                        
+                            <option value="{{ $national->nationality_id }}">{{ strtoupper($national->nationality) }}</option>
+                          @endforeach
                         </select>
                       </div>
                       <div class="col">
@@ -277,11 +280,11 @@
                         <input type="text" name="card_status" id="card_status" class="form-control" readonly> -->
                       </div>
                   </div>
-                  <br>
+                   <br>
                     <div class="row mb 3">
                           <h5 class="card-tile mb-0"><b>CLINIC #</b></h5>
                     </div>
-                    <br>
+                      <br>
                     <div class="row mb-3">
                     <div class="col">
                         <label class="form-label" for="opd_type">OPD # Type <span class="text-danger">*</span></label>
@@ -324,40 +327,7 @@
                           <th>Action</th>
                         </thead>
                         <tbody>
-                              @php
-                                $counter = 1;
-                               @endphp
-                            @foreach($recent_patient as $pat_list)
-                            <tr>
-                              <td>{{ $counter++ }}</td>
-                              <td>{{ $pat_list->fullname }}</td>
-                              <td>
-                                    <div class="dropdown" align="center">
-                                        <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-                                              <i class="bx bx-dots-vertical-rounded"></i>
-                                        </button>
-                                              <div class="dropdown-menu">
-                                                <a class="dropdown-item" href="/patients/{{ $pat_list->patient_id }}">
-                                                        <i class="bx bx-plus me-1"></i>  New Attendance
-                                                    </a>
-                                                    <a class="dropdown-item edit-patient" href="#" data-patient-id="{{ $pat_list->patient_id }}">
-                                                        <i class="bx bx-edit-alt me-1"></i> Edit Details
-                                                    </a>
-                                                    <a class="dropdown-item" href="/patients/{{ $pat_list->patient_id }}">
-                                                        <i class="bx bx-detail me-1"></i>  Show More
-                                                    </a>
-                                                     
-                                                    <!-- <a class="dropdown-item " href="/patients/{{ $pat_list->patient_id }}">
-                                                        <i class="bx bx-plus me-1"></i>  Add Relative
-                                                    </a>
-                                                     <a class="dropdown-item" href="/patients/{{ $pat_list->patient_id }}">
-                                                        <i class="bx bx-plus me-1"></i>  Add Clinic
-                                                    </a> -->
-                                              </div>
-                                  </div>
-                              </td>
-                            </tr>
-                            @endforeach
+                           
                         </tbody>
                         <tfoot>
                           <th>SN</th>
@@ -366,7 +336,6 @@
                         </tfoot>
                      </table>
                   </div>
-                    
                     <div class="mb-3 col ecommerce-select2-dropdown sponsorship_details_settings">
                       <!-- <label class="form-label mb-1 d-flex justify-content-between align-items-center" for="card_status">
                         <span>Sponsor Status</span></label>

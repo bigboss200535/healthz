@@ -1,5 +1,7 @@
 //*************************************************** */ PATIENT REGISTRATION FORM
 
+const { method } = require("lodash");
+
 // Handle form submission
     $('#patient_info_create').on('submit', function(e) {
         e.preventDefault();
@@ -10,8 +12,8 @@
         const $restBtn = $('#reset_button');
 
         const original_text = $submitBtn.html();
-        const formData = new FormData($form[0]);
-        const patient_save = Object.fromEntries(formData.entries());
+        const form_data = new FormData($form[0]);
+        const patient_save = Object.fromEntries(form_data.entries());
 
         $restBtn.prop('disabled', true);
         // const $form = $('#patient_info_create');
@@ -183,6 +185,7 @@
     });
 // *************************** END GENERATE OPD NUMBER *****************************/
 
+// *************************** GET SPONSOR AND SPONSOR TYPES*****************************/
 // When sponsor type changes
 $('#sponsor_type_id').on('change', function() {
         var sponsorTypeId = $(this).val();
@@ -397,3 +400,67 @@ $('#sponsor_type_id').on('change', function() {
     });
 // });
 
+
+// PATIENT REFRESH TABLE LIST
+    function load_recent_registered_patient() {
+        $.ajax({
+            url: "/patient/recent-patients",
+            method: 'GET',
+            dataType: 'json',
+            success: function(response) {
+                // Clear existing table data
+                // $('#register_list tbody').empty();
+
+                let counter = 1;
+                
+                // Check if data exists
+                if(response.length < 0) {
+                    $('#register_list tbody').append(`
+                        <tr>
+                            <td colspan="3" class="text-center">No patients found</td>
+                        </tr>
+                    `);
+                    return;
+                } else if (response.length > 0) {
+                    // Populate table with new data
+                    $.each(response, function(index, patient) {
+                        let row = `
+                            <tr>
+                                <td>${counter++}</td>
+                                <td>${patient.fullname || 'N/A'}</td>
+                                <td>
+                                    <div class="dropdown" align="center">
+                                        <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                                            <i class="bx bx-dots-vertical-rounded"></i>
+                                        </button>
+                                        <div class="dropdown-menu">
+                                            <a class="dropdown-item" href="/patients/${patient.patient_id}">
+                                                <i class="bx bx-plus me-1"></i> New Attendance
+                                            </a>
+                                            <a class="dropdown-item edit-patient" href="#" data-patient-id="${patient.patient_id}">
+                                                <i class="bx bx-edit-alt me-1"></i> Edit Details
+                                            </a>
+                                            <a class="dropdown-item" href="/patients/${patient.patient_id}">
+                                                <i class="bx bx-detail me-1"></i> Show More
+                                            </a>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        `;
+                        $('#register_list tbody').append(row);
+                    });
+             }
+            },
+            error: function(xhr, status, error) {
+                // console.error('Error loading patient data:', error);
+                $('#register_list tbody').html(`
+                    <tr>
+                        <td colspan="3" class="text-center text-danger">Error loading patient data. Please try again.</td>
+                    </tr>
+                `);
+            }
+        });
+    }
+
+    load_recent_registered_patient();

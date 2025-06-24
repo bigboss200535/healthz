@@ -82,7 +82,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/add-labs/{attendance_id}', [InvestigationController::class, 'add_results']);
         Route::get('/add-ultrasound/{attendance_id}', [InvestigationController::class, 'add_results']);
         Route::get('/add-x-rays/{attendance_id}', [InvestigationController::class, 'add_results'])->where('attendance_id', '[0-9]+');
-       
+        Route::get('/recent-patients', [PatientController::class, 'recent_patient_registration'])->name('patients.recent');
     });
 
     Route::prefix('attendance')->group(function () {
@@ -195,6 +195,18 @@ Route::middleware('auth')->group(function () {
     //     })->name('index');
     //      Route::post('/generate', [App\Http\Controllers\PatientReportController::class, 'generate'])->name('generate');
     // });
+    
+     Route::prefix('reports')->group(function () {
+        Route::get('/patients', [App\Http\Controllers\PatientReportController::class, 'index'])->name('index');
+        Route::post('/patients/generate', [App\Http\Controllers\PatientReportController::class, 'generate'])->name('reports.patients.generate');
+        Route::get('/patients/results', [App\Http\Controllers\PatientReportController::class, 'results'])->name('reports.patients.results');
+        Route::get('/patients/print', [App\Http\Controllers\PatientReportController::class, 'print'])->name('reports.patients.print');
+        
+        // Export routes
+        Route::get('/export/pdf', [App\Http\Controllers\PatientReportController::class, 'exportPdf'])->name('export.pdf');
+        Route::get('/export/excel', [App\Http\Controllers\PatientReportController::class, 'exportExcel'])->name('export.excel');
+        Route::get('/export/word', [App\Http\Controllers\PatientReportController::class, 'exportWord'])->name('export.word');
+    });
 });
 
 require __DIR__.'/auth.php';
@@ -208,17 +220,7 @@ require __DIR__.'/auth.php';
 
     
     // Patient Reports
-    Route::prefix('reports')->group(function () {
-        Route::get('/patients', [App\Http\Controllers\PatientReportController::class, 'index'])->name('index');
-        Route::post('/patients/generate', [App\Http\Controllers\PatientReportController::class, 'generate'])->name('reports.patients.generate');
-        Route::get('/patients/results', [App\Http\Controllers\PatientReportController::class, 'results'])->name('reports.patients.results');
-        Route::get('/patients/print', [App\Http\Controllers\PatientReportController::class, 'print'])->name('reports.patients.print');
-        
-        // Export routes
-        Route::get('/export/pdf', [App\Http\Controllers\PatientReportController::class, 'exportPdf'])->name('export.pdf');
-        Route::get('/export/excel', [App\Http\Controllers\PatientReportController::class, 'exportExcel'])->name('export.excel');
-        Route::get('/export/word', [App\Http\Controllers\PatientReportController::class, 'exportWord'])->name('export.word');
-    });
+   
 
     
 // });

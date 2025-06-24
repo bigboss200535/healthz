@@ -68,11 +68,11 @@ class DatabaseSeeder extends Seeder
             // UserPermissionsSeeder::class,
             UserPermissionTestSeeder::class
         ]);
+
         \App\Models\User::factory(20)->create();
         // \App\Models\Patient::factory(2000)->create();
         // \App\Models\PatientSponsor::factory(200)->create();
         // \App\Models\PatientOpdNumber::factory(450)->create();
-       
         // \App\Models\PatientAttendance::factory(100)->create();
         // \App\Models\ConsultingRoom::factory(10)->create();
         // \App\Models\Consultation::factory(100)->create();

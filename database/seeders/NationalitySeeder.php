@@ -17,7 +17,6 @@ class NationalitySeeder extends Seeder
      */
     public function run()
     {
-
         $nationality = Nationality::create([
             'nationality_id' => '10001',
             'nationality' => 'Ghanaian',

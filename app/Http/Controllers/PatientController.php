@@ -25,6 +25,7 @@ use App\Models\SponsorType;
 use App\Models\YearlyCount;
 use App\Models\Town;
 use App\Models\PatientRelations;
+use App\Models\Nationality;
 use Carbon\Carbon;
 use App\Models\Sponsor;
 
@@ -48,6 +49,7 @@ class PatientController extends Controller
         // ->where('added_date', $today)
          ->orderBy('added_date', 'desc')->get();
 
+        $nationality = Nationality::where('archived', 'No')->where('status', '=','Active')->get();
         $title = Title::where('archived', 'No')->where('status', '=','Active')->get();
         $religion = Religion::where('archived', 'No')->where('status', '=','Active')->get();
         $gender = Gender::where('archived', 'No')->where('status', '=','Active')->where('usage', '=','1')->get();
@@ -65,7 +67,7 @@ class PatientController extends Controller
                 ->orderBy('service_points', 'asc') 
                 ->get();
 
-        return view('patient.create', compact('recent_patient', 'clinic_attendance', 'title', 'religion', 'gender', 'region', 'relation', 'payment_type', 'towns','occupations', 'sponsor'));
+        return view('patient.create', compact('nationality','recent_patient', 'clinic_attendance', 'title', 'religion', 'gender', 'region', 'relation', 'payment_type', 'towns','occupations', 'sponsor'));
     }
 
    
@@ -640,12 +642,26 @@ class PatientController extends Controller
             ->join('sponsors', 'patient_sponsorship.sponsor_id', '=', 'sponsors.sponsor_id')
             ->join('patient_info', 'patient_info.patient_id', '=', 'patient_sponsorship.patient_id')
             ->join('sponsor_type', 'sponsor_type.sponsor_type_id', '=', 'sponsors.sponsor_type_id')
-            ->select('patient_info.fullname', 'patient_sponsorship.sponsor_type_id','sponsor_type.sponsor_type','patient_sponsorship.member_no', 'patient_sponsorship.sponsor_id', 'sponsors.sponsor_name', 
-                    'patient_sponsorship.start_date', 'patient_sponsorship.end_date', 'patient_sponsorship.added_date', 'patient_sponsorship.status as card_status',
-                    'patient_sponsorship.status', 'patient_sponsorship.priority', 'patient_sponsorship.is_active', 'sponsors.sponsor_name', 'sponsor_type.sponsor_type' )
+            ->select('patient_info.fullname', 'patient_sponsorship.sponsor_type_id','sponsor_type.sponsor_type','patient_sponsorship.member_no', 
+                     'patient_sponsorship.sponsor_id', 'sponsors.sponsor_name', 
+                    'patient_sponsorship.start_date', 'patient_sponsorship.end_date', 'patient_sponsorship.added_date', 
+                    'patient_sponsorship.status as card_status', 'patient_sponsorship.status', 'patient_sponsorship.priority', 
+                    'patient_sponsorship.is_active', 'sponsors.sponsor_name', 'sponsor_type.sponsor_type' )
             ->get();
 
             return view('patient.sponsors', compact('sponsor_list'));
+    }
+
+    public function recent_patient_registration()
+    {
+        $get_date = date('Y-m-d');
+        $recent_patient = Patient::where('archived', 'No')
+             ->where('added_date', $get_date)
+             ->orderBy('added_date', 'desc')
+             ->paginate(10);
+        //    ->get();
+
+         return response()->json($recent_patient);
     }
       
 }

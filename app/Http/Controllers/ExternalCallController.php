@@ -16,6 +16,7 @@ class ExternalCallController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
+    
     public function index()
     {
 
@@ -67,7 +68,7 @@ class ExternalCallController extends Controller
 
         // Get facility configuration
         $facility = Facility::where('ccc_type', 'Automatic')
-        // where('facility_id', $validated['facility_id'])
+            // where('facility_id', $validated['facility_id'])
             ->where('status', 'Active')
             ->first();
 
