@@ -2,28 +2,28 @@
 //********************************** */ SERVICE REQUEST FORM SUBMISSION ***************************** 
 $(document).ready(function () {
   // Initialize DataTable
-  const currentattendanceTable = $('#current_attendance').DataTable({
-      columns: [
-          { data: 'attendance_id' },
-          { data: 'attendance_date' },
-          { data: 'full_age' },
-          { data: 'pat_clinic' },
-          { data: 'sponsor' },
-          { data: 'attendance_type' },
-          {
-              data: 'service_issued',
-              render: function (data) {
-                  if (data === '0') {
-                      return '<span class="badge bg-label-danger me-1">Unassigned</span>';
-                  } else if (data === '1') {
-                      return '<span class="badge bg-label-success me-1">Assigned</span>';
-                  }
-                  return data; // Fallback for unexpected status values
-              }
-          },
-          { data: 'actions', orderable: false }
-      ]
-  });
+  // const currentattendanceTable = $('#current_attendance').DataTable({
+  //     columns: [
+  //         { data: 'attendance_id' },
+  //         { data: 'attendance_date' },
+  //         { data: 'full_age' },
+  //         { data: 'pat_clinic' },
+  //         { data: 'sponsor' },
+  //         { data: 'attendance_type' },
+  //         {
+  //             data: 'service_issued',
+  //             render: function (data) {
+  //                 if (data === '0') {
+  //                     return '<span class="badge bg-label-danger me-1">Unassigned</span>';
+  //                 } else if (data === '1') {
+  //                     return '<span class="badge bg-label-success me-1">Assigned</span>';
+  //                 }
+  //                 return data; // Fallback for unexpected status values
+  //             }
+  //         },
+  //         { data: 'actions', orderable: false }
+  //     ]
+  // });
 // ------------------------------------------------------------------------------------
   // Form submission handler
   $('#service_request_form').on('submit', function (e) {
@@ -54,7 +54,6 @@ $(document).ready(function () {
         return false;
       }
 
-
       $.ajax({
           url: '/services/service_request',
           type: 'POST',
@@ -81,7 +80,7 @@ $(document).ready(function () {
               $('#service_request_form')[0].reset();
               $closeBtn.prop('disabled', false);
               // Refresh the attendance table
-              refresh_attendance_table();
+              // refresh_attendance_table();
           },
           error: function (xhr) {
               // Show error message

@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
     <meta name="description" content=""/>
-     <meta name="theme-color" content="#06c1db"/>
+    <meta name="theme-color" content="#06c1db"/>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ config('app.name', 'Laravel') }} | Anywhere, Everywhere</title>
     <link rel="icon" type="image/x-icon" href="{{ asset('img/favicon/favicon2.svg') }}"/>
@@ -180,13 +180,11 @@
                 }
             }
             });
-             // *****************END CHART FOR VITAL SIGNS****************************
-
+             // *****************END CHART FOR VITAL SIGNS***************************
         });
 
         
     </script>
-
  <!-- <script>
     document.addEventListener('contextmenu', event => event.preventDefault());
     document.addEventListener('keydown', event => {
@@ -194,9 +192,6 @@
             event.preventDefault();
         }
     });
-</script> -->
-<!-- <script>
- 
 </script> -->
 <script>
 
@@ -465,9 +460,9 @@ $(document).ready(function() {
             data: 'service_issued',
             render: function (data, type, row) {
                 if (data === '0') {
-                    return '<span class="badge bg-label-danger me-1">Unassigned</span>';
+                    return '<span class="badge bg-label-danger me-1">Unattended</span>';
                 } else if (data === '1') {
-                    return '<span class="badge bg-label-success me-1">Assigned</span>';
+                    return '<span class="badge bg-label-success me-1">Attended</span>';
                 }
                 return data;
             }
@@ -520,9 +515,6 @@ $(document).ready(function() {
 
     // Initial fetch
     fetchCurrentAttendanceData();
-
-    // Optional: Refresh data periodically with separate intervals if needed
-    // setInterval(fetchCurrentAttendanceData, 10000);
 });
 </script>
 </body>

@@ -1,5 +1,4 @@
-// ************************** GET ALL PATIENT and REQUESTS?**********************************
-
+// ************************** GET ALL PATIENT and REQUESTS**********************************
 const patient_Id = $('#patient_id').val();
 
 if (!patient_Id) {
