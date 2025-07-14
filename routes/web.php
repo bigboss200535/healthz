@@ -201,7 +201,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     });
 
     // Route::post('code_generate', [ExternalCallController::class, 'claims_check_code']);
-
     Route::get('/user-profile', [ProfileController::class, 'index'])->name('profile.index');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
