@@ -45,9 +45,9 @@ class PatientController extends Controller
     public function create()
     {
         $today = date('Y-m-d');
-        $recent_patient = Patient::where('archived', 'No')
-        // ->where('added_date', $today)
-         ->orderBy('added_date', 'desc')->get();
+
+        $patient = Patient::where('archived', 'No')// ->where('added_date', $today)
+            ->orderBy('added_date', 'desc')->get();
 
         $nationality = Nationality::where('archived', 'No')->where('status', '=','Active')->get();
         $title = Title::where('archived', 'No')->where('status', '=','Active')->get();
@@ -67,7 +67,7 @@ class PatientController extends Controller
                 ->orderBy('service_points', 'asc') 
                 ->get();
 
-        return view('patient.create', compact('nationality','recent_patient', 'clinic_attendance', 'title', 'religion', 'gender', 'region', 'relation', 'payment_type', 'towns','occupations', 'sponsor'));
+        return view('patient.create', compact('nationality','patient', 'clinic_attendance', 'title', 'religion', 'gender', 'region', 'relation', 'payment_type', 'towns','occupations', 'sponsor'));
     }
 
    

@@ -1,4 +1,3 @@
-
 //********************************** */ SERVICE REQUEST FORM SUBMISSION ***************************** 
 $(document).ready(function () {
   // Initialize DataTable

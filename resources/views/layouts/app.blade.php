@@ -105,26 +105,26 @@
     <script src="{{ asset('js/patient_details.js') }}"></script>
     <script src="{{ asset('js/patient_extras.js') }}"></script>
     <script src="{{ asset('js/diagnosis_and_drugs.js') }}"></script>
-     <script src="{{ asset('js/patient_registration.js') }}"></script>
+    <script src="{{ asset('js/patient_registration.js') }}"></script>
     <script src="{{ asset('js/consultation.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js') }}"></script>
     <!-- <script src="{{ asset('js/fullcalendar.js') }}"></script> -->
     <!-- <script src="{{ asset('js/app-calendar-events.js') }}"></script> -->
     <!-- <script src="{{ asset('js/app-calendar.js') }}"></script> -->
 <!-- <script>
-  $(document).ready(function() {
-    $('#consulting_room, #consulting_type, #consulting_doctors, #consulting_date, #consulting_episode').change(function() {
-        if ($('#consulting_room').val() && $('#consulting_type').val() && $('#consulting_doctors').val() && $('#consulting_date').val() && $('#consulting_episode').val()) 
-        {
-            $('#consultation_display').show();
-            $('#required_fields_message').hide();
-            
-        } else {
-            $('#consultation_display').hide();
-            $('#required_fields_message').show();
-        }
+    $(document).ready(function() {
+        $('#consulting_room, #consulting_type, #consulting_doctors, #consulting_date, #consulting_episode').change(function() {
+            if ($('#consulting_room').val() && $('#consulting_type').val() && $('#consulting_doctors').val() && $('#consulting_date').val() && $('#consulting_episode').val()) 
+            {
+                $('#consultation_display').show();
+                $('#required_fields_message').hide();
+                
+            } else {
+                $('#consultation_display').hide();
+                $('#required_fields_message').show();
+            }
+        });
     });
-});
 </script> -->
     <script type="text/javascript">
         $(document).ready( function () {
@@ -161,9 +161,8 @@
                 showMaskOnHover: false,
                 showMaskOnFocus: true
              });
-
-        
-             // *****************CHART FOR VITAL SIGNS****************************
+    
+     // *****************CHART FOR VITAL SIGNS****************************
             const ctx = document.getElementById('vital_sign_chart');
 
             new Chart(ctx, {
@@ -186,17 +185,15 @@
             });
              // *****************END CHART FOR VITAL SIGNS***************************
         });
-
-        
     </script>
- <!-- <script>
-    document.addEventListener('contextmenu', event => event.preventDefault());
-    document.addEventListener('keydown', event => {
-        if (event.ctrlKey && (event.key === 'p' || event.key === 's')) {
-            event.preventDefault();
-        }
-    });
-</script> -->
+    <!-- <script>
+        document.addEventListener('contextmenu', event => event.preventDefault());
+        document.addEventListener('keydown', event => {
+            if (event.ctrlKey && (event.key === 'p' || event.key === 's')) {
+                event.preventDefault();
+            }
+        });
+    </script> -->
 <script>
 
               $(document).ready(function() {
@@ -392,7 +389,7 @@ $(document).ready(function() {
             type: 'PUT',
             data: {
                 _token: $('meta[name="csrf-token"]').attr('content'),
-                ...data
+                data
             },
             success: function(response) {
                 // Optional: Show success message

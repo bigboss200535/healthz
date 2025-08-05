@@ -4,8 +4,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
 
-$userController = new UserController();
-// $access = $userController->permissions(Auth::user()->user_id);
+$userController = new UserController();// $access = $userController->permissions(Auth::user()->user_id);
 
 ?>
 

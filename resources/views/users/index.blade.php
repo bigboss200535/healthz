@@ -130,7 +130,7 @@
                                                 @endif
                                           </td> -->
                                           
-                                          <td><span class="badge bg-label-primary me-1">{{ $users->role_type }}</span></td>
+                                          <td><span class="badge bg-label-primary me-1"></span></td>
                                           <td class="text-nowrap text-sm-end" align="left">
                                                 @if($users->status === 'Active')
                                                  <span class="badge bg-label-success me-1">Active</span>

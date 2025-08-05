@@ -18,10 +18,12 @@ class UserController extends Controller
     public function index()
     {
         $user = User::where('users.archived', 'No')->where('users.status', '=','Active')
-            ->rightJoin('user_roles', 'users.user_roles_id', '=', 'user_roles.user_roles_id')
-            ->select('users.*','user_roles.*')
-            ->orderBy('users.user_fullname', 'asc')
-            ->get();
+            // ->rightJoin('user_roles', 'users.user_roles_id', '=', 'user_roles.user_roles_id')
+            // ->select('users.*')
+            ->select('user_id', 'username', 'user_fullname', 'telephone', 'telephone_verified', 'locked', 'expiry', 'mode', 'email', 'gender_id')
+            // ->select('users.*','user_roles.*')
+            ->orderBy('user_fullname', 'asc')->paginate(20);
+            // ->get();
 
         $gender = Gender::where('archived', 'No')
             ->where('status', 'Active')
