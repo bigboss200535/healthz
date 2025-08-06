@@ -17,12 +17,12 @@ return new class extends Migration
     {
        Schema::create('patient_info', function (Blueprint $table) {
             $table->string('patient_id', 50)->primary();
-            $table->string('title_id', 50);
-            $table->string('firstname', 100);
-            $table->string('middlename', 100);
-            $table->string('lastname', 100);
+            $table->string('title_id', 50)->nullable();
+            $table->string('firstname', 100)->nullable();
+            $table->string('middlename', 100)->nullable();
+            $table->string('lastname', 100)->nullable();
             $table->string('fullname')->virtualAs("CONCAT(firstname, ' ', middlename, ' ', lastname)");
-            $table->date('birth_date');
+            $table->date('birth_date')->nullable();
             $table->string('gender_id', 50)->nullable();
             $table->string('occupation_id', 50)->nullable();
             $table->string('education', 100)->nullable();

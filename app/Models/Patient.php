@@ -3,9 +3,17 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 
 class Patient extends Model
 {
+    use HasApiTokens, HasFactory, Notifiable;
+
+    use HasUuids;
+
     protected $table = 'patient_info';
     protected $primaryKey = 'patient_id';
      public $timestamps = false;

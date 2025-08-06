@@ -4,13 +4,14 @@ namespace Database\Factories;
 
 use App\Models\Patient;
 use App\Models\User;
+use App\Models\Clinic;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Model>
  */
-class PatNumberFactory extends Factory
+class PatientOpdNumberFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -21,11 +22,12 @@ class PatNumberFactory extends Factory
     {
         $user = User::inRandomOrder()->first();
         $patient = Patient::inRandomOrder()->first();
+        $clinic = Clinic::inRandomOrder()->first();
 
         return [
             'patient_id' => $patient->patient_id,
             'opd_number' => 'A'.$this->faker->randomNumber(8, true).'/24',
-            'clinic_id' => $this->faker->randomElement(['n', 'a']),
+            'clinic_id' => $clinic->clinic_id,
             'user_id' =>  $user->user_id,
         ];
     }

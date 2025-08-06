@@ -2,10 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\ConsultingRoom;
-use App\Models\Nationality;
-// use App\Models\Product;
-// use App\Models\SponsorType;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -21,6 +17,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        $faker = \Faker\Factory::create();
 
         $this->call([
             FacilitySeeder::class,
@@ -69,13 +66,22 @@ class DatabaseSeeder extends Seeder
             UserPermissionTestSeeder::class
         ]);
 
-        \App\Models\User::factory(7000)->create();
-        // \App\Models\Patient::factory(2000)->create();
-        // \App\Models\PatientSponsor::factory(200)->create();
-        // \App\Models\PatientOpdNumber::factory(450)->create();
+        $users = \App\Models\User::factory(100)->create();
+        $patients = \App\Models\Patient::factory(500)->create();
+
+            foreach ($patients as $patient) {
+                \App\Models\PatientOpdNumber::factory()->create([
+                'patient_id' => $patient->patient_id,
+                'opd_number' => 'A'.$faker->randomNumber(8, true).'/25',
+                // 'user_id' =>  $user->user_id,
+            ]);
+            }
+        // \App\Models\PatientOpdNumber::factory(5000)->create();
         // \App\Models\PatientAttendance::factory(100)->create();
         // \App\Models\ConsultingRoom::factory(10)->create();
         // \App\Models\Consultation::factory(100)->create();
         // \App\Models\Admissions::factory(100)->create();
+        // \App\Models\PatientSponsor::factory(200)->create();
+        
     }
 }
