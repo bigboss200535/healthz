@@ -33,7 +33,7 @@ return new class extends Migration
             $table->string('user_roles_id', 50)->nullable();
             $table->string('mode', 50)->default('New')->nullable();
             $table->string('email')->nullable()->unique()->index();
-            $table->string('email_verified', 20)->nullable();
+            $table->string('email_verified', 20)->nullable()->default('No');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('facility_id', 50)->nullable();
             $table->string('added_id', 100)->nullable();

@@ -25,10 +25,15 @@ class PatientOpdNumberFactory extends Factory
         $clinic = Clinic::inRandomOrder()->first();
 
         return [
-            'patient_id' => $patient->patient_id,
+            // 'patient_id' => $patient->patient_id,
             'opd_number' => 'A'.$this->faker->randomNumber(8, true).'/24',
             'clinic_id' => $clinic->clinic_id,
             'user_id' =>  $user->user_id,
+            'registration_date' => now(),
+            'registration_time' => now(),
+            'year' => date('Y'),
+            'month' => date('m'),
+            'added_date' => now(),
         ];
     }
 }

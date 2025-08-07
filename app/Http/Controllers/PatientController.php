@@ -508,7 +508,8 @@ class PatientController extends Controller
                     ->where(function ($query) use ($search_term) {
                         $query->where('telephone', 'like', '%' . $search_term . '%');
                     })
-                    ->get();
+                    // ->get();
+                    ->paginate(50);
                 // Step 2: If no results are found in the Patient table, search in the PatientSponsor table
                 if ($search_patient->isEmpty()) {
                     $search_patient = PatientSponsor::query()
@@ -517,8 +518,8 @@ class PatientController extends Controller
                             $query->where('opd_number', 'like', '%' . $search_term . '%')
                                 ->orWhere('member_no', 'like', '%' . $search_term . '%');
                         })
-                        // ->distinct()
-                        ->get();
+                        // ->get();
+                        ->paginate(50);
                     // Step 3: If no results are found in the PatientSponsor table, search in the PatientOpdNumber table
                     if ($search_patient->isEmpty()) {
                         $search_patient = PatientOpdNumber::query()
@@ -527,7 +528,8 @@ class PatientController extends Controller
                                 $query->where('opd_number', 'like', '%' . $search_term . '%');
                             })
                             ->distinct()
-                            ->get();
+                            // ->get();
+                            ->paginate(50);
                     }
                 }
             } else {

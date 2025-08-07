@@ -67,15 +67,21 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $users = \App\Models\User::factory(100)->create();
-        $patients = \App\Models\Patient::factory(500)->create();
+        $patients = \App\Models\Patient::factory(700)->create();
+        // $relations = \App\Models\Relation::factory(700)->create();
 
             foreach ($patients as $patient) {
-                \App\Models\PatientOpdNumber::factory()->create([
+                  \App\Models\PatientOpdNumber::factory()->create([
                 'patient_id' => $patient->patient_id,
-                'opd_number' => 'A'.$faker->randomNumber(8, true).'/25',
-                // 'user_id' =>  $user->user_id,
-            ]);
+              ]);
             }
+
+        //  foreach ($relations as $relation) {
+        //         \App\Models\PatientRelations::factory()->create([
+        //         'patient_id' => $relation->patient_id,
+        //     ]);
+        //     }
+
         // \App\Models\PatientOpdNumber::factory(5000)->create();
         // \App\Models\PatientAttendance::factory(100)->create();
         // \App\Models\ConsultingRoom::factory(10)->create();
