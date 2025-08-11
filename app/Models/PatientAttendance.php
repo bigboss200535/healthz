@@ -48,7 +48,7 @@ class PatientAttendance extends Model
         'service_id',
         'service_fee_id',
         'service_point_id',
-        'service_type',
+        'attendance_type_id',
         'request_type',
         'sponsor_type_id',
         'sponsor_id',

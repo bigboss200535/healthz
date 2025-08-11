@@ -41,7 +41,7 @@ class ServiceRequestController extends Controller
                     'patient_id' => 'required|max:50',
                     'opd_number' => 'required|max:50',
                     'service_point_id' => 'required|string',
-                    'service_type' => 'required|string',
+                    'attendance_type_id' => 'required|string',
                     'credit_amount' => 'nullable',
                     'cash_amount' => 'nullable',
                     'service_id' => 'nullable|string',
@@ -117,7 +117,7 @@ class ServiceRequestController extends Controller
                     'service_id' => $validated_data['service_id'] ?? 0, 
                     'service_fee_id' => $validated_data['service_fee_id'] ?? 0, 
                     'service_point_id' => $validated_data['service_point_id'],
-                    'service_type' => $validated_data['service_type'],
+                    'attendance_type_id' => $validated_data['attendance_type_id'],
                     'age_id' => $ages->age_id,
                     'gender_id' => $patient->gender_id,
                     'age_group_id' => $age_group->age_group_id,
@@ -235,60 +235,60 @@ class ServiceRequestController extends Controller
             ->where('attendance_type_id', $service_id)
             ->first();
 
-        // Handle case when service is not found or is archived
-        if (!$service_code) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Service not found .'
-            ], 404);
-        }
+            // Handle case when service is not found or is archived
+            if (!$service_code) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Service not found .'
+                ], 404);
+            }
 
-        // Calculate age group directly from patient's birth date
-        $result = DB::select('CALL GetAgeGroup(?);', [$patient->age]);
+            // Calculate age group directly from patient's birth date
+            $result = DB::select('CALL GetAgeGroup(?);', [$patient->age]);
 
-        $age_type = $result[0]->age_description ?? null;
+            $age_type = $result[0]->age_description ?? null;
 
-        // Check if a valid age group was found
-        if (!$age_type) {
-            return response()->json([
-                'success' => false,
-                'message' => 'No valid age.'
-            ], 400);
-        }
+            // Check if a valid age group was found
+            if (!$age_type) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'No valid age.'
+                ], 400);
+            }
        
         $age_code = $age_type === 'ADULT' ? 'adult_code' : 'child_code';
         $fee_column = $age_type === 'ADULT' ? 'nhis_adult' : 'nhis_child'; 
         $code_column = $age_type === 'ADULT' ? 'gdrg_adult' : 'gdrg_child'; 
-        
-        if ($sponsor->sponsor_type_id == 'P001') 
-        {
-            $fee_column = $patient->nationality_id == '10001' ? 'cash_amount' : 'foreigners_amount';
-            $topup = 0;
-        }
-         elseif ($sponsor->sponsor_type_id == 'N002') 
-        {
-            $fee_column = $age_type === 'ADULT' ? 'nhis_adult' : 'nhis_child';
-            $cash_amount = 0 ;
-            $topup = 0;
-        }
-         elseif ($sponsor->sponsor_type_id == 'PC04') 
-        {
-            $fee_column = 'company_amount';
-            // $cash_amount = 0 ;
-            $topup = 0;
-        }
-         elseif ($sponsor->sponsor_type_id == 'PI03') 
-        {
-            $fee_column = 'private_amount';
-            // $cash_amount = 0 ;
-            $topup = 0;
-        } 
-        else {
-            return response()->json([
-                'success' => false,
-                'message' => 'Invalid Sponsor type.'
-            ], 400);
-        }
+            
+            if ($sponsor->sponsor_type_id == 'P001') 
+            {
+                $fee_column = $patient->nationality_id == '10001' ? 'cash_amount' : 'foreigners_amount';
+                $topup = 0;
+            }
+            elseif ($sponsor->sponsor_type_id == 'N002') 
+            {
+                $fee_column = $age_type === 'ADULT' ? 'nhis_adult' : 'nhis_child';
+                $cash_amount = 0 ;
+                $topup = 0;
+            }
+            elseif ($sponsor->sponsor_type_id == 'PC04') 
+            {
+                $fee_column = 'company_amount';
+                // $cash_amount = 0 ;
+                $topup = 0;
+            }
+            elseif ($sponsor->sponsor_type_id == 'PI03') 
+            {
+                $fee_column = 'private_amount';
+                // $cash_amount = 0 ;
+                $topup = 0;
+            } 
+            else {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Invalid Sponsor type.'
+                ], 400);
+            }
 
             // Fetch fee charges
         $fee_charges = DB::table('services_fee')
@@ -319,19 +319,19 @@ class ServiceRequestController extends Controller
         // ]);
 
         // Transform the collection properly
-    $transformed_charges = $fee_charges->map(function ($item) use ($fee_column, $code_column) {
-        return [
-            'nhis_amount' => $item->$fee_column ?? null,
-            'gdrg' => $item->$code_column ?? null,
-            'cash_amount' => $item->cash_amount ?? null,
-            'topup_amount' => $topup ?? null,
-            'allow_nhis' => $item->allow_nhis ?? null,
-            'allow_topup' => $item->allow_topup ?? null,
-            'editable' => $item->editable ?? null,
-            'service_id' => $item->service_id ?? null,
-            'service_fee_id' => $item->service_fee_id ?? null
-        ];
-    });
+        $transformed_charges = $fee_charges->map(function ($item) use ($fee_column, $code_column) {
+            return [
+                'nhis_amount' => $item->$fee_column ?? null,
+                'gdrg' => $item->$code_column ?? null,
+                'cash_amount' => $item->cash_amount ?? null,
+                'topup_amount' => $topup ?? null,
+                'allow_nhis' => $item->allow_nhis ?? null,
+                'allow_topup' => $item->allow_topup ?? null,
+                'editable' => $item->editable ?? null,
+                'service_id' => $item->service_id ?? null,
+                'service_fee_id' => $item->service_fee_id ?? null
+            ];
+        });
 
     return response()->json([
         'success' => true,

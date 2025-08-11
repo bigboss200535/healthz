@@ -39,8 +39,8 @@ $(document).ready(function () {
         return false;
       }
 
-      if (!service_requests.service_type || service_requests.service_type === "-Select-"){
-        $('#service_type').addClass('is-invalid').focus();
+      if (!service_requests.attendance_type_id || service_requests.attendance_type_id === "-Select-"){
+        $('#attendance_type_id').addClass('is-invalid').focus();
         return false;
       }
 
@@ -270,9 +270,9 @@ $(document).ready(function () {
 //         isValid = false;
 //       }
 
-//       if ($('#service_type').val() === '-Select-') {
-//          $('#service_type').addClass('is-invalid');
-//          $('#service_type').after('<div class="invalid-feedback">Please select a service type.</div>');
+//       if ($('#attendance_type_id').val() === '-Select-') {
+//          $('#attendance_type_id').addClass('is-invalid');
+//          $('#attendance_type_id').after('<div class="invalid-feedback">Please select a service type.</div>');
 //         isValid = false;
 //       }
 
@@ -327,7 +327,7 @@ $(document).ready(function () {
   $(document).on('change', '#service_point_id', function() {
     var clinic_id = $(this).val();
 
-    $('#service_type').empty().append('<option disabled selected>-Select-</option>');
+    $('#attendance_type_id').empty().append('<option disabled selected>-Select-</option>');
 
     $.ajax({
         url: '/services/' + clinic_id + '/get_specialty',
@@ -335,13 +335,13 @@ $(document).ready(function () {
         success: function(response) {
           if (response.success) {
                 $.each(response.result, function(index, service_point) {
-                    $('#service_type').append(
+                    $('#attendance_type_id').append(
                         $('<option></option>').val(service_point.attendance_type_id).text(service_point.attendance_type)
                     );
                 });
             } else {
                 // If no specialties found, show a message or leave empty
-                $('#service_type').append('<option selected disabled>No specialties available</option>');
+                $('#attendance_type_id').append('<option selected disabled>No specialties available</option>');
             }
         },
         error: function(xhr, status, error) {
@@ -352,7 +352,7 @@ $(document).ready(function () {
 
 
 // --------------------------------GET SERVICE AND THEIR FEE-----------------------------------------
-$(document).on('change', '#service_type', function() {
+$(document).on('change', '#attendance_type_id', function() {
     
     var service = $(this).val();
     var patient_id = $('#patient_id').val();
@@ -413,7 +413,7 @@ $(document).on('change', '#service_type', function() {
 },
 complete: function() {
     // Re-enable the dropdown and hide the spinner
-    $('#service_type').prop('disabled', false);
+    $('#attendance_type_id').prop('disabled', false);
     $('#loading-spinner').hide();
 }
 });

@@ -30,7 +30,7 @@ return new class extends Migration
             $table->string('request_type', 20)->default('INWARD'); //inward and outward
             $table->string('service_id', 50)->nullable(); 
             $table->string('service_fee_id', 50)->nullable(); 
-            $table->string('service_type', 50)->nullable(); 
+            $table->string('attendance_type_id', 50)->nullable(); 
             $table->string('insured', 50)->nullable()->default('No'); 
             $table->string('service_issued', 50)->default('0'); 
             $table->string('attendance_type', 50)->nullable(); 
@@ -69,6 +69,9 @@ return new class extends Migration
             $table->foreign('sponsor_id')->references('sponsor_id')->on('sponsors');
             $table->foreign('age_group_id')->references('age_group_id')->on('age_groups');
             $table->foreign('service_point_id')->references('service_point_id')->on('service_points');
+            $table->foreign('attendance_type_id')->references('attendance_type_id')->on('service_attendance_type');
+            $table->foreign('service_id')->references('service_id')->on('services');
+            // attendance_type_id
         });
 
     }

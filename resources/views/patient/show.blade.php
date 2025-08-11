@@ -419,8 +419,8 @@
              </select>
           </div>
           <div class="col-12 col-md-6">
-            <label class="form-label" for="service_type">Service Type</label>
-            <select name="service_type" id="service_type" class="form-control">
+            <label class="form-label" for="attendance_type_id">Service Type</label>
+            <select name="attendance_type_id" id="attendance_type_id" class="form-control">
                 <option disabled selected></option>
             </select>
           </div>
