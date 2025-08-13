@@ -41,6 +41,14 @@ class AgeGroups extends Model
                 // ->where('status', 'Active')
                 ->where('archived', 'No')
                 ->first();
+
+            // return cache()->remember("age_category_{$age_in_years}", 3600, function() use ($age_in_years) {
+            //         return self::where('min_age', '<=', $age_in_years)
+            //                 ->where('max_age', '>=', $age_in_years)
+            //                 ->where('archived', 'No')
+            //                 ->first();
+            //     });
     }
+    
 
 }

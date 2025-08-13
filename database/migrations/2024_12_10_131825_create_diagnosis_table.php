@@ -13,6 +13,24 @@ return new class extends Migration
      */
     public function up()
     {
+        Schema::create('diagnosis_icd_groups', function (Blueprint $table) {
+            $table->string('icd_group_id', 50)->primary();
+            $table->string('group', 50)->nullable();
+            $table->string('user_id', 10)->nullable();
+            $table->string('facility_id', 50)->nullable();
+            $table->string('added_id', 100)->nullable();
+            $table->timestamp('added_date')->nullable();
+            $table->string('updated_by', 100)->nullable();
+            $table->string('status', 100)->default('Active')->index();
+            $table->string('archived', 100)->default('No')->index();
+            $table->string('archived_id', 100)->nullable();
+            $table->string('archived_by', 100)->nullable();
+            $table->date('archived_date', 100)->nullable();
+            // key
+            $table->foreign('user_id')->references('user_id')->on('users');
+            $table->foreign('facility_id')->references('facility_id')->on('facility');
+        });
+        
         Schema::create('diagnosis', function (Blueprint $table) {
             $table->string('diagnosis_id', 50)->primary();
             $table->string('diagnosis_code', 50)->nullable();
@@ -59,6 +77,7 @@ return new class extends Migration
      */
     public function down()
     {
+        Schema::dropIfExists('diagnosis_icd10_groups');
         Schema::dropIfExists('diagnosis');
     }
 };

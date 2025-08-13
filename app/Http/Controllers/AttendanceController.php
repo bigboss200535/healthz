@@ -7,12 +7,14 @@ use App\Models\PatientAttendance;
 // use App\Http\Controllers\Auth;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use App\Helpers\TimeManagement;
 
 class AttendanceController extends Controller
 {
     public function generate_episode(Request $request)
     {
-         $today_date = date('Y-m-d');
+        //  $today_date = date('Y-m-d');
+         $today_date = TimeManagement::todayDate();
 
          $episode = Episode::where('patient_id', $request->patient_id)
              ->where('added_date', $today_date)
@@ -58,7 +60,7 @@ class AttendanceController extends Controller
 
         $todays_request = PatientAttendance::where('patient_attendance.archived','No')
             ->join('sponsor_type', 'patient_attendance.sponsor_type_id', '=', 'sponsor_type.sponsor_type_id')
-            ->join('service_attendance_type', 'service_attendance_type.attendance_type_id', '=', 'patient_attendance.service_type')
+            ->join('service_attendance_type', 'service_attendance_type.attendance_type_id', '=', 'patient_attendance.attendance_type_id')
             ->select('patient_attendance.attendance_id', 'patient_attendance.opd_number', 'patient_attendance.attendance_date', 
             'patient_attendance.full_age',  'service_attendance_type.attendance_type as pat_clinic' , 'sponsor_type.sponsor_type as sponsor',
             'patient_attendance.service_issued' ,'patient_attendance.attendance_type')

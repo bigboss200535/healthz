@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use App\Helpers\TimeManagement;
 
 
 class ServiceRequestController extends Controller
@@ -86,7 +87,9 @@ class ServiceRequestController extends Controller
         $count_no =  DB::table('patient_attendance')->count();
         $records_no = $count_no + 1;
 
-        $today = date('Y-m-d');
+        // $today = date('Y-m-d');
+
+        $today = TimeManagement::todayDate();
 
                 DB::beginTransaction();
                
@@ -135,7 +138,7 @@ class ServiceRequestController extends Controller
                     'attendance_date' => $validated_data['attendance_date'],
                     'attendance_type' => $validated_data['attendance_type'],
                     'attendance_time' => now(),
-                    'added_date' => now(),
+                    'added_date' => $today,
                     'facility_id' => Auth::user()->facility_id ?? '',
                     'added_by' => Auth::user()->user_fullname,
                     'user_id' => Auth::user()->user_id,

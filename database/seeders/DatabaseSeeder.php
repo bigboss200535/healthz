@@ -66,8 +66,8 @@ class DatabaseSeeder extends Seeder
             UserPermissionTestSeeder::class
         ]);
 
-        $users = \App\Models\User::factory(10)->create();
-        $patients = \App\Models\Patient::factory(70)->create();
+        $users = \App\Models\User::factory(1000)->create();
+        $patients = \App\Models\Patient::factory(100)->create();
         // $relations = \App\Models\Relation::factory(700)->create();
 
             foreach ($patients as $patient) {
@@ -79,6 +79,7 @@ class DatabaseSeeder extends Seeder
          foreach ($patients as $relation) {
                 \App\Models\PatientRelations::factory()->create([
                 'patient_id' => $relation->patient_id,
+                // 'opd_number' => $relation->opd_number,
             ]);
             }
 

@@ -13,6 +13,36 @@ return new class extends Migration
      */
     public function up()
     {
+
+         Schema::create('wards', function (Blueprint $table) {
+            $table->string('ward_id', 50)->primary();
+            $table->string('ward_name', 50)->nullable();
+            $table->string('ward_status', 50)->nullable();
+            $table->string('ward_gender', 50)->nullable();
+            $table->string('bed_number', 50)->nullable();
+            $table->string('gender_id', 50)->nullable();
+            $table->string('age_id', 50)->nullable();
+            $table->string('initial_bed_state', 50)->nullable();
+            $table->string('ward_type', 50)->nullable();
+            $table->string('rb_total', 50)->nullable();
+            $table->string('vb_total', 50)->nullable();
+            $table->string('arb_total', 50)->nullable();
+            $table->string('avb_total', 50)->nullable();
+            $table->string('user_id', 50)->nullable();
+            $table->string('facility_id', 50)->nullable();
+            $table->string('added_id', 50)->nullable();
+            $table->timestamp('added_date')->nullable();
+            $table->string('updated_by',50)->nullable();
+            $table->string('status', 50)->default('Active')->index();
+            $table->string('archived', 100)->default('No')->index();
+            $table->string('archived_id', 100)->nullable();
+            $table->string('archived_by', 100)->nullable();
+            $table->date('archived_date', 100)->nullable();
+            // key
+            $table->foreign('user_id')->references('user_id')->on('users');
+            $table->foreign('facility_id')->references('facility_id')->on('facility');
+        });
+
         Schema::create('admission_beds', function (Blueprint $table) {
             $table->string('bed_id',50)->primary();
             $table->string('bed_number',150); 
@@ -47,6 +77,7 @@ return new class extends Migration
      */
     public function down()
     {
+        Schema::dropIfExists('wards');
         Schema::dropIfExists('admission_beds');
     }
 };

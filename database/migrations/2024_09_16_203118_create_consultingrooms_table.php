@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('consulting_rooms', function (Blueprint $table) {
             $table->string('consulting_room_id', 50)->primary();
             $table->string('consulting_room', 100);
-            $table->string('clinic_code', 100)->nullable();
+            $table->string('clinic_code', 50)->nullable();
             $table->string('color_code', 100)->nullable();
             $table->string('doctors_number', 100)->nullable();
             $table->string('facility_id', 50)->nullable();
