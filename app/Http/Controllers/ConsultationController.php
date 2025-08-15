@@ -45,7 +45,6 @@ class ConsultationController extends Controller
 
     public function store(Request $request)
     {
-
         $validated_data = $request->validate([
             // 'consultation_id' => 'required|string',
             'patient_id' => 'required|string|max:255',
@@ -66,22 +65,11 @@ class ConsultationController extends Controller
             'consultation_type' => 'nullable|string|max:20',
             'consultation_time' => 'nullable|string|max:255',
             'attendance_id' => 'required|string|max:50',
+            'service_id' => 'nullable|string|max:20',
         ]);
 
-        $patient = Patient::where('archived', 'No')
-            ->where('patient_id', $request->input('patient_id'))
-            ->select(DB::raw('TIMESTAMPDIFF(YEAR, birth_date, CURDATE()) as age'))
-            ->first();
-
-        if(!$patient) {
-                return response()->json([
-                    'status' => 'error',
-                    'message' => 'Patient not found'
-                ], 404);
-            }
-
+        $patient = $this->patient_by_id($request->input('patient_id'));
         $records_no = intval(Consultation::all()->count()) + 1;
-
         $age_group = AgeGroups::get_category_from_age($patient->age);
 
         // Check if the consultation already exists
@@ -96,17 +84,14 @@ class ConsultationController extends Controller
         //  }
 
         try {
-            DB::beginTransaction();
+                DB::beginTransaction();
                 
-                // Generate consultation ID if not provided
-                // if (!isset($validated_data['consultation_id']) || empty($validated_data['consultation_id'])) {
-                    $consult_id = intval(Consultation::all()->count()) + 1;
-                    $consultation_id = str_pad($consult_id, 7, '0', STR_PAD_LEFT);
-                //    }
+               $consult_id = intval(Consultation::all()->count()) + 1;
+               $consultation_id = str_pad($consult_id, 7, '0', STR_PAD_LEFT);
 
                     // Create new consultation record
                     $consultation = Consultation::create([
-                        'consultation_id' => $$consultation_id,
+                        'consultation_id' => $consultation_id,
                         'patient_id' => $validated_data['patient_id'],
                         'opd_number' => $validated_data['opd_number'],
                         'gender_id' => $validated_data['gender_id'],
@@ -114,8 +99,11 @@ class ConsultationController extends Controller
                         'patient_age' => $validated_data['patient_age'],
                         'clinic' => $validated_data['clinic'],
                         'patient_status_id' => '2' ?? $validated_data['patient_status_id'],
-                        'sponsor_type_id' => $validated_data['sponsor_type'],
+                        'is_insured' => '2',
+                        'pay_qty' => '2',
+                        'service_id' => $validated_data['service_id'] ?? 0, 
                         'sponsor_id' => $validated_data['sponsor'],
+                        'sponsor_type_id' => $validated_data['sponsor_type'],
                         'episode_id' => $validated_data['episode_id'],
                         'episode_type' => $validated_data['episode_type'],
                         'consulting_room' => $validated_data['consulting_room'],
@@ -130,18 +118,17 @@ class ConsultationController extends Controller
                         'added_date' => now(),
                         'status' => 'Active',
                         'archived' => 'No'
-                    ]);
+                   ]);
             
                     // Update patient attendance status if needed
-            PatientAttendance::where('attendance_id', $validated_data['attendance_id'])
+                 PatientAttendance::where('attendance_id', $validated_data['attendance_id'])
                         ->update(['service_issued' => '1']);
 
-            DB::commit();
+                DB::commit();
             
             return response()->json([
                 'status' => 'success',
                 'message' => 'Consultation saved successfully',
-                // 'consultation_id' => $consultation->consultation_id
             ], 200);
 
         } catch (\Exception $e) {
@@ -152,6 +139,23 @@ class ConsultationController extends Controller
                 'message' => 'Consultation details Not Saved',
                 'error' => $e->getMessage()
             ], 500);
+        }
+    }
+
+    private function patient_by_id($patient_id)
+    {
+         $patient = Patient::where('archived', 'No')
+            ->where('patient_id', $patient_id)
+            ->select(DB::raw('TIMESTAMPDIFF(YEAR, birth_date, CURDATE()) as age'))
+            ->first();
+
+        if(!$patient) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Patient not found'
+                ], 404);
+         }else if($patient){
+            return $patient;
         }
     }
 

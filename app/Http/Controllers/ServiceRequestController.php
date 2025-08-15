@@ -53,48 +53,33 @@ class ServiceRequestController extends Controller
                     'attendance_type' => 'nullable|string|max:50', 
                 ]);
 
-       $patient = Patient::where('archived', 'No')
-            ->where('patient_id', $request->input('patient_id'))
-            ->select('gender_id', 'patient_id', 'birth_date', DB::raw('TIMESTAMPDIFF(YEAR, birth_date, CURDATE()) as patient_age'))
-            ->first();
+            $patient = $this->patient_by_id($request->input('patient_id'));
 
-        if(!$patient) {
-                return response()->json([
-                    'status' => 'error',
-                    'message' => 'Patient not found'
-                ], 404);
-            }
+            $sponsor = PatientSponsor::where('opd_number', $validated_data['opd_number'])
+                    ->where('archived', 'No')
+                    ->where('priority', 1)
+                    ->where('is_active', 'Yes')
+                    ->select('sponsor_id', 'sponsor_type_id')
+                    ->first();
 
-       $sponsor = PatientSponsor::where('opd_number', $validated_data['opd_number'])
-            ->where('archived', 'No')
-            ->where('priority', 1)
-            ->where('is_active', 'Yes')
-            ->select('sponsor_id', 'sponsor_type_id')
-            ->first();
+                    if (!$sponsor) {
+                        $sponsor = (object) [
+                            'sponsor_id' => '100',
+                            'sponsor_type_id' => 'P001',
+                        ];
+                        $insured = '0';
+                    }
 
-            if (!$sponsor) {
-                $sponsor = (object) [
-                    'sponsor_id' => '100',
-                    'sponsor_type_id' => 'P001',
-                ];
-                $insured = '0';
-            }
-
-        $ages = $this->get_age_id($patient->birth_date);
-
-        $age_group = AgeGroups::get_category_from_age($patient->patient_age);
-
-        $count_no =  DB::table('patient_attendance')->count();
-        $records_no = $count_no + 1;
-
-        $today = TimeManagement::todayDate();
+            $ages = $this->get_age_id($patient->birth_date);
+            $age_group = AgeGroups::get_category_from_age($patient->patient_age);
+            $today = TimeManagement::today_date();
 
         DB::beginTransaction();
                
-        $old_episode_id = Episode::get()->count();
-        $new_episode_id = $old_episode_id + 1;
+            $old_episode_id = Episode::get()->count();
+            $new_episode_id = $old_episode_id + 1;
 
-        $check_episode_today = Episode::where('patient_id', $validated_data['patient_id'])->where('added_date', $today)->get();
+            $check_episode_today = Episode::where('patient_id', $validated_data['patient_id'])->where('added_date', $today)->get();
 
                 if(!$check_episode_today){
                     $new_episode = Episode::create([
@@ -108,8 +93,9 @@ class ServiceRequestController extends Controller
                     'added_date' => now()
                 ]);
                 }
-                 
+              
                  $service_request = PatientAttendance::create([
+                    'attendance_id' => $this->get_attendance_id(),
                     'patient_id' => $validated_data['patient_id'],
                     'opd_number' => $validated_data['opd_number'],
                     'pat_age' => $patient->patient_age,
@@ -131,13 +117,13 @@ class ServiceRequestController extends Controller
                     'status_code' => $status_code ?? '2',
                     'insured' => $insured ?? '0',
                     'service_issued' => '0',
-                    'records_no' => $records_no,
+                    'records_no' => $this->get_records_no(),
                     'attendance_date' => $validated_data['attendance_date'],
                     'attendance_type' => $validated_data['attendance_type'],
                     'attendance_time' => now(),
                     'added_date' => $today,
                     'facility_id' => Auth::user()->facility_id ?? '',
-                    'added_by' => Auth::user()->user_fullname,
+                    'added_by' => Auth::user()->user_fullname ?? '',
                     'user_id' => Auth::user()->user_id,
                     'added_id' => Auth::user()->user_id,
                 ]);
@@ -159,6 +145,38 @@ class ServiceRequestController extends Controller
                 ], 500);
             }
     
+    }
+
+    private function patient_by_id($patient_id)
+    {
+         $patient = Patient::where('archived', 'No')
+            ->where('patient_id', $patient_id)
+            ->select(DB::raw('TIMESTAMPDIFF(YEAR, birth_date, CURDATE()) as patient_age'))
+            ->first();
+
+        if(!$patient) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Patient not found'
+                ], 404);
+         }else if($patient){
+            return $patient;
+        }
+    }
+
+    private function get_attendance_id()
+    {
+          $old_episode_id = PatientAttendance::get()->count();
+          $new_id = $old_episode_id + 1;
+          $attendance_id = str_pad($new_id, 7, '0', STR_PAD_LEFT);
+          return 'A' .$attendance_id;
+    }
+
+     private function get_records_no()
+    {
+          $old_episode_id = PatientAttendance::get()->count();
+          $new_id = $old_episode_id + 1;
+          return $new_id;
     }
 
     public function show(Request $request, $clinic_id)

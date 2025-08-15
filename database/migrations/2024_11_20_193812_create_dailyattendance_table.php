@@ -71,6 +71,7 @@ return new class extends Migration
             $table->foreign('service_point_id')->references('service_point_id')->on('service_points');
             $table->foreign('attendance_type_id')->references('attendance_type_id')->on('service_attendance_type');
             $table->foreign('service_id')->references('service_id')->on('services');
+            $table->foreign('service_fee_id')->references('service_fee_id')->on('services_fee');
             // attendance_type_id
         });
 

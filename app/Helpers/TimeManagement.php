@@ -7,7 +7,7 @@ use Carbon\Carbon;
 class TimeManagement
 {
     //today
-    public static function todayDate()
+    public static function today_date()
     {
         return date('Y-m-d');
     }

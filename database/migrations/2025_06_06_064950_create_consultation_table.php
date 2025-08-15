@@ -16,15 +16,18 @@ return new class extends Migration
         Schema::create('patient_consultation', function (Blueprint $table) {
             $table->string('consultation_id', 50)->primary();
             $table->string('patient_id', 50)->nullable();
-            $table->string('opd_number', 50)->nullable();
-            $table->string('gender_id', 50)->nullable();
-            $table->string('age_id', 50)->nullable();
-            $table->string('age_group_id', 50)->nullable();
+            $table->string('opd_number', 50)->nullable()->index();
+            $table->string('gender_id', 50)->nullable()->index();
+            $table->string('age_id', 50)->nullable()->index();
+            $table->string('age_group_id', 50)->nullable()->index();
             $table->string('patient_age', 50)->nullable();
             $table->string('clinic', 50)->nullable();
+            $table->string('service_id', 50)->nullable();
+             $table->string('attendance_type_id', 50)->nullable(); 
             $table->string('patient_status_id', 50)->nullable();
             $table->string('facility_id', 50)->nullable();
             $table->string('is_insured', 50)->default('No')->nullable();
+            $table->string('pay_qty', 50)->default('0');
             $table->string('is_pregnant', 50)->default('No')->nullable();
             $table->string('sponsor_id', 50)->nullable();
             $table->string('sponsor_type_id', 50)->nullable();
@@ -40,13 +43,16 @@ return new class extends Migration
             $table->string('attendance_id', 50)->nullable();
             $table->string('user_id', 50)->nullable();
             $table->timestamp('added_date')->nullable();
+            $table->string('added_by', 50)->nullable();
             $table->string('updated_by', 100)->nullable();
             $table->string('status', 50)->default('Active')->index();
             $table->string('archived', 50)->default('No')->index();
             $table->string('archived_id', 50)->nullable();
             $table->string('archived_by', 100)->nullable();
             $table->date('archived_date', 100)->nullable();
+
             // foreign keys
+            $table->foreign('prescriber')->references('user_id')->on('users');
             $table->foreign('user_id')->references('user_id')->on('users');
             $table->foreign('facility_id')->references('facility_id')->on('facility');
             $table->foreign('age_id')->references('age_id')->on('ages');
@@ -54,7 +60,8 @@ return new class extends Migration
             $table->foreign('age_group_id')->references('age_group_id')->on('age_groups');
             $table->foreign('sponsor_id')->references('sponsor_id')->on('sponsors');
             $table->foreign('sponsor_type_id')->references('sponsor_type_id')->on('sponsor_type');
-             $table->foreign('attendance_id')->references('attendance_id')->on('patient_attendance');
+            $table->foreign('attendance_id')->references('attendance_id')->on('patient_attendance');
+            $table->foreign('patient_id')->references('patient_id')->on('patient_info');
         });
     }
 

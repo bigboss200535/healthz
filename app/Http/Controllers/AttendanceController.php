@@ -13,8 +13,7 @@ class AttendanceController extends Controller
 {
     public function generate_episode(Request $request)
     {
-        //  $today_date = date('Y-m-d');
-         $today_date = TimeManagement::todayDate();
+         $today_date = TimeManagement::today_date();
 
          $episode = Episode::where('patient_id', $request->patient_id)
              ->where('added_date', $today_date)
