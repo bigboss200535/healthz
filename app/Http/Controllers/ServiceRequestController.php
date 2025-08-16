@@ -34,9 +34,19 @@ class ServiceRequestController extends Controller
         
     }
 
+    private function episode_id()
+    {
+        $row_count = PatientAttendance::count();
+        $new_number = $row_count + 1;
+        return str_pad($new_number, 6, '0', STR_PAD_LEFT);
+
+        $old_episode_id = Episode::get()->count();
+        $new_episode_id = $old_episode_id + 1;
+    }
+
+
     public function store(Request $request)
     {
-        
        try {
               $validated_data = $request->validate([
                     'patient_id' => 'required|max:50',
@@ -53,7 +63,7 @@ class ServiceRequestController extends Controller
                     'attendance_type' => 'nullable|string|max:50', 
                 ]);
 
-            $patient = $this->patient_by_id($request->input('patient_id'));
+            $patient_detail = $this->patient_by_id($request->input('patient_id'));
 
             $sponsor = PatientSponsor::where('opd_number', $validated_data['opd_number'])
                     ->where('archived', 'No')
@@ -70,8 +80,8 @@ class ServiceRequestController extends Controller
                         $insured = '0';
                     }
 
-            $ages = $this->get_age_id($patient->birth_date);
-            $age_group = AgeGroups::get_category_from_age($patient->patient_age);
+            $ages = $this->get_age_id($patient_detail->birth_date);
+            $age_group = AgeGroups::get_category_from_age($patient_detail->patient_age);
             $today = TimeManagement::today_date();
 
         DB::beginTransaction();
@@ -98,14 +108,14 @@ class ServiceRequestController extends Controller
                     'attendance_id' => $this->get_attendance_id(),
                     'patient_id' => $validated_data['patient_id'],
                     'opd_number' => $validated_data['opd_number'],
-                    'pat_age' => $patient->patient_age,
-                    'full_age' => $this->get_age_full($patient->birth_date),
+                    'pat_age' => $patient_detail->patient_age,
+                    'full_age' => $this->get_age_full($patient_detail->birth_date),
                     'service_id' => $validated_data['service_id'] ?? 0, 
                     'service_fee_id' => $validated_data['service_fee_id'] ?? 0, 
                     'service_point_id' => $validated_data['service_point_id'],
                     'attendance_type_id' => $validated_data['attendance_type_id'],
                     'age_id' => $ages->age_id,
-                    'gender_id' => $patient->gender_id,
+                    'gender_id' => $patient_detail->gender_id,
                     'age_group_id' => $age_group->age_group_id,
                     'request_type' => 'INWARD',
                     'episode_id' => $new_episode_id ?? $check_episode_today->episode_id,
@@ -151,7 +161,7 @@ class ServiceRequestController extends Controller
     {
          $patient = Patient::where('archived', 'No')
             ->where('patient_id', $patient_id)
-            ->select(DB::raw('TIMESTAMPDIFF(YEAR, birth_date, CURDATE()) as patient_age'))
+            ->select('birth_date', 'patient_id', DB::raw('TIMESTAMPDIFF(YEAR, birth_date, CURDATE()) as patient_age'))
             ->first();
 
         if(!$patient) {
@@ -355,13 +365,6 @@ class ServiceRequestController extends Controller
         'success' => true,
         'result' => $transformed_charges->toArray() // Convert to array explicitly
     ]);
-    }
-
-    private function episode_id()
-    {
-        $row_count = PatientAttendance::count();
-        $new_number = $row_count + 1;
-        return str_pad($new_number, 6, '0', STR_PAD_LEFT);
     }
 
     public function get_episode_no($patient_id)

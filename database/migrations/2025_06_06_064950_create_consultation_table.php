@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('patient_age', 50)->nullable();
             $table->string('clinic', 50)->nullable();
             $table->string('service_id', 50)->nullable();
-             $table->string('attendance_type_id', 50)->nullable(); 
+            $table->string('attendance_type_id', 50)->nullable(); 
             $table->string('patient_status_id', 50)->nullable();
             $table->string('facility_id', 50)->nullable();
             $table->string('is_insured', 50)->default('No')->nullable();
@@ -43,7 +43,7 @@ return new class extends Migration
             $table->string('attendance_id', 50)->nullable();
             $table->string('user_id', 50)->nullable();
             $table->timestamp('added_date')->nullable();
-            $table->string('added_by', 50)->nullable();
+            $table->string('added_by', 150)->nullable();
             $table->string('updated_by', 100)->nullable();
             $table->string('status', 50)->default('Active')->index();
             $table->string('archived', 50)->default('No')->index();

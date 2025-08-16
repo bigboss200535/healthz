@@ -28,7 +28,7 @@
         <li class="nav-item">
           <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#nav_attendance" aria-controls="navs-justified-messages" aria-selected="false">
             <span class="d-none d-sm-block">
-              <i class="tf-icons bx bx-timer bx-sm me-1_5 align-text-bottom"></i> Attendance
+              <i class="tf-icons bx bx-timer bx-sm me-1_5 align-text-bottom"></i> Previous Attendance
             </span>
             <i class="bx bx-message-square bx-sm d-sm-none"></i>
           </button>
@@ -347,7 +347,7 @@
     </div>
   </div>
 </div>
-<br>
+ <br>
       <div class="app-ecommerce-category">
                   <div class="card">
                     <div class="card-datatable table-responsive">
@@ -405,10 +405,10 @@
           @csrf
           <div id="success_diplay" class="container mt-6"></div>
             <input type="text" name="patient_id" id="patient_id" value="{{ $patients->patient_id }}" hidden>
-            <input type="text" name="service_id" id="service_id">
-            <input type="text" name="service_fee_id" id="service_fee_id">
-            <input type="text" name="top_up" id="top_up" value="0.00" >
-            <input type="text" name="opd_number" id="opd_number" value="{{ $patients->opd_number}}" >
+            <input type="text" name="service_id" id="service_id" hidden>
+            <input type="text" name="service_fee_id" id="service_fee_id" hidden>
+            <input type="text" name="top_up" id="top_up" value="0.00" hidden>
+            <input type="text" name="opd_number" id="opd_number" value="{{ $patients->opd_number}}" hidden>
           <div class="col-12 col-md-6">
             <label class="form-label" for="service_point_id">Service Clinic</label>
              <select name="service_point_id" id="service_point_id" class="form-control">

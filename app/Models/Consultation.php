@@ -49,6 +49,7 @@ class Consultation extends Model
         'attendance_id',
         'age_group_id',
         'service_id',
+        'facility_id',
         'user_id',
         'added_id',
         'added_date',

@@ -61,8 +61,11 @@ class AttendanceController extends Controller
             ->join('sponsor_type', 'patient_attendance.sponsor_type_id', '=', 'sponsor_type.sponsor_type_id')
             ->join('service_attendance_type', 'service_attendance_type.attendance_type_id', '=', 'patient_attendance.attendance_type_id')
             ->select('patient_attendance.attendance_id', 'patient_attendance.opd_number', 'patient_attendance.attendance_date', 
-            'patient_attendance.full_age',  'service_attendance_type.attendance_type as pat_clinic' , 'sponsor_type.sponsor_type as sponsor',
-            'patient_attendance.service_issued' ,'patient_attendance.attendance_type')
+                     'patient_attendance.full_age',  'service_attendance_type.attendance_type as pat_clinic' , 
+                     'sponsor_type.sponsor_type as sponsor',
+                     'patient_attendance.service_issued', 
+                     'patient_attendance.attendance_type'
+                     )
             ->where('patient_attendance.patient_id', $patient_id)
             // ->whereDate('patient_attendance.attendance_date',  $todays_date) 
             ->orderBy('patient_attendance.attendance_id', 'desc')
@@ -106,7 +109,6 @@ class AttendanceController extends Controller
                 ->where('patient_attendance.archived', 'No')
                 ->orderBy('patient_attendance.attendance_id', 'desc')
                 ->get();
-
 
             return view('patient.appointments', compact('appointments')); 
     }

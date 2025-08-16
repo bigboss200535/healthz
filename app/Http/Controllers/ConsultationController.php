@@ -46,7 +46,6 @@ class ConsultationController extends Controller
     public function store(Request $request)
     {
         $validated_data = $request->validate([
-            // 'consultation_id' => 'required|string',
             'patient_id' => 'required|string|max:255',
             'opd_number' => 'nullable|string|max:255',
             'gender_id' => 'required|string',
@@ -71,6 +70,7 @@ class ConsultationController extends Controller
         $patient = $this->patient_by_id($request->input('patient_id'));
         $records_no = intval(Consultation::all()->count()) + 1;
         $age_group = AgeGroups::get_category_from_age($patient->age);
+        $consult_id = intval(Consultation::all()->count()) + 1;
 
         // Check if the consultation already exists
         //   $existing_consultation = Consultation::where('episode_id', $validated_data['episode_id'])
@@ -85,9 +85,8 @@ class ConsultationController extends Controller
 
         try {
                 DB::beginTransaction();
-                
-               $consult_id = intval(Consultation::all()->count()) + 1;
-               $consultation_id = str_pad($consult_id, 7, '0', STR_PAD_LEFT);
+            
+                    $consultation_id = str_pad($consult_id, 7, '0', STR_PAD_LEFT);
 
                     // Create new consultation record
                     $consultation = Consultation::create([
@@ -114,7 +113,9 @@ class ConsultationController extends Controller
                         'consultation_time' => $validated_data['consultation_time'],
                         'age_group_id' => $age_group->age_group_id,
                         'attendance_id' => $validated_data['attendance_id'],
+                        'facility_id' => Auth::user()->facility_id ?? '',
                         'user_id' => Auth::user()->user_id,
+                        'added_by' => Auth::user()->user_fullname ?? '',
                         'added_date' => now(),
                         'status' => 'Active',
                         'archived' => 'No'
@@ -126,25 +127,25 @@ class ConsultationController extends Controller
 
                 DB::commit();
             
-            return response()->json([
-                'status' => 'success',
-                'message' => 'Consultation saved successfully',
-            ], 200);
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Consultation saved successfully',
+                ], 200);
 
-        } catch (\Exception $e) {
-            DB::rollBack();
-            
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Consultation details Not Saved',
-                'error' => $e->getMessage()
-            ], 500);
-        }
+            } catch (\Exception $e) {
+                DB::rollBack();
+                
+                    return response()->json([
+                        'status' => 'error',
+                        'message' => 'Consultation details Not Saved',
+                        'error' => $e->getMessage()
+                    ], 500);
+            }
     }
 
     private function patient_by_id($patient_id)
     {
-         $patient = Patient::where('archived', 'No')
+        $patient = Patient::where('archived', 'No')
             ->where('patient_id', $patient_id)
             ->select(DB::raw('TIMESTAMPDIFF(YEAR, birth_date, CURDATE()) as age'))
             ->first();
@@ -195,8 +196,8 @@ class ConsultationController extends Controller
             return response()->json($patients);
     }
 
-        public function holdAttendance($id)
-        {
+    public function holdAttendance($id)
+    {
             try {
                 // Update the service_issued field to '2' for on-hold status
                 DB::table('patient_attendance')
@@ -207,10 +208,10 @@ class ConsultationController extends Controller
             } catch (\Exception $e) {
                 return response()->json(['success' => false, 'message' => $e->getMessage()]);
             }
-        }
+    }
 
-        public function resumeAttendance($id)
-        {
+    public function resumeAttendance($id)
+    {
             try {
                 // Update the service_issued field back to '0' for pending status
                 DB::table('patient_attendance')
@@ -221,7 +222,7 @@ class ConsultationController extends Controller
             } catch (\Exception $e) {
                 return response()->json(['success' => false, 'message' => $e->getMessage()]);
             }
-        }
+    }
 
     public function opd_consult($attendance_id)
     {
