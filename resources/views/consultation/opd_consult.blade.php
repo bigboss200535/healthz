@@ -688,7 +688,7 @@
 
    <!------------------------------------------------------------------------------------------------------------------------------->
    <!-- --------------/FOR DIAGNOSIS NEW  -->
-   <div class="tab-pane fade" id="nav_all_diagnosis" role="tabpanel">     <!--------------FOR DIAGNOSIS -->
+   <div class="tab-pane fade" id="nav_all_diagnosis" role="tabpanel">  <!--------------FOR DIAGNOSIS -->
                                     <div class="row g-6 mb-12">
                                           <div class="col-md">
                                                     <div class="nav-align-top nav-tabs-shadow mb-6" >
@@ -719,7 +719,7 @@
                                                                                       <table class="table table-responsive" id="diagnosis_list">
                                                                                             <thead>
                                                                                               <tr>
-                                                                                                <th>Sn</th>
+                                                                                                <th>SN</th>
                                                                                                 <th>Diagnosis</th>
                                                                                                 <th>ICD-10</th>
                                                                                                 <th>GRDG</th>
@@ -733,7 +733,7 @@
                                                                                             <tbody></tbody>
                                                                                             <tfoot>
                                                                                               <tr>
-                                                                                                <th>Sn</th>
+                                                                                                <th>SN</th>
                                                                                                 <th>Diagnosis</th>
                                                                                                 <th>ICD-10</th>
                                                                                                 <th>GRDG</th>
@@ -817,9 +817,8 @@
                                                                                                 <th>Sn</th>
                                                                                                 <th>Prescription</th>
                                                                                                 <th>Prescription Qty</th>
-                                                                                               
+                                                                                                <th>Doctor</th>
                                                                                                 <th>Prescription date</th>
-                                                                                                 <th>Doctor</th>
                                                                                                 <th>Sponsor Type</th>
                                                                                                 <th>Prescription Type</th>
                                                                                                 <th>Action</th>
@@ -830,7 +829,6 @@
                                                                                                 <th>Sn</th>
                                                                                                 <th>Prescription</th>
                                                                                                 <th>Prescription Qty</th>
-                                                                                               
                                                                                                 <th>Prescription date</th>
                                                                                                  <th>Doctor</th>
                                                                                                 <th>Sponsor Type</th>
@@ -850,23 +848,25 @@
                                                                               <div class="col-md">
                                                                                 <div class="row">
                                                                                       <div class="col-12" >
-                                                                                        
-                                                                                      <table class="table table-responsive" id="previous_prescription">
-                                                                                        <thead>
-                                                                                          <tr>
-                                                                                            <th>Sn</th>
-                                                                                            <th>Prescription</th>
-                                                                                            <th>Action</th>
-                                                                                          </tr>
-                                                                                        </thead>
-                                                                                        <tfoot>
-                                                                                          <tr>
-                                                                                            <th>Sn</th>
-                                                                                            <th>Prescription</th>
-                                                                                            <th>Action</th>
-                                                                                          </tr>
-                                                                                        </tfoot>
-                                                                                    </table>
+                                                                                          <table class="table table-responsive" id="previous_prescription">
+                                                                                            <thead>
+                                                                                              <tr>
+                                                                                                <th>Sn</th>
+                                                                                                <th>Prescription</th>
+                                                                                                <th>Action</th>
+                                                                                              </tr>
+                                                                                            </thead>
+                                                                                            <tbody>
+
+                                                                                            </tbody>
+                                                                                            <tfoot>
+                                                                                              <tr>
+                                                                                                <th>Sn</th>
+                                                                                                <th>Prescription</th>
+                                                                                                <th>Action</th>
+                                                                                              </tr>
+                                                                                            </tfoot>
+                                                                                        </table>
                                                                                       </div>                                                                                    
                                                                                 </div>
                                                                             </div>

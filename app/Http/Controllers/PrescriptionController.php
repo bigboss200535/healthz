@@ -8,6 +8,7 @@ use App\Models\Gender;
 use App\Models\Product;
 use App\Models\ProductStock;
 use App\Models\Prescriptions;
+use App\Models\PatientAttendance;
 use Illuminate\Support\Facades\Auth;
 // use Illuminate\Support\Facades\DB;
 
@@ -65,11 +66,14 @@ class PrescriptionController extends Controller
         // {
         //     return 200;
         //  }
+         $attendance = PatientAttendance::where('attendance_id', $request->input('prescription_attendance_id'))
+              ->where('archived', 'No')
+              ->first();
+
+          $prescription_id = $this->prescription_id($request);   
 
         try {
              DB::beginTransaction();
-
-              $prescription_id = $this->prescription_id($request);   
 
              $new_prescription = Prescriptions::create([
                     'prescriptions_id' => $prescription_id,
@@ -80,7 +84,7 @@ class PrescriptionController extends Controller
                     'product_id' => $validated_data['prescription_product_id'],
                     'attendance_time' => now(),
                     'entry_date' => now(),
-                    // 'age_group_id' => $validated_data['age_group_id'],
+                    'age_group_id' => $attendance->age_group_id,
                     // 'age_id' => $validated_data['age_id'],
                     'episode_id' => '' ?? $validated_data['episode_id'],
                     'unit_price' => $validated_data['prescription_price'],
@@ -127,10 +131,8 @@ class PrescriptionController extends Controller
 
     public function get_patient_prescriptions(Request $request, $attendance_id)
     {   
-
         $prescriptions = Prescriptions::where('patient_prescription.archived', 'No')
             ->where('patient_prescription.attendance_id',$attendance_id)
-            
             ->join('products', 'products.product_id', '=', 'patient_prescription.product_id')
             ->join('users', 'users.user_id', '=', 'patient_prescription.user_id')
             // ->join('sponsors', 'sponsors.sponsor_id', '=', 'patient_prescription.sponsor_id')

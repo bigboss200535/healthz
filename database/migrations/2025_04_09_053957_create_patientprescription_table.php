@@ -51,13 +51,18 @@ return new class extends Migration
             $table->string('archived_id', 100)->nullable();
             $table->string('archived_by', 100)->nullable();
             $table->date('archived_date', 100)->nullable();
+
             // keys
             $table->foreign('user_id')->references('user_id')->on('users');
+            $table->foreign('added_id')->references('user_id')->on('users');
+            $table->foreign('archived_id')->references('user_id')->on('users');
             $table->foreign('facility_id')->references('facility_id')->on('facility');
             $table->foreign('age_group_id')->references('age_group_id')->on('age_groups');
             $table->foreign('sponsor_id')->references('sponsor_id')->on('sponsors');
             $table->foreign('product_id')->references('product_id')->on('products');
             $table->foreign('sponsor_type_id')->references('sponsor_type_id')->on('sponsor_type');
+            $table->foreign('attendance_id')->references('attendance_id')->on('patient_attendance');
+            $table->foreign('patient_id')->references('patient_id')->on('patient_info');
         });
     }
 

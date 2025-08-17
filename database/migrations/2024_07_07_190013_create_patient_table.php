@@ -20,9 +20,9 @@ return new class extends Migration
        Schema::create('patient_info', function (Blueprint $table) {
             $table->string('patient_id', 50)->primary();
             $table->string('title_id', 50)->nullable();
-            $table->string('firstname', 100)->nullable();
-            $table->string('middlename', 100)->nullable();
-            $table->string('lastname', 100)->nullable();
+            $table->string('firstname', 100)->nullable()->index();
+            $table->string('middlename', 100)->nullable()->index();
+            $table->string('lastname', 100)->nullable()->index();
             $table->string('fullname')->virtualAs("CONCAT(firstname, ' ', middlename, ' ', lastname)");
             $table->date('birth_date')->nullable();
             $table->string('gender_id', 50)->nullable();
@@ -70,8 +70,8 @@ return new class extends Migration
         });
 
         Schema::create('patient_nos', function (Blueprint $table) {
-            $table->string('patient_id', 50);
-            $table->string('opd_number', 50);
+            $table->string('patient_id', 50)->index();
+            $table->string('opd_number', 50)->index();
             $table->string('clinic_id', 100)->nullable();
             $table->date('registration_date')->nullable();
             $table->timestamp('registration_time')->nullable();
@@ -95,8 +95,8 @@ return new class extends Migration
         });
 
         Schema::create('patient_pics', function (Blueprint $table) {
-            $table->string('patient_id', 50);
-            $table->string('opd_number', 50);
+            $table->string('patient_id', 50)->index();
+            $table->string('opd_number', 50)->index();
             $table->string('image', 50);
             $table->string('image_location', 50)->nullable();
             $table->string('facility_id', 50)->nullable();
@@ -117,9 +117,10 @@ return new class extends Migration
 
          Schema::create('patient_appointment', function (Blueprint $table) {
             $table->string('appointment_id',50)->primary();
-            $table->string('patient_id',50); 
+            $table->string('patient_id',50)->index(); 
+            $table->string('opd_number', 50)->index();
             $table->string('facility_id', 50)->nullable();
-            $table->string('opd_number',50)->nullable(); 
+            // $table->string('opd_number',50)->nullable(); 
             $table->string('clinic_id',50)->nullable(); 
             $table->string('purpose',150)->nullable(); 
             $table->date('appointment_date')->nullable(); 
@@ -198,9 +199,9 @@ return new class extends Migration
         });
 
         Schema::create('patient_sponsorship', function (Blueprint $table) {
-            $table->string('patient_id', 50);
+            $table->string('patient_id', 50)->index();
             $table->string('opd_number', 20)->nullable();
-            $table->string('member_no', 150);
+            $table->string('member_no', 50);
             $table->string('sponsor_id', 50)->nullable();
             $table->string('sponsor_type_id', 50)->nullable();
             $table->string('card_serial', 50)->nullable();
@@ -294,7 +295,6 @@ return new class extends Migration
      */
     public function down()
     {
-        
         Schema::dropIfExists('patient_info');
         Schema::dropIfExists('patient_nos');
         Schema::dropIfExists('patient_pics');

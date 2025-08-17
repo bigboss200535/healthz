@@ -15,13 +15,13 @@ return new class extends Migration
     {
         Schema::create('patient_surgeries', function (Blueprint $table) {
             $table->string('patient_id', 50);
-            $table->string('opd_number', 50);
+            $table->string('opd_number', 50)->index();
             $table->string('status_code', 50);
             $table->string('patient_age', 50);
             $table->date('attendance_date')->nullable();;
             $table->date('surgery_start_date')->nullable();;
             $table->date('surgery_end_date')->nullable();;
-            $table->string('surgery_doctor', 50);
+            $table->string('doctor_id', 50);
             $table->string('theater_in_charge', 50);
             $table->string('surgery_type');
             $table->string('type_of_anaesthesia', 50); //local block, Epidural/Spinal, general Anaesthesia/ Local Anaedthesia
@@ -51,7 +51,7 @@ return new class extends Migration
             $table->date('archived_date', 100)->nullable();
             // keys
             $table->foreign('user_id')->references('user_id')->on('users');
-            $table->foreign('surgery_doctor')->references('user_id')->on('users');
+            $table->foreign('doctor_id')->references('user_id')->on('users');
             // $table->foreign('surgery_doctor')->references('user_id')->on('users');
             $table->foreign('patient_id')->references('patient_id')->on('patient_info');
             $table->foreign('facility_id')->references('facility_id')->on('facility');

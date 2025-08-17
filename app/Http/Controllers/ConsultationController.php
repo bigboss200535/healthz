@@ -48,6 +48,7 @@ class ConsultationController extends Controller
         $validated_data = $request->validate([
             'patient_id' => 'required|string|max:255',
             'opd_number' => 'nullable|string|max:255',
+            'attendance_id' => 'required|string|max:50',
             'gender_id' => 'required|string',
             'age_id' => 'required|string',
             'patient_age' => 'required|string|min:3|max:255',
@@ -63,7 +64,6 @@ class ConsultationController extends Controller
             'consultation_date' => 'nullable|string|max:255',
             'consultation_type' => 'nullable|string|max:20',
             'consultation_time' => 'nullable|string|max:255',
-            'attendance_id' => 'required|string|max:50',
             'service_id' => 'nullable|string|max:20',
         ]);
 

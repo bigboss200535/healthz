@@ -233,11 +233,11 @@ $('#add_diagnosis_form').submit(function(e) {
                 toastr.success('Diagnosis Added successfully');
                  submitBtn.prop('disabled', false).html('<i class="bx bx-plus"></i> Add');
                 // Reset form
-                $('#add_diagnosis_form')[0].reset();
-                $('#diag_id').val('');
-                $('#diag_icd_10').val('');
-                $('#diag_gdrg').val('');
-                $('#diag_fee').val('');
+                    $('#add_diagnosis_form')[0].reset();
+                    $('#diag_id').val('');
+                    $('#diag_icd_10').val('');
+                    $('#diag_gdrg').val('');
+                    $('#diag_fee').val('');
                 refreshDiagnosisTable();
             } else {
                 toastr.error(response.message || 'Error adding diagnosis');
