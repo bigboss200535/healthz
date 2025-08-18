@@ -89,24 +89,24 @@
                               $counter = 1;
                             @endphp
 
-                            @foreach($waiting as $patients)
+                            @foreach($waiting as $wait)
                             <tr>
                               <td>{{ $counter++ }}</td>
-                              <td>{{ $patients->attendance_date }}</td>
-                              <td>{{ $patients->fullname }}</td>
-                              <td></td>
+                              <td>{{ \Carbon\Carbon::parse($wait->attendance_date)->format('d-m-Y') }}</td>
+                              <td>{{ $wait->fullname }}</td>
+                              <td>{{ $wait->opd_number }}</td>
                               <td>
-                                  @if(in_array($patients->gender_id, ['2', '3']))
-                                      {{ $patients->gender }}
+                                  @if(in_array($wait->gender_id, ['2', '3']))
+                                      {{ $wait->gender }}
                                   @endif
                               </td>
-                              <td>{{ $patients->full_age }}</td>
-                              <td> <span class="badge bg-label-info me-1">{{ $patients->sponsor_type }}</span></td>
-                              <td>{{ $patients->clinic }}</td>
+                              <td>{{ $wait->full_age }}</td>
+                              <td> <span class="badge bg-label-info me-1">{{ $wait->sponsor_type }}</span></td>
+                              <td>{{ $wait->clinic }}</td>
                               <td class="text-nowrap text-sm-end" align="left">
-                                  @if($patients->status === 'Active')
+                                  @if($wait->status === 'Active')
                                   <span class="badge bg-label-info me-1">Active</span>
-                                  @elseif ($patients->status === 'Inactive')
+                                  @elseif ($wait->status === 'Inactive')
                                   <span class="badge bg-label-danger me-1">Inactive</span>
                                   @endif
                               </td>
@@ -122,7 +122,7 @@
                                                   <a class="dropdown-item" href="">
                                                     <i class="bx bx-pause me-1"></i> Hold
                                                   </a>
-                                                  <a class="dropdown-item product_delete_btn" data-id="{{ $patients->product_id}}" href="#">
+                                                  <a class="dropdown-item product_delete_btn" data-id="{{ $wait->patient_id}}" href="#">
                                                       <i class="bx bx-trash me-1"></i> Delete
                                                   </a>
                                             </div>
@@ -152,34 +152,80 @@
                       <!-- <p> --> <h4>Pending Diagnostics</h4>
                       <table class="table table-responsive" id="diagnostics_list">
                             <thead>
-                              <tr>
-                                <th>Sn</th>
-                                <th>Date</th>
-                                <th>Name</th>
-                                <th>Gender</th>
-                                <th>Age</th>
-                                <th>Ward</th>
-                                <th>Bed #</th>
-                                <th>Admit Date</th>
-                                <th>Action</th>
-                              </tr>
-                            </thead>
-                            <tbody>
+                             <tr>
+                               <th>SN</th>
+                               <th>Attenance Date</th>
+                               <th>Patient Name</th>
+                               <th>OPD #</th>
+                               <th>Gender</th>
+                               <th>Patient Age</th>
+                               <th>Attendance Sponsor</th>
+                               <th>Attendance Clinic</th>
+                               <th>Attendance Status </th>
+                               <th>Action</th>
+                             </tr>
+                           </thead>
+                           <tbody>
+                            @php
+                              $counter = 1;
+                            @endphp
 
-                            </tbody>
-                            <tfoot>
+                            @foreach($pending as $pend)
                             <tr>
-                                <th>Sn</th>
-                                <th>Date</th>
-                                <th>Name</th>
-                                <th>Gender</th>
-                                <th>Age</th>
-                                <th>Ward</th>
-                                <th>Bed #</th>
-                                <th>Admit Date</th>
-                                <th>Action</th>
-                              </tr>
-                            </tfoot>
+                              <td>{{ $counter++ }}</td>
+                              <td>{{ \Carbon\Carbon::parse($pend->attendance_date)->format('d-m-Y') }}</td>
+                              <td>{{ $pend->fullname }}</td>
+                              <td>{{ $pend->opd_number }}</td>
+                              <td>
+                                  @if(in_array($pend->gender_id, ['2', '3']))
+                                      {{ $pend->gender }}
+                                  @endif
+                              </td>
+                              <td>{{ $pend->full_age }}</td>
+                              <td> <span class="badge bg-label-info me-1">{{ $pend->sponsor_type }}</span></td>
+                              <td>{{ $pend->clinic }}</td>
+                              <td class="text-nowrap text-sm-end" align="left">
+                                  @if($pend->status === 'Active')
+                                  <span class="badge bg-label-info me-1">Active</span>
+                                  @elseif ($pend->status === 'Inactive')
+                                  <span class="badge bg-label-danger me-1">Inactive</span>
+                                  @endif
+                              </td>
+                              <td class="text-lg-center">
+                                  <div class="dropdown" align="center">
+                                          <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                                              <i class="bx bx-dots-vertical-rounded"></i>
+                                          </button>
+                                            <div class="dropdown-menu">
+                                                  <a class="dropdown-item" href="#">
+                                                    <i class="bx bx-edit-alt me-1"></i> Consult
+                                                  </a>
+                                                  <a class="dropdown-item" href="">
+                                                    <i class="bx bx-pause me-1"></i> Hold
+                                                  </a>
+                                                  <a class="dropdown-item product_delete_btn" data-id="{{ $pend->patient_id}}" href="#">
+                                                      <i class="bx bx-trash me-1"></i> Delete
+                                                  </a>
+                                            </div>
+                                   </div>  
+                              </td>
+                          </tr>
+                            @endforeach
+                           </tbody>
+                           <tfoot>
+                             <tr>
+                               <th>SN</th>
+                               <th>Attenance Date</th>
+                               <th>Patient Name</th>
+                               <th>OPD #</th>
+                               <th>Gender</th>
+                               <th>Patient Age</th>
+                               <th>Attendance Sponsor</th>
+                               <th>Attendance Clinic</th>
+                               <th>Attendance Status </th>
+                               <th>Action</th>
+                             </tr>
+                           </tfoot>
                           </table>
                       <!-- </p> -->
                     </div>
@@ -187,34 +233,80 @@
                       <h4>Patient On Hold</h4>
                       <table class="table table-responsive" id="patient_list">
                             <thead>
-                              <tr>
-                                <th>Sn</th>
-                                <th>Date</th>
-                                <th>Name</th>
-                                <th>Gender</th>
-                                <th>Age</th>
-                                <th>Ward</th>
-                                <th>Bed #</th>
-                                <th>Admit Date</th>
-                                <th>Action</th>
-                              </tr>
-                            </thead>
-                            <tbody>
+                             <tr>
+                               <th>SN</th>
+                               <th>Attenance Date</th>
+                               <th>Patient Name</th>
+                               <th>OPD #</th>
+                               <th>Gender</th>
+                               <th>Patient Age</th>
+                               <th>Attendance Sponsor</th>
+                               <th>Attendance Clinic</th>
+                               <th>Attendance Status </th>
+                               <th>Action</th>
+                             </tr>
+                           </thead>
+                           <tbody>
+                            @php
+                              $counter = 1;
+                            @endphp
 
-                            </tbody>
-                            <tfoot>
+                            @foreach($on_hold as $hold)
                             <tr>
-                                <th>Sn</th>
-                                <th>Date</th>
-                                <th>Name</th>
-                                <th>Gender</th>
-                                <th>Age</th>
-                                <th>Ward</th>
-                                <th>Bed #</th>
-                                <th>Admit Date</th>
-                                <th>Action</th>
-                              </tr>
-                            </tfoot>
+                              <td>{{ $counter++ }}</td>
+                              <td>{{ \Carbon\Carbon::parse($pend->attendance_date)->format('d-m-Y') }}</td>
+                              <td>{{ $hold->fullname }}</td>
+                              <td>{{ $hold->opd_number }}</td>
+                              <td>
+                                  @if(in_array($hold->gender_id, ['2', '3']))
+                                      {{ $hold->gender }}
+                                  @endif
+                              </td>
+                              <td>{{ $hold->full_age }}</td>
+                              <td> <span class="badge bg-label-info me-1">{{ $hold->sponsor_type }}</span></td>
+                              <td>{{ $hold->clinic }}</td>
+                              <td class="text-nowrap text-sm-end" align="left">
+                                  @if($hold->status === 'Active')
+                                  <span class="badge bg-label-info me-1">Active</span>
+                                  @elseif ($hold->status === 'Inactive')
+                                  <span class="badge bg-label-danger me-1">Inactive</span>
+                                  @endif
+                              </td>
+                              <td class="text-lg-center">
+                                  <div class="dropdown" align="center">
+                                          <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                                              <i class="bx bx-dots-vertical-rounded"></i>
+                                          </button>
+                                            <div class="dropdown-menu">
+                                                  <a class="dropdown-item" href="#">
+                                                    <i class="bx bx-edit-alt me-1"></i> Consult
+                                                  </a>
+                                                  <a class="dropdown-item" href="">
+                                                    <i class="bx bx-pause me-1"></i> Hold
+                                                  </a>
+                                                  <a class="dropdown-item product_delete_btn" data-id="{{ $hold->patient_id}}" href="#">
+                                                      <i class="bx bx-trash me-1"></i> Delete
+                                                  </a>
+                                            </div>
+                                   </div>  
+                              </td>
+                          </tr>
+                            @endforeach
+                           </tbody>
+                           <tfoot>
+                             <tr>
+                               <th>SN</th>
+                               <th>Attenance Date</th>
+                               <th>Patient Name</th>
+                               <th>OPD #</th>
+                               <th>Gender</th>
+                               <th>Patient Age</th>
+                               <th>Attendance Sponsor</th>
+                               <th>Attendance Clinic</th>
+                               <th>Attendance Status </th>
+                               <th>Action</th>
+                             </tr>
+                           </tfoot>
                           </table>
                       <!-- </p> -->
                     </div>
