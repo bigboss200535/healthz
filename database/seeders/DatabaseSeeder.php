@@ -84,6 +84,13 @@ class DatabaseSeeder extends Seeder
             ]);
             }
 
+        foreach ($patients as $appointment) {
+                \App\Models\PatientAppointments::factory()->create([
+                'patient_id' => $appointment->patient_id,
+                'opd_number' => $appointment->opd_number,
+            ]);
+            }
+
         // \App\Models\PatientOpdNumber::factory(5000)->create();
         // \App\Models\PatientAttendance::factory(100)->create();
         // \App\Models\ConsultingRoom::factory(10)->create();

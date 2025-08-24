@@ -118,7 +118,7 @@ return new class extends Migration
          Schema::create('patient_appointment', function (Blueprint $table) {
             $table->string('appointment_id',50)->primary();
             $table->string('patient_id',50)->index(); 
-            $table->string('opd_number', 50)->index();
+            $table->string('opd_number', 50)->index()->nullable();
             $table->string('facility_id', 50)->nullable();
             // $table->string('opd_number',50)->nullable(); 
             $table->string('clinic_id',50)->nullable(); 
@@ -260,6 +260,7 @@ return new class extends Migration
             $table->float('credit_amount',10)->default(0.00);  
             $table->string('gdrg_code',50)->nullable(); 
             $table->string('allow_top_up',10)->default('No');
+            $table->string('consultation_status',20)->default('No');// waiting, hold, completed etc
             $table->string('user_id',50)->nullable();    
             $table->string('facility_id', 50)->nullable();    
             $table->string('added_id', 50)->nullable();

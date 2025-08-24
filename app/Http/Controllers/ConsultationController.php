@@ -370,7 +370,7 @@ class ConsultationController extends Controller
                         'patient_attendance.issue_id' ,'patient_attendance.attendance_type')
                 // ->whereIn('patient_attendance.issue_id', ['0', '1'])
                 // ->whereBetween('patient_attendance.attendance_date', [$start_date, $end_date])
-                 
+                 ->where('patient_attendance.issue_id', '=', '0')
                 ->orderBy('patient_attendance.attendance_id', 'desc')
                 ->get();
 

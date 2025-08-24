@@ -131,6 +131,9 @@
             $('#app_list').DataTable({
                 searching: false
             });
+            $('#product_list').DataTable({
+                searching: false
+            });
             // $('#symptoms-table').DataTable();
             $('#system_table').DataTable();
             $('#attendance_details').DataTable();   

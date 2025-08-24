@@ -116,7 +116,7 @@
                                               <i class="bx bx-dots-vertical-rounded"></i>
                                           </button>
                                             <div class="dropdown-menu">
-                                                  <a class="dropdown-item" href="#">
+                                                  <a class="dropdown-item" href="/consultation/opd-consultation/{{ $wait->attendance_id }}">
                                                     <i class="bx bx-edit-alt me-1"></i> Consult
                                                   </a>
                                                   <a class="dropdown-item" href="">
@@ -150,6 +150,20 @@
                     </div>
                     <div class="tab-pane fade" id="navs-top-profile" role="tabpanel">
                       <!-- <p> --> <h4>Pending Diagnostics</h4>
+                       <!-- Add date filter controls -->
+                       <div class="row mb-3">
+                         <div class="col-md-3">
+                           <label for="start_date" class="form-label">Start Date</label>
+                           <input type="date" id="start_date" class="form-control" value="<?php echo date('Y-m-d'); ?>">
+                         </div>
+                         <div class="col-md-3">
+                           <label for="end_date" class="form-label">End Date</label>
+                           <input type="date" id="end_date" class="form-control" value="<?php echo date('Y-m-d'); ?>">
+                         </div>
+                         <div class="col-md-2 d-flex align-items-end">
+                           <button id="filter_date" class="btn btn-primary"><i class="bx bx-search"></i>Search</button>
+                         </div>
+                       </div>
                       <table class="table table-responsive" id="diagnostics_list">
                             <thead>
                              <tr>
@@ -197,7 +211,7 @@
                                               <i class="bx bx-dots-vertical-rounded"></i>
                                           </button>
                                             <div class="dropdown-menu">
-                                                  <a class="dropdown-item" href="#">
+                                                  <a class="dropdown-item" href="/consultation/opd-consultation/{{ $pend->attendance_id }}">
                                                     <i class="bx bx-edit-alt me-1"></i> Consult
                                                   </a>
                                                   <a class="dropdown-item" href="">
@@ -278,7 +292,7 @@
                                               <i class="bx bx-dots-vertical-rounded"></i>
                                           </button>
                                             <div class="dropdown-menu">
-                                                  <a class="dropdown-item" href="#">
+                                                  <a class="dropdown-item" href="/consultation/opd-consultation/{{ $hold->attendance_id }}">
                                                     <i class="bx bx-edit-alt me-1"></i> Consult
                                                   </a>
                                                   <a class="dropdown-item" href="">

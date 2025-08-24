@@ -103,15 +103,17 @@
                               <div class="row mb-3">
                                 <div class="col">
                                   <label class="form-label" for="u_user_name">Product Name <a style="color: red;">*</a></label>
-                                  <input type="text" class="form-control" id="u_user_name" name="u_user_name" placeholder="Product Name" autocomplete="off">
+                                  <input type="text" class="form-control" id="product_name" name="product_name" placeholder="Product Name" autocomplete="off">
                                 </div>
                               </div>
                               <div class="row mb-3">
                                 <div class="col">
                                   <label class="form-label" for="first_name">Product Class <a style="color: red;">*</a></label>
-                                  <select name="gender" id="gender" class="form-control">
+                                  <select name="class" id="class" class="form-control">
                                     <option disabled selected>-Select-</option>
-                                     
+                                      @foreach($product_class as $class)                                        
+                                            <option value="{{ $class->product_class_id}}">{{ $class->class_name }}</option>
+                                        @endforeach
                                   </select>
                                 </div>
                                 <div class="col">
@@ -134,7 +136,7 @@
                                 </div>
                                 <div class="col">
                                   <label class="form-label" for="confirm_pass">Store <a style="color: red;">*</a></label>
-                                  <select name="gender" id="gender" class="form-control">
+                                  <select name="store" id="store" class="form-control">
                                     <option disabled selected>-Select-</option>
                                         @foreach($store as $stores)                                        
                                             <option value="{{ $stores->store_id}}">{{ $stores->store }}</option>
@@ -147,14 +149,16 @@
                                   <label class="form-label" for="gender">Expirable <a style="color: red;">*</a></label>
                                   <select name="gender" id="gender" class="form-control">
                                     <option disabled selected>-Select-</option>
-                                     
+                                    <option value="Yes">Yes</option>
+                                     <option value="No">No</option>
                                   </select>
                                 </div>
                                 <div class="col">
                                   <label class="form-label" for="u_email">Stockable </label>
                                   <select name="gender" id="gender" class="form-control">
                                     <option disabled selected>-Select-</option>
-                                     
+                                     <option value="Yes">Yes</option>
+                                     <option value="No">No</option>
                                   </select>
                                 </div>
                               </div>   
@@ -165,9 +169,10 @@
                                 </div>
                                 <div class="col">
                                   <label class="form-label" for="user_role">Enable NHIS <a style="color: red;">*</a></label>
-                                  <select name="gender" id="gender" class="form-control">
+                                  <select name="is_nhia" id="is_nhia" class="form-control">
                                     <option disabled selected>-Select-</option>
-                                     
+                                    <option value="Yes">Yes</option>
+                                    <option value="No">No</option>
                                   </select>
                                 </div>
                               </div>  
@@ -184,7 +189,7 @@
                               <div class="row mb-3">
                                 <div class="col">
                                   <label class="form-label" for="u_telephone">G-DRG <a style="color: red;">*</a></label>
-                                  <input type="text" class="form-control" id="u_telephone" name="u_telephone" placeholder="1">
+                                  <input type="text" class="form-control" id="u_telephone" name="u_telephone" placeholder="G-DRG">
                                 </div>
                                 <div class="col">
                                   <label class="form-label" for="user_role">Manufacturer <a style="color: red;">*</a></label>
@@ -226,10 +231,8 @@
                                     <thead>
                                       <tr>
                                         <th>Sn</th>
-                                        <th>Name</th>
-                                        <th>Username</th>
-                                        <!-- <th>Block</th> -->
-                                        <th>Role</th>
+                                        <th>Product</th>
+                                        <!-- <th>Type</th> -->
                                         <th>Status</th>
                                         <th class="text-lg-center"></th>
                                       </tr>
@@ -242,8 +245,8 @@
                                         <tr>
                                           <td>{{ $counter++ }}</td>
                                           <td>{{ $product->product_name }}</td>
-                                          <td>{{ $product->product_type }}</td>
-                                          <td><span class="badge bg-label-primary me-1"></span></td>
+                                          <!-- <td>{{ $product->product_type }}</td> -->
+                                          <!-- <td><span class="badge bg-label-primary me-1"></span></td> -->
                                           <td class="text-nowrap text-sm-end" align="left">
                                                @if($product->status === 'Active')
                                                 <span class="badge bg-label-info me-1">Active</span>
@@ -258,14 +261,14 @@
                                                       </button>
                                                         <div class="dropdown-menu">
                                                               <a class="dropdown-item" href="">
-                                                                <i class="bx bx-edit-alt me-1"></i> Edit
+                                                                <i class="bx bx-edit me-1"></i> Edit
                                                               </a>
                                                               <a class="dropdown-item" href="">
-                                                                <i class="bx bx-lock-alt me-1"></i> Prices
+                                                                <i class="bx bx-dollar-circle me-1"></i> Prices
                                                               </a>
-                                                              <a class="dropdown-item product_delete_btn" data-id="#" href="#">
+                                                              <!-- <a class="dropdown-item product_delete_btn" data-id="#" href="#">
                                                                   <i class="bx bx-trash me-1"></i> Delete
-                                                              </a>
+                                                              </a> -->
                                                         </div>
                                                   </div>  
                                           </td>
@@ -275,10 +278,8 @@
                                     <tfoot>
                                     <tr>
                                         <th>Sn</th>
-                                        <th>Name</th>
-                                        <th>Username</th>
-                                        <!-- <th>Block</th> -->
-                                        <th>Role</th>
+                                        <th>Product</th>
+                                        <!-- <th>Type</th> -->
                                         <th>Status</th>
                                         <th class="text-lg-center"></th>
                                       </tr>

@@ -3,33 +3,42 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Models\ProductClass;
+use App\Models\ProductPresentation;
+use App\Models\Stores;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
-
 class ProductController extends Controller
 {
+
     public function index()
     {
-        $product = Product::where('archived', 'No')->where('status', '=','Active')->get();
-        $total_all = Product::where('archived', '=', 'No')->count();
-        $total_drugs = Product::where('product_type_id', '=', '1')->count();
-        $total_consumable = Product::where('product_type_id', '=', '2')->count();
-        $total_others = Product::where('product_type_id', '=', '3')->count();
-        $presentation = DB::table('product_presentation')->where('archived', 'No')->orderBy('presentation', 'asc')->get();
-        $store = DB::table('stores')->where('archived', 'No')->where('status', 'Active')->where('is_store', '1')->orderBy('store', 'asc')->get();
+        // Authorization check
+        if (!auth()->check()) {
+            abort(403, 'Unauthorized access');
+        }
+
+        $product = Product::where('archived', 'No')->where('status', 'Active')->get();
+        $total_all = Product::where('archived', 'No')->count();
+        $total_drugs = Product::where('product_type_id', '1')->count();
+        $total_consumable = Product::where('product_type_id', '2')->count();
+        $total_others = Product::where('product_type_id', '3')->count();
+        $presentation = ProductPresentation::where('archived', 'No')->orderBy('presentation', 'asc')->get();
+        $product_class = ProductClass::where('archived', 'No')->orderBy('class_name', 'asc')->get();
+        $store = Stores::where('archived', 'No')->where('status', 'Active')->get();
 
         $item = Product::rightJoin('product_type', 'product_type.product_type_id', '=', 'products.product_type_id')
             ->rightjoin('stores', 'stores.store_id', '=', 'products.store_id')
             ->where('products.archived', 'No')
             ->select('products.*','product_type.*', 'stores.*')
             ->orderBy('products.product_name', 'asc')
-            // ->lockForUpdate() 
-            ->get();
+            ->paginate(10);
 
-        return view('product.index', compact('item', 'total_drugs', 'total_consumable', 'total_others', 'total_all', 'presentation', 'store'));
+        return view('product.index', compact('product_class', 'item', 'total_drugs', 'total_consumable', 'total_others', 'total_all', 'presentation', 'store'));
     }
+
 
     public function create()
     {
@@ -149,8 +158,8 @@ class ProductController extends Controller
         $product->updated_by =  Auth::user()->user_id;
         $product->updated_date = now();
         $product->status = $request->input('status');
-        $product->update($request->all());
-
+        $product->lockForUpdate($request->all());
+ // ->() 
         return 201;
     }
 

@@ -899,7 +899,7 @@
                                                   <div class="row">
                                                     <div class="col-12">
                                                       <button type="button" data-bs-toggle='modal' data-bs-target="#add_" class="btn btn-sm btn-primary">REQUEST NEW SERVICE</button>
-                                                      <!-- <button type="button" data-bs-toggle='modal' data-bs-target="#_history" class="btn btn-sm btn-danger"> HISTORY</button> -->
+                                      
                                                     </div>
                                                   </div>
                                                 </form>
@@ -907,55 +907,30 @@
                                                     <thead>
                                                       <tr>
                                                         <th>SN</th>
+                                                        <th>Date</th>
+                                                        <th>Investigation</th>
                                                         <th>Service Type</th>
-                                                        <th>Current Status</th>
-                                                        <th>Service Fee</th>
-                                                        <th>Action</th>
+                                                        <th>Payment Mode</th>
+                                                        <th>Investigation Status</th>
+                                                        <th></th>
                                                       </tr>
                                                     </thead>
                                                     <tfoot>
                                                       <tr>
                                                         <th>SN</th>
+                                                        <th>Date</th>
+                                                        <th>Investigation</th>
                                                         <th>Service Type</th>
-                                                        <th>Current Status</th>
-                                                        <th>Service Fee</th>
-                                                        <th>Action</th>
+                                                        <th>Payment Mode</th>
+                                                        <th>Investigation Status </th>
+                                                        <th></th>
                                                       </tr>
                                                     </tfoot>
                                                 </table>
                                               </div>
                                             </div>
                                           </div>
-                                          <div class="col-md">
-                                            <div class="card">
-                                              <div class="card-body">
-                                                <form class="needs-validation" novalidate>
-                                                  <div class="row">
-                                                    <div class="col-12">
-                                                      <!-- <button type="button" data-bs-toggle='modal' data-bs-target="#add_prescriptions" class="btn btn-sm btn-primary">ADD PRESCRIPTIONS</button> -->
-                                                      <!-- <button type="button" data-bs-toggle='modal' data-bs-target="#prescription_history" class="btn btn-sm btn-danger">PRESCRIPTION HISTORY</button> -->
-                                                    </div>
-                                                  </div>
-                                                </form>
-                                                <table class="table table-responsive" id="xx">
-                                                    <thead>
-                                                      <tr>
-                                                        <th>Sn</th>
-                                                        <th>SErvice</th>
-                                                        <th>Action</th>
-                                                      </tr>
-                                                    </thead>
-                                                    <tfoot>
-                                                      <tr>
-                                                        <th>Sn</th>
-                                                        <th>Service</th>
-                                                        <th>Action</th>
-                                                      </tr>
-                                                    </tfoot>
-                                                </table>
-                                              </div>
-                                            </div>
-                                          </div>
+                                          
                                         </div>
                                 </div>
                                  <!-- TABS VIEWS --> 

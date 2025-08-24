@@ -36,7 +36,7 @@
                 <div class="card" id="patient_search_result" >
                     <div class="card-datatable table-responsive">
                       <div class="col" style="padding-left:20px;"> 
-                      <h4 class="mb-1 mt-3 text-mute">Patient Attendance</h4>
+                      <h4 class="mb-1 mt-3 text-mute">Patient Appointments</h4>
                       </div>
                       <table class="datatables-customers table border-top table-hover" id="system_table">
                           <thead>
@@ -46,10 +46,7 @@
                                   <th>Patient Name</th>
                                   <th>Patient OPD #</th>
                                   <th>Patient Gender</th>
-                                  <th>Patient Age</th>
-                                  <th>Attendance Sponsor</th>
                                   <th>Attendance Clinic</th>
-                                  <th>Status</th>
                                   <th></th>
                               </tr>
                           </thead>
@@ -57,33 +54,15 @@
                             @php
                               $counter = 1;
                             @endphp
-                            @foreach($appointments as $patients)
+                            @foreach($appointments as $appointment)
                             <tr>
                               <td>{{ $counter++ }}</td>
-                              <td>{{ \Carbon\Carbon::parse($patients->attendance_date)->format('d-m-Y') }}</td>
-                              <td>{{ $patients->fullname }}</td>
-                              <td>{{ $patients->opd_number }}</td>
-                              <td>{{ $patients->gender }}</td>
-                              <td>{{ $patients->full_age }}</td>
-                              <td>
-                                  @if($patients->sponsor_type_id === 'PI03')
-                                  <span class="badge bg-label-info me-1">{{ $patients->sponsor_name}}</span>
-                                  @elseif ($patients->sponsor_type_id === 'N002')
-                                  <span class="badge bg-label-success me-1">{{ $patients->sponsor_name}}</span>
-                                  @elseif ($patients->sponsor_type_id === 'P001')
-                                  <span class="badge bg-label-warning me-1">{{ $patients->sponsor_name}}</span>
-                                  @elseif ($patients->sponsor_type_id === 'PC04')
-                                  <span class="badge bg-label-primary me-1">{{ $patients->sponsor_name}}</span>
-                                  @endif
-                              </td>
-                              <td>{{ $patients->pat_clinic}}</td>
-                              <td>
-                                  @if($patients->issue_id === '0')
-                                  <span class="badge bg-label-danger me-1">PENDING</span>
-                                  @elseif ($patients->issue_id === '1')
-                                  <span class="badge bg-label-success me-1">ISSUED</span>
-                                  @endif 
-                              </td>
+                              <td>{{ \Carbon\Carbon::parse($appointment->appointment_date)->format('d-m-Y') }}</td>
+                              <td>{{ $appointment->fullname }}</td>
+                              <td>{{ $appointment->opd_number }}</td>
+                              <td>{{ $appointment->gender }}</td>
+                              <!-- <td>{{ $appointment->full_age }}</td> -->
+                              <td>{{ $appointment->purpose}}</td>
                               <td> 
                                 <div class="dropdown" align="center">
                                       <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
@@ -91,10 +70,10 @@
                                       </button>
                                             <div class="dropdown-menu">
                                                  
-                                                  <a class="dropdown-item" href="/consultation/opd-consultation/{{ $patients->attendance_id }}" >
+                                                  <a class="dropdown-item" href="#" >
                                                       <i class="bx bx-edit-alt me-1"></i> Edit Attendance
                                                   </a>
-                                                  <a class="dropdown-item attendance_delete_btn" data-id="{{ $patients->attendance_id }}" href="#">
+                                                  <a class="dropdown-item attendance_delete_btn" data-id="{{ $appointment->attendance_id }}" href="#">
                                                       <i class="bx bx-trash me-1"></i> Delete Attendance
                                                   </a>
                                              </div>
@@ -110,10 +89,7 @@
                                   <th>Patient Name</th>
                                   <th>Patient OPD #</th>
                                   <th>Patient Gender</th>
-                                  <th>Patient Age</th>
-                                  <th>Attendance Sponsor</th>
                                   <th>Attendance Clinic</th>
-                                  <th>Status</th>
                                   <th></th>
                               </tr>
                           </tfoot>
