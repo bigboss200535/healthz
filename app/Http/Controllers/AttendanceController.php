@@ -12,9 +12,9 @@ use App\Helpers\TimeManagement;
 
 class AttendanceController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-         $all = PatientAttendance::where('patient_attendance.archived','No')
+         $query = PatientAttendance::where('patient_attendance.archived','No')
                     ->join('sponsor_type', 'patient_attendance.sponsor_type_id', '=', 'sponsor_type.sponsor_type_id')
                     ->join('patient_info', 'patient_info.patient_id', '=', 'patient_attendance.patient_id')
                     ->join('gender', 'gender.gender_id', '=', 'patient_info.gender_id')
@@ -28,12 +28,30 @@ class AttendanceController extends Controller
                             'service_attendance_type.attendance_type as type_of_attendance', 
                             'patient_attendance.issue_id' ,'patient_attendance.attendance_type', 
                             'consultation_issue_status.issue_value', 'consultation_issue_status.color_code', 'users.user_fullname')
-                    ->where('patient_attendance.archived', 'No')
-                    // ->where('patient_attendance.archived', 'No')
-                    ->orderBy('patient_attendance.attendance_id', 'desc')
-                    ->get();
+                    ->where('patient_attendance.archived', 'No');
 
-            return view('attendance.index', compact('all')); 
+         // Apply search filter if provided
+         if ($request->has('search') && !empty($request->search)) {
+             $search = $request->search;
+             $query->where(function($q) use ($search) {
+                 $q->where('patient_info.fullname', 'LIKE', '%' . $search . '%')
+                   ->orWhere('patient_attendance.opd_number', 'LIKE', '%' . $search . '%');
+             });
+         }
+
+         // Apply date range filter if provided
+         if ($request->has('start_date') && !empty($request->start_date)) {
+             $query->whereDate('patient_attendance.attendance_date', '>=', $request->start_date);
+         }
+
+         if ($request->has('end_date') && !empty($request->end_date)) {
+             $query->whereDate('patient_attendance.attendance_date', '<=', $request->end_date);
+         }
+
+         // Get the filtered results
+         $all = $query->orderBy('patient_attendance.attendance_id', 'desc')->get();
+
+         return view('attendance.index', compact('all')); 
     }
 
     public function generate_episode(Request $request)
