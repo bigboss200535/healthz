@@ -9,23 +9,29 @@
                         <div class="row gy-4 gy-sm-1">
                           <div class="col-sm-6 col-lg-12">
                               <!-- <h4 class="text-muted text-center">-Kingly select a Patient attendance to continue- -->
-                               <div class="row mb-3">
+                               <form action="{{ route('appointments.index') }}" method="GET">
+                                <div class="row mb-3">
                                   <div class="col">
                                     <label class="form-label" for="begin_date">Start Date <a style="color: red;">*</a></label>
-                                    <input type="date" class="form-control" id="start_date" name="start_date" placeholder="Start End" value="<?php echo date('Y-m-d'); ?>">
+                                    <input type="date" class="form-control" id="start_date" name="start_date" placeholder="Start End" value="{{ request('start_date', date('Y-m-d')) }}">
                                   </div>
                                   <div class="col">
                                     <label class="form-label" for="last_date">End Date <a style="color: red;">*</a></label>
-                                    <input type="date" class="form-control" id="end_date" name="end_date" placeholder="End Date" value="<?php echo date('Y-m-d'); ?>">
+                                    <input type="date" class="form-control" id="end_date" name="end_date" placeholder="End Date" value="{{ request('end_date', date('Y-m-d')) }}">
+                                  </div>
+                                  <div class="col">
+                                    <label class="form-label" for="search">Search</label>
+                                    <input type="text" class="form-control" id="search" name="search" placeholder="Search by name or OPD #" value="{{ request('search') }}">
                                   </div>
                                   <div class="col">
                                      <label class="form-label" for="begin_date">. </label><br>
                                     <!-- <div class="d-flex align-content-center flex-wrap gap-3"> -->
                                     <button type="submit" class="btn btn-primary">Filter</button>
-                                    <!-- <button type="reset" class="btn btn-label-secondary">clear</button> -->
-                                  <!-- </div> -->
+                                    <a href="{{ route('appointments.index') }}" class="btn btn-label-secondary">Reset</a>
+                                    <!-- </div> -->
                                   </div>
                                 </div>
+                                </form>
                               </h4>
                           </div>
                         </div>

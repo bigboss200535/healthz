@@ -99,7 +99,7 @@ $userController = new UserController();// $access = $userController->permissions
           </a>
         </li>
         <li class="menu-item">
-          <a href="{{ route('patient.appointments') }}" class="menu-link">
+          <a href="{{ route('appointments.index') }}" class="menu-link">
             <div class="text-truncate" data-i18n="List">Appointments</div>
           </a>
         </li>

@@ -7,22 +7,39 @@ use App\Models\PatientAppointments;
 
 class AppointmentController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $appointments = PatientAppointments::where('patient_appointment.archived','No')
+        $query = PatientAppointments::where('patient_appointment.archived','No')
                 ->join('patient_info', 'patient_info.patient_id', '=', 'patient_appointment.patient_id')
                 ->join('gender', 'gender.gender_id', '=', 'patient_info.gender_id')
                 ->select(
-                    // 'patient_appointment.attendance_id',
-                    'patient_info.fullname', 'patient_appointment.opd_number', 
-                        'patient_appointment.appointment_date',
-                        // 'sponsor_type.sponsor_type', 'sponsor_type.sponsor_type_id',
-                        // 'patient_appointment.full_age', 
-                        'gender.gender')
-                ->orderBy('patient_appointment.appointment_id', 'desc')
+                    'patient_appointment.appointment_id',
+                    'patient_info.fullname', 
+                    'patient_appointment.opd_number', 
+                    'patient_appointment.appointment_date',
+                    'patient_appointment.purpose',
+                    'gender.gender');
+        
+        // Apply search filter if provided
+        if ($request->filled('search')) {
+            $search = $request->input('search');
+            $query->where(function($q) use ($search) {
+                $q->where('patient_info.fullname', 'LIKE', "%{$search}%")
+                  ->orWhere('patient_appointment.opd_number', 'LIKE', "%{$search}%");
+            });
+        }
+        
+        // Apply date filters if provided
+        if ($request->filled('start_date') && $request->filled('end_date')) {
+            $start_date = $request->input('start_date');
+            $end_date = $request->input('end_date');
+            $query->whereBetween('patient_appointment.appointment_date', [$start_date, $end_date]);
+        }
+        
+        $appointments = $query->orderBy('patient_appointment.appointment_id', 'desc')
                 ->get();
 
-            return view('appointments.index', compact('appointments')); 
+        return view('appointments.index', compact('appointments')); 
     }
     
     public function create()

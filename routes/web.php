@@ -78,7 +78,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/new-opd-number/{service_point_id}', [PatientController::class, 'generate_opd_number'])->name('patient.generate_opd_number');
         Route::get('/single-attendance/{patient_id}', [AttendanceController::class, 'single_attendance'])->name('patient.single_attendance');
         Route::get('/current-attendance/{patient_id}', [AttendanceController::class, 'current_attendance'])->name('patient.current_attendance');
-        Route::get('/appointments', [AppointmentController::class, 'index'])->name('patient.appointments');
+        Route::get('/appointments', [AppointmentController::class, 'index'])->name('appointments.index');
         Route::get('/sponsors', [PatientController::class, 'list_all_patient_sponsors'])->name('patient.list_all_patient_sponsors');
         
         Route::get('/investigations', [InvestigationController::class, 'index'])->name('investigations.index');
