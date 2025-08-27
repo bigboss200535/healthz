@@ -166,9 +166,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     //     Route::get('patient', [ReportsController::class, 'patient']);
     // });
    // Hold and resume attendance routes
-    // Route::post('/consultation/hold-attendance/{id}', [App\Http\Controllers\ConsultationController::class, 'holdAttendance']);
-    // Route::post('/consultation/resume-attendance/{id}', [App\Http\Controllers\ConsultationController::class, 'resumeAttendance']);
-    // Route::get('/consultation/get-on-hold-patients', [App\Http\Controllers\ConsultationController::class, 'getOnHoldPatients']);
+    Route::post('/consultation/hold-attendance/{id}', [ConsultationController::class, 'holdAttendance']);
+    Route::post('/consultation/resume-attendance/{id}', [ConsultationController::class, 'resumeAttendance']);
+    Route::delete('/consultation/delete-attendance/{id}', [ConsultationController::class, 'deleteAttendance']);
     // Route::post('/login', [AuthenticatedSessionController::class, 'store'])->middleware('regenerate-session');
 
     // Route::prefix('reports')->group(function () {

@@ -333,6 +333,26 @@ class ConsultationController extends Controller
                 return response()->json(['success' => false, 'message' => $e->getMessage()]);
             }
     }
+    
+    /**
+     * Delete an attendance record
+     * 
+     * @param int $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function deleteAttendance($id)
+    {
+        try {
+            // Soft delete by setting archived to 'Yes'
+            DB::table('patient_attendance')
+                ->where('attendance_id', $id)
+                ->update(['archived' => 'Yes']);
+            
+            return response()->json(['success' => true]);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => $e->getMessage()]);
+        }
+    }
 
     public function opd_consult($attendance_id)
     {
