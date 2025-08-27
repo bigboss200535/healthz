@@ -13,11 +13,11 @@
                                 <div class="row mb-3">
                                   <div class="col">
                                     <label class="form-label" for="start_date">Start Date</label>
-                                    <input type="date" class="form-control" id="start_date" name="start_date" value="{{ request('start_date') }}" placeholder="Start Date">
+                                    <input type="date" class="form-control" id="attend_start_date" name="attend_start_date" value="{{ request('attend_start_date', date('Y-m-d')) }}">
                                   </div>
                                   <div class="col">
                                     <label class="form-label" for="end_date">End Date</label>
-                                    <input type="date" class="form-control" id="end_date" name="end_date" value="{{ request('end_date') }}" placeholder="End Date">
+                                    <input type="date" class="form-control" id="attend_end_date" name="attend_end_date" value="{{ request('attend_end_date') }}">
                                   </div>
                                   <div class="col">
                                     <label class="form-label" for="search">Search (Name or OPD #)</label>

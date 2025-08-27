@@ -13,11 +13,11 @@
                                 <div class="row mb-3">
                                   <div class="col">
                                     <label class="form-label" for="appoint_start_date">Start Date <a style="color: red;">*</a></label>
-                                    <input type="date" class="form-control" id="appoint_start_date" name="appoint_start_date" placeholder="Start End" value="{{ request('start_date', date('Y-m-d')) }}">
+                                    <input type="date" class="form-control" id="appoint_start_date" name="appoint_start_date" placeholder="Start End" value="{{ request('appoint_start_date', date('Y-m-d')) }}">
                                   </div>
                                   <div class="col">
                                     <label class="form-label" for="appoint_end_date">End Date <a style="color: red;">*</a></label>
-                                    <input type="date" class="form-control" id="appoint_end_date" name="appoint_end_date" placeholder="End Date" value="{{ request('end_date', date('Y-m-d')) }}">
+                                    <input type="date" class="form-control" id="appoint_end_date" name="appoint_end_date" placeholder="End Date" value="{{ request('appoint_end_date', date('Y-m-d')) }}">
                                   </div>
                                   <div class="col">
                                     <label class="form-label" for="search">Search</label>
