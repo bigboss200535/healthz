@@ -117,10 +117,9 @@ return new class extends Migration
 
          Schema::create('patient_appointment', function (Blueprint $table) {
             $table->string('appointment_id',50)->primary();
-            $table->string('patient_id',50)->index(); 
+            $table->string('patient_id',50); 
             $table->string('opd_number', 50)->index()->nullable();
             $table->string('facility_id', 50)->nullable();
-            // $table->string('opd_number',50)->nullable(); 
             $table->string('clinic_id',50)->nullable(); 
             $table->string('purpose',150)->nullable(); 
             $table->date('appointment_date')->nullable(); 

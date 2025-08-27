@@ -30,6 +30,7 @@ class PatientFactory extends Factory
         $religion = Religion::inRandomOrder()->first(); 
         $nationality = Nationality::inRandomOrder()->first(); 
         $occupation = Occupation::inRandomOrder()->first(); 
+       
 
         return [
             'patient_id' => Str::uuid(),

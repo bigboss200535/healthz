@@ -8,11 +8,24 @@ use App\Models\Patient;
 use App\Models\PatientAttendance;
 use App\Models\PatientAppointments;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
     public function index()
     {   
+        // role specific data
+        // $user_role = Auth::user()->user_roles_id;
+        // if($user_role=== '')
+        // {
+
+        // }elseif ($user_role==='')
+        // {
+
+        // }else{
+        //     // admin 
+        // }
+
         $today = date('Y-m-d');
         
         $out_patient = PatientAttendance::where('archived', 'No')->where('attendance_date', $today)->count();
@@ -23,7 +36,7 @@ class DashboardController extends Controller
         $appointments = PatientAppointments::where('archived', 'No')->count();
         
         //today's appointments 
-        $today_appointments = PatientAppointments::with('patients_info')
+        $today_appointments = PatientAppointments::with('patient_info')
             ->whereDate('appointment_date', now()->toDateString())
             ->orderBy('appointment_date')
             ->take(5)

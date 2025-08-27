@@ -16,7 +16,7 @@ class Patient extends Model
 
     protected $table = 'patient_info';
     protected $primaryKey = 'patient_id';
-     public $timestamps = false;
+    public $timestamps = false;
     public $incrementing = false;
     protected $keyType = 'string';
      
@@ -27,15 +27,46 @@ class Patient extends Model
      * @var array
      */
     protected $fillable = [
-        'patient_id', 'title_id', 'firstname', 'middlename', 'lastname',
-        'birth_date', 'gender_id', 'occupation', 'education', 'religion_id',
-        'nationality_id', 'ghana_card', 'old_folder', 'death_status',
-        'death_status_date', 'telephone', 'work_telephone', 'email',
-        'address', 'town', 'region', 'facility_id', 'dependant',
-        'email_verified', 'telephone_verified', 'allow_sms', 'blood_group',
-        'allow_email', 'records_id', 'opd_type', 'register_date',
-        'user_id', 'added_id', 'added_date', 'updated_by', 'status',
-        'archived', 'archived_id', 'archived_by', 'archived_date'
+        'patient_id', 
+        'title_id', 
+        'firstname', 
+        'middlename', 
+        'lastname',
+        'birth_date', 
+        'gender_id', 
+        'occupation_id', 
+        'education', 
+        'religion_id',
+        'nationality_id', 
+        'ghana_card', 
+        'old_folder', 
+        'death_status',
+        'death_status_date', 
+        'telephone', 
+        'work_telephone', 
+        'email',
+        'address', 
+        'town', 
+        'region', 
+        'facility_id', 
+        'dependant',
+        'email_verified', 
+        'telephone_verified', 
+        'allow_sms', 
+        'blood_group',
+        'allow_email', 
+        'records_id', 
+        'opd_type', 
+        'register_date',
+        'user_id', 
+        'added_id', 
+        'added_date', 
+        'updated_by', 
+        'status',
+        'archived',
+        'archived_id', 
+        'archived_by', 
+        'archived_date'
     ];
     
     /**
@@ -59,7 +90,7 @@ class Patient extends Model
      */
     public function sponsor()
     {
-        return $this->belongsTo(Sponsors::class, 'patient_id', 'patient_id', 'sponsor_id');
+        return $this->belongsTo(Sponsors::class, 'patient_id', 'sponsor_id');
     }
     
     /**
@@ -76,5 +107,25 @@ class Patient extends Model
     public function nationality()
     {
         return $this->belongsTo(Nationality::class, 'nationality_id', 'nationality_id');
+    }
+
+    public function facility()
+    {
+        return $this->belongsTo(Facility::class, 'facility_id', 'facility_id');
+    }
+
+    public function occupation()
+    {
+        return $this->belongsTo(occupation::class, 'occupation_id', 'occupation_id');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'user_id');
+    }
+
+    public function appointments()
+    {
+        return $this->hasMany(PatientAppointments::class, 'patient_id', 'patient_id');
     }
 }

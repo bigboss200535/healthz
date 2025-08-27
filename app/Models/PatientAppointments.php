@@ -28,22 +28,31 @@ class PatientAppointments extends Model
         'added_id',
         'added_date',
         'added_by',
-        'udpated_by',
+        'updated_by',
         'status',
         'archived',
         'archived_id',
         'archived_by',
-        'archived_date',
-        '_token'
+        'archived_date'
     ];
 
-    public function users()
+    public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function facility()
+    {
+        return $this->belongsTo(Facility::class, 'facility_id');
     }
 
     public function patient()
     {
         return $this->belongsTo(Patient::class, 'patient_id');
+    }
+
+    public function  clinic()
+    {
+        return $this->belongsTo(Clinic::class, 'clinic_id');
     }
 }
