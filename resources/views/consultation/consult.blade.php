@@ -64,8 +64,13 @@
                            <label for="end_date" class="form-label">End Date</label>
                            <input type="date" id="end_date" class="form-control" value="<?php echo date('Y-m-d'); ?>">
                          </div>
-                         <div class="col-md-2 d-flex align-items-end">
-                           <button id="filter_date" class="btn btn-primary"><i class="bx bx-search"></i>Search</button>
+                         <div class="col-md-3">
+                           <label for="search_waiting" class="form-label">Search</label>
+                           <input type="text" id="search_waiting" class="form-control" placeholder="Search by name or OPD #">
+                         </div>
+                         <div class="col-md-3 d-flex align-items-end">
+                           <button id="filter_date" class="btn btn-primary me-2"><i class="bx bx-search"></i> Filter</button>
+                           <button id="reset_waiting" class="btn btn-secondary"><i class="bx bx-reset"></i> Reset</button>
                          </div>
                        </div>
                        
@@ -153,15 +158,20 @@
                        <!-- Add date filter controls -->
                        <div class="row mb-3">
                          <div class="col-md-3">
-                           <label for="start_date" class="form-label">Start Date</label>
-                           <input type="date" id="start_date" class="form-control" value="<?php echo date('Y-m-d'); ?>">
+                           <label for="start_date_pending" class="form-label">Start Date</label>
+                           <input type="date" id="start_date_pending" class="form-control" value="<?php echo date('Y-m-d'); ?>">
                          </div>
                          <div class="col-md-3">
-                           <label for="end_date" class="form-label">End Date</label>
-                           <input type="date" id="end_date" class="form-control" value="<?php echo date('Y-m-d'); ?>">
+                           <label for="end_date_pending" class="form-label">End Date</label>
+                           <input type="date" id="end_date_pending" class="form-control" value="<?php echo date('Y-m-d'); ?>">
                          </div>
-                         <div class="col-md-2 d-flex align-items-end">
-                           <button id="filter_date" class="btn btn-primary"><i class="bx bx-search"></i>Search</button>
+                         <div class="col-md-3">
+                           <label for="search_pending" class="form-label">Search</label>
+                           <input type="text" id="search_pending" class="form-control" placeholder="Search by name or OPD #">
+                         </div>
+                         <div class="col-md-3 d-flex align-items-end">
+                           <button id="filter_date_pending" class="btn btn-primary me-2"><i class="bx bx-search"></i> Filter</button>
+                           <button id="reset_pending" class="btn btn-secondary"><i class="bx bx-reset"></i> Reset</button>
                          </div>
                        </div>
                       <table class="table table-responsive" id="diagnostics_list">
@@ -245,6 +255,25 @@
                     </div>
                     <div class="tab-pane fade" id="navs-top-messages" role="tabpanel">
                       <h4>Patient On Hold</h4>
+                      <!-- Add date filter controls -->
+                      <div class="row mb-3">
+                        <div class="col-md-3">
+                          <label for="start_date_onhold" class="form-label">Start Date</label>
+                          <input type="date" id="start_date_onhold" class="form-control" value="<?php echo date('Y-m-d'); ?>">
+                        </div>
+                        <div class="col-md-3">
+                          <label for="end_date_onhold" class="form-label">End Date</label>
+                          <input type="date" id="end_date_onhold" class="form-control" value="<?php echo date('Y-m-d'); ?>">
+                        </div>
+                        <div class="col-md-3">
+                          <label for="search_onhold" class="form-label">Search</label>
+                          <input type="text" id="search_onhold" class="form-control" placeholder="Search by name or OPD #">
+                        </div>
+                        <div class="col-md-3 d-flex align-items-end">
+                          <button id="filter_date_onhold" class="btn btn-primary me-2"><i class="bx bx-search"></i> Filter</button>
+                          <button id="reset_onhold" class="btn btn-secondary"><i class="bx bx-reset"></i> Reset</button>
+                        </div>
+                      </div>
                       <table class="table table-responsive" id="patient_list">
                             <thead>
                              <tr>
@@ -415,10 +444,64 @@ $(document).ready(function() {
         "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]]
     });
     
-    $('#diagnostics_list').DataTable();
-    $('#patient_list').DataTable();
+    const diagnosticsTable = $('#diagnostics_list').DataTable({
+        processing: true,
+        serverSide: false,
+        searching: true,
+        paging: true,
+        "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]]
+    });
+    
+    const onHoldTable = $('#patient_list').DataTable({
+        processing: true,
+        serverSide: false,
+        searching: true,
+        paging: true,
+        "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]]
+    });
+    
     $('#patient_services').DataTable();
     $('#patient_sponsor').DataTable();
+    
+    // Custom search functionality for waiting list
+    $('#search_waiting').on('keyup', function() {
+        appListTable.search(this.value).draw();
+    });
+    
+    // Custom search functionality for pending diagnostics
+    $('#search_pending').on('keyup', function() {
+        diagnosticsTable.search(this.value).draw();
+    });
+    
+    // Custom search functionality for on hold
+    $('#search_onhold').on('keyup', function() {
+        onHoldTable.search(this.value).draw();
+    });
+    
+    // Reset functionality for waiting list
+    $('#reset_waiting').on('click', function() {
+        $('#start_date').val('<?php echo date("Y-m-d"); ?>');
+        $('#end_date').val('<?php echo date("Y-m-d"); ?>');
+        $('#search_waiting').val('');
+        appListTable.search('').draw();
+        loadPatientData();
+    });
+    
+    // Reset functionality for pending diagnostics
+    $('#reset_pending').on('click', function() {
+        $('#start_date_pending').val('<?php echo date("Y-m-d"); ?>');
+        $('#end_date_pending').val('<?php echo date("Y-m-d"); ?>');
+        $('#search_pending').val('');
+        diagnosticsTable.search('').draw();
+    });
+    
+    // Reset functionality for on hold
+    $('#reset_onhold').on('click', function() {
+        $('#start_date_onhold').val('<?php echo date("Y-m-d"); ?>');
+        $('#end_date_onhold').val('<?php echo date("Y-m-d"); ?>');
+        $('#search_onhold').val('');
+        onHoldTable.search('').draw();
+    });
     
     // Function to load patient data via AJAX
     function loadPatientData() {
@@ -520,12 +603,28 @@ $(document).ready(function() {
         });
     }
     
-    // Bind click event to the filter button using event delegation
+    // Bind click event to the filter buttons using event delegation
     $(document).on('click', '#filter_date', function(e) {
         e.preventDefault();
         e.stopPropagation();
-        console.log('Filter button clicked');
+        console.log('Filter button clicked for waiting list');
         loadPatientData();
+        return false;
+    });
+    
+    $(document).on('click', '#filter_date_pending', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        console.log('Filter button clicked for pending diagnostics');
+        loadPendingDiagnostics();
+        return false;
+    });
+    
+    $(document).on('click', '#filter_date_onhold', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        console.log('Filter button clicked for on hold patients');
+        loadOnHoldPatients();
         return false;
     });
     
@@ -538,21 +637,89 @@ $(document).ready(function() {
         $('#end_date').val(urlParams.get('end_date'));
     }
     
-    // Load data on page load
+    // Load all data on page load
     loadPatientData();
+    loadPendingDiagnostics();
+    loadOnHoldPatients();
     
     // Re-attach event handlers for dynamically created elements
     $(document).on('click', '.hold_attendance_btn', function() {
         const attendanceId = $(this).data('id');
-        // Add your hold attendance logic here
-        console.log('Hold attendance clicked for ID:', attendanceId);
+        
+        $.ajax({
+            url: `/consultation/hold-attendance/${attendanceId}`,
+            type: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function(response) {
+                if (response.success) {
+                    toastr.success('Patient placed on hold successfully');
+                    loadPatientData(); // Refresh the waiting list
+                    loadPendingDiagnostics(); // Refresh pending diagnostics
+                    loadOnHoldPatients(); // Refresh on-hold list
+                } else {
+                    toastr.error('Error placing patient on hold');
+                }
+            },
+            error: function(xhr, status, error) {
+                toastr.error('Error: ' + error);
+            }
+        });
     });
     
     $(document).on('click', '.attendance_delete_btn', function(e) {
         e.preventDefault();
         const attendanceId = $(this).data('id');
-        // Add your delete attendance logic here
-        console.log('Delete attendance clicked for ID:', attendanceId);
+        
+        if (confirm('Are you sure you want to delete this attendance record?')) {
+            $.ajax({
+                url: `/consultation/delete-attendance/${attendanceId}`,
+                type: 'DELETE',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(response) {
+                    if (response.success) {
+                        toastr.success('Attendance record deleted successfully');
+                        loadPatientData();
+                        loadPendingDiagnostics();
+                        loadOnHoldPatients();
+                    } else {
+                        toastr.error('Error deleting attendance record');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    toastr.error('Error: ' + error);
+                }
+            });
+        }
+    });
+    
+    // Handle resume attendance button click
+    $(document).on('click', '.resume-attendance', function() {
+        const attendanceId = $(this).data('id');
+        
+        $.ajax({
+            url: `/consultation/resume-attendance/${attendanceId}`,
+            type: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function(response) {
+                if (response.success) {
+                    toastr.success('Patient resumed successfully');
+                    loadPatientData(); // Refresh the waiting list
+                    loadPendingDiagnostics(); // Refresh pending diagnostics
+                    loadOnHoldPatients(); // Refresh on-hold list
+                } else {
+                    toastr.error('Error resuming patient');
+                }
+            },
+            error: function(xhr, status, error) {
+                toastr.error('Error: ' + error);
+            }
+        });
     });
 });
 </script>

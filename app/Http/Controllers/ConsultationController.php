@@ -171,30 +171,139 @@ class ConsultationController extends Controller
 
     }
     
-    public function getOnHoldPatients()
+    /**
+     * Get on-hold patients via AJAX
+     * 
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getOnHoldPatients(Request $request)
     {
-            $patients = DB::table('patient_attendance')
-                ->join('patients', 'patient_attendance.patient_id', '=', 'patients.patient_id')
-                ->join('clinics', 'patient_attendance.clinic_id', '=', 'clinics.clinic_id')
+        try {
+            $start_date = $request->input('start_date', date('Y-m-d'));
+            $end_date = $request->input('end_date', date('Y-m-d'));
+            
+            $patients = PatientAttendance::where('patient_attendance.archived','No')
+                ->join('sponsor_type', 'patient_attendance.sponsor_type_id', '=', 'sponsor_type.sponsor_type_id')
+                ->join('patient_info', 'patient_info.patient_id', '=', 'patient_attendance.patient_id')
+                ->join('gender', 'gender.gender_id', '=', 'patient_info.gender_id')
                 ->join('sponsors', 'patient_attendance.sponsor_id', '=', 'sponsors.sponsor_id')
+                ->join('service_attendance_type', 'service_attendance_type.attendance_type_id', '=', 'patient_attendance.service_type')
                 ->select(
-                    'patient_attendance.*',
-                    'patients.fullname',
-                    'patients.gender',
-                    'patients.full_age',
-                    'patients.opd_number',
-                    'clinics.clinic_name as pat_clinic',
-                    'sponsors.sponsor_name as sponsor'
+                    'patient_attendance.attendance_id',
+                    'patient_info.fullname', 
+                    'patient_attendance.opd_number', 
+                    'patient_attendance.attendance_date', 
+                    'sponsors.sponsor_name',
+                    'patient_attendance.full_age', 
+                    'gender.gender', 
+                    'service_attendance_type.attendance_type as pat_clinic', 
+                    'sponsor_type.sponsor_type as sponsor', 
+                    'sponsor_type.sponsor_type_id',
+                    'patient_attendance.issue_id',
+                    'patient_attendance.attendance_type'
                 )
+                ->where('patient_attendance.archived', 'No')
                 ->where('patient_attendance.issue_id', '2')
+                ->whereBetween('patient_attendance.attendance_date', [$start_date, $end_date])
+                ->orderBy('patient_attendance.attendance_id', 'desc')
                 ->get();
             
-            $patients = $patients->map(function ($patient, $key) {
-                $patient->DT_RowIndex = $key + 1;
+            // Format the date for display
+            $formattedPatients = $patients->map(function($patient) {
+                $patient->formatted_date = \Carbon\Carbon::parse($patient->attendance_date)->format('d-m-Y');
+                $patient->action = '<div class="dropdown">
+                                    <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                                        <i class="bx bx-dots-vertical-rounded"></i>
+                                    </button>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item resume-attendance" href="javascript:void(0);" data-id="'.$patient->attendance_id.'"><i class="bx bx-play-circle me-1"></i> Resume</a>
+                                    </div>
+                                </div>';
                 return $patient;
             });
             
-            return response()->json($patients);
+            return response()->json([
+                'success' => true,
+                'data' => $formattedPatients,
+                'message' => 'On-hold patients retrieved successfully'
+            ]);
+            
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error retrieving on-hold patients: ' . $e->getMessage(),
+                'data' => []
+            ], 500);
+        }
+    }
+    
+    /**
+     * Get pending diagnostics patients via AJAX
+     * 
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getPendingDiagnostics(Request $request)
+    {
+        try {
+            $start_date = $request->input('start_date', date('Y-m-d'));
+            $end_date = $request->input('end_date', date('Y-m-d'));
+            
+            $patients = PatientAttendance::where('patient_attendance.archived','No')
+                ->join('sponsor_type', 'patient_attendance.sponsor_type_id', '=', 'sponsor_type.sponsor_type_id')
+                ->join('patient_info', 'patient_info.patient_id', '=', 'patient_attendance.patient_id')
+                ->join('gender', 'gender.gender_id', '=', 'patient_info.gender_id')
+                ->join('sponsors', 'patient_attendance.sponsor_id', '=', 'sponsors.sponsor_id')
+                ->join('service_attendance_type', 'service_attendance_type.attendance_type_id', '=', 'patient_attendance.service_type')
+                ->select(
+                    'patient_attendance.attendance_id',
+                    'patient_info.fullname', 
+                    'patient_attendance.opd_number', 
+                    'patient_attendance.attendance_date', 
+                    'sponsors.sponsor_name',
+                    'patient_attendance.full_age', 
+                    'gender.gender', 
+                    'service_attendance_type.attendance_type as pat_clinic', 
+                    'sponsor_type.sponsor_type as sponsor', 
+                    'sponsor_type.sponsor_type_id',
+                    'patient_attendance.issue_id',
+                    'patient_attendance.attendance_type'
+                )
+                ->where('patient_attendance.archived', 'No')
+                ->where('patient_attendance.issue_id', '1')
+                ->whereBetween('patient_attendance.attendance_date', [$start_date, $end_date])
+                ->orderBy('patient_attendance.attendance_id', 'desc')
+                ->get();
+            
+            // Format the date for display
+            $formattedPatients = $patients->map(function($patient) {
+                $patient->formatted_date = \Carbon\Carbon::parse($patient->attendance_date)->format('d-m-Y');
+                $patient->action = '<div class="dropdown">
+                                    <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                                        <i class="bx bx-dots-vertical-rounded"></i>
+                                    </button>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item" href="'.url('/consultation/opd-consultation').'/'.$patient->attendance_id.'"><i class="bx bx-edit-alt me-1"></i> Consult</a>
+                                        <a class="dropdown-item hold-attendance" href="javascript:void(0);" data-id="'.$patient->attendance_id.'"><i class="bx bx-pause-circle me-1"></i> Hold</a>
+                                    </div>
+                                </div>';
+                return $patient;
+            });
+            
+            return response()->json([
+                'success' => true,
+                'data' => $formattedPatients,
+                'message' => 'Pending diagnostics patients retrieved successfully'
+            ]);
+            
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error retrieving pending diagnostics patients: ' . $e->getMessage(),
+                'data' => []
+            ], 500);
+        }
     }
 
     public function holdAttendance($id)

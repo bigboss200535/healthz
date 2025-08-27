@@ -89,12 +89,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
     });
 
     Route::prefix('consultation')->group(function () {
-        Route::get('/opd-waiting', [ConsultationController::class, 'getWaitingList']); // New AJAX endpoint
+        Route::get('/opd-waiting', [ConsultationController::class, 'getWaitingList'])->name('patient.waiting.list'); // AJAX endpoint for waiting list
+        Route::get('/pending-diagnostics', [ConsultationController::class, 'getPendingDiagnostics'])->name('patient.pending.diagnostics'); // AJAX endpoint for pending diagnostics
+        Route::get('/on-hold-patients', [ConsultationController::class, 'getOnHoldPatients'])->name('patient.on.hold'); // AJAX endpoint for on-hold patients
         Route::get('/opd-consultation/{attendance_id}', [ConsultationController::class, 'opd_consult']);
         Route::get('/ipd-consultation/{attendance_id}', [ConsultationController::class, 'ipd_consult']);
         Route::post('/save', [ConsultationController::class, 'store'])->name('consultation.store');
         Route::get('/consult', [ConsultationController::class, 'consult']);
-        Route::get('/get-systemic-symptoms/{systemic_id}', [ConsultationController::class, 'getSystemicSymptoms']); // New route for fetching symptoms
+        Route::get('/get-systemic-symptoms/{systemic_id}', [ConsultationController::class, 'getSystemicSymptoms']); // Route for fetching symptoms
         // Route::get('patient', [ReportsController::class, 'patient']);
     });
 
