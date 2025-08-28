@@ -283,7 +283,7 @@ class ConsultationController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function get_on_hold_patients(Request $request)
+    public function get_onhold_patients(Request $request)
     {
         try {
             $start_date = $request->input('start_date', date('Y-m-d'));
@@ -350,7 +350,7 @@ class ConsultationController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getPendingDiagnostics(Request $request)
+    public function get_pending_diagnostics(Request $request)
     {
         try {
             $start_date = $request->input('start_date', date('Y-m-d'));
@@ -412,12 +412,12 @@ class ConsultationController extends Controller
         }
     }
 
-    public function holdAttendance($id)
+    public function hold_attendance($attendance_id)
     {
             try {
                 // Update the issue_id field to '2' for on-hold status
                 DB::table('patient_attendance')
-                    ->where('attendance_id', $id)
+                    ->where('attendance_id', $attendance_id)
                     ->update(['issue_id' => '2']);
                 
                 return response()->json(['success' => true]);
@@ -426,12 +426,12 @@ class ConsultationController extends Controller
             }
     }
 
-    public function resumeAttendance($id)
+    public function resume_attendance($attendance_id)
     {
             try {
                 // Update the issue_id field back to '0' for pending status
                 DB::table('patient_attendance')
-                    ->where('attendance_id', $id)
+                    ->where('attendance_id', $attendance_id)
                     ->update(['issue_id' => '0']);
                 
                 return response()->json(['success' => true]);
@@ -443,15 +443,15 @@ class ConsultationController extends Controller
     /**
      * Delete an attendance record
      * 
-     * @param int $id
+     * @param string $attendance_id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function deleteAttendance($id)
+    public function delete_attendance($attendance_id)
     {
         try {
             // Soft delete by setting archived to 'Yes'
             DB::table('patient_attendance')
-                ->where('attendance_id', $id)
+                ->where('attendance_id', $attendance_id)
                 ->update(['archived' => 'Yes']);
             
             return response()->json(['success' => true]);
@@ -588,7 +588,7 @@ class ConsultationController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getWaitingList(Request $request)
+    public function get_waiting_list(Request $request)
     {
         try {
             $start_date = $request->input('start_date', date('Y-m-d'));
@@ -643,7 +643,7 @@ class ConsultationController extends Controller
         }
     }
     
-    public function getSystemicSymptoms($systemic_id)
+    public function get_systemic_symptoms($systemic_id)
     {
         $symptoms = DB::table('systemic_symtom')
             ->where('systemic_id', $systemic_id)

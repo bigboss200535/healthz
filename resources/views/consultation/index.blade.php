@@ -222,12 +222,9 @@
                                           </button>
                                             <div class="dropdown-menu">
                                                   <a class="dropdown-item" href="/consultation/opd-consultation/{{ $pend->attendance_id }}">
-                                                    <i class="bx bx-edit-alt me-1"></i> Consult
+                                                       <i class="bx bx-edit-alt me-1"></i> Continue
                                                   </a>
-                                                  <a class="dropdown-item hold_attendance_btn" href="#">
-                                                    <i class="bx bx-pause me-1"></i> Hold
-                                                  </a>
-                                                  <a class="dropdown-item product_delete_btn" data-id="{{ $pend->patient_id}}" href="#">
+                                                  <a class="dropdown-item product_delete_btn" data-id="{{ $pend->attendance_id}}" href="#">
                                                       <i class="bx bx-trash me-1"></i> Delete
                                                   </a>
                                             </div>
@@ -321,13 +318,13 @@
                                               <i class="bx bx-dots-vertical-rounded"></i>
                                           </button>
                                             <div class="dropdown-menu">
-                                                  <a class="dropdown-item" href="/consultation/opd-consultation/{{ $hold->attendance_id }}">
+                                                  {{-- <a class="dropdown-item" href="/consultation/opd-consultation/{{ $hold->attendance_id }}">
                                                     <i class="bx bx-edit-alt me-1"></i> Consult
+                                                  </a> --}}
+                                                  <a class="dropdown-item" data-id="{{ $hold->attendance_id}}" href="#">
+                                                    <i class="bx bx-pause me-1"></i> Unhold
                                                   </a>
-                                                  <a class="dropdown-item" href="">
-                                                    <i class="bx bx-pause me-1"></i> UnHold
-                                                  </a>
-                                                  <a class="dropdown-item product_delete_btn" data-id="{{ $hold->patient_id}}" href="#">
+                                                  <a class="dropdown-item product_delete_btn" data-id="{{ $hold->attendance_id}}" href="#">
                                                       <i class="bx bx-trash me-1"></i> Delete
                                                   </a>
                                             </div>
