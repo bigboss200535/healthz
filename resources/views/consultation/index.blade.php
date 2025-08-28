@@ -31,17 +31,17 @@
                     </li>
                     <li class="nav-item">
                       <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#navs-top-profile" aria-controls="navs-top-profile" aria-selected="false">
-                        <b>Pending Diagnostics</b>
+                        <b>Pending List</b>
                       </button>
                     </li>
                     <li class="nav-item">
                       <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#navs-top-messages" aria-controls="navs-top-messages" aria-selected="false">
-                        <b>On Hold</b>
+                        <b>On Hold List</b>
                       </button>
                     </li>
                     <li class="nav-item">
                       <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#navs_completed" aria-controls="navs_completed" aria-selected="false">
-                        <b>Completed</b>
+                        <b>Completed List</b>
                       </button>
                     </li>
                     <li class="nav-item">
@@ -57,19 +57,19 @@
                        <!-- Add date filter controls -->
                        <div class="row mb-3">
                          <div class="col-md-3">
-                           <label for="start_date" class="form-label">Start Date</label>
-                           <input type="date" id="start_date" class="form-control" value="<?php echo date('Y-m-d'); ?>">
+                           <label for="waiting_start_date" class="form-label">Start Date</label>
+                           <input type="date" id="waiting_start_date" name="waiting_start_date" class="form-control" value="<?php echo date('Y-m-d'); ?>">
                          </div>
                          <div class="col-md-3">
-                           <label for="end_date" class="form-label">End Date</label>
-                           <input type="date" id="end_date" class="form-control" value="<?php echo date('Y-m-d'); ?>">
+                           <label for="waiting_end_date" class="form-label">End Date</label>
+                           <input type="date" name="waiting_end_date" id="waiting_end_date" class="form-control" value="<?php echo date('Y-m-d'); ?>">
                          </div>
                          <div class="col-md-3">
                            <label for="search_waiting" class="form-label">Search</label>
                            <input type="text" id="search_waiting" class="form-control" placeholder="Search by name or OPD #">
                          </div>
                          <div class="col-md-3 d-flex align-items-end">
-                           <button id="filter_date" class="btn btn-primary me-2"><i class="bx bx-search"></i> Filter</button>
+                           <button id="filter_waiting" class="btn btn-primary me-2"><i class="bx bx-search"></i> Filter</button>
                            <button id="reset_waiting" class="btn btn-secondary"><i class="bx bx-reset"></i> Reset</button>
                          </div>
                        </div>
@@ -127,7 +127,7 @@
                                                   <a class="dropdown-item" href="#" data-id="{{ $wait->attendance_id}}">
                                                     <i class="bx bx-pause me-1"></i> Hold
                                                   </a>
-                                                  <a class="dropdown-item product_delete_btn" data-id="{{ $wait->patient_id}}" href="#">
+                                                  <a class="dropdown-item product_delete_btn" data-id="{{ $wait->attendance_id}}" href="#">
                                                       <i class="bx bx-trash me-1"></i> Delete
                                                   </a>
                                             </div>
@@ -170,7 +170,7 @@
                            <input type="text" id="search_pending" class="form-control" placeholder="Search by name or OPD #">
                          </div>
                          <div class="col-md-3 d-flex align-items-end">
-                           <button id="filter_date_pending" class="btn btn-primary me-2"><i class="bx bx-search"></i> Filter</button>
+                           <button id="filter_pending" class="btn btn-primary me-2"><i class="bx bx-search"></i> Filter</button>
                            <button id="reset_pending" class="btn btn-secondary"><i class="bx bx-reset"></i> Reset</button>
                          </div>
                        </div>
@@ -318,11 +318,11 @@
                                               <i class="bx bx-dots-vertical-rounded"></i>
                                           </button>
                                             <div class="dropdown-menu">
-                                                  {{-- <a class="dropdown-item" href="/consultation/opd-consultation/{{ $hold->attendance_id }}">
+                                                <a class="dropdown-item" href="/consultation/opd-consultation/{{ $hold->attendance_id }}">
                                                     <i class="bx bx-edit-alt me-1"></i> Consult
-                                                  </a> --}}
-                                                  <a class="dropdown-item" data-id="{{ $hold->attendance_id}}" href="#">
-                                                    <i class="bx bx-pause me-1"></i> Unhold
+                                                  </a>
+                                                 <a class="dropdown-item" href="#">
+                                                    <i class="bx bx-edit-alt me-1"></i> Unhold
                                                   </a>
                                                   <a class="dropdown-item product_delete_btn" data-id="{{ $hold->attendance_id}}" href="#">
                                                       <i class="bx bx-trash me-1"></i> Delete
@@ -352,7 +352,7 @@
                     </div>
                  
                   <div class="tab-pane fade" id="navs_completed" role="tabpanel">
-                       <h4> Consultation Discharged</h4>
+                       <h4> Consultation Completed</h4>
                           <table class="table table-responsive" id="patient_services">
                                 <thead>
                                   <tr>
@@ -429,9 +429,6 @@
 </div>
 </div>        
 
-<!-- Add JavaScript for date filtering -->
-<script>
 
-</script>
 
 </x-app-layout>
