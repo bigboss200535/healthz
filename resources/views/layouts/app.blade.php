@@ -520,6 +520,55 @@ $(document).ready(function() {
     // Initial fetch
     fetchCurrentAttendanceData();
 });
+
+ $(document).on('click', '.hold-btn', function(e) {
+        e.preventDefault();
+        const attendance_id = $(this).data('id');
+
+        $.ajax({
+            url: `/consultation/hold-attendance/${attendance_id}`,
+            type: 'POST',
+            data: {
+                _token: '{{ csrf_token() }}'
+            },
+            success: function(response) {
+                if (response.success) {
+                    toastr.success(response.message);
+                    location.reload();
+                } else {
+                    toastr.error(response.message);
+                }
+            },
+            error: function(xhr) {
+                toastr.error('Error holding attendance');
+            }
+        });
+    });
+
+    // Handle Unhold button click
+    $(document).on('click', '.unhold-btn', function(e) {
+        e.preventDefault();
+        const attendance_id = $(this).data('id');
+        
+        $.ajax({
+            url: `/consultation/unhold-attendance/${attendance_id}`,
+            type: 'POST',
+            data: {
+                _token: '{{ csrf_token() }}'
+            },
+            success: function(response) {
+                if (response.success) {
+                    toastr.success(response.message);
+                    location.reload();
+                } else {
+                    toastr.error(response.message);
+                }
+            },
+            error: function(xhr) {
+                toastr.error('Error unholding attendance');
+            }
+        });
+    });
 </script>
 </body>
 </html>

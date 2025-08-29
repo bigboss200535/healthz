@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Claim;
+use App\Models\Patient;
+// use App\Models\Patient;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
@@ -69,41 +71,94 @@ class ClaimsNhisController extends Controller
             }
     }  
 
-    public function xml_claims_generation()
+    public function generate_claims_xml(Request $request)
     {
-        $claims = Claim::with('patient', 'consultation', 'prescriptions')->get();
-        $xml = new SimpleXMLElement('<claims/>');
+        // Fetch all claims with their related patient, medicines, diagnoses, and procedures
+        $claims = Claim::with(['patient.medicines', 'patient.diagnoses', 'patient.procedures'])->get();
 
-            foreach ($claims as $claim) {
-                $claimXml = $xml->addChild('claim');
+        // Create the root XML element
+        $xml = new SimpleXMLElement('<?xml version="1.0"?><claims></claims>');
 
-                // Add core claim information
-                $claimXml->addChild('claimID', $claim->claim_id);
-                $claimXml->addChild('membership_no', $claim->membership_no);
-                // ... other core claim fields
+        // Loop through each claim and add its data to the XML
+        foreach ($claims as $claim) {
+            $claimNode = $xml->addChild('claim');
 
-                // Add patient demographic information
-                $patientXml = $claimXml->addChild('patient');
-                $patientXml->addChild('surname', $claim->patient->surname);
-                $patientXml->addChild('otherNames', $claim->patient->other_names);
-                // ... other patient fields
+            // Add claim details
+            $claimNode->addChild('claimID', $claim->claim_id);
+            $claimNode->addChild('claimCheckCode', $claim->claim_check_code);
+            $claimNode->addChild('memberNo', $claim->patient->member_no);
+            $claimNode->addChild('cardSerialNo', $claim->patient->card_serial_no);
+            $claimNode->addChild('surname', $claim->patient->surname);
+            $claimNode->addChild('otherNames', $claim->patient->other_names);
+            $claimNode->addChild('dateOfBirth', $claim->patient->date_of_birth);
+            $claimNode->addChild('gender', $claim->patient->gender);
+            $claimNode->addChild('hospitalRecNo', $claim->patient->hospital_rec_no);
+            $claimNode->addChild('isDependant', $claim->patient->is_dependant);
+            $claimNode->addChild('typeOfService', $claim->patient->type_of_service);
+            $claimNode->addChild('isUnbundled', $claim->patient->is_unbundled);
+            $claimNode->addChild('includesPharmacy', $claim->patient->includes_pharmacy);
 
-                // Add consultation information
-                $consultationXml = $claimXml->addChild('consultation');
-                $consultationXml->addChild('diagnosis', $claim->consultation->diagnosis);
-                $consultationXml->addChild('principalGDRG', $claim->consultation->principal_gdrg);
+            // Add claim-specific details
+            $claimNode->addChild('typeOfAttendance', $claim->type_of_attendance);
+            $claimNode->addChild('serviceOutcome', $claim->service_outcome);
 
-                // Add prescription information
-                foreach ($claim->prescriptions as $prescription) {
-                    $medicineXml = $claimXml->addChild('medicine');
-                    $medicineXml->addChild('medicineCode', $prescription->medicine_code);
-                    $medicineXml->addChild('dispensedQty', $prescription->dispensed_qty);
-                    // ... other prescription fields
-                }
+            // Add dates of service
+            foreach ($claim->dates_of_service as $date) {
+                $claimNode->addChild('dateOfService', $date);
             }
 
-            return $xml->asXML();
+            $claimNode->addChild('specialtyAttended', $claim->specialty_attended);
+
+            // Add diagnoses
+            foreach ($claim->patient->diagnoses as $diagnosis) {
+                $diagnosisNode = $claimNode->addChild('diagnosis');
+                $diagnosisNode->addChild('gdrgCode', $diagnosis->gdrg_code);
+                $diagnosisNode->addChild('icd10', $diagnosis->icd10);
+                $diagnosisNode->addChild('diagnosis', $diagnosis->diagnosis);
             }
+
+            // Add medicines
+            foreach ($claim->patient->medicines as $medicine) {
+                $medicineNode = $claimNode->addChild('medicine');
+                $medicineNode->addChild('serviceDate', $medicine->service_date);
+                $medicineNode->addChild('medicineCode', $medicine->medicine_code);
+                $medicineNode->addChild('dispensedQty', $medicine->dispensed_qty);
+
+                $prescriptionNode = $medicineNode->addChild('prescription');
+                $prescriptionNode->addChild('dose', $medicine->dose);
+                $prescriptionNode->addChild('frequency', $medicine->frequency);
+                $prescriptionNode->addChild('duration', $medicine->duration);
+            }
+
+            // Add procedures
+            foreach ($claim->patient->procedures as $procedure) {
+                $procedureNode = $claimNode->addChild('procedure');
+                $procedureNode->addChild('serviceDate', $procedure->service_date);
+                $procedureNode->addChild('gdrgCode', $procedure->gdrg_code);
+                $procedureNode->addChild('icd10', $procedure->icd10);
+                $procedureNode->addChild('diagnosis', $procedure->diagnosis);
+            }
+
+            // Add principal GDRG if exists
+            if ($claim->principal_gdrg) {
+                $claimNode->addChild('principalGDRG', $claim->principal_gdrg);
+            }
+        }
+
+        // Convert the XML object to a string
+        $xmlString = $xml->asXML();
+
+        // Set headers for file download
+        $headers = [
+            'Content-Type' => 'application/xml',
+            'Content-Disposition' => 'attachment; filename="claims_export.xml"',
+        ];
+
+        // Return the XML file as a download response
+        return Response::make($xmlString, 200, $headers);
+    }
+
+
 
     public function json_claims_generation()
     {

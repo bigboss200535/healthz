@@ -45,6 +45,7 @@ use Illuminate\Support\Facades\Redirect;
 Route::redirect('/', '/login');
 
 Route::middleware(['auth', 'verified'])->group(function () {
+    
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::resource('sponsors', SponsorController::class); 
@@ -97,6 +98,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/save', [ConsultationController::class, 'store'])->name('consultation.store');
         Route::get('/list', [ConsultationController::class, 'index']);
         Route::get('/get-systemic-symptoms/{systemic_id}', [ConsultationController::class, 'getSystemicSymptoms']); // Route for fetching symptoms
+        // Hold and Unhold routes
+    Route::post('/hold-attendance/{attendance_id}', [ConsultationController::class, 'hold_attendance']);
+    Route::post('/unhold-attendance/{attendance_id}', [ConsultationController::class, 'unhold_attendance']);
         // Route::get('patient', [ReportsController::class, 'patient']);
     });
 

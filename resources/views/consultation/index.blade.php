@@ -1,6 +1,6 @@
 <x-app-layout>
- 
-<div class="container-xxl flex-grow-1 container-p-y">     
+ <div class="container-xxl flex-grow-1 container-p-y">
+     
 <div class="card mb-6">
   <div class="card-widget-separator-wrapper">
     <div class="card-body card-widget-separator">
@@ -31,7 +31,7 @@
                     </li>
                     <li class="nav-item">
                       <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#navs-top-profile" aria-controls="navs-top-profile" aria-selected="false">
-                        <b>Pending List</b>
+                        <b>Awaiting Labs</b>
                       </button>
                     </li>
                     <li class="nav-item">
@@ -44,11 +44,11 @@
                         <b>Completed List</b>
                       </button>
                     </li>
-                    <li class="nav-item">
+                    <!-- <li class="nav-item">
                       <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#navs_admission" aria-controls="navs_admission" aria-selected="false">
                         <b>Admission List</b>
                       </button>
-                    </li>
+                    </li> -->
                   </ul>
                   <div class="tab-content">
                     <div class="tab-pane fade show active" id="navs-top-home" role="tabpanel">
@@ -124,7 +124,7 @@
                                                   <a class="dropdown-item" href="/consultation/opd-consultation/{{ $wait->attendance_id }}">
                                                     <i class="bx bx-edit-alt me-1"></i> Consult
                                                   </a>
-                                                  <a class="dropdown-item" href="#" data-id="{{ $wait->attendance_id}}">
+                                                  <a class="dropdown-item hold-btn" href="#" data-id="{{ $wait->attendance_id}}">
                                                     <i class="bx bx-pause me-1"></i> Hold
                                                   </a>
                                                   <a class="dropdown-item product_delete_btn" data-id="{{ $wait->attendance_id}}" href="#">
@@ -321,8 +321,8 @@
                                                 <a class="dropdown-item" href="/consultation/opd-consultation/{{ $hold->attendance_id }}">
                                                     <i class="bx bx-edit-alt me-1"></i> Consult
                                                   </a>
-                                                 <a class="dropdown-item" href="#">
-                                                    <i class="bx bx-edit-alt me-1"></i> Unhold
+                                                 <a class="dropdown-item unhold-btn" href="#" data-id="{{ $hold->attendance_id }}">
+                                                    <i class="bx bx-play me-1"></i> Unhold
                                                   </a>
                                                   <a class="dropdown-item product_delete_btn" data-id="{{ $hold->attendance_id}}" href="#">
                                                       <i class="bx bx-trash me-1"></i> Delete
@@ -384,41 +384,7 @@
                               </table>
                       <!-- </p> -->
                     </div>
-                    <div class="tab-pane fade" id="navs_admission" role="tabpanel">
-                    <h4> Admission List</h4>
-                      <table class="table table-responsive" id="patient_sponsor">
-                            <thead>
-                              <tr>
-                                <th>Sn</th>
-                                <th>Date</th>
-                                <th>Name</th>
-                                <th>Gender</th>
-                                <th>Age</th>
-                                <th>Ward</th>
-                                <th>Bed #</th>
-                                <th>Admit Date</th>
-                                <th>Action</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-
-                            </tbody>
-                            <tfoot>
-                            <tr>
-                                <th>Sn</th>
-                                <th>Date</th>
-                                <th>Name</th>
-                                <th>Gender</th>
-                                <th>Age</th>
-                                <th>Ward</th>
-                                <th>Bed #</th>
-                                <th>Admit Date</th>
-                                <th>Action</th>
-                              </tr>
-                            </tfoot>
-                          </table>
-                      </p>
-                    </div>
+                    
                   </div>
                 </div>
               </div>
@@ -429,6 +395,58 @@
 </div>
 </div>        
 
+<script>
+// $(document).ready(function() {
+    // Handle Hold button click
+    // $(document).on('click', '.hold-btn', function(e) {
+    //     e.preventDefault();
+    //     const attendance_id = $(this).data('id');
 
+    //     $.ajax({
+    //         url: `/consultation/hold-attendance/${attendance_id}`,
+    //         type: 'POST',
+    //         data: {
+    //             _token: '{{ csrf_token() }}'
+    //         },
+    //         success: function(response) {
+    //             if (response.success) {
+    //                 toastr.success(response.message);
+    //                 location.reload();
+    //             } else {
+    //                 toastr.error(response.message);
+    //             }
+    //         },
+    //         error: function(xhr) {
+    //             toastr.error('Error holding attendance');
+    //         }
+    //     });
+    // });
 
+    // // Handle Unhold button click
+    // $(document).on('click', '.unhold-btn', function(e) {
+    //     e.preventDefault();
+    //     const attendance_id = $(this).data('id');
+        
+    //     $.ajax({
+    //         url: `/consultation/unhold-attendance/${attendance_id}`,
+    //         type: 'POST',
+    //         data: {
+    //             _token: '{{ csrf_token() }}'
+    //         },
+    //         success: function(response) {
+    //             if (response.success) {
+    //                 toastr.success(response.message);
+    //                 location.reload();
+    //             } else {
+    //                 toastr.error(response.message);
+    //             }
+    //         },
+    //         error: function(xhr) {
+    //             toastr.error('Error unholding attendance');
+    //         }
+    //     });
+    // });
+// });
+
+</script>
 </x-app-layout>

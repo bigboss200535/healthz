@@ -20,29 +20,19 @@ use Illuminate\Support\Facades\DB;
 
 class ConsultationController extends Controller
 {
-    
-    // public function index()
-    // {
-    //   $pat_req = PatientAttendance::where('patient_attendance.archived', 'No')
-    //       ->rightJoin('patient_info', 'patient_info.patient_id', '=', 'patient_attendance.patient_id')
-    //       ->RightJoin('gender', 'patient_info.gender_id', 'gender.gender_id')       
-    //       ->orderBy('patient_attendance.attendance_id', 'asc')
-    //       ->select('patient_attendance.*', 'patient_info.*', 'gender.gender',  
-    //         DB::raw('TIMESTAMPDIFF(YEAR, patient_info.birth_date, CURDATE()) as pat_ages'))
-    //       ->get();  
 
-    //       return view('consultation.index', compact('pat_req'));  
-    // }
-     public function index(Request $request)
+    public function index(Request $request)
     {
         $start_date = $request->input('start_date', date('Y-m-d'));
         $end_date = $request->input('end_date', date('Y-m-d'));
 
-            $waiting = PatientAttendance::where('patient_attendance.archived','No')
+        $base_query = PatientAttendance::query()
+                ->where('patient_attendance.archived','No')
                 ->join('sponsor_type', 'patient_attendance.sponsor_type_id', '=', 'sponsor_type.sponsor_type_id')
                 ->join('patient_info', 'patient_info.patient_id', '=', 'patient_attendance.patient_id')
                 ->join('gender', 'gender.gender_id', '=', 'patient_info.gender_id')
-                // ->join('sponsors', 'patient_attendance.sponsor_id', '=', 'sponsors.sponsor_id')
+                ->join('consultation_issue_status', 'consultation_issue_status.issue_id', '=', 'patient_attendance.issue_id' )
+                ->join('sponsors', 'patient_attendance.sponsor_id', '=', 'sponsors.sponsor_id')
                 ->join('service_attendance_type', 'service_attendance_type.attendance_type_id', '=', 'patient_attendance.attendance_type_id')
                 ->select(
                         'patient_attendance.attendance_id',
@@ -51,95 +41,75 @@ class ConsultationController extends Controller
                         'patient_attendance.opd_number', 
                         'patient_attendance.attendance_date', 
                         'patient_attendance.status', 
-                        // 'sponsors.sponsor_name',
+                        'sponsors.sponsor_name',
                         'patient_attendance.full_age', 'gender.gender', 'service_attendance_type.attendance_type as clinic', 
                         // 'sponsor_type.sponsor_type as sponsor', 
                         'sponsor_type.sponsor_type_id as sponsor_type_id',
                         'sponsor_type.sponsor_type as sponsor_type',
+                        'consultation_issue_status.issue_id',
+                        'consultation_issue_status.issue_value', 
+                        'consultation_issue_status.color_code',
                         'patient_attendance.issue_id' ,'patient_attendance.attendance_type')
-                // ->whereIn('patient_attendance.issue_id', ['0', '1'])
-                // ->whereBetween('patient_attendance.attendance_date', [$start_date, $end_date])
-                 ->where('patient_attendance.issue_id', '=', '0')
-                ->orderBy('patient_attendance.attendance_id', 'desc')
-                ->get();
-
-            $pending = PatientAttendance::where('patient_attendance.archived','No')
-                ->join('sponsor_type', 'patient_attendance.sponsor_type_id', '=', 'sponsor_type.sponsor_type_id')
-                ->join('patient_info', 'patient_info.patient_id', '=', 'patient_attendance.patient_id')
-                ->join('gender', 'gender.gender_id', '=', 'patient_info.gender_id')
-                // ->join('sponsors', 'patient_attendance.sponsor_id', '=', 'sponsors.sponsor_id')
-                ->join('service_attendance_type', 'service_attendance_type.attendance_type_id', '=', 'patient_attendance.attendance_type_id')
-                ->select(
-                        'patient_attendance.attendance_id',
-                         DB::raw('upper(patient_info.fullname) as fullname'),
-                        'patient_info.gender_id', 
-                        'patient_attendance.opd_number', 
-                        'patient_attendance.attendance_date', 
-                        'patient_attendance.status', 
-                        // 'sponsors.sponsor_name',
-                        'patient_attendance.full_age', 'gender.gender', 'service_attendance_type.attendance_type as clinic', 
-                        // 'sponsor_type.sponsor_type as sponsor', 
-                        'sponsor_type.sponsor_type_id as sponsor_type_id',
-                        'sponsor_type.sponsor_type as sponsor_type',
-                        'patient_attendance.issue_id' ,'patient_attendance.attendance_type')
-                // ->whereIn('patient_attendance.issue_id', ['0', '1'])
-                // ->whereBetween('patient_attendance.attendance_date', [$start_date, $end_date])
-                 
-                ->orderBy('patient_attendance.attendance_id', 'desc')
-                ->get();
-
-            $on_hold = PatientAttendance::where('patient_attendance.archived','No')
-                ->join('sponsor_type', 'patient_attendance.sponsor_type_id', '=', 'sponsor_type.sponsor_type_id')
-                ->join('patient_info', 'patient_info.patient_id', '=', 'patient_attendance.patient_id')
-                ->join('gender', 'gender.gender_id', '=', 'patient_info.gender_id')
-                // ->join('sponsors', 'patient_attendance.sponsor_id', '=', 'sponsors.sponsor_id')
-                ->join('service_attendance_type', 'service_attendance_type.attendance_type_id', '=', 'patient_attendance.attendance_type_id')
-                ->select(
-                        'patient_attendance.attendance_id',
-                         DB::raw('upper(patient_info.fullname) as fullname'),
-                        'patient_info.gender_id', 
-                        'patient_attendance.opd_number', 
-                        'patient_attendance.attendance_date', 
-                        'patient_attendance.status', 
-                        // 'sponsors.sponsor_name',
-                        'patient_attendance.full_age', 'gender.gender', 'service_attendance_type.attendance_type as clinic', 
-                        // 'sponsor_type.sponsor_type as sponsor', 
-                        'sponsor_type.sponsor_type_id as sponsor_type_id',
-                        'sponsor_type.sponsor_type as sponsor_type',
-                        'patient_attendance.issue_id' ,'patient_attendance.attendance_type')
-                // ->whereIn('patient_attendance.issue_id', ['0', '1'])
-                // ->whereBetween('patient_attendance.attendance_date', [$start_date, $end_date])
-                 
-                ->orderBy('patient_attendance.attendance_id', 'desc')
-                ->get();
-
-            $completed = PatientAttendance::where('patient_attendance.archived','No')
-                ->join('sponsor_type', 'patient_attendance.sponsor_type_id', '=', 'sponsor_type.sponsor_type_id')
-                ->join('patient_info', 'patient_info.patient_id', '=', 'patient_attendance.patient_id')
-                ->join('gender', 'gender.gender_id', '=', 'patient_info.gender_id')
-                // ->join('sponsors', 'patient_attendance.sponsor_id', '=', 'sponsors.sponsor_id')
-                ->join('service_attendance_type', 'service_attendance_type.attendance_type_id', '=', 'patient_attendance.attendance_type_id')
-                ->select(
-                        'patient_attendance.attendance_id',
-                         DB::raw('upper(patient_info.fullname) as fullname'),
-                        'patient_info.gender_id', 
-                        'patient_attendance.opd_number', 
-                        'patient_attendance.attendance_date', 
-                        'patient_attendance.status', 
-                        // 'sponsors.sponsor_name',
-                        'patient_attendance.full_age', 'gender.gender', 'service_attendance_type.attendance_type as clinic', 
-                        // 'sponsor_type.sponsor_type as sponsor', 
-                        'sponsor_type.sponsor_type_id as sponsor_type_id',
-                        'sponsor_type.sponsor_type as sponsor_type',
-                        'patient_attendance.issue_id' ,'patient_attendance.attendance_type')
-                // ->whereIn('patient_attendance.issue_id', ['0', '1'])
-                // ->whereBetween('patient_attendance.attendance_date', [$start_date, $end_date])
-                 
-                ->orderBy('patient_attendance.attendance_id', 'desc')
-                ->get();
+                ->orderByDesc('patient_attendance.attendance_id');
+                
+            $pending   = (clone $base_query)->where('patient_attendance.issue_id', 0)->get();
+            $waiting   = (clone $base_query)->where('patient_attendance.issue_id', 2)->get();
+            $completed = (clone $base_query)->where('patient_attendance.issue_id', 3)->get();
+            $on_hold   = (clone $base_query)->where('patient_attendance.issue_id', 4)->get();
             
-            return view('consultation.index', compact('waiting', 'pending', 'on_hold', 'completed')); 
+        return view('consultation.index', compact('waiting', 'pending', 'on_hold', 'completed')); 
     }
+
+    /**
+     * Put a patient attendance on hold
+     * 
+     * @param string $attendance_id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function hold_attendance(Request $request, $attendance_id)
+    {
+        try {
+            $attendance = PatientAttendance::findOrFail($attendance_id);
+            $attendance->issue_id = '2'; // 2 for hold status
+            $attendance->save();
+            
+            return response()->json([
+                'success' => true,
+                'message' => 'Patient attendance put on hold successfully'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error putting attendance on hold: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Remove hold status from a patient attendance
+     * 
+     * @param string $attendance_id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function unhold_attendance(Request $request, $attendance_id)
+    {
+        try {
+            $attendance = PatientAttendance::findOrFail($attendance_id);
+            $attendance->issue_id = '0'; // 0 for normal status
+            $attendance->save();
+            
+            return response()->json([
+                'success' => true,
+                'message' => 'Patient attendance unheld successfully'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error unholding attendance: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
     public function create()
     {
 
@@ -412,19 +382,19 @@ class ConsultationController extends Controller
         }
     }
 
-    public function hold_attendance($attendance_id)
-    {
-            try {
-                // Update the issue_id field to '2' for on-hold status
-                DB::table('patient_attendance')
-                    ->where('attendance_id', $attendance_id)
-                    ->update(['issue_id' => '2']);
+    // public function hold_attendance_($attendance_id)
+    // {
+    //         try {
+    //             // Update the issue_id field to '2' for on-hold status
+    //             DB::table('patient_attendance')
+    //                 ->where('attendance_id', $attendance_id)
+    //                 ->update(['issue_id' => '2']);
                 
-                return response()->json(['success' => true]);
-            } catch (\Exception $e) {
-                return response()->json(['success' => false, 'message' => $e->getMessage()]);
-            }
-    }
+    //             return response()->json(['success' => true]);
+    //         } catch (\Exception $e) {
+    //             return response()->json(['success' => false, 'message' => $e->getMessage()]);
+    //         }
+    // }
 
     public function resume_attendance($attendance_id)
     {
