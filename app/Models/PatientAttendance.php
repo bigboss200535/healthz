@@ -59,7 +59,7 @@ class PatientAttendance extends Model
         'status_code',
         'facility_id',
         'insured',
-        'service_issued',
+        'issue_id',
         'attendance_date',
         'attendance_time',
         'attendance_type',

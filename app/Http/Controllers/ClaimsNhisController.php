@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Claim;
 use App\Models\Patient;
-// use App\Models\Patient;
+use App\Models\Specialty;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
@@ -16,7 +16,11 @@ class ClaimsNhisController extends Controller
   
     public function index()
     {
-        return view('claims.nhis.index'); 
+        $specialties = Specialty::where('archived', 'No')
+        ->orderBy('mdc', 'asc')
+        ->get();
+        
+        return view('claims.nhis.index', compact('specialties')); 
     }
         
     public function create()

@@ -77,10 +77,10 @@ class DatabaseSeeder extends Seeder
               ]);
             }
 
-         foreach ($patients as $relation) {
-                \App\Models\PatientRelations::factory()->create([
-                'patient_id' => $relation->patient_id,
-                // 'opd_number' => $relation->opd_number,
+            foreach ($patients as $relation) {
+                    \App\Models\PatientRelations::factory()->create([
+                    'patient_id' => $relation->patient_id,
+                    // 'opd_number' => $relation->opd_number,
             ]);
             }
 
@@ -88,6 +88,14 @@ class DatabaseSeeder extends Seeder
                 \App\Models\PatientAppointments::factory()->create([
                 'patient_id' => $appointment->patient_id,
                 'opd_number' => $appointment->opd_number,
+            ]);
+            }
+
+         foreach ($patients as $patient_sponsor) {
+                // PatientSponsor::factory()->count(10)->create();
+                \App\Models\PatientSponsor::factory()->create([
+                'patient_id' => $patient_sponsor->patient_id,
+                'opd_number' => $patient_sponsor->opd_number,
             ]);
             }
 

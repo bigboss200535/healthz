@@ -1,6 +1,5 @@
 <x-app-layout>
  <div class="container-xxl flex-grow-1 container-p-y">
-     
 <div class="card mb-6">
   <div class="card-widget-separator-wrapper">
     <div class="card-body card-widget-separator">
@@ -44,16 +43,10 @@
                         <b>Completed List</b>
                       </button>
                     </li>
-                    <!-- <li class="nav-item">
-                      <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#navs_admission" aria-controls="navs_admission" aria-selected="false">
-                        <b>Admission List</b>
-                      </button>
-                    </li> -->
                   </ul>
                   <div class="tab-content">
                     <div class="tab-pane fade show active" id="navs-top-home" role="tabpanel">
                        <h4>Patient Waiting List</h4>
-                       
                        <!-- Add date filter controls -->
                        <div class="row mb-3">
                          <div class="col-md-3">
@@ -122,7 +115,7 @@
                                                     <i class="bx bx-pause me-1"></i> Hold
                                                   </a>
                                                   <a class="dropdown-item product_delete_btn" data-id="{{ $wait->attendance_id}}" href="#">
-                                                      <i class="bx bx-trash me-1"></i> Delete
+                                                    <i class="bx bx-trash me-1"></i> Delete
                                                   </a>
                                             </div>
                                    </div>  
@@ -188,7 +181,6 @@
                             @php
                               $counter = 1;
                             @endphp
-
                             @foreach($pending as $pend)
                             <tr>
                               <td>{{ $counter++ }}</td>
@@ -205,13 +197,13 @@
                               <td>{{ $pend->clinic }}</td>
                               <td class="text-nowrap text-sm-end" align="left">
                                   @if($pend->status === 'Active')
-                                  <span class="badge bg-label-info me-1">Active</span>
+                                     <span class="badge bg-label-info me-1">Active</span>
                                   @elseif ($pend->status === 'Inactive')
-                                  <span class="badge bg-label-danger me-1">Inactive</span>
+                                     <span class="badge bg-label-danger me-1">Inactive</span>
                                   @endif
                               </td>
                               <td class="text-lg-center">
-                                  <div class="dropdown" align="center">
+                                  <div class="dropdown">
                                           <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
                                               <i class="bx bx-dots-vertical-rounded"></i>
                                           </button>
@@ -285,7 +277,6 @@
                             @php
                               $counter = 1;
                             @endphp
-
                             @foreach($on_hold as $hold)
                             <tr>
                               <td>{{ $counter++ }}</td>
@@ -301,22 +292,21 @@
                               <td>{{ $hold->pat_age }}</td>
                               <td> <span class="badge bg-label-info me-1">{{ $hold->sponsor_type }}</span></td>
                               <td>{{ $hold->clinic }}</td>
-                             
                               <td class="text-lg-center">
-                                  <div class="dropdown" align="center">
+                                  <div class="dropdown">
                                           <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
                                               <i class="bx bx-dots-vertical-rounded"></i>
                                           </button>
                                             <div class="dropdown-menu">
                                                 <a class="dropdown-item" href="/consultation/opd-consultation/{{ $hold->attendance_id }}">
                                                     <i class="bx bx-edit-alt me-1"></i> Consult
-                                                  </a>
-                                                 <a class="dropdown-item unhold-btn" href="#" data-id="{{ $hold->attendance_id }}">
+                                                </a>
+                                                <a class="dropdown-item unhold-btn" href="#" data-id="{{ $hold->attendance_id }}">
                                                     <i class="bx bx-play me-1"></i> Unhold
-                                                  </a>
-                                                  <a class="dropdown-item product_delete_btn" data-id="{{ $hold->attendance_id}}" href="#">
+                                                </a>
+                                                <a class="dropdown-item product_delete_btn" data-id="{{ $hold->attendance_id}}" href="#">
                                                       <i class="bx bx-trash me-1"></i> Delete
-                                                  </a>
+                                                </a>
                                             </div>
                                    </div>  
                               </td>
@@ -340,7 +330,7 @@
                           </table>
                       <!-- </p> -->
                     </div>
-                 
+                
                   <div class="tab-pane fade" id="navs_completed" role="tabpanel">
                        <h4> Consultation Completed</h4>
                           <table class="table table-responsive" id="patient_services">

@@ -120,7 +120,8 @@
         
         // Make AJAX request to search patients
         $.ajax({
-            url: '{{ route("patient.search") }}',
+           
+            url: '{{ route("patient.fetch") }}',
             type: 'GET',
             data: {
                 search_type: 'basic',

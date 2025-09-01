@@ -144,6 +144,10 @@ class ConsultationController extends Controller
             'service_id' => 'nullable|string|max:20',
         ]);
 
+        $attendance_status = PatientAttendance::findOrFail($validated_data['attendance_id']);
+        $attendance_status->issue_id = '1'; // 1 for issued status
+        $attendance_status->save();
+
         $patient = $this->patient_by_id($request->input('patient_id'));
         $records_no = intval(Consultation::all()->count()) + 1;
         $age_group = AgeGroups::get_category_from_age($patient->age);
@@ -199,8 +203,8 @@ class ConsultationController extends Controller
                    ]);
             
                     // Update patient attendance status if needed
-                 PatientAttendance::where('attendance_id', $validated_data['attendance_id'])
-                        ->update(['issue_id' => '1']);
+                //  PatientAttendance::where('attendance_id', $validated_data['attendance_id'])
+                //         ->update(['issue_id' => '1']);
 
                 DB::commit();
             
@@ -382,19 +386,6 @@ class ConsultationController extends Controller
         }
     }
 
-    // public function hold_attendance_($attendance_id)
-    // {
-    //         try {
-    //             // Update the issue_id field to '2' for on-hold status
-    //             DB::table('patient_attendance')
-    //                 ->where('attendance_id', $attendance_id)
-    //                 ->update(['issue_id' => '2']);
-                
-    //             return response()->json(['success' => true]);
-    //         } catch (\Exception $e) {
-    //             return response()->json(['success' => false, 'message' => $e->getMessage()]);
-    //         }
-    // }
 
     public function resume_attendance($attendance_id)
     {

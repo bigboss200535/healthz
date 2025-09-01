@@ -28,14 +28,15 @@
           <div class="row mb-3">
             <div class="col">
               <label class="form-label" for="start_date">Start Date <a style="color: red;">*</a></label>
-              <input type="date" class="form-control" id="begin_date" name="begin_date" placeholder="Start End">
+              <input type="date" class="form-control" id="begin_date" name="begin_date" placeholder="Start End" value="<?php echo date('Y-m-d'); ?>">
             </div>
             <div class="col">
-              <label class="form-label" for="end_date">Specialty <a style="color: red;">*</a></label>
-              <select  class="form-control" id="report_type" name="report_type">
+              <label class="form-label" for="specialty_type">Specialty <a style="color: red;">*</a></label>
+              <select  class="form-control" id="specialty_type" name="specialty_type">
                 <option selected disabled>-Select-</option>
-                <!--  -->
-                <!-- <option value="user_logs">User Logs</option> -->
+                 @foreach($specialties as $specialty)                                        
+                      <option value="{{ $specialty->mdcs_id}}">{{ strtoupper($specialty->mdc) }}</option>
+                 @endforeach
               </select>
             </div>
             <div class="col">
@@ -45,12 +46,11 @@
                 <option value="All">All</option>
                 <option value="IPD">IPD</option>
                 <option value="OPD">OPD</option>
-                <!-- <option value="users">With Diagnosis</option>
-                <option value="users">With Drugs</option>
-                <option value="users">With Diagnosis and Drugs</option>
-                <option value="users">Without Drugs</option>
-                <option value="users">Without Diagnosis</option> -->
-                <!-- <option value="user_logs">User Logs</option> -->
+                <!-- <option value="with_diagnosis">With Diagnosis</option>
+                <option value="without_diagnosis">With Drugs</option>
+                <option value="with_diagnosis_and_drugs">With Diagnosis and Drugs</option>
+                <option value="without_drugs">Without Drugs</option>
+                <option value="without_diagnosis">Without Diagnosis</option> -->
               </select>
             </div>
           </div>
@@ -58,7 +58,7 @@
           <div class="row mb-3">
             <div class="col">
               <label class="form-label" for="start_date">End Date <a style="color: red;">*</a></label>
-              <input type="date" class="form-control" id="begin_date" name="begin_date" placeholder="Start End">
+              <input type="date" class="form-control" id="begin_date" name="begin_date" placeholder="Start End" value="<?php echo date('Y-m-d'); ?>">
             </div>
             <div class="col">
               <label class="form-label" for="end_date">No of Claims <a style="color: red;">*</a></label>

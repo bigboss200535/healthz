@@ -3,9 +3,13 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+
 
 class PatientSponsor extends Model
 {
+    use HasFactory;
+    
     protected $table = 'patient_sponsorship';
     protected $primaryKey = 'patient_sponsor_id';
     public $timestamps = false;
@@ -36,7 +40,6 @@ class PatientSponsor extends Model
         'archived_by',
         'archived_id',
         'archived_date',
-       '_token'
     ];
     
     public function patient()

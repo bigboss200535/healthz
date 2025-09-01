@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('specialty_code', 50)->nullable();
             $table->string('is_capitation', 50)->nullable();
             $table->string('code', 100)->index();
+            $table->string('usage', 50)->nullable()->default('0');
             $table->string('facility_id', 50)->nullable();
             $table->string('user_id', 100)->nullable();
             $table->timestamp('added_date')->nullable();

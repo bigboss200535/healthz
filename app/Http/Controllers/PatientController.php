@@ -495,7 +495,7 @@ class PatientController extends Controller
     }
 
 
-    public function search(Request $request)
+    public function search_patients(Request $request)
     {
             $search_type = $request->input('search_type', 'basic');
 

@@ -26,20 +26,19 @@
   <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5DDHKGP" height="0" width="0" style="display: none; visibility: hidden"></iframe></noscript>
   <!-- End Google Tag Manager (noscript) -->
    <!-- Content -->
-
    <!-- Error -->
-<div class="container-xxl container-p-y">
-  <div class="misc-wrapper">
-    <h1 class="mb-2 mx-2" style="line-height: 6rem;font-size: 6rem;"> @yield('code')</h1>
-    <h4 class="mb-2 mx-2"> @yield('message') ⚠️</h4>
-    <p class="mb-6 mx-2">We couldn't find the page you are looking for</p>
-    <a href="/dashboard" class="btn btn-primary">Back to home</a>
-    <br>
-    <div class="mt-6">
-      <img src="{{ asset('img/illustrations/page-misc-error-light.png')}}" alt="page-misc-error-light" width="500" class="img-fluid" data-app-light-img="illustrations/page-misc-error-light.png" data-app-dark-img="illustrations/page-misc-error-dark.png">
-    </div>
-  </div>
-</div>
+      <div class="container-xxl container-p-y">
+        <div class="misc-wrapper">
+          <h1 class="mb-2 mx-2" style="line-height: 6rem;font-size: 6rem;"> @yield('code')</h1>
+          <h4 class="mb-2 mx-2"> @yield('message') ⚠️</h4>
+          <p class="mb-6 mx-2">We couldn't find the page you are looking for</p>
+          <a href="/dashboard" class="btn btn-primary">Back to home</a>
+          <br>
+          <div class="mt-6">
+            <img src="{{ asset('img/illustrations/page-misc-error-light.png')}}" alt="page-misc-error-light" width="500" class="img-fluid" data-app-light-img="illustrations/page-misc-error-light.png" data-app-dark-img="illustrations/page-misc-error-dark.png">
+          </div>
+        </div>
+      </div>
 <!-- /Error -->`    
   <script src="{{ asset('vendor/libs/jquery/jquery.js') }}"></script>
   <script src="{{ asset('vendor/libs/popper/popper.js') }}"></script>
