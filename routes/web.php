@@ -158,6 +158,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::prefix('claims_code')->group(function () {
         Route::post('/save-ccc', [NotificationController::class, 'send_sms'])->name('notifications.save-ccc');
     });
+
+    Route::prefix('claims')->group(function (){
+        Route::post('/generate', [ClaimsController::class, 'generate'])->name('claims.generate');
+        Route::post('/reprocess', [ClaimsController::class, 'reprocess'])->name('claims.reprocess');
+    });
     
     // Route::get('patient/attendance/{patient_id}', [PatientVisitsController::class, 'show'])->name('attendance.show');
     // Route::get('/services/{clinic}/get_specialty', [ServiceRequestController::class, 'getspecialties']);
