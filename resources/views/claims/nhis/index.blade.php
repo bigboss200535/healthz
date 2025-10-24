@@ -2,18 +2,10 @@
 <div class="container-xxl flex-grow-1 container-p-y">    
           <div class="app-ecommerce">
         <div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
-        <div class="d-flex flex-column justify-content-center">
-          <h4 class="mb-1 mt-3">NHIS Claims Management</h4>
-          <p class="text-muted">Real-time claims monitoring and modifications</p>
-        </div>
-        <div class="d-flex align-content-center flex-wrap gap-3">
-                    <button class="btn btn-primary" onclick="refreshClaims()">
-                        <i class="bx bx-refresh"></i> Refresh
-                    </button>
-                    <a href="/export-claims" class="btn btn-success">
-                        <i class="bx bx-download"></i> Export XML
-                    </a>
-                </div>
+            <div class="d-flex flex-column justify-content-center">
+                <h4 class="mb-1 mt-3">NHIS Claims Management</h4>
+                  <p class="text-muted">Real-time claims monitoring and modifications</p>
+            </div>
       </div>
   <div class="row">
    <div class="col-12 col-lg-12">
@@ -27,22 +19,17 @@
            <!------------------------>
           <div class="row mb-3">
             <div class="col">
-              <label class="form-label" for="start_date">Start Date <a style="color: red;">*</a></label>
+              <label class="form-label" for="begin_date">Start Date <a style="color: red;">*</a></label>
               <input type="date" class="form-control" id="begin_date" name="begin_date" placeholder="Start End" value="<?php echo date('Y-m-d'); ?>">
             </div>
-            <div class="col">
-              <label class="form-label" for="specialty_type">Specialty <a style="color: red;">*</a></label>
-              <select  class="form-control" id="specialty_type" name="specialty_type">
-                <option selected disabled>-Select-</option>
-                 @foreach($specialties as $specialty)                                        
-                      <option value="{{ $specialty->mdcs_id}}">{{ strtoupper($specialty->mdc) }}</option>
-                 @endforeach
-              </select>
+           <div class="col">
+              <label class="form-label" for="end_date">End Date <a style="color: red;">*</a></label>
+              <input type="date" class="form-control" id="end_date" name="end_date" placeholder="End End" value="<?php echo date('Y-m-d'); ?>">
             </div>
+            
             <div class="col">
-              <label class="form-label" for="report_type">Claims Type <a style="color: red;">*</a></label>
-              <select  class="form-control" id="report_type" name="report_type">
-                <option selected disabled>-Select-</option>
+              <label class="form-label" for="claims_type">Claims Type <a style="color: red;">*</a></label>
+              <select  class="form-control" id="claims_type" name="claims_type">
                 <option value="All">All</option>
                 <option value="IPD">IPD</option>
                 <option value="OPD">OPD</option>
@@ -57,30 +44,34 @@
           <!------------------------->
           <div class="row mb-3">
             <div class="col">
-              <label class="form-label" for="start_date">End Date <a style="color: red;">*</a></label>
-              <input type="date" class="form-control" id="begin_date" name="begin_date" placeholder="Start End" value="<?php echo date('Y-m-d'); ?>">
+              <label class="form-label" for="specialty_type">Specialty <a style="color: red;">*</a></label>
+              <select  class="form-control" id="specialty_type" name="specialty_type">
+                <option selected disabled>-Select-</option>
+                 @foreach($specialties as $specialty)                                        
+                      <option value="{{ $specialty->mdcs_id}}">{{ strtoupper($specialty->mdc) }}</option>
+                 @endforeach
+              </select>
             </div>
             <div class="col">
               <label class="form-label" for="end_date">No of Claims <a style="color: red;">*</a></label>
-              <input type="number" class="form-control" id="ending_date" name="ending_date">
+              <input type="number" class="form-control" id="claims_no" name="claims_no">
             </div>
             <div class="col">
               <label class="form-label" for="report_type">Report Type <a style="color: red;">*</a></label>
               <select  class="form-control" id="report_type" name="report_type">
-                <option selected disabled>-Select-</option>
-                <option value="users">All</option>
-                <option value="users">Vetted</option>
-                <option value="user_logs">Unvetted</option>
+                <option value="All">All</option>
+                <option value="Vetted">Vetted</option>
+                <option value="Not Vetted">Unvetted</option>
               </select>
             </div>
           </div>
-          <!-------------------------->
+          <!--------------->
         </div>
       </div>
     </div>
     <div class="d-flex align-content-center flex-wrap gap-3">
-      <button type="submit" class="btn btn-primary" onclick="loadClaims()">Fetch Claims</button>
-      <!-- <button type="reset" class="btn btn-label-secondary">clear</button> -->
+      <button type="submit" class="btn btn-primary" onclick="loadClaims()"><i class="bx bx-upload"></i> Fetch</button>
+      <button class="btn btn-label-danger" onclick="refreshClaims()"><i class="bx bx-refresh"></i> Refresh</button>
     </div>
   </form>
   </div>
@@ -90,19 +81,13 @@
    <div class="col-12 col-lg-12">
       <div class="card mb-4">
         <div class="card-header">
-          <h5 class="card-tile mb-0"><b>Claims Details</b></h5>
-          <br> 
-              <div class="bulk-actions col-3 pull-right" >
-                        <select class="form-select" id="bulkAction">
-                        <option selected disabled></option>
-                            <option>Vetted Selected</option>
-                            <option>Unvetted Selected</option>
-                            <!-- <option>Export Selected</option> -->
-                        </select>
-                        <button class="btn btn-outline-primary" onclick="processBulkActions()">
-                            Apply
-                        </button>
-                    </div>
+             <h5 class="card-tile mb-0"><b>Claims Details</b></h5>
+              <br> 
+              <div class="bulk-actions col-3" >
+                    <a href="#" class="btn btn-success">
+                        <i class="bx bx-download"></i> Export XML
+                    </a>
+              </div>
         </div>
         <div class="card-body">
                     <div class="table-responsive">

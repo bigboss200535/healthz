@@ -17,8 +17,9 @@ class ClaimsNhisController extends Controller
     public function index()
     {
         $specialties = Specialty::where('archived', 'No')
-        ->orderBy('mdc', 'asc')
-        ->get();
+            ->where('usage', '1')
+            ->orderBy('mdc', 'asc')
+            ->get();
         
         return view('claims.nhis.index', compact('specialties')); 
     }
@@ -65,6 +66,7 @@ class ClaimsNhisController extends Controller
                     $report = $this->create_report($process_data);
                     $this->sendReport($report);
                     Log::info('Claims generated successfully');
+                    
                 } catch (\Exception $e) {
                     Log::error('Error generated claims: ' . $e->getMessage());
                 } finally{
