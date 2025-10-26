@@ -138,8 +138,6 @@
     <div class="card-body card-widget-separator">
       <div class="row gy-4 gy-sm-1">
         <div class="col-sm-6 col-lg-12">
-          
-        
             <h4 align="center">-Kingly select a date to display attendace or Create an attendance-</h4>
         </div>
       </div>

@@ -331,7 +331,7 @@
                 <div class="btn-group">
                         <button type="button" data-bs-toggle='modal' data-bs-target="#claims_check_code" class="btn btn-sm btn-info">GET CCC </button>
                         <button type="button" class="btn btn-sm btn-warning edit-btn">EDIT PATIENT</button>
-                        <button type="button" data-bs-toggle='modal' data-bs-target="#add_attendance" class="btn btn-sm btn-primary">NEW ATTENDANCE</button>
+                        <button type="button" data-bs-toggle='modal' data-bs-target="#add_attendances" class="btn btn-sm btn-primary">NEW ATTENDANCE</button>
                 </div>
               </td>
               @elseif($patients->death_status==='Yes')
@@ -391,7 +391,7 @@
 </div>   
 <!-----------****************************----------------------------------------->
 <!-- service_request Modal -->
-<div class="modal fade" id="add_attendance" tabindex="-1" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+<div class="modal fade" id="add_attendances" tabindex="-1" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
   <div class="modal-dialog modal-lg modal-simple modal-add-new-address">
     <div class="modal-content">
       <div class="modal-body">
@@ -404,11 +404,11 @@
         <form id="service_request_form" class="row g-6" onsubmit="return false">
           @csrf
           <div id="success_diplay" class="container mt-6"></div>
-            <input type="text" name="patient_id" id="patient_id" value="{{ $patients->patient_id }}" hidden>
-            <input type="text" name="service_id" id="service_id" hidden>
-            <input type="text" name="service_fee_id" id="service_fee_id" hidden>
-            <input type="text" name="top_up" id="top_up" value="0.00" hidden>
-            <input type="text" name="opd_number" id="opd_number" value="{{ $patients->opd_number}}" hidden>
+            <input type="text" name="patient_id" id="patient_id" value="{{ $patients->patient_id }}">
+            <input type="text" name="service_id" id="service_id" placeholder="service id">
+            <input type="text" name="service_fee_id" id="service_fee_id" placeholder="service fee id">
+            <input type="text" name="top_up" id="top_up" value="0.00" placeholder="top up">
+            <input type="text" name="opd_number" id="opd_number" value="{{ $patients->opd_number}}">
           <div class="col-12 col-md-6">
             <label class="form-label" for="service_point_id">Service Clinic</label>
              <select name="service_point_id" id="service_point_id" class="form-control">
@@ -525,7 +525,7 @@
     </div>
   </div>
 </div>
-<!--/ service_request Modal -->
+<!--/ check claims code Modal -->
 <!-- ----------------------------------------****************************---------------------------------------------------------- -->
 
 </x-app-layout>

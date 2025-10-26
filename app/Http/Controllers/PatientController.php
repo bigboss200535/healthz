@@ -508,7 +508,9 @@ class PatientController extends Controller
                 $search_patient = Patient::query()
                 ->join('patient_nos', 'patient_nos.patient_id', '=', 'patient_info.patient_id',)
                     ->where(function ($query) use ($search_term) {
-                        $query->where('telephone', 'like', '%' . $search_term . '%');
+                        $query->where('telephone', 'like', '%' . $search_term . '%')
+                         ->orWhere('firstname', 'like', '%' . $search_term . '%')
+                         ->orWhere('lastname', 'like', '%' . $search_term . '%');
                     })
                     // ->get();
                     ->paginate(50);
@@ -517,8 +519,8 @@ class PatientController extends Controller
                     $search_patient = PatientSponsor::query()
                     ->join('patient_info', 'patient_info.patient_id', '=', 'patient_sponsorship.patient_id')
                         ->where(function ($query) use ($search_term) {
-                            $query->where('opd_number', 'like', '%' . $search_term . '%')
-                                ->orWhere('member_no', 'like', '%' . $search_term . '%');
+                            $query->where('opd_number', '=', '%' . $search_term . '%');
+                                // ->orWhere('member_no', '=', '". $search_term . "');
                         })
                         // ->get();
                         ->paginate(50);

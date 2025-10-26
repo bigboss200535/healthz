@@ -240,14 +240,17 @@
                                         <i class="bx bx-dots-vertical-rounded"></i>
                                     </button>
                                     <div class="dropdown-menu">
-                                        <a class="dropdown-item" href="{{ url('patients') }}/${patient.patient_id}">
-                                            <i class="bx bx-show me-1"></i> More
-                                        </a>
-                                        <a class="dropdown-item" href="{{ url('visits/create') }}/${patient.patient_id}">
-                                            <i class="bx bx-plus-circle me-1"></i> New Visit
+                                        <a class="dropdown-item" href="#" data-bs-toggle='modal' data-bs-target='#add_attendance' 
+                                                data-patient-id='${ patient.patient_id }' 
+                                                data-attendance-id='${ patient.attendace_id ?? ''}'
+                                                data-opdnumber-id='${patient.opd_number }'>
+                                            <i class="bx bx-plus me-1"></i> New Attendance
                                         </a>
                                         <a class="dropdown-item" href="{{ url('#') }}/${patient.patient_id}">
-                                            <i class="bx bx-plus me-1"></i> Manage Sponsors
+                                            <i class="bx bx-wallet-alt me-1"></i> Manage Sponsors
+                                        </a>
+                                        <a class="dropdown-item" href="{{ url('patients') }}/${patient.patient_id}">
+                                            <i class="bx bx-folder-open me-1"></i> View Details
                                         </a>
                                     </div>
                                 </div>
