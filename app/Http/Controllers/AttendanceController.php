@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Models\PatientSponsor;
+use App\Models\PatientOpdNumber;
 use App\Models\Patient;
 use App\Models\Age;
 use App\Models\AgeGroups;
@@ -437,5 +438,106 @@ class AttendanceController extends Controller
            }  
     }
 
+    // public function attendance_clinic(Request $request, $opd_number)
+    // {
+    //      $decoded_opd_number = urldecode($opd_number);
+    //     //   \Log::info('Fetching clinics for OPD:', ['opd_number' =>$decoded_opd_number]);
+    //         try {
 
+    //             $patients = PatientOpdNumber::where('patient_nos.opd_number',$decoded_opd_number)
+    //                 ->join('patient_info', 'patient_info.patient_id', '=', 'patient_nos.patient_id')
+    //                 ->where('patient_nos.patient_id', $patient_id)
+    //                 ->select(
+    //                     'patient_info.patient_id', 
+    //                     'patient_nos.opd_number', 
+    //                     'patient_info.birth_date', 
+    //                     'patient_info.address', 
+    //                     'patient_info.gender_id', 
+    //                     DB::raw('TIMESTAMPDIFF(YEAR, patient_info.birth_date, CURDATE()) as patient_age')
+    //                 )->firstOrFail();
+
+    //             $ages = Age::where('min_age', '<=', $patients->patient_age)
+    //                 ->where('max_age', '>=', $patients->patient_age)
+    //                 ->where('usage', '0')
+    //                 ->first();
+
+    //             if (!$ages) {
+    //                 return response()->json(['error' => 'No age group found'], 404);
+    //             }
+
+    //             $clinic_attendance = ServicePoints::select('service_point_id', 'service_points', 'gender_id', 'age_id')
+    //                 ->where(function ($query) use ($patients) {
+    //                     $query->where('gender_id', $patients->gender_id)
+    //                         ->orWhere('gender_id', 1); // All gender
+    //                 })
+    //                 ->where(function ($query) use ($ages) {
+    //                     $query->where('age_id', $ages->age_id)
+    //                         ->orWhere('age_id', 3); // All age group
+    //                 })
+    //                 ->where('archived', 'No')
+    //                 ->where('is_active', 'Yes')
+    //                 ->get();
+
+    //             return response()->json($clinic_attendance);
+
+    //         } catch (\Exception $e) {
+    //             return response()->json(['error' => 'Patient not found'], 404);
+    //         }
+    //     }
+    public function attendance_clinic(Request $request, $opd_number)
+    {
+        $decoded_opd_number = urldecode($opd_number);
+        $patient_id = $request->get('patient_id'); // Get patient_id from query parameter
+
+        \Log::info('Fetching clinics for OPD:', ['opd_number' => $decoded_opd_number, 'patient_id' => $patient_id]);
+        
+        try {
+            if (!$patient_id) {
+                return response()->json(['error' => 'Patient ID is required'], 400);
+            }
+
+            $patients = PatientOpdNumber::where('patient_nos.opd_number', $decoded_opd_number)
+                ->join('patient_info', 'patient_info.patient_id', '=', 'patient_nos.patient_id')
+                ->where('patient_nos.patient_id', $patient_id)
+                ->select(
+                    'patient_info.patient_id', 
+                    'patient_nos.opd_number', 
+                    'patient_info.birth_date', 
+                    'patient_info.address', 
+                    'patient_info.gender_id', 
+                    DB::raw('TIMESTAMPDIFF(YEAR, patient_info.birth_date, CURDATE()) as patient_age')
+                )->firstOrFail();
+
+            $ages = Age::where('min_age', '<=', $patients->patient_age)
+                ->where('max_age', '>=', $patients->patient_age)
+                ->where('usage', '0')
+                ->first();
+
+            if (!$ages) {
+                return response()->json(['error' => 'No age group found'], 404);
+            }
+
+            $clinic_attendance = ServicePoints::select('service_point_id', 'service_points', 'gender_id', 'age_id')
+                ->where(function ($query) use ($patients) {
+                    $query->where('gender_id', $patients->gender_id)
+                        ->orWhere('gender_id', 1); // All gender
+                })
+                ->where(function ($query) use ($ages) {
+                    $query->where('age_id', $ages->age_id)
+                        ->orWhere('age_id', 3); // All age group
+                })
+                ->where('archived', 'No')
+                ->where('is_active', 'Yes')
+                ->get();
+
+            return response()->json($clinic_attendance);
+
+        } catch (\Exception $e) {
+            \Log::error('Error fetching attendance clinics: ' . $e->getMessage());
+            return response()->json(['error' => 'Patient not found'], 404);
+        }
+    }
+
+
+           
 }

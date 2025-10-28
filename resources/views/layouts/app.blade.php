@@ -76,6 +76,7 @@
       <!-- Overlay -->
       <div class="layout-overlay layout-menu-toggle"></div>
     </div>
+   
     <!-- service_request Modal -->
             <div class="modal fade" id="add_attendance" tabindex="-1" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
             <div class="modal-dialog modal-lg modal-simple modal-add-new-address">
@@ -127,7 +128,6 @@
                     <div class="col-12 col-md-6">
                         <label class="form-label" for="attendance_type">Attendance Type</label>
                             <select name="attendance_type" id="attendance_type" class="form-control" required>
-                            <!-- <option selected disabled>-Select-</option> -->
                             <option value="NEW">NEW</option>
                             <option value="OLD">OLD</option>
                             </select>
@@ -147,43 +147,234 @@
             </div>
 <!--/ service_request Modal -->
  <!------------------------------------------****************************----------------------------------------------------->
-    <script>
+<!-- <script>
 document.addEventListener('DOMContentLoaded', function () {
     const attendanceModal = document.getElementById('add_attendance');
+    const form = document.getElementById('service_request_form');
 
-    attendanceModal.addEventListener('show.bs.modal', function (event) {
-        const button = event.relatedTarget; // Button that triggered the modal
-
-        // Extract data-* values
+    attendanceModal.addEventListener('show.bs.modal', async function (event) {
+        const button = event.relatedTarget;
+        
+        // Extract data
         const patient_id = button.getAttribute('data-patient-id');
         const attendance_id = button.getAttribute('data-attendance-id');
-         const opdnumber = button.getAttribute('data-opdnumber-id');
+        const opdnumber = button.getAttribute('data-opdnumber-id');
 
-        // Get modal form inputs
-        const patient_input = attendanceModal.querySelector('#patient_id');
-        const opdnumber_input = attendanceModal.querySelector('#opd_number');
-        const attendance_input = attendanceModal.querySelector('#service_id'); // if you use service_id as attendance_id
+        // Set values
+        document.getElementById('patient_id').value = patient_id || '';
+        document.getElementById('service_id').value = attendance_id || '';
+        document.getElementById('opd_number').value = opdnumber || '';
 
-        // Fill values
-        if (patient_input) patient_input.value = patient_id || '';
-        if (attendance_input) attendance_input.value = attendance_id || '';
-        if (opdnumber_input) opdnumber_input.value = opdnumber || '';
+        // Populate service clinics
+        if (opdnumber) {
+            await populateServiceClinics(opdnumber);
+        }
 
-        // Optionally reset other fields for a clean form
-        attendanceModal.querySelector('#credit_amount').value = '';
-        attendanceModal.querySelector('#cash_amount').value = '';
-        attendanceModal.querySelector('#attendance_date').value = new Date().toISOString().split('T')[0];
-        attendanceModal.querySelector('#attendance_type').selectedIndex = 0;
+        // Reset other fields
+        resetFormFields();
     });
 
-    // Optional: clear values on modal close to prevent stale data
-    attendanceModal.addEventListener('hidden.bs.modal', function () {
-        const form = attendanceModal.querySelector('form');
-        if (form) form.reset();
-    });
+    // Form submission
+    form.addEventListener('submit', handleFormSubmission);
 });
-</script>
 
+async function populateServiceClinics(opd_number) {
+     console.log('Fetching clinics for OPD:', opd_number);
+    try {
+        const encoded_opd_number = encodeURIComponent(opd_number);
+        const response = await fetch(`/patient/attendance-clinic/${encoded_opd_number}`);
+        //  const response = await fetch(`/patient/attendance-clinic/${opd_number}`);
+        const clinics = await response.json();
+        
+        const select = document.getElementById('service_point_id');
+        select.innerHTML = '<option disabled>-Select-</option>';
+        
+        clinics.forEach(clinic => {
+            const option = document.createElement('option');
+            option.value = clinic.service_point_id;
+            option.textContent = clinic.service_points;
+            select.appendChild(option);
+        });
+    } catch (error) {
+        console.error('Error fetching clinics:', error);
+        showAlert('Error loading service clinics', 'danger');
+    }
+}
+</script> -->
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const attendanceModal = document.getElementById('add_attendance');
+    const form = document.getElementById('service_request_form');
+
+    // Check if modal exists before adding event listener
+    if (attendanceModal) {
+        attendanceModal.addEventListener('show.bs.modal', async function (event) {
+            const button = event.relatedTarget;
+            
+            // Extract data with validation
+            const patient_id = button.getAttribute('data-patient-id');
+            const attendance_id = button.getAttribute('data-attendance-id');
+            const opdnumber = button.getAttribute('data-opdnumber-id');
+
+            // Validate required data
+            if (!patient_id || !opdnumber) {
+                showAlert('Missing patient data', 'danger');
+                return;
+            }
+
+            // Set values
+            document.getElementById('patient_id').value = patient_id || '';
+            document.getElementById('service_id').value = attendance_id || '';
+            document.getElementById('opd_number').value = opdnumber || '';
+
+            // Populate service clinics and service types
+            try {
+                await Promise.all([
+                    populateServiceClinics(opdnumber, patient_id),
+                    populateServiceTypes()
+                ]);
+            } catch (error) {
+                console.error('Error populating data:', error);
+                showAlert('Error loading form data', 'danger');
+            }
+
+            // Reset other fields
+            resetFormFields();
+            
+            // Set current date as default
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('attendance_date').value = today;
+        });
+    }
+
+    // Form submission
+    if (form) {
+        form.addEventListener('submit', handleFormSubmission);
+    }
+});
+
+async function populateServiceClinics(opd_number, patient_id) {
+    console.log('Fetching clinics for OPD:', opd_number, 'Patient ID:', patient_id);
+    
+    if (!opd_number || !patient_id) {
+        console.error('Missing OPD number or Patient ID');
+        return;
+    }
+
+    try {
+        const encoded_opd_number = encodeURIComponent(opd_number);
+        const response = await fetch(`/patient/attendance-clinic/${encoded_opd_number}?patient_id=${patient_id}`);
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const clinics = await response.json();
+        
+        const select = document.getElementById('service_point_id');
+        if (select) {
+            select.innerHTML = '<option value="" disabled selected>-Select Clinic-</option>';
+            
+            if (clinics.error) {
+                showAlert(clinics.error, 'warning');
+                return;
+            }
+            
+            if (clinics.length === 0) {
+                select.innerHTML = '<option value="" disabled>No clinics available</option>';
+                return;
+            }
+            
+            clinics.forEach(clinic => {
+                const option = document.createElement('option');
+                option.value = clinic.service_point_id;
+                option.textContent = clinic.service_points;
+                select.appendChild(option);
+            });
+        }
+    } catch (error) {
+        console.error('Error fetching clinics:', error);
+        showAlert('Error loading service clinics', 'danger');
+    }
+}
+
+async function populateServiceTypes() {
+    try {
+        // You'll need to implement this based on your service types data source
+        const response = await fetch('/api/service-types'); // Adjust URL as needed
+        const serviceTypes = await response.json();
+        
+        const select = document.getElementById('attendance_type_id');
+        if (select && serviceTypes.length > 0) {
+            select.innerHTML = '<option value="" disabled selected>-Select Service Type-</option>';
+            serviceTypes.forEach(type => {
+                const option = document.createElement('option');
+                option.value = type.id;
+                option.textContent = type.name;
+                select.appendChild(option);
+            });
+        }
+    } catch (error) {
+        console.error('Error fetching service types:', error);
+        // Continue without service types if they're not critical
+    }
+}
+
+function resetFormFields() {
+    const fieldsToReset = [
+        'credit_amount', 
+        'cash_amount', 
+        'gdrg_code'
+    ];
+    
+    fieldsToReset.forEach(fieldId => {
+        const field = document.getElementById(fieldId);
+        if (field) {
+            field.value = '';
+        }
+    });
+    
+    // Reset selects to default
+    const servicePointSelect = document.getElementById('service_point_id');
+    const serviceTypeSelect = document.getElementById('attendance_type_id');
+    
+    if (servicePointSelect) servicePointSelect.selectedIndex = 0;
+    if (serviceTypeSelect) serviceTypeSelect.selectedIndex = 0;
+    
+    // Set current date
+    const today = new Date().toISOString().split('T')[0];
+    const dateField = document.getElementById('attendance_date');
+    if (dateField) dateField.value = today;
+}
+
+function handleFormSubmission(event) {
+    event.preventDefault();
+    
+    // Add your form submission logic here
+    console.log('Form submission handled');
+    // Implement form validation and AJAX submission
+}
+
+function showAlert(message, type) {
+    const alertContainer = document.querySelector('.alert-container');
+    if (alertContainer) {
+        const alert = document.createElement('div');
+        alert.className = `alert alert-${type} alert-dismissible fade show`;
+        alert.innerHTML = `
+            ${message}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        `;
+        alertContainer.appendChild(alert);
+        
+        // Auto remove after 5 seconds
+        setTimeout(() => {
+            if (alert.parentNode) {
+                alert.remove();
+            }
+        }, 5000);
+    }
+}
+</script>
     <script src="{{ asset('vendor/libs/jquery/jquery.js') }}"></script>
     <script src="{{ asset('vendor/libs/popper/popper.js') }}"></script>
     <script src="{{ asset('vendor/js/bootstrap.js') }}"></script>

@@ -8,7 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class PatientOpdNumber extends Model
 {
     use HasFactory;
-
+    use HasUuids;
+    
     protected $table = 'patient_nos';
     // protected $primaryKey = 'patient_id';
     public $timestamps = false;

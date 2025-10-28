@@ -71,7 +71,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/export/word', [App\Http\Controllers\PatientReportController::class, 'exportWord'])->name('export.word');
     });
 
+   
+
     Route::prefix('patient')->group(function () {
+        // Route::get('/attendance-clinic', [AttendanceController::class, 'attendance_clinic'])->where('opd_number', '[A-Z0-9]+/[0-9]+');
+        Route::get('/attendance-clinic/{opd_number}', [AttendanceController::class, 'attendance_clinic']);
+        
         Route::get('/attendance', [AttendanceController::class, 'index'])->name('attendance.index');
         Route::get('/fetch', [PatientController::class, 'search_patients'])->name('patient.fetch');
         Route::get('/search', [PatientController::class, 'index'])->name('patient.index');
@@ -82,6 +87,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/current-attendance/{patient_id}', [AttendanceController::class, 'current_attendance'])->name('patient.current_attendance');
         Route::get('/appointments', [AppointmentController::class, 'index'])->name('appointments.index');
         Route::get('/sponsors', [PatientController::class, 'list_all_patient_sponsors'])->name('patient.list_all_patient_sponsors');
+       
         
         Route::get('/investigations', [InvestigationController::class, 'index'])->name('investigations.index');
         Route::get('/add-labs/{attendance_id}', [InvestigationController::class, 'add_results']);

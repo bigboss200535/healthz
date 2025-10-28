@@ -49,7 +49,7 @@
                       <div class="col">
                         <label class="form-label" for="title">Title <span class="text-danger">*</span></label>
                         <select name="title" id="title" class="form-control">
-                          <option disabled selected>-Select-</option>
+                             <option disabled selected>-Select-</option>
                               @foreach($title as $patient_title)                                        
                                 <option value="{{ $patient_title->title_id }}">{{ strtoupper($patient_title->title) }}</option>
                               @endforeach
