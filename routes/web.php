@@ -137,6 +137,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
    Route::prefix('nurses')->group(function () {
         Route::get('/general-vitals', [NursesNotesController::class, 'general_vitals']);
+        Route::post('/store-vitals', [NursesNotesController::class, 'store_vitals'])->name('nurses.store-vitals');
         Route::get('/notes', [NursesNotesController::class, 'index']);
         Route::get('/24hour-report', [NursesNotesController::class, 'index']);
         Route::get('/anc-vitals', [NursesNotesController::class, 'index']);

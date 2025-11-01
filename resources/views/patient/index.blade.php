@@ -210,7 +210,7 @@
                         }
                         
                         // Determine gender display
-                        let genderDisplay = 'N/A';
+                        let genderDisplay = '';
                         if (patient.gender_id === '2' || patient.gender_id === 2) {
                             genderDisplay = 'MALE';
                         } else if (patient.gender_id === '1' || patient.gender_id === 1) {

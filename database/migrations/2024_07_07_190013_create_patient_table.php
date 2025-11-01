@@ -154,10 +154,11 @@ return new class extends Migration
             $table->string('diastolic',50)->nullable(); 
             $table->string('systolic',50)->nullable(); 
             $table->string('pulse_rate',50)->nullable(); 
+            $table->string('oxygen_saturation',50)->nullable(); 
             $table->string('respiratory_rate',50)->nullable(); 
-            // $table->string('spo2',50);
+            $table->string('rdt',50)->nullable();
             $table->string('remarks',300)->nullable();
-            // $table->string('fbs_rbs',50);  
+            $table->string('fbs_rbs',50);  
             $table->string('bmi',50)->nullable();  
             $table->date('request_date'); 
             $table->timestamp('request_time'); 
@@ -247,6 +248,7 @@ return new class extends Migration
             $table->string('attendance_type_id', 50)->nullable(); 
             $table->string('insured', 50)->nullable()->default('No'); 
             $table->string('issue_id', 50)->default('0'); 
+            $table->string('vital_added', 50)->default('0'); 
             $table->string('attendance_type', 50)->nullable(); 
             $table->string('episode_id', 50)->nullable(); 
             $table->string('sponsor_type_id', 50)->nullable(); 

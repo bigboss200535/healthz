@@ -24,7 +24,7 @@ class PatientOpdNumberFactory extends Factory
         $user = User::inRandomOrder()->first();
         $patient = Patient::inRandomOrder()->first();
         $clinic = Clinic::inRandomOrder()->first();
-         $facility = Facility::inRandomOrder()->first();
+        $facility = Facility::inRandomOrder()->first();
 
         return [
             // 'patient_id' => $patient->patient_id,

@@ -104,6 +104,7 @@
     <script src="{{ asset('js/custom_js.js') }}"></script>
     <script src="{{ asset('js/patient_services.js') }}"></script>
     <script src="{{ asset('js/patient_details.js') }}"></script>
+     <script src="{{ asset('js/vitals.js') }}"></script>
     <script src="{{ asset('js/patient_extras.js') }}"></script>
     <script src="{{ asset('js/diagnosis_and_drugs.js') }}"></script>
     <script src="{{ asset('js/patient_registration.js') }}"></script>
@@ -159,12 +160,12 @@
             // $('.sponsor_type_id').select2();
             $('.select_2_dropbox').select2();
 
-            $('#telephone, #work_telephone, #contact_telephone').inputmask({
-                mask: '+233 999 999 9999',
-                placeholder: ' ',
-                showMaskOnHover: false,
-                showMaskOnFocus: true
-             });
+            // $('#telephone, #work_telephone, #contact_telephone').inputmask({
+            //     mask: '+233 999 999 9999',
+            //     placeholder: ' ',
+            //     showMaskOnHover: false,
+            //     showMaskOnFocus: true
+            //  });
     
      // *****************CHART FOR VITAL SIGNS****************************
             const ctx = document.getElementById('vital_sign_chart');

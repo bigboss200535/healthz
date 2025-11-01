@@ -40,7 +40,7 @@ class PatientFactory extends Factory
             'middlename' => $this->faker->randomElement(['A.', 'Jackson', 'E.', 'K.', 'Y.', 'Asan', 'T.', 'M.']),
             'lastname' => $this->faker->lastName,
             'birth_date'=>$this->faker->date('Y-m-d'),
-            'gender_id'=>$gender->gender_id,
+            'gender_id'=> $this->faker->randomElement(['1', '2']),
             'telephone' => $this->faker->phoneNumber,
             'occupation_id' => $occupation->occupation_id,
             'education' => $this->faker->randomElement(['None', 'JHS/Middle', 'Primary', 'SHS', 'Tertiary', 'Vocational', 'Technical']),
