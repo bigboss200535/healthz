@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\ServiceRequest;
+use App\Models\PatientServiceRequest;
 use App\Models\ServicesFee;
 use App\Models\PatientAttendance;
 use DB;
@@ -38,6 +38,15 @@ class InvestigationsController extends Controller
 
     public function store(Request $request)
     {
+        $validated_data = $request->validate([
+            'investigation_attendance_id' => 'nullable|min:3',
+            'investigation_opdnumber' => 'nullable|min:3',
+            'investigation_patient_id' => 'nullable|min:3',
+            'service_date' => 'date',
+            'service_id' => 'nullable|min:3',
+            'service_fee_id' => 'nullable|min:3',
+        ]); 
+
          // Get current attendance details for additional fields
             $attendance = PatientAttendance::where('attendance_id', $request->input('investigation_attendance_id'))
                 ->first();
@@ -48,26 +57,26 @@ class InvestigationsController extends Controller
 
         try {
             
-            // create the new service(s)
-             PatientServiceRequest::create([
+            // Create the new service(s)
+            PatientServiceRequest::create([
                 'service_request_id' => $service_request_id,
                 'patient_id' => $validated_data['patient_id'],
                 'opd_number' => $validated_data['investigation_opdnumber'],
-                'attendance_id' => $validated_data['attendance_id'],
-                'service_type_id'=> '',
-                'service_id' => $validated_data['service_type'],
-                'service_fee_id' => $validated_data['service_fee_id'],
+                'attendance_id' => $attendance->attendance_id,
+                'service_fee_id'=> $validated_data['service_fee_id'],
+                'service_id' => $validated_data['service_id'],
+                'patient_type' => '2',
                 'request_type' => '',
-                'sponsor_id' => '',
-                'sponsor_type_id' => '',
+                'sponsor_id' => $attendance->sponsor_id,
+                'sponsor_type_id' => $attendance->sponsor_type_id,
                 'cash_amount' => 0,
                 'attendance_date' => $validated_data['service_date'],
-                'added_date' => $now,
-                'facility_id' => '',
+                'added_date' => $validated_data['service_date'],
+                'facility_id' => $attendance->facility_id,
                 'age_id' =>  $attendance->age_id,
                 'gender_id' =>  $attendance->gender_id,
                 'user_id' => Auth::user()->user_id
-                ]);
+            ]);
             
             return response()->json(['success' => true, 'message' => 'Investigation saved successfully']);
             

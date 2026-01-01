@@ -26,7 +26,7 @@ use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\ExternalCallController;
 use App\Http\Controllers\PrescriptionController;
-use App\Http\Controllers\InvestigationController;
+use App\Http\Controllers\InvestigationsController;
 use Illuminate\Support\Facades\Route;
 use illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
@@ -114,6 +114,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/delete-attendance/{attendance_id}', [AttendanceController::class, 'delete_attendance']);
     });
 
+     Route::prefix('investigations')->group(function () {
+       Route::post('/save-patient-investigation', [InvestigationsController::class, 'store']);
+    //    Route::post('/get-services-by-type', [InvestigationsController::class, 'get_services_by_type']);
+    });
 
     Route::prefix('users')->group(function () {
         Route::get('/manage-permissions/{user_id}', [UserController::class, 'permissions'])->name('users.permissions');

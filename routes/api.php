@@ -40,7 +40,7 @@ Route::prefix('prescriptions')->group(function (){
 Route::prefix('investigations')->group(function (){
     // Route::get('/get-investigations/{attendance_id}', [PrescriptionController::class, 'get_patient_prescriptions']);
     Route::post('/search', [InvestigationsController::class, 'search_investigations']);
-    Route::post('/store', [InvestigationsController::class, 'store']);
+    // Route::post('/store', [InvestigationsController::class, 'store']);
     Route::post('/get-services-by-type', [InvestigationsController::class, 'get_services_by_type']);
     });
 

@@ -170,8 +170,8 @@ $('#investigation_add').on('input', function () {
                   data-service_fee_id="${investigation.service_fee_id}" 
                   data-service_name="${investigation.service}"
                   data-cash_amount="${investigation.cash_amount}">
-               ${investigation.service} (${investigation.cash_amount}) | 
-               <span class="badge bg-label-primary me-1">${investigation.service}</span>
+               ${investigation.service} | 
+               <span class="badge bg-label-primary me-1">${investigation.cash_amount}</span>
              </div>`
           );
         });
@@ -219,7 +219,7 @@ $('#service_id').on('change', function () {
 
   // Send AJAX request to get services by type
   $.ajax({
-    url: '/investigations/get-services-by-type',
+    url: '/api/investigations/get-services-by-type',
     method: 'POST',
     data: {
       _token: $('input[name="_token"]').val(),
@@ -238,6 +238,7 @@ $('#service_id').on('change', function () {
                   data-service_fee_id="${service.service_fee_id}" 
                   data-service_name="${service.service}"
                   data-cash_amount="${service.cash_amount}">
+                  data-service_type_id="${service.service_type_id}">
                ${service.service} (${service.cash_amount}) | 
                <span class="badge bg-label-primary me-1">${service.service}</span>
              </div>`
@@ -249,9 +250,11 @@ $('#service_id').on('change', function () {
           const service_fee_id = $(this).data('service_fee_id');
           const service_name = $(this).data('service_name');
           const cash_amount = $(this).data('cash_amount');
+           const service_type_id = $(this).data('service_type_id');
 
           $('#service_name').val(service_name);
           $('#service_amount').val(cash_amount);
+          $('#service_type_id').val(service_type_id);
           
           if ($('#service_fee_id').length === 0) {
             $('#add_investigation_form').append('<input type="hidden" id="service_fee_id" name="service_fee_id" value="' + service_fee_id + '">');
@@ -277,21 +280,24 @@ $('#add_investigation_form').on('submit', function (e) {
   e.preventDefault();
   
   // Validate required fields
-  const service_type = $('#service_type').val();
-  const service_name = $('#service_name').val();
-  const service_amount = $('#service_amount').val();
+  const service_id = $('#service_id').val();
+  const investigation_attendance_id = $('#investigation_attendance_id').val();
+  const investigation_opdnumber = $('#investigation_opdnumber').val();
+  const investigation_patient_id = $('#investigation_patient_id').val();
+  const service_fee_id = $('#service_fee_id').val();
+  const service_date = $('#service_date').val();
   
-  if (!service_type || !service_name || !service_amount) {
+  if (!service_id || !investigation_attendance_id || !investigation_patient_id) {
     $('.alert-container-drug').html('<div class="alert alert-danger">Please fill in all required fields.</div>');
     return;
   }
   
   // Show loading
-  $('.alert-container-drug').html('<div class="alert alert-info">Saving investigation...</div>');
+  $('.alert-container-drug').html('<div class="alert alert-info">Saving Investigation...</div>');
   
   // Submit form via AJAX
   $.ajax({
-    url: '/investigations/store',
+    url: '/investigations/save-patient-investigation',
     method: 'POST',
     data: $(this).serialize(),
     success: function (response) {
@@ -310,7 +316,7 @@ $('#add_investigation_form').on('submit', function (e) {
     },
     error: function (xhr, status, error) {
       console.error('Error saving investigation:', error);
-      $('.alert-container-drug').html('<div class="alert alert-danger">Error saving investigation. Please try again.</div>');
+      $('.alert-container-drug').html('<div class="alert alert-danger">Error saving Investigation. Please try again.</div>');
     }
   });
 });
