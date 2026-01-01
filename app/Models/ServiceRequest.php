@@ -5,12 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ServiceRequest extends Model
+class PatientServiceRequest extends Model
 {
     use HasFactory;
 
-    // protected $table = 'xxxxxx';
-    // protected $primaryKey = 'attendance_id';
+    protected $table = 'patient_services_requested';
+    protected $primaryKey = 'service_request_id';
     public $timestamps = false;
     protected $keyType = 'string';
     public $incrementing= false;
@@ -36,30 +36,27 @@ class ServiceRequest extends Model
     }
 
     protected $fillable = [
-        'attendance_id',
+        'service_request_id',
         'patient_id',
         'opd_number',
-        'pat_age',
-        'age_id',
-        'full_age',
-        'service_id',
         'service_fee_id',
-        'clinic_code',
-        'service_type',
-        'request_type',
-        'sponsor_type_id',
-        'sponsor_id',
-        'credit_amount',
+        'attendance_id',
+        'service_id',
+        'service_type_id',
         'cash_amount',
+        'private_amount',
+        'company_amount',
+        'foreigners_amount',
+        'facility_id',
         'gdrg_code',
-        'status_code',
-        'insured',
-        'service_issued',
+        'sponsor_id',
+        'sponsor_type_id',
+        'allow_topup',
+        'topup_amount',
+        'gender_id',
+        'age_id',
+        'patient_type',
         'attendance_date',
-        'attendance_time',
-        'attendance_type',
-        'records_no',
-        'attendance_no',
         'user_id',
         'added_id',
         'added_date',

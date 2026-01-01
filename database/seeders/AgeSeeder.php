@@ -19,7 +19,7 @@ class AgeSeeder extends Seeder
         // $user = User::inRandomOrder()->first(); 
 
         $age = Age::create([
-            'age_id' => '1',
+            'age_id' => 1,
             'age_description' => 'CHILD',
             'usage' => '0',
             'category' => '1',
@@ -32,7 +32,7 @@ class AgeSeeder extends Seeder
         ]);
 
         $age = Age::create([
-            'age_id' => '2',
+            'age_id' => 2,
             'age_description' => 'ADULT',
             'usage' => '0',
             'category' => '1',
@@ -45,7 +45,7 @@ class AgeSeeder extends Seeder
         ]);
 
         $age = Age::create([
-            'age_id' => '3',
+            'age_id' => 3,
             'age_description' => 'ALL',
             'usage' => '0',
             'category' => '0',
@@ -58,7 +58,7 @@ class AgeSeeder extends Seeder
         ]);
 
         $age = Age::create([
-            'age_id' => '4',
+            'age_id' => 4,
             'age_description' => 'INFANT',
             'usage' => '1',
             'category' => '0',
@@ -71,7 +71,7 @@ class AgeSeeder extends Seeder
         ]);
 
         $age = Age::create([
-            'age_id' => '5',
+            'age_id' => 5,
             'age_description' => 'INFANT CHILD',
             'usage' => '1',
             'category' => '0',

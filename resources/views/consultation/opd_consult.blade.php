@@ -1141,50 +1141,49 @@
               <div class="modal-content">
                 <div class="modal-body">
                   <div class="mb-6">
-                    <h4 class="address-title mb-2">Investigations</h4>
+                    <h4 class="address-title mb-2">Investigations (Ultrasound/ECG/Laboratory)</h4>
                   </div>
                     <div class="alert-container-drug"></div>
-                  <form id="add_prescription_form" class="row g-6" onsubmit="return false">
+                  <form id="add_investigation_form" class="row g-6" onsubmit="return false">
                       @csrf
-                     <input type="text" id="prescription_attendance_id" name="prescription_attendance_id" value="{{ $attendance->attendance_id }}" hidden>
-                     <input type="text" id="prescription_opdnumber" name="prescription_opdnumber" value="{{ $attendance->opd_number }}" hidden>
-                     <input type="text" id="prescription_patient_id" name="prescription_patient_id" value="{{ $attendance->patient_id }}" hidden>
-                     <input type="text" id="prescription_product_id" name="prescription_product_id" hidden>
-                     <input type="text" name="prescription_presentation_input" id="prescription_presentation_input" hidden> 
-                     <input type="text" name="prescription_base_unit" id="prescription_base_unit" hidden> 
+                     <input type="text" id="investigation_attendance_id" name="investigation_attendance_id" value="{{ $attendance->attendance_id }}" >
+                     <input type="text" id="investigation_opdnumber" name="investigation_opdnumber" value="{{ $attendance->opd_number }}" >
+                     <input type="text" id="investigation_patient_id" name="investigation_patient_id" value="{{ $attendance->patient_id }}" >
+                     <!-- <input type="text" id="prescription_product_id" name="prescription_product_id" hidden> -->
+                     <!-- <input type="text" name="prescription_presentation_input" id="prescription_presentation_input" hidden>  -->
+                     <!-- <input type="text" name="prescription_base_unit" id="prescription_base_unit" hidden>  -->
                     
                      <div id="success_display" class="container mt-6"></div>
 
                     <div class="col-12 col-md-6">
-                      <label class="form-label" for="prescription_price">Service Type</label>
-                       <select class="form-control">
-                        <option selected disabled>-Select-</option>
+                      <label class="form-label" for="service_id">Service Type</label>
+                       <select class="form-control" id="service_id" name="service_id">
+                        <option value="">-Select-</option>
                          @foreach($services as $service_type)                                        
                                   <option value="{{ $service_type->service_id}}">{{ $service_type->service_name }}</option>
                          @endforeach
                       </select>
                     </div>
                     <div class="col-12 col-md-6">
-                      <label class="form-label" for="prescription_start_date">Service</label>
-                      <input type="text" id="prescription_start_date" name="prescription_start_date" class="form-control"/>
+                      <label class="form-label" for="investigation_add">Search Investigation</label>
+                      <input type="text" id="investigation_add" name="investigation_add" class="form-control" placeholder="Type to search investigations..."/>
+                      <div id="investigation_results" class="position-absolute w-100 bg-white border rounded" style="z-index: 1000; max-height: 200px; overflow-y: auto;"></div>
                     </div>
                     <div class="col-12 col-md-6">
-                      <label class="form-label" for="prescription_price">Cash Amount</label>
-                        <input type="text" id="prescription_start_date" name="prescription_start_date" class="form-control"/>
+                      <label class="form-label" for="service_name">Service Name</label>
+                      <input type="text" id="service_name"  name="service_name" class="form-control" readonly/>
                     </div>
                     <div class="col-12 col-md-6">
-                      <label class="form-label" for="prescription_start_date">Credit Amount</label>
-                      <input type="text" id="prescription_start_date" name="prescription_start_date" class="form-control"/>
+                      <label class="form-label" for="service_amount">Cash Amount</label>
+                        <input type="text" id="service_amount" name="service_amount" class="form-control"/>
                     </div>
-                    
                     <div class="col-12 col-md-6">
-                      <label class="form-label" for="prescription_sponsor">Sponsor</label>
-                        <select name="prescription_sponsor" id="prescription_sponsor" class="form-control">
+                      <label class="form-label" for="service_sponsor">Sponsor</label>
+                        <select name="service_sponsor" id="service_sponsor" class="form-control">
                               @php
                                   $patient_sponsor = \App\Models\PatientSponsor::where('patient_id', $attendance->patient_id)
                                       ->where('is_active', 'Yes') 
                                       ->first();
-
                                     if(!$patient_sponsor)
                                     {
                                         $sponsors = \App\Models\Sponsors::where('sponsor_id', '100')->get();
@@ -1204,7 +1203,7 @@
                         </select>
                     </div>
                     <div class="col-12 col-md-6">
-                      <label class="form-label" for="prescription_gdrg">Date</label>
+                      <label class="form-label" for="service_date">Date</label>
                       <input type="text" id="service_date" name="service_date" min="{{ date('Y-m-d', strtotime('-1 month')) }}" 
                                max="{{ date('Y-m-d', strtotime('+1 month')) }}" value="<?php echo date('Y-m-d'); ?>" class="form-control" />
                     </div>

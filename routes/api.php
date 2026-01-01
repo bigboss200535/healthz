@@ -8,6 +8,7 @@ use App\Http\Controllers\ExternalCallController;
 use App\Http\Controllers\SponsorController;
 use App\Http\Controllers\PrescriptionController;
 use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\InvestigationsController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -30,9 +31,17 @@ Route::post('claims_code', [ExternalCallController::class, 'validateMemberAndGen
 // Route::get('edit-diagnosis/{diagnosis_id}', [DiagnosisController::class, 'edit_diagnosis']);
  Route::get('/patient/attendance-clinic/{opd_number}', [AttendanceController::class, 'attendance_clinic'])
     ->where('opd_number', '.*')->name('patient.attendance.clinics');
+
 Route::prefix('prescriptions')->group(function (){
     Route::get('/get-prescriptions/{attendance_id}', [PrescriptionController::class, 'get_patient_prescriptions']);
     Route::post('/search', [PrescriptionController::class, 'search_medications']);
+    });
+
+Route::prefix('investigations')->group(function (){
+    // Route::get('/get-investigations/{attendance_id}', [PrescriptionController::class, 'get_patient_prescriptions']);
+    Route::post('/search', [InvestigationsController::class, 'search_investigations']);
+    Route::post('/store', [InvestigationsController::class, 'store']);
+    Route::post('/get-services-by-type', [InvestigationsController::class, 'get_services_by_type']);
     });
 
 // Route::post('save-prescription', [MedicationsController::class, 'save_prescription']);

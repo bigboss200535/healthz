@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('service_id', 50)->primary();
             $table->string('service_name', 100);
             $table->string('gender_id', 50)->nullable();
-            $table->string('age_id', 50)->nullable();
+            $table->string('age_id', 50)->nullable()->index();
             $table->string('patient_type', 50)->nullable(); //in, out, all
             $table->string('is_store', 50)->nullable(); //yes, no,
             $table->string('is_ward', 50)->nullable(); //yes, no,
@@ -44,7 +44,7 @@ return new class extends Migration
 
         Schema::create('services_fee', function (Blueprint $table) {
             $table->string('service_fee_id', 50)->primary();
-            $table->string('service_id', 100);
+            $table->string('service_id', 50);
             $table->string('service', 100);
             $table->string('service_type_id', 50);
             $table->float('cash_amount')->nullable();
@@ -61,7 +61,7 @@ return new class extends Migration
             $table->string('editable', 100)->nullable();
             $table->string('delivery_mode', 100)->nullable(); //INTERNAL or EXTERNAL
             $table->string('gender_id', 50)->nullable();
-            $table->string('age_id', 50)->nullable();
+            $table->string('age_id', 50)->nullable()->index();
             $table->string('patient_type', 50)->nullable(); //IN, OUT, ALL
             $table->string('is_active', 50)->nullable(); //YES, NO,
             $table->string('facility_id', 50)->nullable();
@@ -77,6 +77,9 @@ return new class extends Migration
             $table->foreign('user_id')->references('user_id')->on('users');
             $table->foreign('service_id')->references('service_id')->on('services');
             // $table->foreign('service_type_id')->references('service_type_id')->on('service_types');
+            // $table->foreign('user_id')->references('user_id')->on('users');
+            // $table->foreign('age_id')->references('age_id')->on('ages');
+            $table->foreign('gender_id')->references('gender_id')->on('gender');
         });
 
 
