@@ -297,7 +297,7 @@ $('#add_investigation_form').on('submit', function (e) {
   
   // Submit form via AJAX
   $.ajax({
-    url: '/investigations/save-patient-investigation',
+    url: '/investigations/save-investigation',
     method: 'POST',
     data: $(this).serialize(),
     success: function (response) {

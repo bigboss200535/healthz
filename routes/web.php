@@ -115,7 +115,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     });
 
      Route::prefix('investigations')->group(function () {
-       Route::post('/save-patient-investigation', [InvestigationsController::class, 'store']);
+       Route::post('/save-investigation', [InvestigationsController::class, 'store'])->name('investigations.save');
     //    Route::post('/get-services-by-type', [InvestigationsController::class, 'get_services_by_type']);
     });
 
