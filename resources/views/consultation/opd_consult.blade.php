@@ -1141,17 +1141,17 @@
               <div class="modal-content">
                 <div class="modal-body">
                   <div class="mb-6">
-                    <h4 class="address-title mb-2">Investigations (Ultrasound/ECG/Laboratory)</h4>
+                    <h4 class="address-title mb-2">Investigations</h4>
                   </div>
                     <div class="alert-container-drug"></div>
                   <form id="add_investigation_form" class="row g-6" onsubmit="return false">
                       @csrf
-                     <input type="text" id="investigation_attendance_id" name="investigation_attendance_id" value="{{ $attendance->attendance_id }}" >
-                     <input type="text" id="investigation_opdnumber" name="investigation_opdnumber" value="{{ $attendance->opd_number }}" >
-                     <input type="text" id="investigation_patient_id" name="investigation_patient_id" value="{{ $attendance->patient_id }}" >
+                     <input type="text" id="investigation_attendance_id" name="investigation_attendance_id" value="{{ $attendance->attendance_id }}" hidden>
+                     <input type="text" id="investigation_opdnumber" name="investigation_opdnumber" value="{{ $attendance->opd_number }}" hidden>
+                     <input type="text" id="investigation_patient_id" name="investigation_patient_id" value="{{ $attendance->patient_id }}" hidden>
                      <!-- <input type="text" id="prescription_product_id" name="prescription_product_id" hidden> -->
                      <!-- <input type="text" name="prescription_presentation_input" id="prescription_presentation_input" hidden>  -->
-                     <input type="text" name="service_fee_id" id="service_fee_id">
+                     <input type="text" name="service_fee_id" id="service_fee_id" hidden>
                     
                      <div id="success_display" class="container mt-6"></div>
 
