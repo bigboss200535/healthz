@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\PatientServiceRequest;
 use App\Models\ServicesFee;
+use App\Models\Services;
 use App\Models\PatientAttendance;
+use App\Models\User;
 use DB;
 use Auth;
 
@@ -48,25 +50,26 @@ class InvestigationsController extends Controller
         ]); 
 
          // Get current attendance details for additional fields
-            $attendance = PatientAttendance::where('attendance_id', $request->input('investigation_attendance_id'))
+            $attendance = PatientAttendance::where('attendance_id', $validated_data['investigation_attendance_id'])
                 ->first();
             
             // Get the next service request ID for the service to be saved
             $count = PatientServiceRequest::count();
             $service_request_id = 'SR' . str_pad($count + 1, 6, '0', STR_PAD_LEFT);
-
-        try {
+            
+        // try {
             
             // Create the new service(s)
             PatientServiceRequest::create([
                 'service_request_id' => $service_request_id,
-                'patient_id' => $validated_data['patient_id'],
+                'patient_id' => $validated_data['investigation_patient_id'],
                 'opd_number' => $validated_data['investigation_opdnumber'],
-                'attendance_id' => $attendance->attendance_id,
+                'attendance_id' => $validated_data['investigation_attendance_id'],
                 'service_fee_id'=> $validated_data['service_fee_id'],
                 'service_id' => $validated_data['service_id'],
-                'patient_type' => '2',
-                'request_type' => '',
+                'status_code' => '2',
+                'request_type' => 'INWARD',
+                'service_type_id' => '0',
                 'sponsor_id' => $attendance->sponsor_id,
                 'sponsor_type_id' => $attendance->sponsor_type_id,
                 'cash_amount' => 0,
@@ -80,9 +83,9 @@ class InvestigationsController extends Controller
             
             return response()->json(['success' => true, 'message' => 'Investigation saved successfully']);
             
-        } catch (\Exception $e) {
-            return response()->json(['success' => false, 'message' => 'Error saving investigation: ' . $e->getMessage()], 500);
-        }
+        // } catch (\Exception $e) {
+        //     return response()->json(['success' => false, 'message' => 'Error saving investigation: ' . $e->getMessage()], 500);
+        // }
     }
 
     public function search_investigations(Request $request)
@@ -129,7 +132,7 @@ class InvestigationsController extends Controller
         return response()->json($services);
     }
     
-    public function get_services_by_type(Request $request)
+    public function get_investigations_type(Request $request)
     {
         $service_type = $request->input('service_type');
         $opd_number = $request->input('opd_number');
@@ -158,6 +161,63 @@ class InvestigationsController extends Controller
             ->get();
 
         return response()->json($services);
+    }
+
+
+    public function view_patient_investigations(Request $request)
+    {
+        $attendance_id = $request->input('attendance_id');
+        
+        $investigations = PatientServiceRequest::where('patient_services_requested.attendance_id', $attendance_id)
+            ->where('patient_services_requested.archived', 'No')
+            ->leftJoin('services_fee', 'services_fee.service_fee_id', '=', 'patient_services_requested.service_fee_id')
+            ->leftJoin('services', 'services.service_id', '=', 'patient_services_requested.service_id')
+            ->leftJoin('users', 'users.user_id', '=', 'patient_services_requested.user_id')
+            ->select(
+                    'patient_services_requested.service_request_id',
+                    'patient_services_requested.attendance_date',
+                    'services_fee.service as investigation_name',
+                    'services.service_name as service_type',
+                    'users.user_fullname as requested_by',
+                    'patient_services_requested.status_code as status',
+                    'patient_services_requested.service_request_id as id'
+                   )
+            ->orderBy('patient_services_requested.added_date', 'desc')
+            ->get();
+            
+        return response()->json($investigations);
+    }
+    
+
+    public function delete_patient_investigation(Request $request, $service_request_id)
+    {
+        try {
+            $service_request_id = $request->input('service_request_id');
+            $investigation = PatientServiceRequest::where('service_request_id', $service_request_id)
+                ->where('archived', 'No')
+                ->first();
+                
+            if (!$investigation) {
+                return response()->json(['success' => false, 'message' => 'Investigation not found']);
+            }
+            
+            // Soft delete by marking as Archived
+            $investigation->archived = 'Yes';
+            $investigation->archived_by = Auth::user()->user_id;
+            $investigation->archived_date = now();
+            $investigation->save();
+            
+            return response()->json([
+                'success' => true, 
+                'message' => 'Investigation deleted successfully']
+            );
+            
+        } catch (\Exception $e) {
+                return response()->json([
+                    'success' => false, 
+                    'message' => 'Error deleting investigation: ' . $e->getMessage()], 
+                    500);
+        }
     }
 
 }

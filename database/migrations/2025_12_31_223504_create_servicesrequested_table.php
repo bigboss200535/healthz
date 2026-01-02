@@ -33,7 +33,7 @@ return new class extends Migration
             $table->decimal('topup_amount', 10,2)->nullable()->default('0');
             $table->string('gender_id', 50)->nullable();
             $table->string('age_id', 50)->nullable();
-            $table->string('patient_type', 50)->nullable(); //IN, OUT, ALL
+            $table->string('status_code', 50)->nullable(); //IN, OUT, ALL
             $table->date('attendance_date', 50)->nullable(); 
             $table->string('user_id', 100)->nullable();
             $table->timestamp('added_date')->nullable();

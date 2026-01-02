@@ -883,10 +883,10 @@
                                 
                                 <div class="tab-pane fade" id="navs_document" role="tabpanel">     <!--------------DOCUMENT MANAGEMENT -->
                                   <p>
-                                      <b>document</b> have been paid to the company 
+                                              <b>document</b> have been paid to the company 
                                                 I hate hospitals but all of the staff that helped me today were so helpfully and seemed genuinely concern.
                                                 I hate hospitals but all of the staff that helped me today were so helpfully and seemed genuinely concern.
-                                                <a href="#"><i class="bx bx-edit"></i></a>
+                                              <a href="#"><i class="bx bx-edit"></i></a>
                                    </p>
                                 </div>
 
@@ -899,31 +899,31 @@
                                                   <div class="row">
                                                     <div class="col-12">
                                                       <button type="button" data-bs-toggle='modal' data-bs-target="#add_investigations" class="btn btn-sm btn-primary">REQUEST NEW SERVICE</button>
-                                      
                                                     </div>
                                                   </div>
                                                 </form>
-                                                <table class="table table-responsive" id="service_request">
+                                                <table class="table table-responsive" id="investigations_table">
                                                     <thead>
                                                       <tr>
                                                         <th>SN</th>
                                                         <th>Date</th>
                                                         <th>Investigation</th>
-                                                        <th>Service Type</th>
-                                                        <th>Payment Mode</th>
-                                                        <th>Investigation Status</th>
-                                                        <th></th>
+                                                        <th>Service</th>
+                                                        <th>Doctor</th>
+                                                        <th>Status</th>
+                                                        <th>Action</th>
                                                       </tr>
                                                     </thead>
+                                                   
                                                     <tfoot>
                                                       <tr>
                                                         <th>SN</th>
                                                         <th>Date</th>
                                                         <th>Investigation</th>
-                                                        <th>Service Type</th>
-                                                        <th>Payment Mode</th>
-                                                        <th>Investigation Status </th>
-                                                        <th></th>
+                                                        <th>Service</th>
+                                                        <th>Doctor</th>
+                                                        <th>Status</th>
+                                                        <th>Action</th>                                               
                                                       </tr>
                                                     </tfoot>
                                                 </table>

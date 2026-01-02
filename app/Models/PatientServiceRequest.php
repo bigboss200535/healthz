@@ -55,7 +55,7 @@ class PatientServiceRequest extends Model
         'topup_amount',
         'gender_id',
         'age_id',
-        'patient_type',
+        'status_code',
         'attendance_date',
         'user_id',
         'added_id',

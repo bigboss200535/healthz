@@ -27,7 +27,6 @@ Route::get('search-diagnosis', [DiagnosisController::class, 'search_diagnosis'])
 Route::get('/getsponsortype', [App\Http\Controllers\SponsorController::class, 'get_sponsors_by_type'])->name('get.sponsors.by.type');
 Route::post('claims_code', [ExternalCallController::class, 'validateMemberAndGenerateCCC']);  
 
-
 // Route::get('edit-diagnosis/{diagnosis_id}', [DiagnosisController::class, 'edit_diagnosis']);
  Route::get('/patient/attendance-clinic/{opd_number}', [AttendanceController::class, 'attendance_clinic'])
     ->where('opd_number', '.*')->name('patient.attendance.clinics');
@@ -41,7 +40,7 @@ Route::prefix('investigations')->group(function (){
     // Route::get('/get-investigations/{attendance_id}', [PrescriptionController::class, 'get_patient_prescriptions']);
     Route::post('/search', [InvestigationsController::class, 'search_investigations']);
     // Route::post('/store', [InvestigationsController::class, 'store']);
-    Route::post('/get-services-by-type', [InvestigationsController::class, 'get_services_by_type']);
+    Route::post('/get-investigation-type', [InvestigationsController::class, 'get_investigations_type']);
     });
 
 // Route::post('save-prescription', [MedicationsController::class, 'save_prescription']);

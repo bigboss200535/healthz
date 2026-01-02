@@ -159,7 +159,7 @@
             $('.diagnosis_search').select2();
             // $('.sponsor_type_id').select2();
             $('.select_2_dropbox').select2();
-
+            $('#investigations_table').DataTable();
             // $('#telephone, #work_telephone, #contact_telephone').inputmask({
             //     mask: '+233 999 999 9999',
             //     placeholder: ' ',

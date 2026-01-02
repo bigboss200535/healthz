@@ -422,10 +422,12 @@ class ConsultationController extends Controller
     }
 
     public function opd_consult($attendance_id)
-    {
-         $consultation_id = intval(Consultation::all()->count()) + 1;
-
-        // Base query for attendance
+    {   
+        // GET CONSULTATION ID BEFORE SAVING 
+        $consultation_id = intval(Consultation::all()->count()) + 1;
+        // CHECK ATTENDANCE TO DISABLE OR ENABLE PATIENT CONSULTATION DETAILS
+        $attendance_check = PatientAttendance::where('attendance_id', $attendance_id)->first();
+        // BASE QUERY FOR PATIENT ATTENDANCE 
         $attendance_query = PatientAttendance::where('patient_attendance.archived', 'No')
             ->join('patient_info', 'patient_info.patient_id', '=', 'patient_attendance.patient_id')
             ->join('gender', 'gender.gender_id', '=', 'patient_info.gender_id')

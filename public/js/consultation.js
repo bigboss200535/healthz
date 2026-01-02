@@ -219,7 +219,7 @@ $('#service_id').on('change', function () {
 
   // Send AJAX request to get services by type
   $.ajax({
-    url: '/api/investigations/get-services-by-type',
+    url: '/api/investigations/get-investigation-type',
     method: 'POST',
     data: {
       _token: $('input[name="_token"]').val(),
@@ -274,6 +274,65 @@ $('#service_id').on('change', function () {
     }
   });
 });
+            // -----------------------INVESTIGATION SUBMISSION FOR SAVING----------------------------
+// Function to load Investigations into Data Table
+function loadInvestigationsTable() {
+  const attendance_id = $('#investigation_attendance_id').val();
+  
+  if (!attendance_id){
+      $('#investigations_table tbody').html('<tr><td colspan="7" class="text-center">No Investigations Found</td></tr>');
+    return;
+  }
+  
+  $.ajax({
+    url: '/investigations/view-patient-investigations',
+    method: 'POST',
+    data: {
+      _token: $('input[name="_token"]').val(),
+      attendance_id: attendance_id
+    },
+    success: function (response) {
+      let tableHtml = '';
+      
+      if (response.length > 0) {
+        response.forEach(function(investigation, index) {
+          const status_badge = investigation.status === '2' 
+            ? '<span class="badge bg-label-warning">Pending</span>' 
+            : '<span class="badge bg-success">Issued</span>';
+        
+          tableHtml += `
+            <tr>
+              <td>${index + 1}</td>
+              <td>${investigation.attendance_date || '-'}</td>
+              <td>${investigation.investigation_name || '-'}</td>
+              <td>${investigation.service_type || '-'}</td>
+              <td>${investigation.requested_by || '-'}</td>
+              <td>${status_badge}</td>
+              <td>
+                  <div class="btn-group" role="group">
+                          <button class="btn btn-sm btn-danger delete-investigation" data-id="${investigation.service_request_id}" title="Delete">
+                              <i class="bx bx-trash"></i>
+                          </button>
+                          <button class="btn btn-sm btn-primary edit-investigation" data-id="${investigation.service_request_id}" title="Edit">
+                              <i class="bx bx-edit"></i>
+                          </button>
+                  </div>
+              </td>
+            </tr>
+          `;
+        });
+      } else {
+            tableHtml = '<tr><td colspan="7" class="text-center">No Investigations found</td></tr>';
+      }
+      
+      $('#investigations_table tbody').html(tableHtml);
+    },
+    error: function (xhr, status, error) {
+      console.error('Error loading investigations:', error);
+      $('#investigations_table tbody').html('<tr><td colspan="7" class="text-center text-danger">Error loading investigations</td></tr>');
+    }
+  });
+}
 
 // Handle investigation form submission
 $('#add_investigation_form').on('submit', function (e) {
@@ -292,10 +351,10 @@ $('#add_investigation_form').on('submit', function (e) {
     return;
   }
   
-  // Show loading
+  // SHOW LOADING IN THE INVESTIGATION BEFORE SUBMISSION
   $('.alert-container-drug').html('<div class="alert alert-info">Saving Investigation...</div>');
   
-  // Submit form via AJAX
+  // SUBMIT INVESTIGATION FORM USING AJAX
   $.ajax({
     url: '/investigations/save-investigation',
     method: 'POST',
@@ -305,13 +364,14 @@ $('#add_investigation_form').on('submit', function (e) {
         $('.alert-container-drug').html('<div class="alert alert-success">' + response.message + '</div>');
         // Reset form
         $('#add_investigation_form')[0].reset();
-        // Close modal after delay
+        // Reload investigations table
+        loadInvestigationsTable();
+        // CLEAR ALERT NOTIFICATION AFTER 2 SECONDS
         setTimeout(() => {
-          $('#add_investigations').modal('hide');
-          $('.alert-container-drug').html('');
+           $('.alert-container-drug').html('');
         }, 2000);
       } else {
-        $('.alert-container-drug').html('<div class="alert alert-danger">' + response.message + '</div>');
+           $('.alert-container-drug').html('<div class="alert alert-danger">' + response.message + '</div>');
       }
     },
     error: function (xhr, status, error) {
@@ -321,8 +381,61 @@ $('#add_investigation_form').on('submit', function (e) {
   });
 });
 
+// Handle delete investigation click
+$(document).on('click', '.delete-investigation', function () {
+   const service_request_id = $(this).data('id');
+  // const service_request_id = $(this).data('service_request_id');
 
+    Swal.fire({
+            title: 'Delete Investigation',
+            text: 'Are you sure you want to delete this Investigation?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'Cancel'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const deleteBtn = $(this);
+                const originalHtml = deleteBtn.html();
+                deleteBtn.html('<i class="bx bx-loader bx-spin"></i>').prop('disabled', true);
+               
+                $.ajax({
+                    url: `/investigations/delete-investigation/${ service_request_id}`,
+                    method: 'GET',
+                    data: {
+                          service_request_id:service_request_id
+                        },
+                    success: function(response) {
+                        if (response.success) 
+                        {
+                            toastr.success('Investigation deleted successfully');
+                            loadInvestigationsTable();
+                        } else {
+                            toastr.error('Failed to Delete Investigation');
+                        }
+                    },
+                    error: function(xhr) {
+                        const errorMsg = xhr.responseJSON?.message || 'Error Deleting Investigation';
+                        toastr.error(errorMsg);
+                    },
+                    complete: function() {
+                        deleteBtn.html(originalHtml).prop('disabled', false);
+                    }
+                });
+            }
+        });
 
+});
+
+// Load investigations when page loads
+$(document).ready(function() {
+    // Load investigations table if attendance_id is available
+  if ($('#investigation_attendance_id').val()) {
+      loadInvestigationsTable();
+  }
+});
 
 
 // });

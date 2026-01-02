@@ -115,8 +115,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     });
 
      Route::prefix('investigations')->group(function () {
-       Route::post('/save-investigation', [InvestigationsController::class, 'store'])->name('investigations.save');
-    //    Route::post('/get-services-by-type', [InvestigationsController::class, 'get_services_by_type']);
+        Route::post('/save-investigation', [InvestigationsController::class, 'store'])->name('investigations.save');
+        Route::post('/view-patient-investigations', [InvestigationsController::class, 'view_patient_investigations'])->name('investigations.view');
+        Route::get('/delete-investigation/{service_request_id}', [InvestigationsController::class, 'delete_patient_investigation']);
+        //  Route::post('/get-services-by-type', [InvestigationsController::class, 'get_services_by_type']);
     });
 
     Route::prefix('users')->group(function () {
