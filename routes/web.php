@@ -123,8 +123,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     });
 
     Route::prefix('documents')->group(function () {
-        Route::post('/upload', [DocumentUploadController::class, 'upload_document'])->name('documents.upload');
+        Route::post('/upload/{patient_id}', [DocumentUploadController::class, 'upload_document'])->name('documents.upload');
         Route::get('/list', [DocumentUploadController::class, 'list_patient_documents'])->name('documents.list');
+        Route::get('/download/{document_id}', [DocumentUploadController::class, 'download_document'])->name('documents.download');
+        Route::post('/delete/{document_id}', [DocumentUploadController::class, 'delete_document'])->name('documents.delete');
     });
 
     Route::prefix('users')->group(function () {

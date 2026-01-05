@@ -1,3 +1,13 @@
+// Load investigations and documents when page loads
+$(document).ready(function() {
+    // Load investigations table if attendance_id is available
+  if ($('#investigation_attendance_id').val()) {
+      loadInvestigationsTable();
+      loadDocuments();
+  }
+});
+
+
 // $(document).ready(function() {
     // When systemic area is selected
     $('#systemic_review').change(function() {
@@ -426,23 +436,13 @@ $(document).on('click', '.delete-investigation', function () {
 
 });
 
-// Load investigations when page loads
-$(document).ready(function() {
-    // Load investigations table if attendance_id is available
-  if ($('#investigation_attendance_id').val()) {
-      loadInvestigationsTable();
-  }
-});
+
 
 
 
 
 
 // DOCUMENT MANAGEMENT FOR CONSULTATION
-
-    // Load all existing documents
-    loadDocuments();
-    
     // Handle form submission
     $('#document-upload-form').on('submit', function(e) {
         e.preventDefault();
@@ -464,7 +464,7 @@ $(document).ready(function() {
         button.prop('disabled', true);
         
         $.ajax({
-            url: '/documents/upload',
+            url: '/documents/upload/' + patient_id,
             type: 'POST',
             data: form_data,
             processData: false,
@@ -497,14 +497,14 @@ $(document).ready(function() {
     
     // Function to load documents
     function loadDocuments() {
-        const patient_id = $('#patient_id').val();
+        const patient_id = $('#con_patient_id').val();
         
         $.ajax({
-            url: '/documents/list/' + patient_id,
+            url: '/documents/list',
             type: 'GET',
-            // data: {
-            //     patient_id: patient_id
-            // },
+            data: {
+                patient_id: patient_id
+            },
             success: function(response) {
                 if (response.success) {
                     $('#uploaded_document_list').html(response.html);
@@ -513,7 +513,6 @@ $(document).ready(function() {
                 }
             },
             error: function(xhr, status, error) {
-                console.error('Error loading documents:', error);
                 $('#uploaded_document_list').html('<div class="alert alert-danger">Error loading documents</div>');
             }
         });
@@ -528,5 +527,47 @@ $(document).ready(function() {
         $('#uploaded_document_list').prepend(alert);
     }
 
-
-// });
+    // Handle Delete document click
+    $(document).on('click', '.delete-document', function() {
+        const document_id = $(this).data('id');
+        const delete_btn = $(this);
+        
+        Swal.fire({
+            title: 'Delete Document',
+            text: 'Are you sure you want to delete this document?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'Cancel'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const original_html = delete_btn.html();
+                delete_btn.html('<i class="bx bx-loader bx-spin"></i>').prop('disabled', true);
+                
+                $.ajax({
+                    url: `/documents/delete/${document_id}`,
+                    method: 'POST',
+                    data: {
+                        _token: $('input[name="_token"]').val()
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            showAlert('success', response.message);
+                            loadDocuments(); // Reload the document list
+                        } else {
+                            showAlert('danger', response.message);
+                        }
+                    },
+                    error: function(xhr) {
+                        const errorMsg = xhr.responseJSON?.message || 'Error deleting document';
+                        showAlert('danger', errorMsg);
+                    },
+                    complete: function() {
+                        delete_btn.html(original_html).prop('disabled', false);
+                    }
+                });
+            }
+        });
+    });

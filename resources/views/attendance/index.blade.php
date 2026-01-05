@@ -129,7 +129,7 @@
                                                       </a>
                                                   @endif
                                              </div>
-                                  </div>
+                                    </div>
                                 </td>
                             </tr>
                             @endforeach

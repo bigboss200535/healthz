@@ -144,7 +144,8 @@
                     <select name="consulting_doctors" id="consulting_doctors" class="form-control">
                         @php
                           
-                              $user = Auth::user(); // Get the logged-in user
+                            $user = Auth::user(); // Get the logged-in user
+
                             if($user && $user->user_roles_id === 'R10') { // Check if user has role R10
                                 $doctor = \App\Models\User::where('user_id', $user->user_id)->first();  // Display only the logged-in doctor if they have role R10
                                 
@@ -427,12 +428,10 @@ if ($sponsor_check->issue_id == 0) {
 
                              <div class="tab-pane fade" id="navs_medical" role="tabpanel">     <!----- HISTORY of patient  -------->
                               <h5>History /Medical Conditions</h5>
-                                   
                                     <div class="row g-6 mb-12">
                                           <div class="col-md">
                                                     <div class="nav-align-top nav-tabs-shadow mb-6" >
                                                           <ul class="nav nav-tabs nav-fill" role="tablist" >
-
                                                             <li class="nav-item">
                                                               <button type="button" class="nav-link active" role="tab" data-bs-toggle="tab" data-bs-target="#navs_new_history" aria-controls="navs_new_history" aria-selected="true">
                                                                   <span class="d-none d-sm-block"><b class="text-dark">New History</b></span>
@@ -443,7 +442,6 @@ if ($sponsor_check->issue_id == 0) {
                                                                   <span class="d-none d-sm-block"><b class="text-dark">Previous History</b></span>
                                                                 </button> 
                                                             </li>
-                                                              
                                                           </ul>
                                                           <!-- tab content 1-->
                                                             <div class="tab-content">
@@ -891,42 +889,54 @@ if ($sponsor_check->issue_id == 0) {
                                       <div class="card">
                                             <div class="card-header">
                                                 <h5 class="mb-0">Document Management</h5>
+                                                  <div class="form-text" style="color: crimson">Allowed: PDF, JPG, PNG, GIF (Max: 5MB)</div>
                                             </div>
                                             <div class="card-body">
-                                               
-                                                                                   
-                                                      <!-- Upload Form -->
+                                                      <!-- document upload form with table in three columns -->
                                               <form id="document-upload-form" enctype="multipart/form-data">
                                                   @csrf
-                                                  <div class="mb-3">
-                                                      <label for="document_file" class="form-label">Upload Document</label>
-                                                      <input type="file" 
-                                                            class="form-control" 
-                                                            id="document_file" 
-                                                            name="document_file"
-                                                            accept=".pdf,.jpg,.jpeg,.png,.gif"
-                                                            required>
-                                                      <div class="form-text">Allowed: PDF, JPG, PNG, GIF (Max: 5MB)</div>
-                                                  </div>
-
-                                                  <div class="mb-3">
-                                                      <label for="document_type" class="form-label">Document Type</label>
-                                                      <select class="form-select" id="document_type" name="document_type">
-                                                         <option disabled selected>Select Document Type</option>
-                                                          <option value="Lab Result">Lab Result </option>
-                                                          <option value="X-Ray">X-Ray</option>
-                                                          <option value="Imaging Report">Imaging Report</option>
-                                                          <option value="Other">Other</option>
-                                                      </select>
-                                                  </div>
-                                                  
-                                                  <button type="submit" class="btn btn-primary">
-                                                      <span class="upload-text">Upload Document</span>
-                                                      <span class="spinner-border spinner-border-sm d-none" role="status"></span>
-                                                  </button>
+                                                  <table class="table table-hover">
+                                                    <thead>
+                                                      <tr>
+                                                        <th><label for="document_file" class="form-label">Upload Document</label></th>
+                                                        <th> <label for="document_type" class="form-label">Document Type</label></th>
+                                                        <th><label for="document_type" class="form-label">Action</label></th>
+                                                      </tr>
+                                                    </thead>
+                                                   <tbody>
+                                                    <tr>
+                                                      <th>
+                                                          <div class="mb-3">
+                                                            <input type="file" class="form-control" id="document_file" name="document_file" accept=".pdf,.jpg,.jpeg,.png,.gif" required>
+                                                        </div>
+                                                    </th>
+                                                    <th>
+                                                        <div class="mb-3">
+                                                              <select class="form-select" id="document_type" name="document_type">
+                                                                  <option disabled selected>Select Document Type</option>
+                                                                  <option value="Lab Result">Lab Result </option>
+                                                                  <option value="X-Ray">X-Ray</option>
+                                                                  <option value="Imaging Report">Imaging Report</option>
+                                                                  <option value="Other">Other</option>
+                                                            </select>
+                                                      </div>
+                                                    </th>
+                                                    <th>
+                                                        <button type="submit" class="btn btn-primary">
+                                                          <span class="upload-text">Upload Document</span>
+                                                          <span class="spinner-border spinner-border-sm d-none" role="status"></span>
+                                                       </button>
+                                                    </th>
+                                                    </tr>
+                                                   </tbody>
+                                                  </table>
                                               </form>
                                         </div>
-                                      <!-- Document List (will be populated via AJAX when uploaded) -->
+                                        <br>
+                                          <div class="card-header">
+                                           <h5 class="mb-0">Document List</h5>
+                                        </div>
+                                            <!-- Document List (will be populated via AJAX when uploaded) -->
                                                 <div id="uploaded_document_list"></div>
                                               <!-- Existing documents will appear here -->
                                     </div>
