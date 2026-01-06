@@ -200,6 +200,7 @@ return new class extends Migration
         });
 
         Schema::create('patient_sponsorship', function (Blueprint $table) {
+            $table->id('patient_sponsor_id');
             $table->string('patient_id', 50)->index();
             $table->string('opd_number', 20)->nullable();
             $table->string('member_no', 50);

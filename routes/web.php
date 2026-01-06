@@ -50,6 +50,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::resource('sponsors', SponsorController::class); 
+   
     Route::resource('servicesandfee', ServicesFeeController::class);
     Route::resource('service', ServicesController::class);
     Route::resource('patients', PatientController::class);
@@ -80,14 +81,17 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/attendance', [AttendanceController::class, 'index'])->name('attendance.index');
         Route::get('/fetch', [PatientController::class, 'search_patients'])->name('patient.fetch');
         Route::get('/search', [PatientController::class, 'index'])->name('patient.index');
-        Route::get('/patient-sponsors/{patient_id}', [PatientController::class, 'get_patient_sponsor'])->name('patient.get_patient_sponsor');
+       
         Route::get('/patient-request/{patient_id}', [ServiceRequestController::class, 'get_patient_request'])->name('patient.get_patient_sponsor');
         Route::get('/new-opd-number/{service_point_id}', [PatientController::class, 'generate_opd_number'])->name('patient.generate_opd_number');
         Route::get('/single-attendance/{patient_id}', [AttendanceController::class, 'single_attendance'])->name('patient.single_attendance');
         Route::get('/current-attendance/{patient_id}', [AttendanceController::class, 'current_attendance'])->name('patient.current_attendance');
         Route::get('/appointments', [AppointmentController::class, 'index'])->name('appointments.index');
+         
+        Route::get('/patient-sponsors/{patient_id}', [PatientController::class, 'get_patient_sponsor'])->name('patient.get_patient_sponsor');
         Route::get('/sponsor/{patient_id}', [SponsorController::class, 'list_patient_sponsor'])->name('patient.list_patient_sponsor');
-       
+        Route::post('/sponsor-delete/{patient_sponsor_id}', [SponsorController::class, 'delete_sponsor'])->name('sponsor.delete'); 
+        Route::post('/sponsor-update', [SponsorController::class, 'update'])->name('sponsor.update'); 
         
         Route::get('/investigations', [InvestigationController::class, 'index'])->name('investigations.index');
         Route::get('/add-labs/{attendance_id}', [InvestigationController::class, 'add_results']);
