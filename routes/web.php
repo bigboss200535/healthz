@@ -86,7 +86,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/single-attendance/{patient_id}', [AttendanceController::class, 'single_attendance'])->name('patient.single_attendance');
         Route::get('/current-attendance/{patient_id}', [AttendanceController::class, 'current_attendance'])->name('patient.current_attendance');
         Route::get('/appointments', [AppointmentController::class, 'index'])->name('appointments.index');
-        Route::get('/sponsors', [PatientController::class, 'list_all_patient_sponsors'])->name('patient.list_all_patient_sponsors');
+        Route::get('/sponsor/{patient_id}', [SponsorController::class, 'list_patient_sponsor'])->name('patient.list_patient_sponsor');
        
         
         Route::get('/investigations', [InvestigationController::class, 'index'])->name('investigations.index');

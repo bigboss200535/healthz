@@ -30,7 +30,24 @@ class SponsorController extends Controller
                     ->where('archived', 'No')
                     ->get();
     
-        
         return response()->json($sponsors);
+    }
+
+    public function list_patient_sponsor(Request $request)
+    {
+         $sponsor_list = DB::table('patient_sponsorship')
+            ->where('patient_sponsorship.archived', 'No')
+            ->where('patient_sponsorship.patient_id', $request->patient_id)
+            ->join('sponsors', 'patient_sponsorship.sponsor_id', '=', 'sponsors.sponsor_id')
+            ->join('patient_info', 'patient_info.patient_id', '=', 'patient_sponsorship.patient_id')
+            ->join('sponsor_type', 'sponsor_type.sponsor_type_id', '=', 'sponsors.sponsor_type_id')
+            ->select('patient_info.fullname', 'patient_sponsorship.sponsor_type_id','sponsor_type.sponsor_type','patient_sponsorship.member_no', 
+                     'patient_sponsorship.sponsor_id', 'sponsors.sponsor_name', 
+                    'patient_sponsorship.start_date', 'patient_sponsorship.end_date', 'patient_sponsorship.added_date', 
+                    'patient_sponsorship.status as card_status', 'patient_sponsorship.status', 'patient_sponsorship.priority', 
+                    'patient_sponsorship.is_active', 'sponsors.sponsor_name', 'sponsor_type.sponsor_type' )
+            ->get();
+
+            return view('patient.sponsors', compact('sponsor_list'));
     }
 }

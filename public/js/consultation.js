@@ -571,3 +571,124 @@ $(document).on('click', '.delete-investigation', function () {
             }
         });
     });
+
+    // Handle view document click - open in modal
+    $(document).on('click', '.view-document', function() {
+        const documentId = $(this).data('id');
+        const documentName = $(this).data('name');
+        const documentType = $(this).data('type');
+        const documentPath = $(this).data('path');
+        
+        // Set modal title
+        $('#document-title').text(documentName);
+        
+        // Show loader, hide content and error
+        $('#document-loader').removeClass('d-none');
+        $('#document-content').addClass('d-none');
+        $('#document-error').addClass('d-none');
+        
+        // Set download button
+        $('#download-btn').attr('href', `/documents/download/${documentId}`).removeClass('d-none');
+        
+        // Open modal
+        const modal = new bootstrap.Modal(document.getElementById('documentViewerModal'));
+        modal.show();
+        
+        // Load document based on type
+        if (['jpg', 'jpeg', 'png', 'gif'].includes(documentType.toLowerCase())) {
+            // Load image
+            $('<img>')
+                .attr('src', documentPath)
+                .attr('alt', documentName)
+                .addClass('img-fluid')
+                .css('max-height', '70vh')
+                .on('load', function() {
+                    $('#document-loader').addClass('d-none');
+                    $('#document-content').removeClass('d-none').html(this);
+                })
+                .on('error', function() {
+                    $('#document-loader').addClass('d-none');
+                    $('#document-error').removeClass('d-none');
+                });
+        } else if (documentType.toLowerCase() === 'pdf') {
+            // Enhanced PDF loading with multiple methods
+            const pdfContainer = $('<div class="pdf-container"></div>');
+            
+            // Method 1: Try iframe first
+            const iframe = $('<iframe>')
+                .attr('src', documentPath)
+                .attr('width', '100%')
+                .attr('height', '600px')
+                .css('border', 'none')
+                .attr('title', documentName);
+            
+            // Method 2: Fallback to object tag if iframe fails
+            const objectTag = $('<object>')
+                .attr('data', documentPath)
+                .attr('type', 'application/pdf')
+                .attr('width', '100%')
+                .attr('height', '600px')
+                .css('border', 'none')
+                .attr('title', documentName)
+                .append('<div class="pdf-fallback">Your browser does not support PDF viewing. Please download the file.</div>');
+            
+            // Method 3: Direct embed as last resort
+            const embedTag = $('<embed>')
+                .attr('src', documentPath)
+                .attr('type', 'application/pdf')
+                .attr('width', '100%')
+                .attr('height', '600px')
+                .css('border', 'none')
+                .attr('title', documentName);
+            
+            // Try iframe first
+            pdfContainer.append(iframe);
+            
+            // Set up error handling for iframe
+            iframe.on('load', function() {
+                try {
+                    // Check if iframe loaded content successfully
+                    const iframeDoc = this.contentDocument || this.contentWindow.document;
+                    if (iframeDoc && iframeDoc.body) {
+                        // Success - iframe loaded content
+                        $('#document-loader').addClass('d-none');
+                        $('#document-content').removeClass('d-none').html(pdfContainer);
+                    } else {
+                        throw new Error('Iframe content not accessible');
+                    }
+                } catch (e) {
+                    // Fallback to object tag
+                    pdfContainer.empty().append(objectTag);
+                    $('#document-loader').addClass('d-none');
+                    $('#document-content').removeClass('d-none').html(pdfContainer);
+                }
+            });
+            
+            iframe.on('error', function() {
+                // Fallback to object tag
+                pdfContainer.empty().append(objectTag);
+                $('#document-loader').addClass('d-none');
+                $('#document-content').removeClass('d-none').html(pdfContainer);
+            });
+            
+            // Timeout fallback
+            setTimeout(() => {
+                if ($('#document-loader').is(':visible')) {
+                    // If still loading after 3 seconds, try embed
+                    pdfContainer.empty().append(embedTag);
+                    $('#document-loader').addClass('d-none');
+                    $('#document-content').removeClass('d-none').html(pdfContainer);
+                }
+            }, 3000);
+        } else {
+            // For other file types, show download prompt
+            $('#document-loader').addClass('d-none');
+            $('#document-content').removeClass('d-none').html(`
+                <div class="p-4">
+                    <i class="bx bx-file" style="font-size: 4rem; color: #6c757d;"></i>
+                    <h4 class="mt-3">${documentName}</h4>
+                    <p class="text-muted">This file type cannot be previewed. Please download to view.</p>
+                </div>
+            `);
+        }
+    });

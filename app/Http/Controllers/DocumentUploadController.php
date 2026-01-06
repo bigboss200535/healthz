@@ -20,7 +20,6 @@ class DocumentUploadController extends Controller
         
         // process and upload file
         $file = $request->file('document_file');
-        // $filename = time() . '_' . $file->getClientOriginalName(); //add file original name
         $filename = 'healthz_'.time() . '.' . $file->getClientOriginalExtension();
         $path = $file->storeAs('documents', $filename, 'public');
         
@@ -44,8 +43,8 @@ class DocumentUploadController extends Controller
             'added_id' => Auth::user()->user_id,
             'added_by' => Auth::user()->user_fullname,
             'added_date' => now()->format('Y-m-d'),
-            'status' => 'Active',
-            'archived' => 'No'
+            // 'status' => 'Active',
+            // 'archived' => 'No'
         ]);
         
         return response()->json([
@@ -64,7 +63,7 @@ class DocumentUploadController extends Controller
                 // Get documents for specific patient
                 $documents = Document::where('patient_id', $patient_id)
                     ->where('archived', 'No')
-                    ->orderBy('added_date', 'desc')
+                    // ->orderBy('documents_id', 'desc')
                     ->get();
             } 
 
@@ -101,6 +100,7 @@ class DocumentUploadController extends Controller
             return response()->json(['error' => 'Error downloading file: ' . $e->getMessage()], 500);
         }
     }
+
 
     public function delete_document($document_id)
     {

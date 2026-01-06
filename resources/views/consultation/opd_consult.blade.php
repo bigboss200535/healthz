@@ -190,9 +190,8 @@
 <!-- <br> -->
 <!-- Add a message to inform the user what's needed -->
 
-@php
-if ($sponsor_check->issue_id == 0) {
-    echo '<div class="card-widget-separator-wrapper">
+    <div class="card mb-6">
+      <div class="card-widget-separator-wrapper">
               <div class="card-body card-widget-separator">
                    <div class="row gy-4 gy-sm-1">
                        <div class="col-sm-6 col-lg-12">
@@ -206,11 +205,8 @@ if ($sponsor_check->issue_id == 0) {
                    </div>
               </div>
         </div>
-     </div>';
-} else {
-    echo '<div class="card mb-6">';
-}
-@endphp
+     </div>
+
     
 <!-- <br> -->
 <!-- The existing consultation display div remains unchanged -->
@@ -707,7 +703,10 @@ if ($sponsor_check->issue_id == 0) {
                                                                               <div class="col-md">
                                                                                 <div class="row">
                                                                                     <div class="col-6">
-                                                                                        <button type="button" data-bs-toggle='modal' data-bs-target="#add_diagnosis" class="btn btn-sm btn-primary">ADD DIAGNOSIS</button>
+                                                                                     <div>
+                                                                                         <button type="button" data-bs-toggle='modal' data-bs-target="#add_diagnosis" class="btn btn-sm btn-primary">ADD DIAGNOSIS</button>
+                                                                                     </div>
+                                                                                     <br>
                                                                                       </div>
                                                                                       <div class="col-12" >
                                                                                       <table class="table table-responsive" id="diagnosis_list">
@@ -812,8 +811,8 @@ if ($sponsor_check->issue_id == 0) {
                                                                                               <tr>
                                                                                                 <th>Sn</th>
                                                                                                 <th>Prescription</th>
-                                                                                                <th>Prescription Qty</th>
-                                                                                                <th>Prescription date</th>
+                                                                                                <th>Qty</th>
+                                                                                                <th>Start date</th>
                                                                                                  <th>Doctor</th>
                                                                                                 <th>Sponsor Type</th>
                                                                                                 <th>Prescription Type</th>
@@ -824,8 +823,8 @@ if ($sponsor_check->issue_id == 0) {
                                                                                              <tr>
                                                                                                 <th>Sn</th>
                                                                                                 <th>Prescription</th>
-                                                                                                <th>Prescription Qty</th>
-                                                                                                <th>Prescription date</th>
+                                                                                                <th>Qty</th>
+                                                                                                <th>date</th>
                                                                                                  <th>Doctor</th>
                                                                                                 <th>Sponsor Type</th>
                                                                                                 <th>Prescription Type</th>
@@ -1219,4 +1218,45 @@ if ($sponsor_check->issue_id == 0) {
             </div>
           </div>
           <!--/ INVESTIGATIONS MODAL -->
+
+          
+                                                          <!-- DOCUMENT VIEW MODAL -->
+                                                           <div class="modal fade"  id="documentViewerModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="documentViewerModalLabel">
+                                                          {{-- <div class="modal fade" id="documentViewerModal" tabindex="-1" aria-labelledby="documentViewerModalLabel" aria-hidden="true"> --}}
+                                                              <div class="modal-dialog modal-xl">
+                                                                  <div class="modal-content">
+                                                                      <div class="modal-header">
+                                                                          <h5 class="modal-title" id="documentViewerModalLabel">
+                                                                              <i class="bx bx-file me-2"></i>
+                                                                              <span id="document-title">Document Viewer</span>
+                                                                          </h5>
+                                                                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                      </div>
+                                                                      <div class="modal-body text-center p-0">
+                                                                          <div id="document-loader" class="d-flex justify-content-center align-items-center" style="height: 400px;">
+                                                                              <div class="spinner-border text-primary" role="status">
+                                                                                  <span class="visually-hidden">Loading...</span>
+                                                                              </div>
+                                                                          </div>
+                                                                          <div id="document-content" class="d-none">
+                                                                              <!-- Document content will be loaded here -->
+                                                                          </div>
+                                                                          <div id="document-error" class="d-none alert alert-danger m-3">
+                                                                              <i class="bx bx-error-circle me-2"></i>
+                                                                              <span>Failed to load document</span>
+                                                                          </div>
+                                                                      </div>
+                                                                      <div class="modal-footer">
+                                                                         <button type="reset" class="btn btn-info" data-bs-dismiss="modal" aria-label="Close"><i class="bx bx-x"></i> Close</button>
+                                                                          {{-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> --}}
+                                                                          {{-- <a id="download-btn" href="#" download class="btn btn-success d-none">
+                                                                              <i class="bx bx-download me-2"></i>Download
+                                                                          </a> --}}
+                                                                      </div>
+                                                                  </div>
+                                                              </div>
+                                                          </div>
+                                                     
+                                            <!--  -->
+
 </x-app-layout>

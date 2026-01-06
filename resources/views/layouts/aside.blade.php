@@ -77,22 +77,12 @@ $userController = new UserController();// $access = $userController->permissions
          <!-- <span class="badge badge-center rounded-pill bg-success ms-auto">4</span> -->
       </a>
       <ul class="menu-sub">
-      <li class="menu-item">
-          <a href="{{ route('patients.create') }}" class="menu-link">
-            <div class="text-truncate" data-i18n="List">Add New</div>
-          </a>
-        </li>
-        
          <li class="menu-item">
           <a href="{{ url('/patient/search') }}" class="menu-link">
             <div class="text-truncate" data-i18n="List">Search</div>
           </a>
         </li>
-        <li class="menu-item">
-          <a href="{{ route('patient.list_all_patient_sponsors') }}" class="menu-link">
-            <div class="text-truncate" data-i18n="List">Sponsors</div>
-          </a>
-        </li>
+      
         <li class="menu-item">
           <a href="{{ route('attendance.index') }}" class="menu-link">
             <div class="text-truncate" data-i18n="List">Attendance</div>

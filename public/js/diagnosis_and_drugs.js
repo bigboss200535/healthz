@@ -523,7 +523,7 @@ $(document).on('click', '.delete-prescription', function() {
                              <td>${item.entry_date}</td>
                             <td>${item.doctor}</td>
                             <td>${item.sponsor_name}</td>
-                            <td>${item.prescription_type}</td>
+                            <td><span class="badge bg-label-primary">${item.prescription_type}</span></td>
                             <td class="text-center">
                                 <div class="btn-group" role="group">
                                     <button class="btn btn-sm btn-danger delete-prescription" data-id="${item.prescriptions_id}" title="Delete">

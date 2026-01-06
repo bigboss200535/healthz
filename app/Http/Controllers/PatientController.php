@@ -35,12 +35,6 @@ class PatientController extends Controller
 {
     public function index()
     {
-        // $sponsor_types = SponsorType::select('sponsor_type')
-        //     ->where('archived', 'No')
-        //     ->orderBy('sponsor_type', 'asc')
-        //     ->get();
-            
-        // return view('patient.index', compact('sponsor_types')); 
          return view('patient.index'); 
     }
 
@@ -48,7 +42,8 @@ class PatientController extends Controller
     {
         $today = date('Y-m-d');
 
-        $patient = Patient::where('archived', 'No')// ->where('added_date', $today)
+        $patient = Patient::where('archived', 'No')
+        // ->where('added_date', $today)
             ->orderBy('added_date', 'desc')->get();
 
         $nationality = Nationality::where('archived', 'No')->where('status', '=','Active')->get();
@@ -78,7 +73,7 @@ class PatientController extends Controller
         $validated_data = $request->validate([
             '_token' => 'required|string',
             // 'old_folder' => 'nullable|string|max:255',
-            'pat_id' => 'nullable',
+            // 'pat_id' => 'nullable',
             'title' => 'required|string|max:255',
             'firstname' => 'required|string|min:3|max:255',
             'middlename' => 'nullable|string|max:255',
@@ -641,22 +636,7 @@ class PatientController extends Controller
         return response()->json($sponsor);
     }
 
-    public function list_all_patient_sponsors(Request $request)
-    {
-         $sponsor_list = DB::table('patient_sponsorship')
-            ->where('patient_sponsorship.archived', 'No')
-            ->join('sponsors', 'patient_sponsorship.sponsor_id', '=', 'sponsors.sponsor_id')
-            ->join('patient_info', 'patient_info.patient_id', '=', 'patient_sponsorship.patient_id')
-            ->join('sponsor_type', 'sponsor_type.sponsor_type_id', '=', 'sponsors.sponsor_type_id')
-            ->select('patient_info.fullname', 'patient_sponsorship.sponsor_type_id','sponsor_type.sponsor_type','patient_sponsorship.member_no', 
-                     'patient_sponsorship.sponsor_id', 'sponsors.sponsor_name', 
-                    'patient_sponsorship.start_date', 'patient_sponsorship.end_date', 'patient_sponsorship.added_date', 
-                    'patient_sponsorship.status as card_status', 'patient_sponsorship.status', 'patient_sponsorship.priority', 
-                    'patient_sponsorship.is_active', 'sponsors.sponsor_name', 'sponsor_type.sponsor_type' )
-            ->get();
-
-            return view('patient.sponsors', compact('sponsor_list'));
-    }
+    
 
     public function recent_patient_registration()
     {

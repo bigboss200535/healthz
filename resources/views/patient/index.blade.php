@@ -41,7 +41,7 @@
                                       <td>
                                          <button class="btn btn-primary" name="search_item" id="search_item"><i class="bx bx-search"></i> Search</button>
                                           <button class="btn btn-info" id="clear_search"><i class="bx bx-reset"></i> Clear</button>
-                                          <a href="{{ route('patients.create') }}" class="btn btn-dark"> <i class="bx bx-plus"></i> Create New Patient</a>
+                                          <a href="{{ route('patients.create') }}" class="btn btn-dark"> <i class="bx bx-user"></i> Create New Patient</a>
                                       </td>
                                     </tr>
                                   </table>
@@ -245,7 +245,7 @@
                                                 data-opdnumber-id='${patient.opd_number }'>
                                             <i class="bx bx-plus me-1"></i> New Attendance
                                         </a>
-                                        <a class="dropdown-item" href="{{ url('#') }}/${patient.patient_id}">
+                                        <a class="dropdown-item" href="{{ url('/patient/sponsor') }}/${ patient.patient_id }">
                                             <i class="bx bx-wallet-alt me-1"></i> Manage Sponsors
                                         </a>
                                         <a class="dropdown-item" href="{{ url('patients') }}/${patient.patient_id}">

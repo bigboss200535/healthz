@@ -17,7 +17,7 @@
                                   </div>
                                   <div class="col">
                                     <label class="form-label" for="end_date">End Date</label>
-                                    <input type="date" class="form-control" id="attend_end_date" name="attend_end_date" value="{{ request('attend_end_date') }}">
+                                    <input type="date" class="form-control" id="attend_end_date" name="attend_end_date" value="<?php echo date('M-dd-yyyy'); ?>">
                                   </div>
                                   <div class="col">
                                     <label class="form-label" for="search">Search (Name or OPD #)</label>

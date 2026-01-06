@@ -136,12 +136,10 @@
             {
                 $('#consultation_display').show();
                 $('#required_fields_message').hide();
-                
             } else {
                 $('#consultation_display').hide();
                 $('#required_fields_message').show();
             }
-        // });
 
             $('#app_list').DataTable({
                 searching: false
@@ -170,9 +168,12 @@
             $('.diagnosis_search').select2();
             $('.select_2_dropbox').select2();
             $('#investigations_table').DataTable({
-                  searching: false
+                  searching: false,
+                  ordering: false,
+                  "lengthChange": false
             });
-    
+            $('#sponsor_table').DataTable();
+
      // *****************CHART FOR VITAL SIGNS****************************
             const ctx = document.getElementById('vital_sign_chart');
 
@@ -680,6 +681,5 @@ function resetFormFields() {
 }
 
 </script>
-
 </body>
 </html>

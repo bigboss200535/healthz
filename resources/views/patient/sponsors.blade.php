@@ -3,7 +3,7 @@
                   <h4 class="py-3 mb-4">
                     <span class="text-muted fw-light">Patients /</span> Sponsors
                   </h4>
-                  <div class="card mb-6">
+                  {{-- <div class="card mb-6">
                     <div class="card-widget-separator-wrapper">
                       <div class="card-body card-widget-separator">
                         <div class="row gy-4 gy-sm-1">
@@ -13,14 +13,14 @@
                         </div>
                       </div>
                     </div>
-                  </div>
-                  <br>
+                  </div> --}}
+                  {{-- <br> --}}
                 <div class="card" id="patient_search_result" >
                     <div class="card-datatable table-responsive">
                       <div class="col" style="padding-left:20px;"> 
                       <h4 class="mb-1 mt-3 text-mute">Patient Sponsors</h4>
                       </div>
-                      <table class="datatables-customers table border-top table-hover" id="system_table">
+                      <table class="datatables-customers table border-top table-hover" id="sponsor_table">
                           <thead>
                               <tr>
                                   <th>S/N</th>

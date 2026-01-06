@@ -27,6 +27,13 @@
                                                                                      <a href="{{ route('documents.download', $document->documents_id) }}" target="_blank" class="btn btn-sm btn-info">
                                                                                         <i class="bx bx-show"></i>
                                                                                     </a>
+                                                                                     <button type="button" class="btn btn-sm btn-info view-document" 
+                                                                                             data-id="{{ $document->documents_id }}"
+                                                                                             data-name="{{ $document->file_name }}"
+                                                                                             data-type="{{ $document->file_type }}"
+                                                                                             data-path="{{ asset('storage/app/public/' . $document->file_path) }}">
+                                                                                        <i class="bx bx-show"></i> View
+                                                                                    </button>
                                                                                      <a href="{{ route('documents.download', $document->documents_id) }}" download="{{ $document->file_name }}" class="btn btn-sm btn-success">
                                                                                         <i class="bx bx-download"></i> 
                                                                                      </a>
@@ -38,8 +45,20 @@
                                                                       </tr>
                                                                       @endforeach
                                                                   </tbody>
+                                                                   <tfoot>
+                                                                      <tr>
+                                                                          <th>S/N</th>
+                                                                          <th>Document Name</th>
+                                                                          <th>Document Type</th>
+                                                                          <th>Upload Date</th>
+                                                                          <th>Size</th>
+                                                                          <th>Actions</th>
+                                                                      </tr>
+                                                                  </tfoot>
                                                               </table>
                                                           </div>
+
+                                                         
                                                       @else
                                                           <div class="col-sm-12 alert alert-info">
                                                               No Documents Uploaded yet.
