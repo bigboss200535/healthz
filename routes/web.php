@@ -75,6 +75,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
    
 
+    Route::get('/api/getsponsortype', [SponsorController::class, 'get_sponsors_by_type'])->name('api.get.sponsors.by.type');
+    
     Route::prefix('patient')->group(function () {
         // Route::get('/attendance-clinic', [AttendanceController::class, 'attendance_clinic'])->where('opd_number', '[A-Z0-9]+/[0-9]+');
         // Route::get('/attendance-clinic/{opd_number}', [AttendanceController::class, 'attendance_clinic']);
@@ -90,8 +92,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
          
         Route::get('/patient-sponsors/{patient_id}', [PatientController::class, 'get_patient_sponsor'])->name('patient.get_patient_sponsor');
         Route::get('/sponsor/{patient_id}', [SponsorController::class, 'list_patient_sponsor'])->name('patient.list_patient_sponsor');
-        Route::post('/sponsor-delete/{patient_sponsor_id}', [SponsorController::class, 'delete_sponsor'])->name('sponsor.delete'); 
-        Route::post('/sponsor-update', [SponsorController::class, 'update'])->name('sponsor.update'); 
+        Route::get('/sponsor-delete/{patient_sponsor_id}', [SponsorController::class, 'delete_sponsor'])->name('sponsor.delete'); 
+        Route::post('/sponsor-update', [SponsorController::class, 'update_sponsor'])->name('sponsor.update'); 
         
         Route::get('/investigations', [InvestigationController::class, 'index'])->name('investigations.index');
         Route::get('/add-labs/{attendance_id}', [InvestigationController::class, 'add_results']);

@@ -157,6 +157,7 @@ class PatientController extends Controller
                             'town' => strtoupper($validated_data['town'] ?? ''),
                             'region' => strtoupper($validated_data['region'] ?? ''),
                             'added_date' => $now,
+                            'facility_id' => Auth::user()->facility_id,
                             'opd_type' => $validated_data['opd_type'],
                             'records_id' => $patient_records,
                             'user_id' =>  $user_id,
@@ -278,11 +279,11 @@ class PatientController extends Controller
                     'patient_info.email', 
                     'patient_info.ghana_card',
                     'patient_info.address', 
-                     'patient_info.added_date', 
-                     'patient_info.telephone', 
-                     'users.user_fullname', 
-                     'patient_info.gender_id', 
-                     'patient_info.death_status',
+                    'patient_info.added_date', 
+                    'patient_info.telephone', 
+                    'users.user_fullname', 
+                    'patient_info.gender_id', 
+                    'patient_info.death_status',
                      DB::raw('TIMESTAMPDIFF(YEAR, patient_info.birth_date, CURDATE()) as patient_age'))
             ->orderBy('patient_info.added_date', 'asc') 
             ->first();

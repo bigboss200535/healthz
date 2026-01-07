@@ -333,6 +333,7 @@ $('#prescription_search').on('input', function() {
     $('.alert-container-drug').empty();
 
     prescriptionSearchTimeout = setTimeout(function() {
+        
         $.ajax({
             url: '/api/prescriptions/search',
             method: 'POST',

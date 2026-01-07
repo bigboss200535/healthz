@@ -37,28 +37,29 @@
                               $counter = 1;
                             @endphp
 
-                            @foreach($sponsor_list as $patients)
+                            @forelse($sponsor_list as $sponsors)
+
                             <tr>
                               <td>{{ $counter++ }}</td>
-                              <td>{{ strtoupper($patients->fullname) }}</td>
-                              <td>{{ $patients->sponsor_type }}</td>
+                              <td>{{ strtoupper($sponsors->fullname) }}</td>
+                              <td>{{ $sponsors->sponsor_type }}</td>
                               <td>
-                                    @if($patients->sponsor_type_id === 'PI03')
-                                      <span class="badge bg-label-info me-1">{{ $patients->sponsor_name}}</span>
-                                    @elseif ($patients->sponsor_type_id === 'N002')
-                                    <span class="badge bg-label-success me-1">{{ $patients->sponsor_name}}</span>
-                                    @elseif ($patients->sponsor_type_id === 'P001')
-                                    <span class="badge bg-label-warning me-1">{{ $patients->sponsor_name}}</span>
-                                    @elseif ($patients->sponsor_type_id === 'PC04')
-                                      <span class="badge bg-label-primary me-1">{{ $patients->sponsor_name}}</span>
+                                    @if($sponsors->sponsor_type_id === 'PI03')
+                                      <span class="badge bg-label-info me-1">{{ $sponsors->sponsor_name}}</span>
+                                    @elseif ($sponsors->sponsor_type_id === 'N002')
+                                    <span class="badge bg-label-success me-1">{{ $sponsors->sponsor_name}}</span>
+                                    @elseif ($sponsors->sponsor_type_id === 'P001')
+                                    <span class="badge bg-label-warning me-1">{{ $sponsors->sponsor_name}}</span>
+                                    @elseif ($sponsors->sponsor_type_id === 'PC04')
+                                      <span class="badge bg-label-primary me-1">{{ $sponsors->sponsor_name}}</span>
                                     @endif
                               </td>
-                              <td>{{ \Carbon\Carbon::parse($patients->start_date)->format('d-m-Y') }}</td>
-                              <td>{{ \Carbon\Carbon::parse($patients->end_date)->format('d-m-Y') }}</td>
+                              <td>{{ \Carbon\Carbon::parse($sponsors->start_date)->format('d-m-Y') }}</td>
+                              <td>{{ \Carbon\Carbon::parse($sponsors->end_date)->format('d-m-Y') }}</td>
                               <td>
-                                  @if($patients->card_status === 'Active')
+                                  @if($sponsors->card_status === 'Active')
                                       <span class="badge bg-label-success me-1">ACTIVE</span>
-                                  @elseif ($patients->card_status === 'Inactive')
+                                  @elseif ($sponsors->card_status === 'Inactive')
                                       <span class="badge bg-label-danger me-1">EXPIRED</span>
                                   @endif 
                               </td>
@@ -69,29 +70,34 @@
                                       </button>
                                             <div class="dropdown-menu">
                                                   <a class="dropdown-item edit-sponsor-btn" href="#" 
-                                                     data-id="{{ $patients->sponsor_id }}"
-                                                     data-patient-id="{{ $patients->patient_id}}"
-                                                     data-sponsor-type-id="{{ $patients->sponsor_type_id }}"
-                                                     data-sponsor-name="{{ $patients->sponsor_name }}"
-                                                     data-member-no="{{ $patients->member_no }}"
-                                                     data-start-date="{{ \Carbon\Carbon::parse($patients->start_date)->format('Y-m-d') }}"
-                                                     data-end-date="{{ \Carbon\Carbon::parse($patients->end_date)->format('Y-m-d') }}"
-                                                     data-card-status="{{ $patients->card_status }}"
-                                                     data-priority="{{ $patients->priority ?? '1' }}"
+                                                     data-patient-sponsor-id="{{ $sponsors->patient_sponsor_id  }}"
+                                                     data-patient-id="{{ $sponsors->patient_id}}"
+                                                     data-sponsor-type-id="{{ $sponsors->sponsor_type_id }}"
+                                                     data-sponsor-name="{{ $sponsors->sponsor_name }}"
+                                                     data-member-no="{{ $sponsors->member_no }}"
+                                                     data-start-date="{{ \Carbon\Carbon::parse($sponsors->start_date)->format('Y-m-d') }}"
+                                                     data-end-date="{{ \Carbon\Carbon::parse($sponsors->end_date)->format('Y-m-d') }}"
+                                                     data-card-status="{{ $sponsors->card_status }}"
+                                                     data-priority="{{ $sponsors->priority ?? '1' }}"
                                                      data-bs-toggle="modal" data-bs-target="#sponsorModal">
                                                       <i class="bx bx-edit-alt me-1"></i> Edit 
                                                   </a>
                                                   <a class="dropdown-item sponsor_delete_btn" href="#" 
-                                                     data-id="{{ $patients->patient_sponsor_id }}"
-                                                     data-patient-id="{{ $patients->patient_id ?? '' }}"
-                                                     data-sponsor-name="{{ $patients->sponsor_name }}">
+                                                     data-patient-sponsor-id="{{ $sponsors->patient_sponsor_id }}"
+                                                     data-patient-id="{{ $sponsors->patient_id ?? '' }}"
+                                                     data-sponsor-name="{{ $sponsors->sponsor_name }}">
                                                       <i class="bx bx-trash me-1"></i> Delete 
                                                   </a>
                                              </div>
-                                  </div>
+                                  </div> 
+                                   
                                 </td>
                             </tr>
-                            @endforeach
+                            @empty
+                            <tr>
+                              <td colspan="8" align="center">No Data Available to Display</td>
+                            </tr>
+                            @endforelse
                           </tbody>
                           <tfoot>
                               <tr>
@@ -111,7 +117,7 @@
           </div>
 </x-app-layout>
 
-<!-- Sponsor Modal -->
+<!-- PATIENT SPONSOR MODAL FORM -->
 <div class="modal fade" id="sponsorModal" tabindex="-1" aria-labelledby="sponsorModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
@@ -121,11 +127,12 @@
         </h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <form id="sponsorForm" method="POST" action="#">
+      <form id="sponsor_form" method="POST">
         @csrf
         <div class="modal-body">
-          <input type="hidden" id="sponsor_id" name="sponsor_id">
-          <input type="hidden" id="patient_id" name="patient_id" value="{{ $patients->patient_id }}"> <!-- Patient ID -->
+          <input type="text" id="sponsor_id" name="sponsor_id">
+          <input type="text" id="patient_id" name="patient_id" value="{{ $patient->patient_id }}" hidden> <!-- Patient ID -->
+          {{-- <input type="text" id="patient_opdnumber" name="patient_opdnumber" value="{{ $patient->patient_id }}" hidden> <!-- Patient ID --> --}}
           <input type="hidden" id="form_mode" name="form_mode" value="add">
           
           <div class="row g-3">
@@ -133,7 +140,7 @@
             <div class="col-md-6">
               <label for="sponsor_type_id" class="form-label">Sponsor Type <span class="text-danger">*</span></label>
               <select class="form-select" id="sponsor_type_id" name="sponsor_type_id" required>
-                <option value="" disabled selected>-Select Sponsor Type-</option>
+                <option disabled selected>-Select Sponsor Type-</option>
                 @php
                   $sponsor_types = DB::table('sponsor_type')->where('archived', 'No')->orderBy('sponsor_type', 'DESC')->get();
                 @endphp
@@ -146,8 +153,8 @@
             <!-- Sponsor Name -->
             <div class="col-md-6">
               <label for="sponsor_name" class="form-label">Sponsor Name <span class="text-danger">*</span></label>
-              <select class="form-select" id="sponsor_name" name="sponsor_name" required>
-                <option value="" disabled selected>-Select Sponsor Type First-</option>
+              <select class="form-select" id="sponsor_name" name="sponsor_id" required>
+                <option disabled selected>-Select Sponsor Type First-</option>
               </select>
             </div>
             
@@ -162,8 +169,8 @@
             <div class="col-md-6">
               <label for="dependant" class="form-label">Dependant</label>
               <select class="form-select" id="dependant" name="dependant">
-                <option value="NO">No</option>
-                <option value="YES">Yes</option>
+                <option value="No">No</option>
+                <option value="Yes">Yes</option>
               </select>
             </div>
             <!-- Start Date -->
@@ -191,13 +198,14 @@
             <div class="col-md-6">
               <label for="priority" class="form-label">Priority <span class="text-danger">*</span></label>
               <select class="form-select" id="priority" name="priority" required>
-                <option value="1">Primary</option>
-                <option value="2">Secondary</option>
-                <option value="3">Tertiary</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
               </select>
             </div>
             
-           
           </div>
         </div>
         <div class="modal-footer">
@@ -214,7 +222,7 @@
 
 <script>
 $(document).ready(function() {
-    let sponsorForm = $('#sponsorForm');
+    let sponsorForm = $('#sponsor_form');
     let sponsorModal = new bootstrap.Modal(document.getElementById('sponsorModal'));
     
     // Handle edit sponsor button clicks
@@ -222,34 +230,34 @@ $(document).ready(function() {
         e.preventDefault();
         
         let btn = $(this);
-        $('#modalTitle').text('Edit Patient Sponsor');
-        $('#form_mode').val('edit');
-        $('#sponsor_id').val(btn.data('id'));
-        $('#patient_id').val(btn.data('patient-id'));
-        $('#selected_patient_id').val(btn.data('patient-id'));
-        $('#sponsor_type_id').val(btn.data('sponsor-type-id'));
-        $('#member_no').val(btn.data('member-no'));
-        $('#start_date').val(btn.data('start-date'));
-        $('#end_date').val(btn.data('end-date'));
-        $('#card_status').val(btn.data('card-status'));
-        $('#priority').val(btn.data('priority'));
+          $('#modalTitle').text('Edit Patient Sponsorship');
+          $('#form_mode').val('edit');
+          $('#sponsor_id').val(btn.data('patient-sponsor-id'));
+          $('#patient_id').val(btn.data('patient-id'));
+          // $('#selected_patient_id').val(btn.data('patient-id'));
+          $('#sponsor_type_id').val(btn.data('sponsor-type-id'));
+          $('#member_no').val(btn.data('member-no'));
+          $('#start_date').val(btn.data('start-date'));
+          $('#end_date').val(btn.data('end-date'));
+          $('#card_status').val(btn.data('card-status'));
+          $('#priority').val(btn.data('priority'));
         
-        // Load sponsors for the selected type
+          // Load sponsors for the selected type
         loadSponsorsByType(btn.data('sponsor-type-id'), btn.data('sponsor-name'));
     });
     
-    // Handle sponsor type change
+    // Handle Sponsor Type change
     $('#sponsor_type_id').on('change', function() {
         let sponsorTypeId = $(this).val();
         if (sponsorTypeId) {
             loadSponsorsByType(sponsorTypeId);
             updateMemberNumberValidation(sponsorTypeId);
         } else {
-            $('#sponsor_name').empty().append('<option value="" disabled selected>-Select Sponsor Type First-</option>');
+            $('#sponsor_name').empty().append('<option disabled selected>-Select Sponsor Type First-</option>');
         }
     });
     
-    // Load sponsors by type
+    // Load Sponsors by Type
     function loadSponsorsByType(sponsorTypeId, selectedSponsor = null) {
         $.ajax({
             url: '/api/getsponsortype',
@@ -270,23 +278,23 @@ $(document).ready(function() {
         });
     }
     
-    // Update member number validation based on sponsor type
+    // Update Member Number validation based on sponsor type
     function updateMemberNumberValidation(sponsorTypeId) {
-        let memberNoField = $('#member_no');
-        let helpText = $('#member_no_help');
+        let member_no_field = $('#member_no');
+        let help_text = $('#member_no_help');
         
         if (sponsorTypeId === 'N002') {
-            memberNoField.attr('minlength', '8');
-            memberNoField.attr('maxlength', '10');
-            memberNoField.attr('pattern', '[0-9]{8,10}');
-            memberNoField.attr('title', 'Member number must be 8-10 digits');
-            helpText.text('Member number must be 8-10 digits');
+            member_no_field.attr('minlength', '8');
+            member_no_field.attr('maxlength', '10');
+            member_no_field.attr('pattern', '[0-9]{8,10}');
+            member_no_field.attr('title', 'Member number must be 8-10 digits');
+            help_text.text('Member number must be 8-10 digits');
         } else {
-            memberNoField.removeAttr('minlength');
-            memberNoField.removeAttr('maxlength');
-            memberNoField.removeAttr('pattern');
-            memberNoField.removeAttr('title');
-            helpText.text('');
+            member_no_field.removeAttr('minlength');
+            member_no_field.removeAttr('maxlength');
+            member_no_field.removeAttr('pattern');
+            member_no_field.removeAttr('title');
+            help_text.text('');
         }
     }
     
@@ -294,29 +302,19 @@ $(document).ready(function() {
     sponsorForm.on('submit', function(e) {
         e.preventDefault();
         
-        let formData = new FormData(this);
+        let form_data = new FormData(this);
         let mode = $('#form_mode').val();
-        let url = '/patients/sponsor-update';
-        let method = 'POST';
-        
-        // Validate patient ID
-        if (!$('#patient_id').val()) {
-            alert('Please enter a patient ID');
-            return;
-        }
         
         $.ajax({
-            url: url,
-            type: method,
-            data: formData,
+            url: '/patient/sponsor-update',
+            method: 'POST',
+            data: form_data,
             processData: false,
             contentType: false,
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
             success: function(response) {
-                sponsorModal.hide();
-                location.reload(); // Reload to show updated data
+                // sponsorModal.hide();
+                location.reload(); 
+                // Reload to show updated data
             },
             error: function(xhr) {
                 let errors = xhr.responseJSON.errors;
@@ -324,14 +322,14 @@ $(document).ready(function() {
                 for (let field in errors) {
                     errorHtml += errors[field][0] + '<br>';
                 }
-                alert('Error: ' + errorHtml);
+                 toastr.error('Error: '+ errorHtml);
             }
         });
     });
     
     // Reset form when modal is hidden
     $('#sponsorModal').on('hidden.bs.modal', function() {
-        sponsorForm[0].reset();
+          sponsorForm[0].reset();
         $('#modalTitle').text('Add Patient Sponsor');
         $('#form_mode').val('add');
         $('#sponsor_id').val('');
@@ -343,33 +341,42 @@ $(document).ready(function() {
         e.preventDefault();
         
         let btn = $(this);
-        let sponsorId = btn.data('id');
-        let patientId = btn.data('patient-id');
-        let sponsorName = btn.data('sponsor-name');
+        const patient_sponsor_id = $(this).data('patient-sponsor-id');
+        let sponsor_name = btn.data('sponsor-name');
         
-        if (confirm(`Are you sure you want to delete the sponsor "${sponsorName}"? This action can be undone.`)) {
-            $.ajax({
-                url: '/patients/sponsor-delete/' + sponsorId,
-                type: 'POST',
-                data: {
-                    _method: 'DELETE',
-                    _token: $('meta[name="csrf-token"]').attr('content')
-                },
-                success: function(response) {
-                    alert('Sponsor deleted successfully');
-                    location.reload(); // Reload to show updated data
-                },
-                error: function(xhr) {
-                    let errorMessage = 'Error deleting sponsor';
-                    if (xhr.responseJSON && xhr.responseJSON.message) {
-                        errorMessage = xhr.responseJSON.message;
-                    } else if (xhr.responseJSON && xhr.responseJSON.error) {
-                        errorMessage = xhr.responseJSON.error;
+        Swal.fire({
+            title: 'Delete Sponsor',
+            text: 'Are you sure you want to delete ' + sponsor_name + ' as Sponsor?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'Cancel'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const original_html = btn.html();
+                btn.html('<i class="bx bx-loader bx-spin"></i>').prop('disabled', true);
+                $.ajax({
+                    url: '/patient/sponsor-delete/'+ patient_sponsor_id,
+                    method: 'post',
+                    data: {
+                        _token: $('input[name="_token"]').val()
+                    },
+                    success: function(response) {
+                        showAlert('success', response.message);
+                        location.reload();
+                    },
+                    error: function(xhr) {
+                        const errorMsg = xhr.responseJSON?.message || 'Error deleting sponsor';
+                        showAlert('danger', errorMsg);
+                    },
+                    complete: function() {
+                        btn.html(original_html).prop('disabled', false);
                     }
-                    alert('Error: ' + errorMessage);
-                }
-            });
-        }
+                });
+            }
+        });
     });
 });
 </script>

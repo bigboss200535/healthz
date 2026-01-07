@@ -47,13 +47,17 @@ class SponsorController extends Controller
                     'patient_sponsorship.status as card_status', 'patient_sponsorship.status', 'patient_sponsorship.priority', 
                     'patient_sponsorship.is_active', 'sponsors.sponsor_name', 'sponsor_type.sponsor_type' )
             ->get();
+        
+        $patient = Patient::where('patient_id', $request->patient_id)
+            ->select('patient_id')
+            ->first();
 
-            return view('patient.sponsors', compact('sponsor_list'));
+            return view('patient.sponsors', compact('sponsor_list', 'patient'));
     }
 
     public function delete_sponsor($patient_sponsor_id)
     {
-        try {
+        // try {
             $sponsor = PatientSponsor::findOrFail($patient_sponsor_id);
             $sponsor->archived = 'Yes';
             $sponsor->archived_date = now();
@@ -61,41 +65,41 @@ class SponsorController extends Controller
             $sponsor->save();
             
             return response()->json(['message' => 'Sponsor deleted successfully'], 200);
-        } catch (\Exception $e) {
-            return response()->json(['error' => 'Failed to delete sponsor: ' . $e->getMessage()], 500);
-        }
+        // } catch (\Exception $e) {
+        //     return response()->json(['error' => 'Failed to delete sponsor: ' . $e->getMessage()], 500);
+        // }
     }
 
-    public function update(Request $request)
+    public function update_sponsor(Request $request)
     {
-        try {
             $validated = $request->validate([
                 'patient_id' => 'required|string|max:255',
                 'sponsor_type_id' => 'required|string|max:255',
-                'sponsor_name' => 'required|string|max:255',
+                'sponsor_id' => 'required|string|max:255',
                 'member_no' => 'nullable|string|max:255',
                 'start_date' => 'required|date',
                 'end_date' => 'required|date|after_or_equal:start_date',
                 'card_status' => 'required|string|in:Active,Inactive',
-                'priority' => 'required|string|in:1,2,3',
-                'dependant' => 'nullable|string|in:YES,NO',
+                'priority' => 'required|string|in:1,2,3,4,5,6,7,8',
+                'dependant' => 'nullable|string|in:Yes,No',
             ]);
 
             $mode = $request->input('form_mode', 'add');
-            $patientId = $validated['patient_id'];
-            $sponsorId = $request->input('sponsor_id');
+            $patient_id = $validated['patient_id'];
+            $sponsor_id = $request->input('sponsor_id');
 
             // Get patient OPD number
-            $patient = Patient::where('patient_id', $patientId)->first();
+            $patient = Patient::where('patient_id', $patient_id)->first();
             if (!$patient) {
                 return response()->json(['error' => 'Patient not found'], 404);
             }
 
             $sponsorData = [
-                'patient_id' => $patientId,
+                
+                'patient_id' => $patient_id,
                 'opd_number' => $patient->opd_number,
                 'sponsor_type_id' => $validated['sponsor_type_id'],
-                'sponsor_id' => $validated['sponsor_name'],
+                'sponsor_id' => $validated['sponsor_id'],
                 'member_no' => $validated['member_no'] ?? null,
                 'start_date' => $validated['start_date'],
                 'end_date' => $validated['end_date'],
@@ -103,12 +107,11 @@ class SponsorController extends Controller
                 'priority' => $validated['priority'],
                 'dependant' => $validated['dependant'] ?? 'NO',
                 'is_active' => $validated['card_status'] === 'Active' ? 'Yes' : 'No',
-                // 'archived' => 'No',
             ];
 
-            if ($mode === 'edit' && $sponsorId) {
+            if ($mode === 'edit' && $sponsor_id) {
                 // Update existing sponsor
-                $sponsor = PatientSponsor::findOrFail($sponsorId);
+                $sponsor = PatientSponsor::findOrFail($sponsor_id);
                 $sponsor->update($sponsorData);
                 $message = 'Sponsor updated successfully';
             } else {
@@ -122,10 +125,5 @@ class SponsorController extends Controller
                 'sponsor' => $sponsor
             ], 200);
 
-        } catch (\Illuminate\Validation\ValidationException $e) {
-            return response()->json(['errors' => $e->errors()], 422);
-        } catch (\Exception $e) {
-            return response()->json(['error' => 'Failed to save sponsor: ' . $e->getMessage()], 500);
-        }
     }
 }
