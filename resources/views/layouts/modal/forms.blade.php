@@ -59,9 +59,9 @@
                         <!-- <div class="form-check form-switch my-2 ms-2">
                         </div> -->
                     </div>
-                    <div class="col-12 text-center">
+                    <div class="col-12 " align='right'>
                         <button type="submit" class="btn btn-primary me-3" id="service_request_save" name="service_request_save">Submit</button>
-                        <button type="reset" class="btn btn-danger" data-bs-dismiss="modal" aria-label="Close" id="reset_close"><i class="bx bx-trash"></i>Close</button>
+                        <button type="reset" class="btn btn-info" data-bs-dismiss="modal" aria-label="Close" id="reset_close"><i class="bx bx-trash"></i>Close</button>
                     </div>
                     </form>
                 </div>
@@ -154,11 +154,11 @@
                         <textarea name="remarks_note" id="remarks_note" class="form-control"></textarea>
                     </div>
                     <!--  -->
-                    <div class="col-12">
+                    <div class="col-12" >
                     </div>
-                    <div class="col-12 text-center">
+                    <div class="col-12" align='right'>
                         <button type="submit" class="btn btn-primary me-3" id="vital_signs_save" name="vital_signs_save">Submit</button>
-                        <button type="reset" class="btn btn-danger" data-bs-dismiss="modal" aria-label="Close" id="reset_close"><i class="bx bx-trash"></i>Close</button>
+                        <button type="reset" class="btn btn-info" data-bs-dismiss="modal" aria-label="Close" id="reset_close"><i class="bx bx-trash"></i>Close</button>
                     </div>
                     </form>
                 </div>
@@ -175,8 +175,8 @@
                 <div class="modal-body">
                     <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
                     <div class="text-center mb-6">
-                        <h4 class="address-title mb-2">Patient Attendance Registration</h4>
-                        <p class="address-subtitle">Sign in Patient</p>
+                        <h4 class="address-title mb-2">Patient Appointment Registration</h4>
+                        <p class="address-subtitle">Book Appoinment</p>
                     </div>
                     {{-- <div class="alert-container"></div> --}}
                     <form id="service_request_form" class="row g-6" onsubmit="return false">
@@ -196,28 +196,30 @@
                         </select>
                     </div>
                     <div class="col-12 col-md-6">
+                        <label class="form-label" for="attendance_date">Attendance Date</label>
+                        <input type="date" id="attendance_date" name="attendance_date" class="form-control" />
+                    </div>
+                    {{-- <div class="col-12 col-md-6">
                         <label class="form-label" for="attendance_type_id">Service Type</label>
                         <select name="attendance_type_id" id="attendance_type_id" class="form-control">
                             <option disabled selected></option>
                         </select>
+                    </div> --}}
+                    <div class="col-12 col-md-6">
+                        <label class="form-label" for="appointment_date">Appointment date</label>
+                        <input type="date" id="appointment_date" name="appointment_date" class="form-control"/>
                     </div>
                     <div class="col-12 col-md-6">
-                        <label class="form-label" for="credit_amount">Credit Fee</label>
-                        <input type="text" id="credit_amount" name="credit_amount" class="form-control" placeholder="0.00"/>
+                        <label class="form-label" for="appointment_time">Appointment Time</label>
+                        <input type="time" id="appointment_time" name="appointment_time" class="form-control" placeholder="0.00"/>
                     </div>
-                    <div class="col-12 col-md-6">
-                        <label class="form-label" for="cash_amount">Cash Fee</label>
-                        <input type="text" id="cash_amount" name="cash_amount" class="form-control" placeholder="0.00"/>
+                    <div class="col-12 col-md-12">
+                        <label class="form-label" for="gdrg_code">Remarks</label>
+                        {{-- <input type="text" id="gdrg_code" name="gdrg_code" class="form-control"/> --}}
+                        <textarea class="form-control" name="remarks" id="remarks" cols="30" rows="5"></textarea>
                     </div>
+                    
                     <div class="col-12 col-md-6" hidden>
-                        <label class="form-label" for="gdrg_code">Service G-DRG</label>
-                        <input type="text" id="gdrg_code" name="gdrg_code" class="form-control"/>
-                    </div>
-                    <div class="col-12 col-md-6">
-                        <label class="form-label" for="attendance_date">Attendance Date</label>
-                        <input type="date" id="attendance_date" name="attendance_date" class="form-control" />
-                    </div>
-                    <div class="col-12 col-md-6">
                         <label class="form-label" for="attendance_type">Attendance Type</label>
                             <select name="attendance_type" id="attendance_type" class="form-control" required>
                             <option value="NEW">NEW</option>
@@ -228,9 +230,9 @@
                         <!-- <div class="form-check form-switch my-2 ms-2">
                         </div> -->
                     </div>
-                    <div class="col-12 text-center">
-                        <button type="submit" class="btn btn-primary me-3" id="service_request_save" name="service_request_save">Submit</button>
-                        <button type="reset" class="btn btn-danger" data-bs-dismiss="modal" aria-label="Close" id="reset_close"><i class="bx bx-trash"></i>Close</button>
+                    <div class="col-12" align='right'>
+                        <button type="submit" class="btn btn-primary me-3" id="service_request_save" name="service_request_save"><i class="bx bx-save"></i>Submit</button>
+                        <button type="reset" class="btn btn-info" data-bs-dismiss="modal" aria-label="Close" id="reset_close"><i class="bx bx-time"></i>Close</button>
                     </div>
                     </form>
                 </div>

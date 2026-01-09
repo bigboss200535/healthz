@@ -195,7 +195,6 @@ $('#sponsor_type_id').on('change', function() {
             
             // Make AJAX request to get sponsors by type
             $.ajax({
-                // url: '{{ route("get.sponsors.by.type") }}',
                 url: '/api/getsponsortype',
                 type: 'GET',
                 data: {
