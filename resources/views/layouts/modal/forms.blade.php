@@ -60,8 +60,9 @@
                         </div> -->
                     </div>
                     <div class="col-12 " align='right'>
-                        <button type="submit" class="btn btn-primary me-3" id="service_request_save" name="service_request_save">Submit</button>
                         <button type="reset" class="btn btn-info" data-bs-dismiss="modal" aria-label="Close" id="reset_close"><i class="bx bx-trash"></i>Close</button>
+                        <button type="submit" class="btn btn-primary me-3" id="service_request_save" name="service_request_save">Submit</button>
+                        
                     </div>
                     </form>
                 </div>
@@ -191,13 +192,19 @@
                     </div>
                     <div class="col-12 col-md-6">
                         <label class="form-label" for="service_point_id">Service Clinic</label>
-                        <select name="service_point_id" id="service_point_id" class="form-control">
-                            <option>-Select-</option>
+                         <select class="form-select" id="sponsor_type_id" name="sponsor_type_id" required>
+                            <option value="" selected disabled>-Select Clinic-</option>
+                                @php
+                                    $service_points = DB::table('service_points')->where('archived', 'No')->where('is_active', '=', 'Yes')->orderBy('service_points', 'asc')->get();
+                                @endphp
+                            @foreach($service_points as $clinic)
+                                <option value="{{ $clinic->service_point_id }}">{{ strtoupper($clinic->service_points) }}</option>
+                            @endforeach
                         </select>
                     </div>
                     <div class="col-12 col-md-6">
                         <label class="form-label" for="attendance_date">Attendance Date</label>
-                        <input type="date" id="attendance_date" name="attendance_date" class="form-control" />
+                        <input type="date" id="attendance_date" name="attendance_date" class="form-control" value="<?= date('Y-m-d') ?>"/>
                     </div>
                     {{-- <div class="col-12 col-md-6">
                         <label class="form-label" for="attendance_type_id">Service Type</label>
@@ -207,11 +214,11 @@
                     </div> --}}
                     <div class="col-12 col-md-6">
                         <label class="form-label" for="appointment_date">Appointment date</label>
-                        <input type="date" id="appointment_date" name="appointment_date" class="form-control"/>
+                        <input type="date" id="appointment_date" name="appointment_date" class="form-control" value="<?= date('Y-m-d') ?>"/>
                     </div>
                     <div class="col-12 col-md-6">
                         <label class="form-label" for="appointment_time">Appointment Time</label>
-                        <input type="time" id="appointment_time" name="appointment_time" class="form-control" placeholder="0.00"/>
+                        <input type="time" id="appointment_time" name="appointment_time" class="form-control" placeholder="0.00" value="<?php echo date('H:i'); ?>"/>
                     </div>
                     <div class="col-12 col-md-12">
                         <label class="form-label" for="gdrg_code">Remarks</label>
@@ -231,8 +238,8 @@
                         </div> -->
                     </div>
                     <div class="col-12" align='right'>
-                        <button type="submit" class="btn btn-primary me-3" id="service_request_save" name="service_request_save"><i class="bx bx-save"></i>Submit</button>
                         <button type="reset" class="btn btn-info" data-bs-dismiss="modal" aria-label="Close" id="reset_close"><i class="bx bx-time"></i>Close</button>
+                        <button type="submit" class="btn btn-primary me-3" id="service_request_save" name="service_request_save"><i class="bx bx-save"></i>Submit</button>
                     </div>
                     </form>
                 </div>
